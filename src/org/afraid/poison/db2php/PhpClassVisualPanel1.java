@@ -5,8 +5,8 @@
 package org.afraid.poison.db2php;
 
 import javax.swing.DefaultListModel;
-import javax.swing.JComboBox;
 import javax.swing.JPanel;
+import org.afraid.poison.db2php.generator.Table;
 import org.netbeans.api.db.explorer.ConnectionManager;
 import org.netbeans.api.db.explorer.DatabaseConnection;
 import org.netbeans.api.db.explorer.support.DatabaseExplorerUIs;
@@ -86,6 +86,9 @@ public final class PhpClassVisualPanel1 extends JPanel {
 		if (null!=conn) {
 			tables.addElement(conn.getDisplayName());
 			tablesSelection.setModel(tables);
+			for (Table t : Table.getTables(conn)) {
+				tables.addElement(t);
+			}
 		}
 	}//GEN-LAST:event_connectionSelectorActionPerformed
 
