@@ -50,11 +50,6 @@ public final class PhpClassVisualPanel1 extends JPanel {
 
         org.openide.awt.Mnemonics.setLocalizedText(jLabel1, org.openide.util.NbBundle.getMessage(PhpClassVisualPanel1.class, "PhpClassVisualPanel1.jLabel1.text")); // NOI18N
 
-        tablesSelection.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
         jScrollPane1.setViewportView(tablesSelection);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -89,7 +84,7 @@ public final class PhpClassVisualPanel1 extends JPanel {
 		DefaultListModel tables=new DefaultListModel();
 		DatabaseConnection conn=(DatabaseConnection) connectionSelector.getSelectedItem();
 		if (null!=conn) {
-			tables.addElement(evt.getSource().toString());
+			tables.addElement(conn.getDisplayName());
 			tablesSelection.setModel(tables);
 		}
 	}//GEN-LAST:event_connectionSelectorActionPerformed
