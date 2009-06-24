@@ -31,6 +31,14 @@ public class Table {
 		this.name=tableName;
 	}
 
+	public Table(DatabaseConnection connection, String catalog, String schema, String name) {
+		this.connection=connection;
+		this.catalog=catalog;
+		this.schema=schema;
+		this.name=name;
+	}
+
+
 	/**
 	 * @return the connection
 	 */
@@ -106,13 +114,25 @@ public class Table {
 			ResultSet rsetTables=conn.getJDBCConnection().getMetaData().getTables(null, null, null, null);
 			String tableName;
 			while (rsetTables.next()) {
-				tableName=rsetTables.getString("TABLE_NAME");
-				tables.add(new Table(conn, tableName));
-				System.err.println(tableName);
+				tables.add(
+						new Table(
+						conn,
+						rsetTables.getString("TABLE_CAT"),
+						rsetTables.getString("TABLE_SCHEM"),
+						rsetTables.getString("TABLE_NAME")));
 			}
 		} catch (SQLException ex) {
 			Exceptions.printStackTrace(ex);
 		}
 		return tables;
+	}
+
+	public List<String> getFields() {
+		try {
+			ResultSet rsetColumns=getConnection().getJDBCConnection().getMetaData().getColumns(getCatalog(), getSchema(), getName(), null);
+		} catch (SQLException ex) {
+			Exceptions.printStackTrace(ex);
+		}
+		return new ArrayList<String>();
 	}
 }
