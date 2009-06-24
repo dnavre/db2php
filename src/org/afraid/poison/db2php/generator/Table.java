@@ -90,11 +90,11 @@ public class Table {
 	@Override
 	public String toString() {
 		StringBuilder s=new StringBuilder();
-		if (null!=getSchema()) {
-			s.append(getSchema()).append(".");
-		}
 		if (null!=getCatalog()) {
 			s.append(getCatalog()).append(".");
+		}
+		if (null!=getSchema()) {
+			s.append(getSchema()).append(".");
 		}
 		return s.append(getName()).toString();
 	}
