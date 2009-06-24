@@ -1,0 +1,11 @@
+nbproject
+build.xml
+build-before-profiler.xml
+manifest.mf
+nbproject
+test
+build
+dist
+*~
+*.bz2
+*.gz

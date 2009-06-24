@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE filesystem PUBLIC "-//NetBeans//DTD Filesystem 1.1//EN" "http://www.netbeans.org/dtds/filesystem-1_1.dtd">
+<filesystem>
+    <folder name="Templates">
+        <folder name="Scripting">
+            <file name="phpClass">
+                <attr name="SystemFileSystem.icon" urlvalue="nbresloc:/org/afraid/poison/db2php/php.png"/>
+                <attr name="SystemFileSystem.localizingBundle" stringvalue="org.afraid.poison.db2php.Bundle"/>
+                <attr name="instantiatingIterator" newvalue="org.afraid.poison.db2php.PhpClassWizardIterator"/>
+                <attr name="template" boolvalue="true"/>
+                <attr name="templateWizardURL" urlvalue="nbresloc:/org/afraid/poison/db2php/phpClass.html"/>
+            </file>
+        </folder>
+    </folder>
+</filesystem>
