@@ -4,6 +4,7 @@
  */
 package org.afraid.poison.db2php;
 
+import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.JPanel;
 import org.afraid.poison.db2php.generator.Table;
@@ -81,14 +82,15 @@ public final class PhpClassVisualPanel1 extends JPanel {
 
 	private void connectionSelectorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connectionSelectorActionPerformed
 		// TODO add your handling code here:
-		DefaultListModel tables=new DefaultListModel();
+		DefaultListModel tablesModel=new DefaultListModel();
 		DatabaseConnection conn=(DatabaseConnection) connectionSelector.getSelectedItem();
 		if (null!=conn) {
-			tables.addElement(conn.getDisplayName());
-			tablesSelection.setModel(tables);
-			for (Table t : Table.getTables(conn)) {
-				tables.addElement(t);
+			tablesModel.addElement(conn.getDisplayName());
+			List<Table> tables=Table.getTables(conn);
+			for (Table t : tables) {
+				tablesModel.addElement(t);
 			}
+			tablesSelection.setModel(tablesModel);
 		}
 	}//GEN-LAST:event_connectionSelectorActionPerformed
 

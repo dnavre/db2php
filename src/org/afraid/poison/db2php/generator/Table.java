@@ -95,6 +95,15 @@ public class Table {
 		this.name=name;
 	}
 
+	public List<String> getFields() {
+		try {
+			ResultSet rsetColumns=getConnection().getJDBCConnection().getMetaData().getColumns(getCatalog(), getSchema(), getName(), null);
+		} catch (SQLException ex) {
+			Exceptions.printStackTrace(ex);
+		}
+		return new ArrayList<String>();
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder s=new StringBuilder();
@@ -125,14 +134,5 @@ public class Table {
 			Exceptions.printStackTrace(ex);
 		}
 		return tables;
-	}
-
-	public List<String> getFields() {
-		try {
-			ResultSet rsetColumns=getConnection().getJDBCConnection().getMetaData().getColumns(getCatalog(), getSchema(), getName(), null);
-		} catch (SQLException ex) {
-			Exceptions.printStackTrace(ex);
-		}
-		return new ArrayList<String>();
 	}
 }
