@@ -11,7 +11,10 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import javax.swing.JComponent;
 import javax.swing.event.ChangeListener;
+import org.netbeans.api.project.Project;
+import org.netbeans.spi.project.ui.templates.support.Templates;
 import org.openide.WizardDescriptor;
+import org.openide.filesystems.FileObject;
 
 public final class PhpClassWizardIterator implements WizardDescriptor.InstantiatingIterator {
 
@@ -26,9 +29,9 @@ public final class PhpClassWizardIterator implements WizardDescriptor.Instantiat
 	private WizardDescriptor.Panel[] getPanels() {
 		if (panels==null) {
 			panels=new WizardDescriptor.Panel[]{
-						new PhpClassWizardPanel1(),
-						new PhpClassWizardPanel2()
-					};
+					new PhpClassWizardPanel1(),
+					new PhpClassWizardPanel2(wizard)
+				};
 			String[] steps=createSteps();
 			for (int i=0; i<panels.length; i++) {
 				Component c=panels[i].getComponent();
@@ -63,6 +66,10 @@ public final class PhpClassWizardIterator implements WizardDescriptor.Instantiat
 
 	public void initialize(WizardDescriptor wizard) {
 		this.wizard=wizard;
+		FileObject targetFolder=Templates.getTargetFolder(wizard);
+
+		Project project=Templates.getProject(wizard);
+
 	}
 
 	public void uninitialize(WizardDescriptor wizard) {

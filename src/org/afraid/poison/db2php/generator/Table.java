@@ -22,6 +22,7 @@ public class Table {
 	private String catalog;
 	private String schema;
 	private String name;
+	private List<Field> fields;
 
 	public Table() {
 	}
@@ -95,14 +96,19 @@ public class Table {
 		this.name=name;
 	}
 
-	public List<String> getFields() {
+	public List<Field> getFields() {
 		try {
-			ResultSet rsetColumns=getConnection().getJDBCConnection().getMetaData().getColumns(getCatalog(), getSchema(), getName(), null);
+			if (null==fields) {
+				ResultSet rsetColumns=getConnection().getJDBCConnection().getMetaData().getColumns(getCatalog(), getSchema(), getName(), null);
+			}
+			
 		} catch (SQLException ex) {
 			Exceptions.printStackTrace(ex);
 		}
-		return new ArrayList<String>();
+		return new ArrayList<Field>();
 	}
+
+	
 
 	@Override
 	public String toString() {

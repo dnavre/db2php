@@ -4,6 +4,8 @@
  */
 package org.afraid.poison.db2php;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.JPanel;
@@ -23,6 +25,17 @@ public final class PhpClassVisualPanel1 extends JPanel {
 	@Override
 	public String getName() {
 		return "Step #1";
+	}
+
+	public List<Table> getSelected() {
+		List selectedObjects=getTablesSelection()!=null?Arrays.asList(getTablesSelection().getSelectedValues()):new ArrayList();
+		return new ArrayList<Table>(selectedObjects);
+	}
+
+	@Override
+	public boolean isValid() {
+		System.err.println(getSelected().size());
+		return getSelected().size()>0;
 	}
 
 	/** This method is called from within the constructor to
@@ -83,15 +96,17 @@ public final class PhpClassVisualPanel1 extends JPanel {
 	private void connectionSelectorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connectionSelectorActionPerformed
 		// TODO add your handling code here:
 		DefaultListModel tablesModel=new DefaultListModel();
-		DatabaseConnection conn=(DatabaseConnection) connectionSelector.getSelectedItem();
+		DatabaseConnection conn=(DatabaseConnection) getConnectionSelector().getSelectedItem();
 		if (null!=conn) {
-			tablesModel.addElement(conn.getDisplayName());
+			//tablesModel.addElement(conn.getDisplayName());
 			List<Table> tables=Table.getTables(conn);
 			for (Table t : tables) {
 				tablesModel.addElement(t);
 			}
-			tablesSelection.setModel(tablesModel);
+			getTablesSelection().setModel(tablesModel);
 		}
+		getTablesSelection().setModel(tablesModel);
+		firePropertyChange("test", new Object(), new Object());
 	}//GEN-LAST:event_connectionSelectorActionPerformed
 
 	private void connectionSelectorPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_connectionSelectorPropertyChange
@@ -103,5 +118,33 @@ public final class PhpClassVisualPanel1 extends JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JList tablesSelection;
     // End of variables declaration//GEN-END:variables
+
+	/**
+	 * @return the connectionSelector
+	 */
+	public javax.swing.JComboBox getConnectionSelector() {
+		return connectionSelector;
+	}
+
+	/**
+	 * @param connectionSelector the connectionSelector to set
+	 */
+	public void setConnectionSelector(javax.swing.JComboBox connectionSelector) {
+		this.connectionSelector=connectionSelector;
+	}
+
+	/**
+	 * @return the tablesSelection
+	 */
+	public javax.swing.JList getTablesSelection() {
+		return tablesSelection;
+	}
+
+	/**
+	 * @param tablesSelection the tablesSelection to set
+	 */
+	public void setTablesSelection(javax.swing.JList tablesSelection) {
+		this.tablesSelection=tablesSelection;
+	}
 }
 

@@ -5,11 +5,17 @@
 package org.afraid.poison.db2php;
 
 import java.awt.Component;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import org.openide.WizardDescriptor;
 import org.openide.util.HelpCtx;
 
-public class PhpClassWizardPanel1 implements WizardDescriptor.Panel {
+public class PhpClassWizardPanel1 implements WizardDescriptor.Panel, ListSelectionListener {
 
 	/**
 	 * The visual component that displays this panel. If you need to access the
@@ -24,6 +30,7 @@ public class PhpClassWizardPanel1 implements WizardDescriptor.Panel {
 	public Component getComponent() {
 		if (component==null) {
 			component=new PhpClassVisualPanel1();
+			((PhpClassVisualPanel1) component).getTablesSelection().addListSelectionListener(this);
 		}
 		return component;
 	}
@@ -37,42 +44,37 @@ public class PhpClassWizardPanel1 implements WizardDescriptor.Panel {
 
 	public boolean isValid() {
 		// If it is always OK to press Next or Finish, then:
-		return true;
+		return getComponent().isValid();
 		// If it depends on some condition (form filled out...), then:
 		// return someCondition();
 		// and when this condition changes (last form field filled in...) then:
-		// fireChangeEvent();
+		//fireChangeEvent();
 		// and uncomment the complicated stuff below.
 	}
+	private final Set<ChangeListener> listeners=new HashSet<ChangeListener>(1); // or can use ChangeSupport in NB 6.0
 
 	public final void addChangeListener(ChangeListener l) {
+		synchronized (listeners) {
+			listeners.add(l);
+		}
 	}
 
 	public final void removeChangeListener(ChangeListener l) {
+		synchronized (listeners) {
+			listeners.remove(l);
+		}
 	}
-	/*
-	private final Set<ChangeListener> listeners = new HashSet<ChangeListener>(1); // or can use ChangeSupport in NB 6.0
-	public final void addChangeListener(ChangeListener l) {
-	synchronized (listeners) {
-	listeners.add(l);
-	}
-	}
-	public final void removeChangeListener(ChangeListener l) {
-	synchronized (listeners) {
-	listeners.remove(l);
-	}
-	}
+
 	protected final void fireChangeEvent() {
-	Iterator<ChangeListener> it;
-	synchronized (listeners) {
-	it = new HashSet<ChangeListener>(listeners).iterator();
+		Iterator<ChangeListener> it;
+		synchronized (listeners) {
+			it=new HashSet<ChangeListener>(listeners).iterator();
+		}
+		ChangeEvent ev=new ChangeEvent(this);
+		while (it.hasNext()) {
+			it.next().stateChanged(ev);
+		}
 	}
-	ChangeEvent ev = new ChangeEvent(this);
-	while (it.hasNext()) {
-	it.next().stateChanged(ev);
-	}
-	}
-	 */
 
 	// You can use a settings object to keep track of state. Normally the
 	// settings object will be the WizardDescriptor, so you can use
@@ -82,6 +84,10 @@ public class PhpClassWizardPanel1 implements WizardDescriptor.Panel {
 	}
 
 	public void storeSettings(Object settings) {
+	}
+
+	public void valueChanged(ListSelectionEvent e) {
+		fireChangeEvent();
 	}
 }
 
