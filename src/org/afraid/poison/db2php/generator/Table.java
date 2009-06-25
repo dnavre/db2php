@@ -27,7 +27,7 @@ import org.openide.util.Exceptions;
 
 /**
  *
- * @author poison
+ * @author Andreas Schnaiter <rc.poison@gmail.com>
  */
 public class Table {
 

@@ -19,7 +19,7 @@ package org.afraid.poison.db2php.generator;
 
 /**
  *
- * @author poison
+ * @author Andreas Schnaiter <rc.poison@gmail.com>
  */
 public class Field {
 
