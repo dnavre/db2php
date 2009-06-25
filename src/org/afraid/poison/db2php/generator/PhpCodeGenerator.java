@@ -30,6 +30,7 @@ public class PhpCodeGenerator {
 	private DatabaseLayer databaseLayer;
 	private boolean generateChecks;
 	private boolean trackFieldModifications;
+	private String classNamePrefix;
 
 	/**
 	 * @return the table
@@ -85,6 +86,20 @@ public class PhpCodeGenerator {
 	 */
 	public void setTrackFieldModifications(boolean trackFieldModifications) {
 		this.trackFieldModifications=trackFieldModifications;
+	}
+
+	/**
+	 * @return the classNamePrefix
+	 */
+	public String getClassNamePrefix() {
+		return classNamePrefix;
+	}
+
+	/**
+	 * @param classNamePrefix the classNamePrefix to set
+	 */
+	public void setClassNamePrefix(String classNamePrefix) {
+		this.classNamePrefix=classNamePrefix;
 	}
 
 	public String getClassName() {
