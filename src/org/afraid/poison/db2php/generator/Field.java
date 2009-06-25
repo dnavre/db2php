@@ -17,6 +17,8 @@
  */
 package org.afraid.poison.db2php.generator;
 
+import org.afraid.poison.common.StringUtil;
+
 /**
  * represents meta data for a field in a database table
  *
@@ -39,6 +41,13 @@ public class Field {
 	 */
 	public String getName() {
 		return name;
+	}
+
+	/**
+	 * @return the name with the first char uppercase
+	 */
+	public String getNameFirstCharUpper() {
+		return StringUtil.firstCharToUpperCase(getName());
 	}
 
 	/**

@@ -17,15 +17,19 @@
  */
 package org.afraid.poison.db2php.generator;
 
+import org.afraid.poison.common.StringUtil;
+
 /**
  * generates PHP CLass code from a table
  *
  * @author Andreas Schnaiter <rc.poison@gmail.com>
  */
 public class PhpCodeGenerator {
+
 	private Table table;
 	private DatabaseLayer databaseLayer;
 	private boolean generateChecks;
+	private boolean trackFieldModifications;
 
 	/**
 	 * @return the table
@@ -67,5 +71,31 @@ public class PhpCodeGenerator {
 	 */
 	public void setGenerateChecks(boolean generateChecks) {
 		this.generateChecks=generateChecks;
+	}
+
+	/**
+	 * @return the trackFieldModifications
+	 */
+	public boolean isTrackFieldModifications() {
+		return trackFieldModifications;
+	}
+
+	/**
+	 * @param trackFieldModifications the trackFieldModifications to set
+	 */
+	public void setTrackFieldModifications(boolean trackFieldModifications) {
+		this.trackFieldModifications=trackFieldModifications;
+	}
+
+	public String getClassName() {
+		return StringUtil.firstCharToUpperCase(getTable().getName());
+	}
+
+	public String getMethodNameGetter(Field field) {
+		return new StringBuilder("get").append(field.getNameFirstCharUpper()).toString();
+	}
+
+	public String getMethodNameSetter(Field field) {
+		return new StringBuilder("set").append(field.getNameFirstCharUpper()).toString();
 	}
 }
