@@ -166,6 +166,12 @@ public class Table {
 		return s.append(getName()).toString();
 	}
 
+	/**
+	 * get list of tables
+	 *
+	 * @param conn the database connection for which to get the tables
+	 * @return the tables for the passed connection
+	 */
 	public static Set<Table> getTables(DatabaseConnection conn) {
 		Set<Table> tables=new LinkedHashSet<Table>();
 		try {
