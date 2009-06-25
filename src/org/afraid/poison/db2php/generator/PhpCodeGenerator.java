@@ -92,10 +92,14 @@ public class PhpCodeGenerator {
 	}
 
 	public String getMethodNameGetter(Field field) {
-		return new StringBuilder("get").append(field.getNameFirstCharUpper()).toString();
+		return new StringBuilder("get").append(getMethodName(field)).toString();
 	}
 
 	public String getMethodNameSetter(Field field) {
-		return new StringBuilder("set").append(field.getNameFirstCharUpper()).toString();
+		return new StringBuilder("set").append(getMethodName(field)).toString();
+	}
+
+	public String getMethodName(Field field) {
+		return field.getNameFirstCharUpper();
 	}
 }
