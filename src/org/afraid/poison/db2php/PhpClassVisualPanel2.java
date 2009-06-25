@@ -19,7 +19,12 @@ package org.afraid.poison.db2php;
 
 import java.io.File;
 import java.net.URISyntaxException;
+import java.util.Vector;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JPanel;
+import javax.swing.ListModel;
+import org.afraid.poison.db2php.generator.DatabaseLayer;
 import org.netbeans.api.project.Project;
 import org.netbeans.spi.project.ui.templates.support.Templates;
 import org.openide.WizardDescriptor;
@@ -64,7 +69,7 @@ public final class PhpClassVisualPanel2 extends JPanel {
 
         org.openide.awt.Mnemonics.setLocalizedText(jLabel1, org.openide.util.NbBundle.getMessage(PhpClassVisualPanel2.class, "PhpClassVisualPanel2.jLabel1.text_2")); // NOI18N
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox1.setModel(getAvailableDatabaseLayers());
 
         org.openide.awt.Mnemonics.setLocalizedText(jCheckBox1, org.openide.util.NbBundle.getMessage(PhpClassVisualPanel2.class, "PhpClassVisualPanel2.jCheckBox1.text")); // NOI18N
 
@@ -230,6 +235,10 @@ public final class PhpClassVisualPanel2 extends JPanel {
 	 */
 	public void setDestinationDirectory(javax.swing.JTextField destinationDirectory) {
 		this.destinationDirectory=destinationDirectory;
+	}
+
+	public ComboBoxModel getAvailableDatabaseLayers() {
+		return new DefaultComboBoxModel(new Vector<Object>(DatabaseLayer.AVAILABLE));
 	}
 }
 
