@@ -1,0 +1,70 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package org.afraid.poison.common;
+
+import java.util.Collection;
+
+/**
+ *
+ * @author poison
+ */
+public class CollectionUtil {
+
+	/**
+	 * join elements as string seperated by the passed delimiter
+	 *
+	 * @param c the collection of elements to join
+	 * @param delim the delimiter
+	 * @return the delimited string
+	 */
+	public static String join(Collection c, String delim) {
+		StringBuilder s=new StringBuilder();
+		boolean first=true;
+		for (Object o : c) {
+			if (!first) {
+				s.append(delim);
+			} else {
+				first=false;
+			}
+			s.append(o);
+		}
+
+		return s.toString();
+	}
+
+	/**
+	 * get maximum length of contained objects toString()
+	 * @param c list of objects
+	 * @return the max length
+	 */
+	public static int getStringLengthMax(Collection c) {
+		int max=0;
+		int len;
+		for (Object o : c) {
+			len=o.toString().length();
+			if (len>max) {
+				max=len;
+			}
+		}
+		return max;
+	}
+
+	/**
+	 * get minimum length of contained objects toString()
+	 * @param c list of objects
+	 * @return the minimum length
+	 */
+	public static int getStringLengthMin(Collection c) {
+		int min=0;
+		int len;
+		for (Object o : c) {
+			len=o.toString().length();
+			if (len<min) {
+				min=len;
+			}
+		}
+		return min;
+	}
+}
