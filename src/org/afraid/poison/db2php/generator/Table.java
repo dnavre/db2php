@@ -186,4 +186,41 @@ public class Table {
 		}
 		return tables;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj==null) {
+			return false;
+		}
+		if (getClass()!=obj.getClass()) {
+			return false;
+		}
+		final Table other=(Table) obj;
+		if (this.connection!=other.connection&&(this.connection==null||!this.connection.equals(other.connection))) {
+			return false;
+		}
+		if ((this.catalog==null) ? (other.catalog!=null) : !this.catalog.equals(other.catalog)) {
+			return false;
+		}
+		if ((this.schema==null) ? (other.schema!=null) : !this.schema.equals(other.schema)) {
+			return false;
+		}
+		if ((this.name==null) ? (other.name!=null) : !this.name.equals(other.name)) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		int hash=3;
+		hash=83*hash+(this.connection!=null ? this.connection.hashCode() : 0);
+		hash=83*hash+(this.catalog!=null ? this.catalog.hashCode() : 0);
+		hash=83*hash+(this.schema!=null ? this.schema.hashCode() : 0);
+		hash=83*hash+(this.name!=null ? this.name.hashCode() : 0);
+		hash=83*hash+(this.fields!=null ? this.fields.hashCode() : 0);
+		return hash;
+	}
+
+	
 }

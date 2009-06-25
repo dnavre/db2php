@@ -145,4 +145,59 @@ public class Field {
 	public void setAutoIncrement(boolean autoIncrement) {
 		this.autoIncrement=autoIncrement;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj==null) {
+			return false;
+		}
+		if (getClass()!=obj.getClass()) {
+			return false;
+		}
+		final Field other=(Field) obj;
+		if ((this.name==null) ? (other.name!=null) : !this.name.equals(other.name)) {
+			return false;
+		}
+		if (this.type!=other.type) {
+			return false;
+		}
+		if ((this.typeName==null) ? (other.typeName!=null) : !this.typeName.equals(other.typeName)) {
+			return false;
+		}
+		if (this.size!=other.size) {
+			return false;
+		}
+		if (this.decimalDigits!=other.decimalDigits) {
+			return false;
+		}
+		if (this.nullable!=other.nullable) {
+			return false;
+		}
+		if ((this.defaultValue==null) ? (other.defaultValue!=null) : !this.defaultValue.equals(other.defaultValue)) {
+			return false;
+		}
+		if (this.primaryKey!=other.primaryKey) {
+			return false;
+		}
+		if (this.autoIncrement!=other.autoIncrement) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		int hash=3;
+		hash=73*hash+(this.name!=null ? this.name.hashCode() : 0);
+		hash=73*hash+this.type;
+		hash=73*hash+(this.typeName!=null ? this.typeName.hashCode() : 0);
+		hash=73*hash+this.size;
+		hash=73*hash+(this.nullable ? 1 : 0);
+		hash=73*hash+(this.defaultValue!=null ? this.defaultValue.hashCode() : 0);
+		hash=73*hash+(this.primaryKey ? 1 : 0);
+		hash=73*hash+(this.autoIncrement ? 1 : 0);
+		return hash;
+	}
+
+	
 }
