@@ -6,7 +6,6 @@ package org.afraid.poison.db2php.generator;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -24,7 +23,7 @@ public class Table {
 	private String catalog;
 	private String schema;
 	private String name;
-	private List<Field> fields;
+	private Set<Field> fields;
 
 	public Table() {
 	}
@@ -105,13 +104,40 @@ public class Table {
 	public Set<Field> getFields() {
 		try {
 			if (null==fields) {
+				// get list of primary keys
+				ResultSet rsetPrimaryKeys=getConnection().getJDBCConnection().getMetaData().getPrimaryKeys(getCatalog(), getSchema(), getName());
+				Set<String> primaryKeyFields=new LinkedHashSet<String>();
+				while (rsetPrimaryKeys.next()) {
+					primaryKeyFields.add(rsetPrimaryKeys.getString("COLUMN_NAME"));
+				}
+				rsetPrimaryKeys.close();
+				rsetPrimaryKeys=null;
+
+				// get list of fields
 				ResultSet rsetColumns=getConnection().getJDBCConnection().getMetaData().getColumns(getCatalog(), getSchema(), getName(), null);
+				Field field;
+				fields=new LinkedHashSet<Field>();
+				while (rsetColumns.next()) {
+					field=new Field();
+					field.setName(rsetColumns.getString("COLUMN_NAME"));
+					field.setPrimaryKey(primaryKeyFields.contains(field.getName()));
+					field.setType(rsetColumns.getInt("DATA_TYPE"));
+					field.setTypeName(rsetColumns.getString("TYPE_NAME"));
+					field.setSize(rsetColumns.getInt("COLUMN_SIZE"));
+					field.setDecimalDigits(rsetColumns.getInt("DECIMAL_DIGITS"));
+					field.setDefaultValue(rsetColumns.getNString("COLUMN_DEF"));
+					field.setNullable(rsetColumns.getString("IS_NULLABLE").equalsIgnoreCase("YES"));
+					field.setAutoIncrement(rsetColumns.getString("IS_AUTOINCREMENT").equalsIgnoreCase("YES"));
+					fields.add(field);
+				}
+				rsetColumns.close();
+				rsetColumns=null;
 			}
 
 		} catch (SQLException ex) {
 			Exceptions.printStackTrace(ex);
 		}
-		return new LinkedHashSet<Field>();
+		return fields;
 	}
 
 	/**

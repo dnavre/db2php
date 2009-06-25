@@ -18,6 +18,7 @@ public class Field {
 	private boolean nullable=true;
 	private String defaultValue;
 	private boolean primaryKey=false;
+	private boolean autoIncrement=false;
 
 	/**
 	 * @return the name
@@ -129,5 +130,19 @@ public class Field {
 	 */
 	public void setPrimaryKey(boolean primaryKey) {
 		this.primaryKey=primaryKey;
+	}
+
+	/**
+	 * @return the autoIncrement
+	 */
+	public boolean isAutoIncrement() {
+		return autoIncrement;
+	}
+
+	/**
+	 * @param autoIncrement the autoIncrement to set
+	 */
+	public void setAutoIncrement(boolean autoIncrement) {
+		this.autoIncrement=autoIncrement;
 	}
 }
