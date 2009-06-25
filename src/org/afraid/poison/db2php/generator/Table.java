@@ -26,6 +26,7 @@ import org.netbeans.api.db.explorer.DatabaseConnection;
 import org.openide.util.Exceptions;
 
 /**
+ * represents meta data for a table in a database
  *
  * @author Andreas Schnaiter <rc.poison@gmail.com>
  */

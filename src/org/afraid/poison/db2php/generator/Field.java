@@ -18,6 +18,7 @@
 package org.afraid.poison.db2php.generator;
 
 /**
+ * represents meta data for a field in a database table
  *
  * @author Andreas Schnaiter <rc.poison@gmail.com>
  */
