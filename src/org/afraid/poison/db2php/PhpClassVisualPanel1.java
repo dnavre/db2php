@@ -7,6 +7,7 @@ package org.afraid.poison.db2php;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import javax.swing.DefaultListModel;
 import javax.swing.JPanel;
 import org.afraid.poison.db2php.generator.Table;
@@ -99,7 +100,7 @@ public final class PhpClassVisualPanel1 extends JPanel {
 		DatabaseConnection conn=(DatabaseConnection) getConnectionSelector().getSelectedItem();
 		if (null!=conn) {
 			//tablesModel.addElement(conn.getDisplayName());
-			List<Table> tables=Table.getTables(conn);
+			Set<Table> tables=Table.getTables(conn);
 			for (Table t : tables) {
 				tablesModel.addElement(t);
 			}

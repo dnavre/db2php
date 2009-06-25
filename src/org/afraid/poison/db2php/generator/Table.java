@@ -7,7 +7,9 @@ package org.afraid.poison.db2php.generator;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import org.netbeans.api.db.explorer.ConnectionManager;
 import org.netbeans.api.db.explorer.DatabaseConnection;
 import org.openide.util.Exceptions;
@@ -38,7 +40,6 @@ public class Table {
 		this.schema=schema;
 		this.name=name;
 	}
-
 
 	/**
 	 * @return the connection
@@ -96,19 +97,37 @@ public class Table {
 		this.name=name;
 	}
 
-	public List<Field> getFields() {
+	/**
+	 * get the fields for this table
+	 *
+	 * @return the fields
+	 */
+	public Set<Field> getFields() {
 		try {
 			if (null==fields) {
 				ResultSet rsetColumns=getConnection().getJDBCConnection().getMetaData().getColumns(getCatalog(), getSchema(), getName(), null);
 			}
-			
+
 		} catch (SQLException ex) {
 			Exceptions.printStackTrace(ex);
 		}
-		return new ArrayList<Field>();
+		return new LinkedHashSet<Field>();
 	}
 
-	
+	/**
+	 * get the primary keys for this table
+	 *
+	 * @return the rpimary keys
+	 */
+	public Set<Field> getPrimaryKeys() {
+		Set<Field> primaryKeys=new LinkedHashSet<Field>();
+		for (Field f : getFields()) {
+			if (f.isPrimaryKey()) {
+				primaryKeys.add(f);
+			}
+		}
+		return primaryKeys;
+	}
 
 	@Override
 	public String toString() {
@@ -122,8 +141,8 @@ public class Table {
 		return s.append(getName()).toString();
 	}
 
-	public static List<Table> getTables(DatabaseConnection conn) {
-		List<Table> tables=new ArrayList<Table>();
+	public static Set<Table> getTables(DatabaseConnection conn) {
+		Set<Table> tables=new LinkedHashSet<Table>();
 		try {
 			ConnectionManager.getDefault().showConnectionDialog(conn);
 			ResultSet rsetTables=conn.getJDBCConnection().getMetaData().getTables(null, null, null, null);

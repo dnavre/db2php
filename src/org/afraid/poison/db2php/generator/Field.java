@@ -17,6 +17,7 @@ public class Field {
 	private int decimalDigits=0;
 	private boolean nullable=true;
 	private String defaultValue;
+	private boolean primaryKey=false;
 
 	/**
 	 * @return the name
@@ -114,5 +115,19 @@ public class Field {
 	 */
 	public void setDefaultValue(String defaultValue) {
 		this.defaultValue=defaultValue;
+	}
+
+	/**
+	 * @return the primaryKey
+	 */
+	public boolean isPrimaryKey() {
+		return primaryKey;
+	}
+
+	/**
+	 * @param primaryKey the primaryKey to set
+	 */
+	public void setPrimaryKey(boolean primaryKey) {
+		this.primaryKey=primaryKey;
 	}
 }
