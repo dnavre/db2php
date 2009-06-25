@@ -91,11 +91,11 @@ public class PhpCodeGenerator {
 		return StringUtil.firstCharToUpperCase(getTable().getName());
 	}
 
-	public String getMethodNameGetter(Field field) {
+	public String getGetter(Field field) {
 		return new StringBuilder("get").append(getMethodName(field)).toString();
 	}
 
-	public String getMethodNameSetter(Field field) {
+	public String getSetter(Field field) {
 		return new StringBuilder("set").append(getMethodName(field)).toString();
 	}
 
