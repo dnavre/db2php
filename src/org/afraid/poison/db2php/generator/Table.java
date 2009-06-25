@@ -7,7 +7,6 @@ package org.afraid.poison.db2php.generator;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
 import org.netbeans.api.db.explorer.ConnectionManager;
 import org.netbeans.api.db.explorer.DatabaseConnection;
@@ -221,6 +220,4 @@ public class Table {
 		hash=83*hash+(this.fields!=null ? this.fields.hashCode() : 0);
 		return hash;
 	}
-
-	
 }

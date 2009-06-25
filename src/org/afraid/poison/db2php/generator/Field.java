@@ -198,6 +198,4 @@ public class Field {
 		hash=73*hash+(this.autoIncrement ? 1 : 0);
 		return hash;
 	}
-
-	
 }
