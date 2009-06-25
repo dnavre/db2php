@@ -21,8 +21,9 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
+ * Database Layer type
  *
- * @author poison
+ * @author Andreas Schnaiter <rc.poison@gmail.com>
  */
 public class DatabaseLayer {
 
@@ -30,7 +31,7 @@ public class DatabaseLayer {
 	public static final DatabaseLayer NONE=new DatabaseLayer("none");
 	public static final DatabaseLayer INTERFACE=new DatabaseLayer("Simple Interfaces");
 	public static final DatabaseLayer MYSQLI=new DatabaseLayer("MySQLi");
-	public static final DatabaseLayer ADODB=new DatabaseLayer("SADO DB");
+	public static final DatabaseLayer ADODB=new DatabaseLayer("ADO DB");
 	public static final DatabaseLayer ZEND=new DatabaseLayer("Zend");
 	public static final Set<DatabaseLayer> AVAILABLE;
 
