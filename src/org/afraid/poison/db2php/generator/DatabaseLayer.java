@@ -25,14 +25,14 @@ import java.util.Set;
  *
  * @author Andreas Schnaiter <rc.poison@gmail.com>
  */
-public class DatabaseLayer {
+abstract public class DatabaseLayer {
 
-	private final String name;
-	public static final DatabaseLayer NONE=new DatabaseLayer("none");
-	public static final DatabaseLayer INTERFACE=new DatabaseLayer("Simple Interfaces");
-	public static final DatabaseLayer MYSQLI=new DatabaseLayer("MySQLi");
-	public static final DatabaseLayer ADODB=new DatabaseLayer("ADO DB");
-	public static final DatabaseLayer ZEND=new DatabaseLayer("Zend");
+	public static final DatabaseLayer NONE=new DatabaseLayerNone();
+	public static final DatabaseLayer INTERFACE=new DatabaseLayerInterface();
+	public static final DatabaseLayer PDO=new DatabaseLayerPdo();
+	public static final DatabaseLayer MYSQLI=new DatabaseLayerMySQLi();
+	public static final DatabaseLayer ADODB=new DatabaseLayerAdoDb();
+	public static final DatabaseLayer ZEND=new DatabaseLayerZend();
 	public static final Set<DatabaseLayer> AVAILABLE;
 
 	static {
@@ -44,16 +44,19 @@ public class DatabaseLayer {
 
 	}
 
-	public DatabaseLayer(String name) {
-		this.name=name;
+	private DatabaseLayer() {
 	}
 
 	/**
 	 * @return the name
 	 */
-	public String getName() {
-		return name;
-	}
+	abstract public String getName();
+
+	abstract public String getSelectCode(Table table);
+
+	abstract public String getInsertCode(Table table);
+
+	abstract public String getUpdateCode(Table table);
 
 	@Override
 	public String toString() {
@@ -69,7 +72,7 @@ public class DatabaseLayer {
 			return false;
 		}
 		final DatabaseLayer other=(DatabaseLayer) obj;
-		if ((this.name==null) ? (other.name!=null) : !this.name.equals(other.name)) {
+		if ((this.getName()==null)?(other.getName()!=null):!this.getName().equals(other.getName())) {
 			return false;
 		}
 		return true;
@@ -78,7 +81,145 @@ public class DatabaseLayer {
 	@Override
 	public int hashCode() {
 		int hash=7;
-		hash=17*hash+(this.name!=null ? this.name.hashCode() : 0);
+		hash=17*hash+(this.getName()!=null?this.getName().hashCode():0);
 		return hash;
+	}
+
+	private static class DatabaseLayerNone extends DatabaseLayer {
+
+		@Override
+		public String getName() {
+			return "none";
+		}
+
+		@Override
+		public String getSelectCode(Table table) {
+			return null;
+		}
+
+		@Override
+		public String getInsertCode(Table table) {
+			return null;
+		}
+
+		@Override
+		public String getUpdateCode(Table table) {
+			return null;
+		}
+	}
+
+	private static class DatabaseLayerInterface extends DatabaseLayer {
+
+		@Override
+		public String getName() {
+			return "Simple Interface";
+		}
+
+		@Override
+		public String getSelectCode(Table table) {
+			throw new UnsupportedOperationException("Not supported yet.");
+		}
+
+		@Override
+		public String getInsertCode(Table table) {
+			throw new UnsupportedOperationException("Not supported yet.");
+		}
+
+		@Override
+		public String getUpdateCode(Table table) {
+			throw new UnsupportedOperationException("Not supported yet.");
+		}
+	}
+
+	private static class DatabaseLayerPdo extends DatabaseLayer {
+
+		@Override
+		public String getName() {
+			return "PHP Data Objects";
+		}
+
+		@Override
+		public String getSelectCode(Table table) {
+			throw new UnsupportedOperationException("Not supported yet.");
+		}
+
+		@Override
+		public String getInsertCode(Table table) {
+			throw new UnsupportedOperationException("Not supported yet.");
+		}
+
+		@Override
+		public String getUpdateCode(Table table) {
+			throw new UnsupportedOperationException("Not supported yet.");
+		}
+	}
+
+	private static class DatabaseLayerMySQLi extends DatabaseLayer {
+
+		@Override
+		public String getName() {
+			return "MySQLi";
+		}
+
+		@Override
+		public String getSelectCode(Table table) {
+			throw new UnsupportedOperationException("Not supported yet.");
+		}
+
+		@Override
+		public String getInsertCode(Table table) {
+			throw new UnsupportedOperationException("Not supported yet.");
+		}
+
+		@Override
+		public String getUpdateCode(Table table) {
+			throw new UnsupportedOperationException("Not supported yet.");
+		}
+	}
+
+	private static class DatabaseLayerAdoDb extends DatabaseLayer {
+
+		@Override
+		public String getName() {
+			return "ADO DB";
+		}
+
+		@Override
+		public String getSelectCode(Table table) {
+			throw new UnsupportedOperationException("Not supported yet.");
+		}
+
+		@Override
+		public String getInsertCode(Table table) {
+			throw new UnsupportedOperationException("Not supported yet.");
+		}
+
+		@Override
+		public String getUpdateCode(Table table) {
+			throw new UnsupportedOperationException("Not supported yet.");
+		}
+	}
+
+	private static class DatabaseLayerZend extends DatabaseLayer {
+
+		@Override
+		public String getName() {
+			return "Zend";
+		}
+
+		@Override
+		public String getSelectCode(Table table) {
+			throw new UnsupportedOperationException("Not supported yet.");
+		}
+
+		@Override
+		public String getInsertCode(Table table) {
+			throw new UnsupportedOperationException("Not supported yet.");
+		}
+
+		@Override
+		public String getUpdateCode(Table table) {
+			throw new UnsupportedOperationException("Not supported yet.");
+		}
 	}
 }
