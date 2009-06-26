@@ -176,7 +176,7 @@ public class PhpCodeGenerator {
 		s.append("\tprivate static $PRIMARY_KEYS=array(");
 		s.append(CollectionUtil.join(getTable().getPrimaryKeys(), ",", new StringMutator() {
 			public String transform(Object s) {
-				return new StringBuffer("self::").append(getConstName((Field) s)).toString();
+				return new StringBuilder("self::").append(getConstName((Field) s)).toString();
 			}
 		}));
 		s.append(");\n");
@@ -185,7 +185,7 @@ public class PhpCodeGenerator {
 		s.append(CollectionUtil.join(getTable().getFields(), ",\n", new StringMutator() {
 			public String transform(Object s) {
 				Field f=(Field) s;
-				return new StringBuffer("\t\tself::").append(getConstName(f)).append("=>'").append(f.getName()).append("'").toString();
+				return new StringBuilder("\t\tself::").append(getConstName(f)).append("=>'").append(f.getName()).append("'").toString();
 			}
 		}));
 		s.append(");\n");
@@ -215,7 +215,7 @@ public class PhpCodeGenerator {
 		s.append(" SET ");
 		StringMutator fieldAssign=new StringMutator() {
 			public String transform(Object s) {
-				return new StringBuffer(((Field) s).getName()).append("=").append("?").toString();
+				return new StringBuilder(((Field) s).getName()).append("=").append("?").toString();
 			}
 		};
 		s.append(CollectionUtil.join(fields, ",", fieldAssign));
@@ -251,7 +251,7 @@ public class PhpCodeGenerator {
 		s.append(CollectionUtil.join(fields, ",\n", new StringMutator() {
 			public String transform(Object s) {
 				Field f=(Field) s;
-				return new StringBuffer("\t\t\tself::").append(getConstName(f)).append("=>$this->").append(getGetterName(f)).append("()").toString();
+				return new StringBuilder("\t\t\tself::").append(getConstName(f)).append("=>$this->").append(getGetterName(f)).append("()").toString();
 			}
 		}));
 		//s.append("\t\treturn $this->").append(getMemberName(field)).append(";\n");
