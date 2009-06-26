@@ -24,6 +24,19 @@ public class CollectionUtil {
 	}
 
 	/**
+	 * join elements as string seperated by the passed delimiter and prepend/append passed parameter to each element
+	 *
+	 * @param c the collection of elements to join
+	 * @param delim the delimiter
+	 * @param prepend the string to prepend to each element
+	 * @param append the string to append to each element
+	 * @return the delimited string
+	 */
+	public static String join(Collection c, String delim, String prepend, String append) {
+		return join(c, delim, new StringMutatorPrependAppend(prepend, append));
+	}
+
+	/**
 	 * join elements as string seperated by the passed delimiter
 	 *
 	 * @param c the collection of elements to join
