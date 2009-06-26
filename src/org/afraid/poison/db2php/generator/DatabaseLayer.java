@@ -35,12 +35,19 @@ abstract public class DatabaseLayer {
 	public static final DatabaseLayer ZEND=new DatabaseLayerZend();
 	public static final Set<DatabaseLayer> AVAILABLE;
 
+	private static final String METHOD_SELECT_ID_NAME="getById";
+	private static final String METHOD_UPDATE_NAME="updateToDatabase";
+	private static final String METHOD_INSERT_NAME="insertIntoDatabase";
+	private static final String METHOD_DELETE_NAME="deleteFromDatabase";
+
 	static {
 		AVAILABLE=new LinkedHashSet<DatabaseLayer>();
 		AVAILABLE.add(NONE);
-		AVAILABLE.add(INTERFACE);
-		AVAILABLE.add(ADODB);
-		AVAILABLE.add(ZEND);
+		//AVAILABLE.add(INTERFACE);
+		AVAILABLE.add(PDO);
+		//AVAILABLE.add(MYSQLI);
+		//AVAILABLE.add(ADODB);
+		//AVAILABLE.add(ZEND);
 
 	}
 
@@ -52,11 +59,15 @@ abstract public class DatabaseLayer {
 	 */
 	abstract public String getName();
 
-	abstract public String getSelectCode(Table table);
 
-	abstract public String getInsertCode(Table table);
+	abstract public String getSelectCode(PhpCodeGenerator generator);
 
-	abstract public String getUpdateCode(Table table);
+	abstract public String getInsertCode(PhpCodeGenerator generator);
+
+	abstract public String getUpdateCode(PhpCodeGenerator generator);
+
+	abstract public String getDeleteCode(PhpCodeGenerator generator);
+
 
 	@Override
 	public String toString() {
@@ -93,18 +104,23 @@ abstract public class DatabaseLayer {
 		}
 
 		@Override
-		public String getSelectCode(Table table) {
+		public String getSelectCode(PhpCodeGenerator generator) {
 			return null;
 		}
 
 		@Override
-		public String getInsertCode(Table table) {
+		public String getInsertCode(PhpCodeGenerator generator) {
 			return null;
 		}
 
 		@Override
-		public String getUpdateCode(Table table) {
+		public String getUpdateCode(PhpCodeGenerator generator) {
 			return null;
+		}
+
+		@Override
+		public String getDeleteCode(PhpCodeGenerator generator) {
+			throw new UnsupportedOperationException("Not supported yet.");
 		}
 	}
 
@@ -116,17 +132,22 @@ abstract public class DatabaseLayer {
 		}
 
 		@Override
-		public String getSelectCode(Table table) {
+		public String getSelectCode(PhpCodeGenerator generator) {
 			throw new UnsupportedOperationException("Not supported yet.");
 		}
 
 		@Override
-		public String getInsertCode(Table table) {
+		public String getInsertCode(PhpCodeGenerator generator) {
 			throw new UnsupportedOperationException("Not supported yet.");
 		}
 
 		@Override
-		public String getUpdateCode(Table table) {
+		public String getUpdateCode(PhpCodeGenerator generator) {
+			throw new UnsupportedOperationException("Not supported yet.");
+		}
+
+		@Override
+		public String getDeleteCode(PhpCodeGenerator generator) {
 			throw new UnsupportedOperationException("Not supported yet.");
 		}
 	}
@@ -139,17 +160,23 @@ abstract public class DatabaseLayer {
 		}
 
 		@Override
-		public String getSelectCode(Table table) {
+		public String getSelectCode(PhpCodeGenerator generator) {
+			StringBuilder s=new StringBuilder();
 			throw new UnsupportedOperationException("Not supported yet.");
 		}
 
 		@Override
-		public String getInsertCode(Table table) {
+		public String getInsertCode(PhpCodeGenerator generator) {
 			throw new UnsupportedOperationException("Not supported yet.");
 		}
 
 		@Override
-		public String getUpdateCode(Table table) {
+		public String getUpdateCode(PhpCodeGenerator generator) {
+			throw new UnsupportedOperationException("Not supported yet.");
+		}
+
+		@Override
+		public String getDeleteCode(PhpCodeGenerator generator) {
 			throw new UnsupportedOperationException("Not supported yet.");
 		}
 	}
@@ -162,17 +189,22 @@ abstract public class DatabaseLayer {
 		}
 
 		@Override
-		public String getSelectCode(Table table) {
+		public String getSelectCode(PhpCodeGenerator generator) {
 			throw new UnsupportedOperationException("Not supported yet.");
 		}
 
 		@Override
-		public String getInsertCode(Table table) {
+		public String getInsertCode(PhpCodeGenerator generator) {
 			throw new UnsupportedOperationException("Not supported yet.");
 		}
 
 		@Override
-		public String getUpdateCode(Table table) {
+		public String getUpdateCode(PhpCodeGenerator generator) {
+			throw new UnsupportedOperationException("Not supported yet.");
+		}
+
+		@Override
+		public String getDeleteCode(PhpCodeGenerator generator) {
 			throw new UnsupportedOperationException("Not supported yet.");
 		}
 	}
@@ -185,17 +217,22 @@ abstract public class DatabaseLayer {
 		}
 
 		@Override
-		public String getSelectCode(Table table) {
+		public String getSelectCode(PhpCodeGenerator generator) {
 			throw new UnsupportedOperationException("Not supported yet.");
 		}
 
 		@Override
-		public String getInsertCode(Table table) {
+		public String getInsertCode(PhpCodeGenerator generator) {
 			throw new UnsupportedOperationException("Not supported yet.");
 		}
 
 		@Override
-		public String getUpdateCode(Table table) {
+		public String getUpdateCode(PhpCodeGenerator generator) {
+			throw new UnsupportedOperationException("Not supported yet.");
+		}
+
+		@Override
+		public String getDeleteCode(PhpCodeGenerator generator) {
 			throw new UnsupportedOperationException("Not supported yet.");
 		}
 	}
@@ -208,17 +245,22 @@ abstract public class DatabaseLayer {
 		}
 
 		@Override
-		public String getSelectCode(Table table) {
+		public String getSelectCode(PhpCodeGenerator generator) {
 			throw new UnsupportedOperationException("Not supported yet.");
 		}
 
 		@Override
-		public String getInsertCode(Table table) {
+		public String getInsertCode(PhpCodeGenerator generator) {
 			throw new UnsupportedOperationException("Not supported yet.");
 		}
 
 		@Override
-		public String getUpdateCode(Table table) {
+		public String getUpdateCode(PhpCodeGenerator generator) {
+			throw new UnsupportedOperationException("Not supported yet.");
+		}
+
+		@Override
+		public String getDeleteCode(PhpCodeGenerator generator) {
 			throw new UnsupportedOperationException("Not supported yet.");
 		}
 	}
