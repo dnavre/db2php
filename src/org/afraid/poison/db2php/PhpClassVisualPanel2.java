@@ -23,7 +23,7 @@ import java.util.Vector;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JPanel;
-import org.afraid.poison.db2php.generator.DatabaseLayer;
+import org.afraid.poison.db2php.generator.databaselayer.DatabaseLayer;
 import org.netbeans.api.project.Project;
 import org.netbeans.spi.project.ui.templates.support.Templates;
 import org.openide.WizardDescriptor;

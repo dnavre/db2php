@@ -15,8 +15,9 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  */
-package org.afraid.poison.db2php.generator;
+package org.afraid.poison.db2php.generator.databaselayer;
 
+import org.afraid.poison.db2php.generator.*;
 import java.util.LinkedHashSet;
 import java.util.Set;
 

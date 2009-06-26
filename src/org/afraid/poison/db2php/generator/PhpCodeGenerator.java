@@ -17,6 +17,7 @@
  */
 package org.afraid.poison.db2php.generator;
 
+import org.afraid.poison.db2php.generator.databaselayer.DatabaseLayer;
 import java.util.Set;
 import org.afraid.poison.common.StringUtil;
 import org.afraid.poison.common.CollectionUtil;
