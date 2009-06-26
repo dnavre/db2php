@@ -145,7 +145,7 @@ public class PhpCodeGenerator {
 		StringBuilder s=new StringBuilder("\tpublic function ").append(getSetterName(field)).append("($").append(getMemberName(field)).append(") {\n");
 		s.append("\t\t$this->").append(getMemberName(field)).append("=$").append(getMemberName(field)).append(";\n");
 		if (true || isTrackFieldModifications()) {
-			s.append("\t\t$this->notifyChanged(").append(getConstName(field)).append(");\n");
+			s.append("\t\t$this->notifyChanged(self::").append(getConstName(field)).append(");\n");
 		}
 		s.append("\t}\n");
 		return s.toString();
@@ -205,9 +205,12 @@ public class PhpCodeGenerator {
 	public String getPreparedStatements() {
 		Set<Field> fields=getTable().getFields();
 		StringBuilder s=new StringBuilder();
+
+		// insert query
 		s.append("\tconst SQL_INSERT=\"INSERT INTO ").append(getTable().getName());
 		s.append(" (").append(CollectionUtil.join(fields, ",")).append(") VALUES (").append(StringUtil.repeat("?,", fields.size()-1)).append("?)").append("\";\n");
 
+		// update query
 		s.append("\tconst SQL_UPDATE=\"UPDATE ").append(getTable().getName());
 		s.append(" SET ");
 		StringMutator fieldAssign=new StringMutator() {
@@ -222,6 +225,38 @@ public class PhpCodeGenerator {
 			s.append(CollectionUtil.join(keys, ",", fieldAssign));
 		}
 		s.append("\";\n");
+		
+		// select by id
+		s.append("\tconst SQL_SELECT_PK=\"SELECT * FROM ").append(getTable().getName());
+		if (!keys.isEmpty()) {
+			s.append(" WHERE ");
+			s.append(CollectionUtil.join(keys, " AND ", fieldAssign));
+		}
+		s.append("\";\n");
+		return s.toString();
+	}
+
+
+	public String getUtilMethodToArray() {
+		return getUtilMethodArray(getTable().getFields(), "toArray");
+	}
+	
+	public String getUtilMethodgetPrimaryKeysToArray() {
+		return getUtilMethodArray(getTable().getPrimaryKeys(), "getPrimaryKeyValues");
+	}
+
+	private String getUtilMethodArray(Set<Field> fields, String methodName) {
+		StringBuilder s=new StringBuilder("\tpublic function ").append(methodName).append("() {\n");
+		s.append("\t\treturn array(\n");
+		s.append(CollectionUtil.join(fields, ",\n", new StringMutator() {
+			public String transform(Object s) {
+				Field f=(Field) s;
+				return new StringBuffer("\t\t\tself::").append(getConstName(f)).append("=>$this->").append(getGetterName(f)).append("()").toString();
+			}
+		}));
+		//s.append("\t\treturn $this->").append(getMemberName(field)).append(";\n");
+		s.append(");\n");
+		s.append("\t}\n");
 		return s.toString();
 	}
 
@@ -232,6 +267,8 @@ public class PhpCodeGenerator {
 		s.append(getConsts());
 		s.append(getMembers());
 		s.append(getAccessors());
+		s.append(getUtilMethodToArray());
+		s.append(getUtilMethodgetPrimaryKeysToArray());
 		s.append("}\n");
 		s.append("?>");
 		return s.toString();
