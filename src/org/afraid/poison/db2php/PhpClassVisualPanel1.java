@@ -19,10 +19,12 @@ package org.afraid.poison.db2php;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import javax.swing.DefaultListModel;
 import javax.swing.JPanel;
+import org.afraid.poison.db2php.generator.PhpCodeGenerator;
 import org.afraid.poison.db2php.generator.Table;
 import org.netbeans.api.db.explorer.ConnectionManager;
 import org.netbeans.api.db.explorer.DatabaseConnection;
@@ -41,14 +43,18 @@ public final class PhpClassVisualPanel1 extends JPanel {
 		return "Step #1";
 	}
 
-	public List<Table> getSelected() {
+	public Set<Table> getSelected() {
 		List selectedObjects=getTablesSelection()!=null?Arrays.asList(getTablesSelection().getSelectedValues()):new ArrayList();
-		return new ArrayList<Table>(selectedObjects);
+		return new LinkedHashSet<Table>(selectedObjects);
 	}
 
 	@Override
 	public boolean isValid() {
-		System.err.println(getSelected().size());
+		PhpCodeGenerator g;
+		for (Table t : getSelected()) {
+			g=new PhpCodeGenerator(t);
+			System.err.println(g.getCode());
+		}
 		return getSelected().size()>0;
 	}
 
@@ -120,7 +126,6 @@ public final class PhpClassVisualPanel1 extends JPanel {
 			getTablesSelection().setModel(tablesModel);
 		}
 		getTablesSelection().setModel(tablesModel);
-		firePropertyChange("test", new Object(), new Object());
 	}//GEN-LAST:event_connectionSelectorActionPerformed
 
 	private void connectionSelectorPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_connectionSelectorPropertyChange

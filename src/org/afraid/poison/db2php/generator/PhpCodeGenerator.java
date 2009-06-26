@@ -17,7 +17,10 @@
  */
 package org.afraid.poison.db2php.generator;
 
+import java.util.Set;
 import org.afraid.poison.common.StringUtil;
+import org.afraid.poison.common.CollectionUtil;
+import org.afraid.poison.common.StringMutator;
 
 /**
  * generates PHP CLass code from a table
@@ -31,6 +34,10 @@ public class PhpCodeGenerator {
 	private boolean generateChecks;
 	private boolean trackFieldModifications;
 	private String classNamePrefix;
+
+	public PhpCodeGenerator(Table table) {
+		setTable(table);
+	}
 
 	/**
 	 * @return the table
@@ -103,18 +110,130 @@ public class PhpCodeGenerator {
 	}
 
 	public String getClassName() {
-		return StringUtil.firstCharToUpperCase(getTable().getName());
+		StringBuilder s=new StringBuilder();
+		if (null!=getClassNamePrefix()) {
+			s.append(getClassNamePrefix());
+		}
+		s.append( StringUtil.firstCharToUpperCase(getTable().getName()));
+		return s.toString();
 	}
 
-	public String getGetter(Field field) {
-		return new StringBuilder("get").append(getMethodName(field)).toString();
-	}
-
-	public String getSetter(Field field) {
-		return new StringBuilder("set").append(getMethodName(field)).toString();
+	public String getMemberName(Field field) {
+		return field.getName();
 	}
 
 	public String getMethodName(Field field) {
-		return field.getNameFirstCharUpper();
+		return StringUtil.firstCharToUpperCase(getMemberName(field));
+	}
+
+	public String getGetterName(Field field) {
+		return new StringBuilder("get").append(getMethodName(field)).toString();
+	}
+
+	public String getGetter(Field field) {
+		StringBuilder s=new StringBuilder("\tpublic function ").append(getGetterName(field)).append("() {\n");
+		s.append("\t\treturn $this->").append(getMemberName(field)).append(";\n");
+		s.append("\t}\n");
+		return s.toString();
+	}
+
+	public String getSetterName(Field field) {
+		return new StringBuilder("set").append(getMethodName(field)).toString();
+	}
+
+	public String getSetter(Field field) {
+		StringBuilder s=new StringBuilder("\tpublic function ").append(getSetterName(field)).append("($").append(getMemberName(field)).append(") {\n");
+		s.append("\t\t$this->").append(getMemberName(field)).append("=$").append(getMemberName(field)).append(";\n");
+		if (true || isTrackFieldModifications()) {
+			s.append("\t\t$this->notifyChanged(").append(getConstName(field)).append(");\n");
+		}
+		s.append("\t}\n");
+		return s.toString();
+	}
+
+	public String getAccessors() {
+		StringBuilder s=new StringBuilder();
+		for (Field f : getTable().getFields()) {
+			//s.append("\tconst FIELD_").append(getMethodName(f).toUpperCase()).append("=").append((int) Math.pow(2, i++)).append("\n");
+			s.append(getSetter(f)).append(getGetter(f));
+		}
+		return s.toString();
+	}
+
+	public String getConstName(Field field) {
+		return new StringBuilder("FIELD_").append(getMethodName(field).toUpperCase()).toString();
+	}
+
+	public String getConsts() {
+		StringBuilder s=new StringBuilder();
+		// field ids for misc use
+		int i=0;
+		for (Field f : getTable().getFields()) {
+			//s.append("\tconst FIELD_").append(getMethodName(f).toUpperCase()).append("=").append((int) Math.pow(2, i++)).append("\n");
+			s.append("\tconst ").append(getConstName(f)).append("=").append(i++).append(";\n");
+		}
+		// list of primary keys
+		s.append("\tprivate static $PRIMARY_KEYS=array(");
+		s.append(CollectionUtil.join(getTable().getPrimaryKeys(), ",", new StringMutator() {
+			public String transform(Object s) {
+				return new StringBuffer("self::").append(getConstName((Field) s)).toString();
+			}
+		}));
+		s.append(");\n");
+		// field id to field name mapping
+		s.append("\tprivate static $FIELD_NAMES=array(\n");
+		s.append(CollectionUtil.join(getTable().getFields(), ",\n", new StringMutator() {
+			public String transform(Object s) {
+				Field f=(Field) s;
+				return new StringBuffer("\t\tself::").append(getConstName(f)).append("=>'").append(f.getName()).append("'").toString();
+			}
+		}));
+		s.append(");\n");
+		return s.toString();
+	}
+
+
+
+	public String getMembers() {
+		StringBuilder s=new StringBuilder();
+		for (Field f : getTable().getFields()) {
+			s.append("\tprivate $").append(getMemberName(f)).append(";\n");
+		}
+		return s.toString();
+	}
+
+	public String getPreparedStatements() {
+		Set<Field> fields=getTable().getFields();
+		StringBuilder s=new StringBuilder();
+		s.append("\tconst SQL_INSERT=\"INSERT INTO ").append(getTable().getName());
+		s.append(" (").append(CollectionUtil.join(fields, ",")).append(") VALUES (").append(StringUtil.repeat("?,", fields.size()-1)).append("?)").append("\";\n");
+
+		s.append("\tconst SQL_UPDATE=\"UPDATE ").append(getTable().getName());
+		s.append(" SET ");
+		StringMutator fieldAssign=new StringMutator() {
+			public String transform(Object s) {
+				return new StringBuffer(((Field) s).getName()).append("=").append("?").toString();
+			}
+		};
+		s.append(CollectionUtil.join(fields, ",", fieldAssign));
+		Set<Field> keys=getTable().getPrimaryKeys();
+		if (!keys.isEmpty()) {
+			s.append(" WHERE ");
+			s.append(CollectionUtil.join(keys, ",", fieldAssign));
+		}
+		s.append("\";\n");
+		return s.toString();
+	}
+
+	public String getCode() {
+		StringBuilder s=new StringBuilder("<?php\n");
+		s.append("class ").append(getClassName()).append(" {\n");
+		s.append(getPreparedStatements());
+		s.append(getConsts());
+		s.append(getMembers());
+		s.append(getAccessors());
+		s.append("}\n");
+		s.append("?>");
+		return s.toString();
 	}
 }
