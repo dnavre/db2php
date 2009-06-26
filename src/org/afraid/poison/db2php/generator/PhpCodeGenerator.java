@@ -146,6 +146,10 @@ public class PhpCodeGenerator {
 		return new StringBuilder("get").append(getMethodName(field)).toString();
 	}
 
+	public String getGetterCall(Field f) {
+		return new StringBuilder("$this->").append(getGetterName(f)).append("()").toString();
+	}
+
 	public String getGetter(Field field) {
 		StringBuilder s=new StringBuilder("\tpublic function ").append(getGetterName(field)).append("() {\n");
 		s.append("\t\treturn $this->").append(getMemberName(field)).append(";\n");
@@ -156,6 +160,8 @@ public class PhpCodeGenerator {
 	public String getSetterName(Field field) {
 		return new StringBuilder("set").append(getMethodName(field)).toString();
 	}
+
+
 
 	public String getSetter(Field field) {
 		StringBuilder s=new StringBuilder("\tpublic function ").append(getSetterName(field)).append("($").append(getMemberName(field)).append(") {\n");
@@ -268,7 +274,7 @@ public class PhpCodeGenerator {
 
 			public String transform(Object s) {
 				Field f=(Field) s;
-				return new StringBuilder("\t\t\tself::").append(getConstName(f)).append("=>$this->").append(getGetterName(f)).append("()").toString();
+				return new StringBuilder("\t\t\tself::").append(getConstName(f)).append("=>").append(getGetterCall(f)).toString();
 			}
 		}));
 		//s.append("\t\treturn $this->").append(getMemberName(field)).append(";\n");

@@ -35,10 +35,10 @@ abstract public class DatabaseLayer {
 	public static final DatabaseLayer ADODB=new DatabaseLayerAdoDb();
 	public static final DatabaseLayer ZEND=new DatabaseLayerZend();
 	public static final Set<DatabaseLayer> AVAILABLE;
-	private static final String METHOD_SELECT_ID_NAME="getById";
-	private static final String METHOD_UPDATE_NAME="updateToDatabase";
-	private static final String METHOD_INSERT_NAME="insertIntoDatabase";
-	private static final String METHOD_DELETE_NAME="deleteFromDatabase";
+	protected static final String METHOD_SELECT_ID_NAME="getById";
+	protected static final String METHOD_UPDATE_NAME="updateToDatabase";
+	protected static final String METHOD_INSERT_NAME="insertIntoDatabase";
+	protected static final String METHOD_DELETE_NAME="deleteFromDatabase";
 
 	static {
 		AVAILABLE=new LinkedHashSet<DatabaseLayer>();
