@@ -34,6 +34,7 @@ public class PhpCodeGenerator {
 	private boolean generateChecks;
 	private boolean trackFieldModifications;
 	private String classNamePrefix;
+	private String classNameSuffix;
 
 	public PhpCodeGenerator(Table table) {
 		setTable(table);
@@ -109,12 +110,26 @@ public class PhpCodeGenerator {
 		this.classNamePrefix=classNamePrefix;
 	}
 
+	/**
+	 * @return the classNameSuffix
+	 */
+	public String getClassNameSuffix() {
+		return classNameSuffix;
+	}
+
+	/**
+	 * @param classNameSuffix the classNameSuffix to set
+	 */
+	public void setClassNameSuffix(String classNameSuffix) {
+		this.classNameSuffix=classNameSuffix;
+	}
+
 	public String getClassName() {
 		StringBuilder s=new StringBuilder();
 		if (null!=getClassNamePrefix()) {
 			s.append(getClassNamePrefix());
 		}
-		s.append( StringUtil.firstCharToUpperCase(getTable().getName()));
+		s.append(StringUtil.firstCharToUpperCase(getTable().getName()));
 		return s.toString();
 	}
 
@@ -144,7 +159,7 @@ public class PhpCodeGenerator {
 	public String getSetter(Field field) {
 		StringBuilder s=new StringBuilder("\tpublic function ").append(getSetterName(field)).append("($").append(getMemberName(field)).append(") {\n");
 		s.append("\t\t$this->").append(getMemberName(field)).append("=$").append(getMemberName(field)).append(";\n");
-		if (true || isTrackFieldModifications()) {
+		if (true||isTrackFieldModifications()) {
 			s.append("\t\t$this->notifyChanged(self::").append(getConstName(field)).append(");\n");
 		}
 		s.append("\t}\n");
@@ -175,6 +190,7 @@ public class PhpCodeGenerator {
 		// list of primary keys
 		s.append("\tprivate static $PRIMARY_KEYS=array(");
 		s.append(CollectionUtil.join(getTable().getPrimaryKeys(), ",", new StringMutator() {
+
 			public String transform(Object s) {
 				return new StringBuilder("self::").append(getConstName((Field) s)).toString();
 			}
@@ -183,6 +199,7 @@ public class PhpCodeGenerator {
 		// field id to field name mapping
 		s.append("\tprivate static $FIELD_NAMES=array(\n");
 		s.append(CollectionUtil.join(getTable().getFields(), ",\n", new StringMutator() {
+
 			public String transform(Object s) {
 				Field f=(Field) s;
 				return new StringBuilder("\t\tself::").append(getConstName(f)).append("=>'").append(f.getName()).append("'").toString();
@@ -191,8 +208,6 @@ public class PhpCodeGenerator {
 		s.append(");\n");
 		return s.toString();
 	}
-
-
 
 	public String getMembers() {
 		StringBuilder s=new StringBuilder();
@@ -214,6 +229,7 @@ public class PhpCodeGenerator {
 		s.append("\tconst SQL_UPDATE=\"UPDATE ").append(getTable().getName());
 		s.append(" SET ");
 		StringMutator fieldAssign=new StringMutator() {
+
 			public String transform(Object s) {
 				return new StringBuilder(((Field) s).getName()).append("=").append("?").toString();
 			}
@@ -225,7 +241,7 @@ public class PhpCodeGenerator {
 			s.append(CollectionUtil.join(keys, ",", fieldAssign));
 		}
 		s.append("\";\n");
-		
+
 		// select by id
 		s.append("\tconst SQL_SELECT_PK=\"SELECT * FROM ").append(getTable().getName());
 		if (!keys.isEmpty()) {
@@ -236,11 +252,10 @@ public class PhpCodeGenerator {
 		return s.toString();
 	}
 
-
 	public String getUtilMethodToArray() {
 		return getUtilMethodArray(getTable().getFields(), "toArray");
 	}
-	
+
 	public String getUtilMethodgetPrimaryKeysToArray() {
 		return getUtilMethodArray(getTable().getPrimaryKeys(), "getPrimaryKeyValues");
 	}
@@ -249,6 +264,7 @@ public class PhpCodeGenerator {
 		StringBuilder s=new StringBuilder("\tpublic function ").append(methodName).append("() {\n");
 		s.append("\t\treturn array(\n");
 		s.append(CollectionUtil.join(fields, ",\n", new StringMutator() {
+
 			public String transform(Object s) {
 				Field f=(Field) s;
 				return new StringBuilder("\t\t\tself::").append(getConstName(f)).append("=>$this->").append(getGetterName(f)).append("()").toString();
