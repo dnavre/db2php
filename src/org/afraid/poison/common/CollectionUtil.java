@@ -20,6 +20,17 @@ public class CollectionUtil {
 	 * @return the delimited string
 	 */
 	public static String join(Collection c, String delim) {
+		return join(c, delim, null);
+	}
+
+	/**
+	 * join elements as string seperated by the passed delimiter
+	 *
+	 * @param c the collection of elements to join
+	 * @param delim the delimiter
+	 * @return the delimited string
+	 */
+	public static String join(Collection c, String delim, StringMutator mutator) {
 		StringBuilder s=new StringBuilder();
 		boolean first=true;
 		for (Object o : c) {
@@ -28,7 +39,11 @@ public class CollectionUtil {
 			} else {
 				first=false;
 			}
-			s.append(o);
+			if (null!=mutator) {
+				s.append(mutator.transform(o));
+			} else {
+				s.append(o);
+			}
 		}
 
 		return s.toString();
