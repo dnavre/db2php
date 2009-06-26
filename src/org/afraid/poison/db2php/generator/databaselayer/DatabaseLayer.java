@@ -35,7 +35,6 @@ abstract public class DatabaseLayer {
 	public static final DatabaseLayer ADODB=new DatabaseLayerAdoDb();
 	public static final DatabaseLayer ZEND=new DatabaseLayerZend();
 	public static final Set<DatabaseLayer> AVAILABLE;
-
 	private static final String METHOD_SELECT_ID_NAME="getById";
 	private static final String METHOD_UPDATE_NAME="updateToDatabase";
 	private static final String METHOD_INSERT_NAME="insertIntoDatabase";
@@ -52,14 +51,13 @@ abstract public class DatabaseLayer {
 
 	}
 
-	private DatabaseLayer() {
+	protected DatabaseLayer() {
 	}
 
 	/**
 	 * @return the name
 	 */
 	abstract public String getName();
-
 
 	abstract public String getSelectCode(PhpCodeGenerator generator);
 
@@ -68,7 +66,6 @@ abstract public class DatabaseLayer {
 	abstract public String getUpdateCode(PhpCodeGenerator generator);
 
 	abstract public String getDeleteCode(PhpCodeGenerator generator);
-
 
 	@Override
 	public String toString() {
@@ -95,174 +92,5 @@ abstract public class DatabaseLayer {
 		int hash=7;
 		hash=17*hash+(this.getName()!=null?this.getName().hashCode():0);
 		return hash;
-	}
-
-	private static class DatabaseLayerNone extends DatabaseLayer {
-
-		@Override
-		public String getName() {
-			return "none";
-		}
-
-		@Override
-		public String getSelectCode(PhpCodeGenerator generator) {
-			return null;
-		}
-
-		@Override
-		public String getInsertCode(PhpCodeGenerator generator) {
-			return null;
-		}
-
-		@Override
-		public String getUpdateCode(PhpCodeGenerator generator) {
-			return null;
-		}
-
-		@Override
-		public String getDeleteCode(PhpCodeGenerator generator) {
-			throw new UnsupportedOperationException("Not supported yet.");
-		}
-	}
-
-	private static class DatabaseLayerInterface extends DatabaseLayer {
-
-		@Override
-		public String getName() {
-			return "Simple Interface";
-		}
-
-		@Override
-		public String getSelectCode(PhpCodeGenerator generator) {
-			throw new UnsupportedOperationException("Not supported yet.");
-		}
-
-		@Override
-		public String getInsertCode(PhpCodeGenerator generator) {
-			throw new UnsupportedOperationException("Not supported yet.");
-		}
-
-		@Override
-		public String getUpdateCode(PhpCodeGenerator generator) {
-			throw new UnsupportedOperationException("Not supported yet.");
-		}
-
-		@Override
-		public String getDeleteCode(PhpCodeGenerator generator) {
-			throw new UnsupportedOperationException("Not supported yet.");
-		}
-	}
-
-	private static class DatabaseLayerPdo extends DatabaseLayer {
-
-		@Override
-		public String getName() {
-			return "PHP Data Objects";
-		}
-
-		@Override
-		public String getSelectCode(PhpCodeGenerator generator) {
-			StringBuilder s=new StringBuilder();
-			throw new UnsupportedOperationException("Not supported yet.");
-		}
-
-		@Override
-		public String getInsertCode(PhpCodeGenerator generator) {
-			throw new UnsupportedOperationException("Not supported yet.");
-		}
-
-		@Override
-		public String getUpdateCode(PhpCodeGenerator generator) {
-			throw new UnsupportedOperationException("Not supported yet.");
-		}
-
-		@Override
-		public String getDeleteCode(PhpCodeGenerator generator) {
-			throw new UnsupportedOperationException("Not supported yet.");
-		}
-	}
-
-	private static class DatabaseLayerMySQLi extends DatabaseLayer {
-
-		@Override
-		public String getName() {
-			return "MySQLi";
-		}
-
-		@Override
-		public String getSelectCode(PhpCodeGenerator generator) {
-			throw new UnsupportedOperationException("Not supported yet.");
-		}
-
-		@Override
-		public String getInsertCode(PhpCodeGenerator generator) {
-			throw new UnsupportedOperationException("Not supported yet.");
-		}
-
-		@Override
-		public String getUpdateCode(PhpCodeGenerator generator) {
-			throw new UnsupportedOperationException("Not supported yet.");
-		}
-
-		@Override
-		public String getDeleteCode(PhpCodeGenerator generator) {
-			throw new UnsupportedOperationException("Not supported yet.");
-		}
-	}
-
-	private static class DatabaseLayerAdoDb extends DatabaseLayer {
-
-		@Override
-		public String getName() {
-			return "ADO DB";
-		}
-
-		@Override
-		public String getSelectCode(PhpCodeGenerator generator) {
-			throw new UnsupportedOperationException("Not supported yet.");
-		}
-
-		@Override
-		public String getInsertCode(PhpCodeGenerator generator) {
-			throw new UnsupportedOperationException("Not supported yet.");
-		}
-
-		@Override
-		public String getUpdateCode(PhpCodeGenerator generator) {
-			throw new UnsupportedOperationException("Not supported yet.");
-		}
-
-		@Override
-		public String getDeleteCode(PhpCodeGenerator generator) {
-			throw new UnsupportedOperationException("Not supported yet.");
-		}
-	}
-
-	private static class DatabaseLayerZend extends DatabaseLayer {
-
-		@Override
-		public String getName() {
-			return "Zend";
-		}
-
-		@Override
-		public String getSelectCode(PhpCodeGenerator generator) {
-			throw new UnsupportedOperationException("Not supported yet.");
-		}
-
-		@Override
-		public String getInsertCode(PhpCodeGenerator generator) {
-			throw new UnsupportedOperationException("Not supported yet.");
-		}
-
-		@Override
-		public String getUpdateCode(PhpCodeGenerator generator) {
-			throw new UnsupportedOperationException("Not supported yet.");
-		}
-
-		@Override
-		public String getDeleteCode(PhpCodeGenerator generator) {
-			throw new UnsupportedOperationException("Not supported yet.");
-		}
 	}
 }
