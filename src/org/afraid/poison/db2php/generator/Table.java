@@ -36,7 +36,8 @@ public class Table {
 	private String catalog;
 	private String schema;
 	private String name;
-	private Set<Field> fields;
+	private Set<Field> fields=null;
+	private Set<Field> primaryKeys=null;
 
 	public Table() {
 	}
@@ -159,13 +160,26 @@ public class Table {
 	 * @return the rpimary keys
 	 */
 	public Set<Field> getPrimaryKeys() {
-		Set<Field> primaryKeys=new LinkedHashSet<Field>();
-		for (Field f : getFields()) {
-			if (f.isPrimaryKey()) {
-				primaryKeys.add(f);
+		if (null==primaryKeys) {
+			primaryKeys=new LinkedHashSet<Field>();
+			for (Field f : getFields()) {
+				if (f.isPrimaryKey()) {
+					primaryKeys.add(f);
+				}
 			}
 		}
 		return primaryKeys;
+	}
+
+	/**
+	 * get all fields which are not primary keys
+	 *
+	 * @return all fields which are not primary keys
+	 */
+	public Set<Field> getFieldsNotPrimaryKeys() {
+		Set<Field> notPrimary=getFields();
+		notPrimary.removeAll(getPrimaryKeys());
+		return notPrimary;
 	}
 
 	@Override
