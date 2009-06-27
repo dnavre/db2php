@@ -34,6 +34,11 @@ public class DatabaseLayerNone extends DatabaseLayer {
 
 	@Override
 	public String getDeleteCode(PhpCodeGenerator generator) {
-		throw new UnsupportedOperationException("Not supported yet.");
+		return null;
+	}
+
+	@Override
+	public String getSnippet() {
+		return null;
 	}
 }

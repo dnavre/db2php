@@ -67,6 +67,8 @@ abstract public class DatabaseLayer {
 
 	abstract public String getDeleteCode(PhpCodeGenerator generator);
 
+	abstract public String getSnippet();
+
 	@Override
 	public String toString() {
 		return getName();

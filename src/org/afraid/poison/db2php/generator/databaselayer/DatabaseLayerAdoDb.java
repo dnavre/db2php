@@ -36,4 +36,9 @@ public class DatabaseLayerAdoDb extends DatabaseLayer {
 	public String getDeleteCode(PhpCodeGenerator generator) {
 		throw new UnsupportedOperationException("Not supported yet.");
 	}
+
+	@Override
+	public String getSnippet() {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
 }

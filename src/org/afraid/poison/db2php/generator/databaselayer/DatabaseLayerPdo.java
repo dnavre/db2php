@@ -29,9 +29,9 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 		}
 		return s.toString();
 	}
-	
+
 	private String getStmtInit(String cstr) {
-		return new StringBuilder("\t\t$this->prepareStatement(").append(cstr).append(");\n").toString();
+		return new StringBuilder("\t\tself::prepareStatement(").append(cstr).append(");\n").toString();
 	}
 
 	@Override
@@ -74,5 +74,10 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 		s.append(getBindingCodeField(generator, new ArrayList<Field>(generator.getTable().getPrimaryKeys())));
 		s.append("\t}\n");
 		return s.toString();
+	}
+
+	@Override
+	public String getSnippet() {
+		throw new UnsupportedOperationException("Not supported yet.");
 	}
 }
