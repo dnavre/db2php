@@ -17,6 +17,7 @@
  */
 package org.afraid.poison.db2php.generator;
 
+import java.util.List;
 import org.afraid.poison.db2php.generator.databaselayer.DatabaseLayer;
 import java.util.Set;
 import org.afraid.poison.common.StringUtil;
@@ -59,7 +60,8 @@ public class PhpCodeGenerator {
 	 * @return the databaseLayer
 	 */
 	public DatabaseLayer getDatabaseLayer() {
-		return databaseLayer;
+		return DatabaseLayer.PDO;
+		//return databaseLayer;
 	}
 
 	/**
@@ -161,7 +163,9 @@ public class PhpCodeGenerator {
 		return new StringBuilder("set").append(getMethodName(field)).toString();
 	}
 
-
+	public String getSetterCall(Field f, String param) {
+		return new StringBuilder("$this->").append(getSetterName(f)).append("(").append(param).append(")").toString();
+	}
 
 	public String getSetter(Field field) {
 		StringBuilder s=new StringBuilder("\tpublic function ").append(getSetterName(field)).append("($").append(getMemberName(field)).append(") {\n");
@@ -171,6 +175,14 @@ public class PhpCodeGenerator {
 		}
 		s.append("\t}\n");
 		return s.toString();
+	}
+
+	public String getFieldList(List<Field> fields) {
+		return CollectionUtil.join(fields, ",", new StringMutator() {
+			public String transform(Object s) {
+				return new StringBuilder("$").append(getMemberName((Field) s)).toString();
+			}
+		});
 	}
 
 	public String getAccessors() {
@@ -256,6 +268,14 @@ public class PhpCodeGenerator {
 			s.append(CollectionUtil.join(keys, " AND ", fieldAssign));
 		}
 		s.append("\";\n");
+
+		// delete by id
+		s.append("\tconst SQL_DELETE_PK=\"DELETE FROM ").append(getTable().getName());
+		if (!keys.isEmpty()) {
+			s.append(" WHERE ");
+			s.append(CollectionUtil.join(keys, " AND ", fieldAssign));
+		}
+		s.append("\";\n");
 		return s.toString();
 	}
 
@@ -292,6 +312,10 @@ public class PhpCodeGenerator {
 		s.append(getAccessors());
 		s.append(getUtilMethodToArray());
 		s.append(getUtilMethodgetPrimaryKeysToArray());
+		s.append(getDatabaseLayer().getSelectCode(this));
+		s.append(getDatabaseLayer().getInsertCode(this));
+		s.append(getDatabaseLayer().getUpdateCode(this));
+		s.append(getDatabaseLayer().getDeleteCode(this));
 		s.append("}\n");
 		s.append("?>");
 		return s.toString();
