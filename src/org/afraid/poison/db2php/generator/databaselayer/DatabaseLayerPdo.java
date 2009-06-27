@@ -30,7 +30,7 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 
 	@Override
 	public String getName() {
-		return "PHP Data Objects";
+		return "PDO (PHP Data Objects)";
 	}
 
 	private String getBindingCodeField(PhpCodeGenerator generator, List<Field> fields) {

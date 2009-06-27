@@ -321,7 +321,7 @@ public class PhpCodeGenerator {
 			}
 		}));
 		//s.append("\t\treturn $this->").append(getMemberName(field)).append(";\n");
-		s.append(");\n");
+		s.append("\t\t);\n");
 		s.append("\t}\n");
 		return s.toString();
 	}
