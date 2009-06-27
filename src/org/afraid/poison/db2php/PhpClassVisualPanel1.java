@@ -43,6 +43,7 @@ public final class PhpClassVisualPanel1 extends JPanel {
 		return "Step #1";
 	}
 
+	@SuppressWarnings("unchecked")
 	public Set<Table> getSelected() {
 		List selectedObjects=getTablesSelection()!=null?Arrays.asList(getTablesSelection().getSelectedValues()):new ArrayList();
 		return new LinkedHashSet<Table>(selectedObjects);
@@ -119,7 +120,8 @@ public final class PhpClassVisualPanel1 extends JPanel {
 		DatabaseConnection conn=(DatabaseConnection) getConnectionSelector().getSelectedItem();
 		if (null!=conn) {
 			//tablesModel.addElement(conn.getDisplayName());
-			Set<Table> tables=Table.getTables(conn);
+			ConnectionManager.getDefault().showConnectionDialog(conn);
+			Set<Table> tables=Table.getTables(conn.getJDBCConnection());
 			for (Table t : tables) {
 				tablesModel.addElement(t);
 			}
