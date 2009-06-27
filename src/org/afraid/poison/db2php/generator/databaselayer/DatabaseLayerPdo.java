@@ -47,6 +47,10 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 		return new StringBuilder("\t\tself::prepareStatement(").append(cstr).append(");\n").toString();
 	}
 
+	private String getStmtExecute(String cstr) {
+		return new StringBuilder("\t\t$result=$stmt->execute();\n").toString();
+	}
+
 	@Override
 	public String getSelectCode(PhpCodeGenerator generator) {
 		StringBuilder s=new StringBuilder("\tpublic static function ").append(METHOD_SELECT_ID_NAME).append("(PDO $db,");

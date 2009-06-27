@@ -169,6 +169,32 @@ public class Table {
 		return notPrimary;
 	}
 
+	/**
+	 * gets the autoincrement fields
+	 *
+	 * @return autoincrement fields
+	 */
+	public Set<Field> getFieldsAutoIncrement() {
+		Set<Field> autoIncrement=new LinkedHashSet<Field>();
+		for (Field f : getFields()) {
+			if (f.isAutoIncrement()) {
+				autoIncrement.add(f);
+			}
+		}
+		return autoIncrement;
+	}
+
+	/**
+	 * get all fields which are not autoincrement fields
+	 *
+	 * @return all fields which are not autoincrement fields
+	 */
+	public Set<Field> getFieldsNotAutoIncrement() {
+		Set<Field> notAutoIncrement=getFields();
+		notAutoIncrement.removeAll(getFieldsAutoIncrement());
+		return notAutoIncrement;
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder s=new StringBuilder();
