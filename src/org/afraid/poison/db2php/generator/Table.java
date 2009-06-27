@@ -38,6 +38,23 @@ public class Table {
 	private Set<Field> primaryKeys=null;
 
 	public Table(Connection connection, String tableName) {
+		setName(name);
+		initFields(connection);
+	}
+
+	public Table(Connection connection, String catalog, String schema, String name) {
+		setName(name);
+		setCatalog(catalog);
+		setSchema(schema);
+		initFields(connection);
+	}
+
+	/**
+	 * initialize field list
+	 *
+	 * @param connection the connection to work on
+	 */
+	private void initFields(Connection connection) {
 		try {
 			// get list of primary keys
 			ResultSet rsetPrimaryKeys=connection.getMetaData().getPrimaryKeys(getCatalog(), getSchema(), getName());
@@ -71,13 +88,6 @@ public class Table {
 		} catch (SQLException ex) {
 			Exceptions.printStackTrace(ex);
 		}
-		this.name=tableName;
-	}
-
-	public Table(Connection connection, String catalog, String schema, String name) {
-		this(connection, name);
-		setCatalog(catalog);
-		setSchema(schema);
 	}
 
 	/**
