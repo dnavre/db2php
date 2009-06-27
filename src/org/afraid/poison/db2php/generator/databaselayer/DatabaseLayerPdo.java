@@ -19,7 +19,6 @@ package org.afraid.poison.db2php.generator.databaselayer;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.afraid.poison.common.CollectionUtil;
 import org.afraid.poison.db2php.generator.Field;
 import org.afraid.poison.db2php.generator.PhpCodeGenerator;
 
@@ -44,11 +43,19 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 	}
 
 	private String getStmtInit(String cstr) {
-		return new StringBuilder("\t\tself::prepareStatement(").append(cstr).append(");\n").toString();
+		return new StringBuilder("\t\t$stmt=self::prepareStatement(").append(cstr).append(");\n").toString();
 	}
 
-	private String getStmtExecute(String cstr) {
-		return new StringBuilder("\t\t$result=$stmt->execute();\n").toString();
+	private String getStmtExecute() {
+		return new StringBuilder("\t\t$affected=$stmt->execute();\n").toString();
+	}
+
+	private String getStmtCloseCursor() {
+		return new StringBuilder("\t\t$stmt->closeCursor();\n").toString();
+	}
+
+	private String getReturnResult() {
+		return new StringBuilder("\t\treturn $affected;\n").toString();
 	}
 
 	@Override
@@ -57,38 +64,64 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 		s.append(generator.getFieldList(new ArrayList<Field>(generator.getTable().getPrimaryKeys())));
 		s.append(") {\n");
 		s.append(getStmtInit("self::SQL_SELECT_PK"));
+		int i=0;
+		for (Field f : generator.getTable().getPrimaryKeys()) {
+			//$stmt->bindValue(1,$this->getCustomerId());
+			s.append("\t\t$stmt->bindValue(").append(++i).append(",$").append(generator.getMemberName(f)).append(";\n");
+		}
 		s.append(getBindingCodeField(generator, new ArrayList<Field>(generator.getTable().getPrimaryKeys())));
+		s.append(getStmtExecute());
+		s.append("\t\t$result=$stmt->fetch(PDO::FETCH_ASSOC);\n");
+		s.append("\t\t$o=new ").append(generator.getClassName()).append("();\n");
+		String rAccess;
+		for (Field f : generator.getTable().getFields()) {
+			rAccess=new StringBuilder("$result['").append(f.getName()).append("']").toString();
+			s.append("\t\t").append(generator.getSetterCall(f, rAccess, "$o")).append(";\n");
+		}
+		s.append(getStmtCloseCursor());
+		s.append("\t\treturn $o;\n");
 		s.append("\t}\n");
 		return s.toString();
 	}
 
 	@Override
 	public String getInsertCode(PhpCodeGenerator generator) {
-		StringBuilder s=new StringBuilder("\tpublic static function ").append(METHOD_INSERT_NAME).append("(PDO $db) {\n");
+		StringBuilder s=new StringBuilder("\tpublic function ").append(METHOD_INSERT_NAME).append("(PDO $db) {\n");
 		s.append(getStmtInit("self::SQL_INSERT"));
 		s.append(getBindingCodeField(generator, new ArrayList<Field>(generator.getTable().getFields())));
+		s.append(getStmtExecute());
+		s.append(getStmtCloseCursor());
+		s.append(generator.getTrackingPristineState());
+		s.append(getReturnResult());
 		s.append("\t}\n");
 		return s.toString();
 	}
 
 	@Override
 	public String getUpdateCode(PhpCodeGenerator generator) {
-		StringBuilder s=new StringBuilder("\tpublic static function ").append(METHOD_UPDATE_NAME).append("(PDO $db) {\n");
+		StringBuilder s=new StringBuilder("\tpublic function ").append(METHOD_UPDATE_NAME).append("(PDO $db) {\n");
 		s.append(getStmtInit("self::SQL_UPDATE"));
 		List<Field> fields=new ArrayList<Field>(generator.getTable().getFields());
 		fields.addAll(generator.getTable().getPrimaryKeys());
 		s.append(getBindingCodeField(generator, fields));
+		s.append(getStmtExecute());
+		s.append(getStmtCloseCursor());
+		s.append(generator.getTrackingPristineState());
+		s.append(getReturnResult());
 		s.append("\t}\n");
 		return s.toString();
 	}
 
 	@Override
 	public String getDeleteCode(PhpCodeGenerator generator) {
-		StringBuilder s=new StringBuilder("\tpublic static function ").append(METHOD_DELETE_NAME).append("(PDO $db,");
+		StringBuilder s=new StringBuilder("\tpublic function ").append(METHOD_DELETE_NAME).append("(PDO $db,");
 		s.append(generator.getFieldList(new ArrayList<Field>(generator.getTable().getPrimaryKeys())));
 		s.append(") {\n");
 		s.append(getStmtInit("self::SQL_DELETE_PK"));
 		s.append(getBindingCodeField(generator, new ArrayList<Field>(generator.getTable().getPrimaryKeys())));
+		s.append(getStmtExecute());
+		s.append(getStmtCloseCursor());
+		s.append(getReturnResult());
 		s.append("\t}\n");
 		return s.toString();
 	}

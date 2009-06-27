@@ -23,7 +23,14 @@
 	 */
 	private static $stmtSelect=null;
 	private static $cacheStatements=true;
-
+	
+	/**
+	 * prepare passed string as statement or return cached if enabled and available
+	 *
+	 * @param PDO $db
+	 * @param string $statement
+	 * @return PDOStatement
+	 */
 	protected static function prepareStatement(PDO $db, $statement) {
 		if(self::isCacheStatements()) {
 			if ($statement==self::SQL_INSERT) {
@@ -51,10 +58,20 @@
 		return $db->prepare($statement);
 	}
 
+	/**
+	 * enable statement cache
+	 *
+	 * @param bool $cache
+	 */
 	public static function setCacheStatements($cache) {
 		self::$cacheStatements=true==$cache;
 	}
 
+	/**
+	 * check if statement cache is enabled
+	 *
+	 * @return bool
+	 */
 	public static function isCacheStatements() {
 		return self::$cacheStatements;
 	}
