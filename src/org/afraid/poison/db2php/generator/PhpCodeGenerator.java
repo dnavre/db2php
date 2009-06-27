@@ -17,6 +17,7 @@
  */
 package org.afraid.poison.db2php.generator;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.afraid.poison.db2php.generator.databaselayer.DatabaseLayer;
 import java.util.Set;
@@ -35,8 +36,8 @@ public class PhpCodeGenerator {
 	private DatabaseLayer databaseLayer;
 	private boolean generateChecks;
 	private boolean trackFieldModifications;
-	private String classNamePrefix;
-	private String classNameSuffix;
+	private String classNamePrefix=new String();
+	private String classNameSuffix=new String();
 
 	public PhpCodeGenerator(Table table) {
 		setTable(table);
@@ -127,17 +128,30 @@ public class PhpCodeGenerator {
 		this.classNameSuffix=classNameSuffix;
 	}
 
-	public String getClassName() {
-		StringBuilder s=new StringBuilder();
-		if (null!=getClassNamePrefix()) {
-			s.append(getClassNamePrefix());
+	public static String toCamelCase(String str) {
+		if (!(str.contains("_")||str.equals(str.toUpperCase()))) {
+			return str;
 		}
-		s.append(StringUtil.firstCharToUpperCase(getTable().getName()));
-		return s.toString();
+		String[] split=str.split("_+");
+		StringBuilder res=new StringBuilder();
+		boolean first=true;
+		for (String s : split) {
+			if (first) {
+				res.append(s.toLowerCase());
+				first=false;
+			} else {
+				res.append(StringUtil.capitalize(s));
+			}
+		}
+		return res.toString();
+	}
+
+	public String getClassName() {
+		return new StringBuilder().append(getClassNamePrefix()).append(StringUtil.firstCharToUpperCase(toCamelCase(getTable().getName()))).append(getClassNameSuffix()).toString();
 	}
 
 	public String getMemberName(Field field) {
-		return field.getName();
+		return toCamelCase(field.getName());
 	}
 
 	public String getMethodName(Field field) {
@@ -163,8 +177,12 @@ public class PhpCodeGenerator {
 		return new StringBuilder("set").append(getMethodName(field)).toString();
 	}
 
+	public String getSetterCall(Field f, String param, String context) {
+		return new StringBuilder(context).append("->").append(getSetterName(f)).append("(").append(param).append(")").toString();
+	}
+
 	public String getSetterCall(Field f, String param) {
-		return new StringBuilder("$this->").append(getSetterName(f)).append("(").append(param).append(")").toString();
+		return getSetterCall(f, param, "$this");
 	}
 
 	public String getSetter(Field field) {
@@ -179,6 +197,7 @@ public class PhpCodeGenerator {
 
 	public String getFieldList(List<Field> fields) {
 		return CollectionUtil.join(fields, ",", new StringMutator() {
+
 			public String transform(Object s) {
 				return new StringBuilder("$").append(getMemberName((Field) s)).toString();
 			}
@@ -195,7 +214,11 @@ public class PhpCodeGenerator {
 	}
 
 	public String getConstName(Field field) {
-		return new StringBuilder("FIELD_").append(getMethodName(field).toUpperCase()).toString();
+		return new StringBuilder("FIELD_").append(getMemberName(field).toUpperCase()).toString();
+	}
+
+	public String getTrackingPristineState() {
+		return new StringBuilder("\t\t$this->setPristine();\n").toString();
 	}
 
 	public String getConsts() {
