@@ -17,10 +17,13 @@
  */
 package org.afraid.poison.db2php.generator.databaselayer;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import org.afraid.poison.common.IOUtil;
 import org.afraid.poison.db2php.generator.Field;
 import org.afraid.poison.db2php.generator.PhpCodeGenerator;
+import org.openide.util.Exceptions;
 
 /**
  *
@@ -66,10 +69,8 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 		s.append(getStmtInit("self::SQL_SELECT_PK"));
 		int i=0;
 		for (Field f : generator.getTable().getPrimaryKeys()) {
-			//$stmt->bindValue(1,$this->getCustomerId());
 			s.append("\t\t$stmt->bindValue(").append(++i).append(",$").append(generator.getMemberName(f)).append(";\n");
 		}
-		s.append(getBindingCodeField(generator, new ArrayList<Field>(generator.getTable().getPrimaryKeys())));
 		s.append(getStmtExecute());
 		s.append("\t\t$result=$stmt->fetch(PDO::FETCH_ASSOC);\n");
 		s.append("\t\t$o=new ").append(generator.getClassName()).append("();\n");
@@ -77,6 +78,9 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 		for (Field f : generator.getTable().getFields()) {
 			rAccess=new StringBuilder("$result['").append(f.getName()).append("']").toString();
 			s.append("\t\t").append(generator.getSetterCall(f, rAccess, "$o")).append(";\n");
+		}
+		for (Field f : generator.getTable().getPrimaryKeys()) {
+			s.append("\t\t").append(generator.getSetterCall(f, "$db->lastInsertId()", "$o")).append(";\n");
 		}
 		s.append(getStmtCloseCursor());
 		s.append("\t\treturn $o;\n");
@@ -128,6 +132,12 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 
 	@Override
 	public String getSnippet() {
-		throw new UnsupportedOperationException("Not supported yet.");
+		String s=new String();
+		try {
+			s=IOUtil.readString(getClass().getResourceAsStream("DatabaseLayerPdo.snippet.php"));
+		} catch (IOException ex) {
+			Exceptions.printStackTrace(ex);
+		}
+		return s;
 	}
 }

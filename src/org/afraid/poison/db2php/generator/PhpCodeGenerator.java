@@ -17,13 +17,15 @@
  */
 package org.afraid.poison.db2php.generator;
 
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.List;
 import org.afraid.poison.db2php.generator.databaselayer.DatabaseLayer;
 import java.util.Set;
 import org.afraid.poison.common.StringUtil;
 import org.afraid.poison.common.CollectionUtil;
+import org.afraid.poison.common.IOUtil;
 import org.afraid.poison.common.StringMutator;
+import org.openide.util.Exceptions;
 
 /**
  * generates PHP CLass code from a table
@@ -33,7 +35,7 @@ import org.afraid.poison.common.StringMutator;
 public class PhpCodeGenerator {
 
 	private Table table;
-	private DatabaseLayer databaseLayer;
+	private DatabaseLayer databaseLayer=DatabaseLayer.PDO;
 	private boolean generateChecks;
 	private boolean trackFieldModifications;
 	private String classNamePrefix=new String();
@@ -61,8 +63,7 @@ public class PhpCodeGenerator {
 	 * @return the databaseLayer
 	 */
 	public DatabaseLayer getDatabaseLayer() {
-		return DatabaseLayer.PDO;
-		//return databaseLayer;
+		return databaseLayer;
 	}
 
 	/**
@@ -321,7 +322,7 @@ public class PhpCodeGenerator {
 			}
 		}));
 		//s.append("\t\treturn $this->").append(getMemberName(field)).append(";\n");
-		s.append("\t\t);\n");
+		s.append(");\n");
 		s.append("\t}\n");
 		return s.toString();
 	}
@@ -332,9 +333,17 @@ public class PhpCodeGenerator {
 		s.append(getPreparedStatements());
 		s.append(getConsts());
 		s.append(getMembers());
+		if (isTrackFieldModifications()) {
+			try {
+				s.append(IOUtil.readString(getClass().getResourceAsStream("snippets/CODE_MODIFICATION_TRACKING.php")));
+			} catch (IOException ex) {
+				Exceptions.printStackTrace(ex);
+			}
+		}
 		s.append(getAccessors());
 		s.append(getUtilMethodToArray());
 		s.append(getUtilMethodgetPrimaryKeysToArray());
+		s.append(getDatabaseLayer().getSnippet());
 		s.append(getDatabaseLayer().getSelectCode(this));
 		s.append(getDatabaseLayer().getInsertCode(this));
 		s.append(getDatabaseLayer().getUpdateCode(this));
