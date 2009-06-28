@@ -347,6 +347,13 @@ public class PhpCodeGenerator {
 		return s.toString();
 	}
 
+	public File getFile() throws IOException {
+		if (null==getSettings().getOutputDirectory()) {
+			throw new IOException("no directory configured");
+		}
+		return new File(getSettings().getOutputDirectory(), getFileName());
+	}
+
 	public void writeCode(File file) throws IOException {
 		if (file.exists()) {
 			throw new IOException("file exists, refusing to overwrite");
@@ -355,10 +362,6 @@ public class PhpCodeGenerator {
 	}
 
 	public void writeCode() throws IOException {
-		if (null==getSettings().getOutputDirectory()) {
-			throw new IOException("no directory configured");
-		}
-		File file=new File(getSettings().getOutputDirectory(), getFileName());
-		writeCode(file);
+		writeCode(getFile());
 	}
 }
