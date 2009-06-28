@@ -30,6 +30,13 @@ import org.openide.util.HelpCtx;
 
 public class PhpClassWizardPanel1 implements WizardDescriptor.Panel, ListSelectionListener {
 
+	private WizardDescriptor wizard;
+
+	public PhpClassWizardPanel1(WizardDescriptor wizard) {
+		this.wizard=wizard;
+	}
+
+
 	/**
 	 * The visual component that displays this panel. If you need to access the
 	 * component from this class, just use getComponent().
@@ -101,6 +108,20 @@ public class PhpClassWizardPanel1 implements WizardDescriptor.Panel, ListSelecti
 
 	public void valueChanged(ListSelectionEvent e) {
 		fireChangeEvent();
+	}
+
+	/**
+	 * @return the wizard
+	 */
+	public WizardDescriptor getWizard() {
+		return wizard;
+	}
+
+	/**
+	 * @param wizard the wizard to set
+	 */
+	public void setWizard(WizardDescriptor wizard) {
+		this.wizard=wizard;
 	}
 }
 

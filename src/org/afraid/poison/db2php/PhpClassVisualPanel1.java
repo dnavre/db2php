@@ -17,6 +17,8 @@
  */
 package org.afraid.poison.db2php;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
@@ -29,6 +31,7 @@ import org.afraid.poison.db2php.generator.Table;
 import org.netbeans.api.db.explorer.ConnectionManager;
 import org.netbeans.api.db.explorer.DatabaseConnection;
 import org.netbeans.api.db.explorer.support.DatabaseExplorerUIs;
+import org.openide.util.Exceptions;
 
 public final class PhpClassVisualPanel1 extends JPanel {
 
@@ -54,7 +57,12 @@ public final class PhpClassVisualPanel1 extends JPanel {
 		PhpCodeGenerator g;
 		for (Table t : getSelected()) {
 			g=new PhpCodeGenerator(t);
-			System.err.println(g.getCode());
+			//System.err.println(g.getCode());
+			try {
+				g.writeCode(new File(new File("/tmp"), g.getFileName()));
+			} catch (IOException ex) {
+				//Exceptions.printStackTrace(ex);
+			}
 		}
 		return getSelected().size()>0;
 	}

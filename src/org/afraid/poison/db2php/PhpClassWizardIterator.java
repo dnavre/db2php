@@ -20,14 +20,20 @@ package org.afraid.poison.db2php;
 import java.awt.Component;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import javax.swing.JComponent;
+import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import org.netbeans.api.project.Project;
-import org.netbeans.spi.project.ui.templates.support.Templates;
+import org.afraid.poison.db2php.generator.CodeGeneratorSettings;
+import org.afraid.poison.db2php.generator.PhpCodeGenerator;
+import org.afraid.poison.db2php.generator.Table;
+import org.afraid.poison.db2php.generator.databaselayer.DatabaseLayer;
+import org.openide.DialogDisplayer;
+import org.openide.NotifyDescriptor;
 import org.openide.WizardDescriptor;
-import org.openide.filesystems.FileObject;
 
 public final class PhpClassWizardIterator implements WizardDescriptor.InstantiatingIterator {
 
@@ -42,9 +48,9 @@ public final class PhpClassWizardIterator implements WizardDescriptor.Instantiat
 	private WizardDescriptor.Panel[] getPanels() {
 		if (panels==null) {
 			panels=new WizardDescriptor.Panel[]{
-					new PhpClassWizardPanel1(),
-					new PhpClassWizardPanel2(wizard)
-				};
+						new PhpClassWizardPanel1(wizard),
+						new PhpClassWizardPanel2(wizard)
+					};
 			String[] steps=createSteps();
 			for (int i=0; i<panels.length; i++) {
 				Component c=panels[i].getComponent();
@@ -69,19 +75,38 @@ public final class PhpClassWizardIterator implements WizardDescriptor.Instantiat
 					jc.putClientProperty("WizardPanel_contentNumbered", Boolean.TRUE);
 				}
 			}
+			
 		}
 		return panels;
 	}
 
 	public Set instantiate() throws IOException {
+		if (wizard.getValue()==WizardDescriptor.FINISH_OPTION) {
+			PhpClassVisualPanel1 p1=(PhpClassVisualPanel1) getPanels()[0].getComponent();
+			Set<Table> tables=p1.getSelected();
+			PhpClassVisualPanel2 p2=(PhpClassVisualPanel2) getPanels()[1].getComponent();
+			CodeGeneratorSettings settings=new CodeGeneratorSettings();
+			settings.setDatabaseLayer((DatabaseLayer) p2.getDatabaseLayerSelection().getSelectedItem());
+			settings.setGenerateChecks(p2.getGenerateChecksSelection().isSelected());
+			settings.setTrackFieldModifications(p2.getTrackModificationsSelection().isSelected());
+			settings.setClassNamePrefix(p2.getClassNamePrefix().getText());
+			settings.setClassNamePrefix(p2.getClassNameSuffix().getText());
+			settings.setOutputDirectory(p2.getDirectory());
+			System.err.println(settings);
+			PhpCodeGenerator generator;
+			for (Table t : tables) {
+				generator=new PhpCodeGenerator(t);
+				generator.setSettings(settings);
+				//generator.writeCode();
+			}
+			DialogDisplayer.getDefault().notify(new NotifyDescriptor.Message(settings));
+
+		}
 		return Collections.EMPTY_SET;
 	}
 
 	public void initialize(WizardDescriptor wizard) {
 		this.wizard=wizard;
-		FileObject targetFolder=Templates.getTargetFolder(wizard);
-
-		Project project=Templates.getProject(wizard);
 
 	}
 
@@ -118,44 +143,40 @@ public final class PhpClassWizardIterator implements WizardDescriptor.Instantiat
 		}
 		index--;
 	}
-
-	// If nothing unusual changes in the middle of the wizard, simply:
-	public void addChangeListener(ChangeListener l) {
-	}
-
-	public void removeChangeListener(ChangeListener l) {
-	}
-
 	// If something changes dynamically (besides moving between panels), e.g.
 	// the number of panels changes in response to user input, then uncomment
 	// the following and call when needed: fireChangeEvent();
-    /*
-	private Set<ChangeListener> listeners = new HashSet<ChangeListener>(1); // or can use ChangeSupport in NB 6.0
+	
+	private Set<ChangeListener> listeners=new HashSet<ChangeListener>(1); // or can use ChangeSupport in NB 6.0
+
 	public final void addChangeListener(ChangeListener l) {
-	synchronized (listeners) {
-	listeners.add(l);
+		synchronized (listeners) {
+			listeners.add(l);
+		}
 	}
-	}
+
 	public final void removeChangeListener(ChangeListener l) {
-	synchronized (listeners) {
-	listeners.remove(l);
+		synchronized (listeners) {
+			listeners.remove(l);
+		}
 	}
-	}
+
 	protected final void fireChangeEvent() {
-	Iterator<ChangeListener> it;
-	synchronized (listeners) {
-	it = new HashSet<ChangeListener>(listeners).iterator();
+		Iterator<ChangeListener> it;
+		synchronized (listeners) {
+			it=new HashSet<ChangeListener>(listeners).iterator();
+		}
+		ChangeEvent ev=new ChangeEvent(this);
+		while (it.hasNext()) {
+			it.next().stateChanged(ev);
+		}
 	}
-	ChangeEvent ev = new ChangeEvent(this);
-	while (it.hasNext()) {
-	it.next().stateChanged(ev);
-	}
-	}
-	 */
+	 
 	// You could safely ignore this method. Is is here to keep steps which were
 	// there before this wizard was instantiated. It should be better handled
 	// by NetBeans Wizard API itself rather than needed to be implemented by a
 	// client code.
+
 	private String[] createSteps() {
 		String[] beforeSteps=null;
 		Object prop=wizard.getProperty("WizardPanel_contentData");
