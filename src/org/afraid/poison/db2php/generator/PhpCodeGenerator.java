@@ -366,7 +366,10 @@ public class PhpCodeGenerator {
 	}
 
 	public void writeCode(File file) throws IOException {
-		FileUtil.write(getCode(), file);
+		if (file.exists()) {
+			throw new IOException("file exists, refusing to overwrite");
+		}
+		FileUtil.writeString(getCode(), file);
 	}
 
 	public void writeCode() throws IOException {
