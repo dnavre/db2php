@@ -69,7 +69,7 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 		s.append(getStmtInit("self::SQL_SELECT_PK"));
 		int i=0;
 		for (Field f : generator.getTable().getPrimaryKeys()) {
-			s.append("\t\t$stmt->bindValue(").append(++i).append(",$").append(generator.getMemberName(f)).append(";\n");
+			s.append("\t\t$stmt->bindValue(").append(++i).append(",$").append(generator.getMemberName(f)).append(");\n");
 		}
 		s.append(getStmtExecute());
 		s.append("\t\t$result=$stmt->fetch(PDO::FETCH_ASSOC);\n");
