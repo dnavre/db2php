@@ -141,26 +141,8 @@ public class PhpCodeGenerator {
 		getSettings().setClassNameSuffix(classNameSuffix);
 	}
 
-	public static String toCamelCase(String str) {
-		if (!(str.contains("_")||str.equals(str.toUpperCase()))) {
-			return str;
-		}
-		String[] split=str.split("_+");
-		StringBuilder res=new StringBuilder();
-		boolean first=true;
-		for (String s : split) {
-			if (first) {
-				res.append(s.toLowerCase());
-				first=false;
-			} else {
-				res.append(StringUtil.capitalize(s));
-			}
-		}
-		return res.toString();
-	}
-
 	public String getClassName() {
-		return new StringBuilder().append(getClassNamePrefix()).append(StringUtil.firstCharToUpperCase(toCamelCase(getTable().getName()))).append(getClassNameSuffix()).toString();
+		return new StringBuilder().append(getClassNamePrefix()).append(StringUtil.firstCharToUpperCase(StringUtil.toCamelCase(getTable().getName()))).append(getClassNameSuffix()).toString();
 	}
 
 	public String getFileName() {
@@ -168,7 +150,7 @@ public class PhpCodeGenerator {
 	}
 
 	public String getMemberName(Field field) {
-		return toCamelCase(field.getName());
+		return StringUtil.toCamelCase(field.getName());
 	}
 
 	public String getMethodName(Field field) {

@@ -146,4 +146,27 @@ public class StringUtil {
 	public static String firstCharToUpperCase(String str) {
 		return new StringBuilder(str.substring(0, 1).toUpperCase()).append(str.substring(1)).toString();
 	}
+
+	/**
+	 * tries to convert input string to camel case it it is all upper case or contains _
+	 * @param str the tring containing _
+	 * @return the camel case string with the first character lower case
+	 */
+	public static String toCamelCase(String str) {
+		if (!(str.contains("_")||str.equals(str.toUpperCase()))) {
+			return str;
+		}
+		String[] split=str.split("_+");
+		StringBuilder res=new StringBuilder();
+		boolean first=true;
+		for (String s : split) {
+			if (first) {
+				res.append(s.toLowerCase());
+				first=false;
+			} else {
+				res.append(capitalize(s));
+			}
+		}
+		return res.toString();
+	}
 }
