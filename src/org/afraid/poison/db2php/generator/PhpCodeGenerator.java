@@ -36,8 +36,8 @@ public class PhpCodeGenerator {
 
 	private Table table;
 	private DatabaseLayer databaseLayer=DatabaseLayer.PDO;
-	private boolean generateChecks;
-	private boolean trackFieldModifications;
+	private boolean generateChecks=false;
+	private boolean trackFieldModifications=true;
 	private String classNamePrefix=new String();
 	private String classNameSuffix=new String();
 
@@ -343,11 +343,7 @@ public class PhpCodeGenerator {
 		s.append(getAccessors());
 		s.append(getUtilMethodToArray());
 		s.append(getUtilMethodgetPrimaryKeysToArray());
-		s.append(getDatabaseLayer().getSnippet());
-		s.append(getDatabaseLayer().getSelectCode(this));
-		s.append(getDatabaseLayer().getInsertCode(this));
-		s.append(getDatabaseLayer().getUpdateCode(this));
-		s.append(getDatabaseLayer().getDeleteCode(this));
+		s.append(getDatabaseLayer().getCode(this));
 		s.append("}\n");
 		s.append("?>");
 		return s.toString();

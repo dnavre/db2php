@@ -69,6 +69,15 @@ abstract public class DatabaseLayer {
 
 	abstract public String getSnippet();
 
+	public String getCode(PhpCodeGenerator generator) {
+		return new StringBuilder()
+				.append(getSnippet())
+				.append(getSelectCode(generator))
+				.append(getInsertCode(generator))
+				.append(getUpdateCode(generator))
+				.append(getDeleteCode(generator)).toString();
+	}
+
 	@Override
 	public String toString() {
 		return getName();
