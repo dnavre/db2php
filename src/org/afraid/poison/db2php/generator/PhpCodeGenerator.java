@@ -35,11 +35,7 @@ import org.openide.util.Exceptions;
 public class PhpCodeGenerator {
 
 	private Table table;
-	private DatabaseLayer databaseLayer=DatabaseLayer.PDO;
-	private boolean generateChecks=false;
-	private boolean trackFieldModifications=true;
-	private String classNamePrefix=new String();
-	private String classNameSuffix=new String();
+	private CodeGeneratorSettings settings=new CodeGeneratorSettings();
 
 	public PhpCodeGenerator(Table table) {
 		setTable(table);
@@ -60,73 +56,87 @@ public class PhpCodeGenerator {
 	}
 
 	/**
+	 * @return the settings
+	 */
+	public CodeGeneratorSettings getSettings() {
+		return settings;
+	}
+
+	/**
+	 * @param settings the settings to set
+	 */
+	public void setSettings(CodeGeneratorSettings settings) {
+		this.settings=settings;
+	}
+
+	/**
 	 * @return the databaseLayer
 	 */
 	public DatabaseLayer getDatabaseLayer() {
-		return databaseLayer;
+		return getSettings().getDatabaseLayer();
 	}
 
 	/**
 	 * @param databaseLayer the databaseLayer to set
 	 */
 	public void setDatabaseLayer(DatabaseLayer databaseLayer) {
-		this.databaseLayer=databaseLayer;
+		getSettings().setDatabaseLayer(databaseLayer);
 	}
 
 	/**
 	 * @return the generateChecks
 	 */
 	public boolean isGenerateChecks() {
-		return generateChecks;
+		return getSettings().isGenerateChecks();
 	}
 
 	/**
 	 * @param generateChecks the generateChecks to set
 	 */
 	public void setGenerateChecks(boolean generateChecks) {
-		this.generateChecks=generateChecks;
+		getSettings().setGenerateChecks(generateChecks);
 	}
 
 	/**
 	 * @return the trackFieldModifications
 	 */
 	public boolean isTrackFieldModifications() {
-		return trackFieldModifications;
+		return getSettings().isTrackFieldModifications();
 	}
 
 	/**
 	 * @param trackFieldModifications the trackFieldModifications to set
 	 */
 	public void setTrackFieldModifications(boolean trackFieldModifications) {
-		this.trackFieldModifications=trackFieldModifications;
+		getSettings().setTrackFieldModifications(trackFieldModifications);
 	}
 
 	/**
 	 * @return the classNamePrefix
 	 */
 	public String getClassNamePrefix() {
-		return classNamePrefix;
+		return getSettings().getClassNamePrefix();
 	}
 
 	/**
 	 * @param classNamePrefix the classNamePrefix to set
 	 */
 	public void setClassNamePrefix(String classNamePrefix) {
-		this.classNamePrefix=classNamePrefix;
+		getSettings().setClassNamePrefix(classNamePrefix);
 	}
 
 	/**
 	 * @return the classNameSuffix
 	 */
 	public String getClassNameSuffix() {
-		return classNameSuffix;
+		return getSettings().getClassNameSuffix();
 	}
 
 	/**
 	 * @param classNameSuffix the classNameSuffix to set
 	 */
 	public void setClassNameSuffix(String classNameSuffix) {
-		this.classNameSuffix=classNameSuffix;
+		getSettings().setClassNameSuffix(classNameSuffix);
 	}
 
 	public static String toCamelCase(String str) {
@@ -272,6 +282,7 @@ public class PhpCodeGenerator {
 		s.append("\tconst SQL_UPDATE=\"UPDATE ").append(getTable().getName());
 		s.append(" SET ");
 		StringMutator fieldAssign=new StringMutator() {
+
 			public String transform(Object s) {
 				return new StringBuilder(((Field) s).getName()).append("=?").toString();
 			}
