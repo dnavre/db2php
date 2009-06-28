@@ -307,5 +307,12 @@ public final class PhpClassVisualPanel2 extends JPanel {
 	public javax.swing.JCheckBox getTrackModificationsSelection() {
 		return trackModificationsSelection;
 	}
+
+	/**
+	 * @return the generateChecksSelection
+	 */
+	public javax.swing.JCheckBox getGenerateChecksSelection() {
+		return generateChecksSelection;
+	}
 }
 
