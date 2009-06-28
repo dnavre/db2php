@@ -46,7 +46,7 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 	}
 
 	private String getStmtInit(String cstr) {
-		return new StringBuilder("\t\t$stmt=self::prepareStatement(").append(cstr).append(");\n").toString();
+		return new StringBuilder("\t\t$stmt=self::prepareStatement($db,").append(cstr).append(");\n").toString();
 	}
 
 	private String getStmtExecute() {
@@ -79,9 +79,6 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 			rAccess=new StringBuilder("$result['").append(f.getName()).append("']").toString();
 			s.append("\t\t").append(generator.getSetterCall(f, rAccess, "$o")).append(";\n");
 		}
-		for (Field f : generator.getTable().getPrimaryKeys()) {
-			s.append("\t\t").append(generator.getSetterCall(f, "$db->lastInsertId()", "$o")).append(";\n");
-		}
 		s.append(getStmtCloseCursor());
 		s.append("\t\treturn $o;\n");
 		s.append("\t}\n");
@@ -94,6 +91,10 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 		s.append(getStmtInit("self::SQL_INSERT"));
 		s.append(getBindingCodeField(generator, new ArrayList<Field>(generator.getTable().getFields())));
 		s.append(getStmtExecute());
+		
+		for (Field f : generator.getTable().getPrimaryKeys()) {
+			s.append("\t\t").append(generator.getSetterCall(f, "$db->lastInsertId()")).append(";\n");
+		}
 		s.append(getStmtCloseCursor());
 		s.append(generator.getTrackingPristineState());
 		s.append(getReturnResult());
@@ -118,8 +119,8 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 
 	@Override
 	public String getDeleteCode(PhpCodeGenerator generator) {
-		StringBuilder s=new StringBuilder("\tpublic function ").append(METHOD_DELETE_NAME).append("(PDO $db,");
-		s.append(generator.getFieldList(new ArrayList<Field>(generator.getTable().getPrimaryKeys())));
+		StringBuilder s=new StringBuilder("\tpublic function ").append(METHOD_DELETE_NAME).append("(PDO $db");
+		//s.append(",").append(generator.getFieldList(new ArrayList<Field>(generator.getTable().getPrimaryKeys())));
 		s.append(") {\n");
 		s.append(getStmtInit("self::SQL_DELETE_PK"));
 		s.append(getBindingCodeField(generator, new ArrayList<Field>(generator.getTable().getPrimaryKeys())));

@@ -40,20 +40,20 @@
 				}
 				return self::$stmtInsert;
 			} else if($statement==self::SQL_UPDATE) {
-				if (null==self::$stmtInsert) {
-					self::$stmtInsert=$db->prepare($statement);
+				if (null==self::$stmtUpdate) {
+					self::$stmtUpdate=$db->prepare($statement);
 				}
-				return self::$stmtInsert;
+				return self::$stmtUpdate;
 			} else if($statement==self::SQL_SELECT_PK) {
-				if (null==self::$stmtInsert) {
-					self::$stmtInsert=$db->prepare($statement);
+				if (null==self::$stmtSelect) {
+					self::$stmtSelect=$db->prepare($statement);
 				}
-				return self::$stmtInsert;
+				return self::$stmtSelect;
 			} else if($statement==self::SQL_DELETE_PK) {
-				if (null==self::$stmtInsert) {
-					self::$stmtInsert=$db->prepare($statement);
+				if (null==self::$stmtDelete) {
+					self::$stmtDelete=$db->prepare($statement);
 				}
-				return self::$stmtInsert;
+				return self::$stmtDelete;
 			}
 		}
 		return $db->prepare($statement);
