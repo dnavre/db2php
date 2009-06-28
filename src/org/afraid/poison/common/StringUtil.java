@@ -133,7 +133,7 @@ public class StringUtil {
 	 * @return the capitalized string
 	 */
 	public static String capitalize(String str) {
-		return new StringBuilder(str.substring(0, 1).toUpperCase()).append(str.substring(1).toLowerCase()).toString();
+		return firstCharToUpperCase(str.toLowerCase());
 	}
 
 
