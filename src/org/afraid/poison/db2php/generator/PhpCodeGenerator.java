@@ -189,7 +189,7 @@ public class PhpCodeGenerator {
 	public String getSetter(Field field) {
 		StringBuilder s=new StringBuilder("\tpublic function ").append(getSetterName(field)).append("($").append(getMemberName(field)).append(") {\n");
 		s.append("\t\t$this->").append(getMemberName(field)).append("=$").append(getMemberName(field)).append(";\n");
-		if (true||isTrackFieldModifications()) {
+		if (isTrackFieldModifications()) {
 			s.append("\t\t$this->notifyChanged(self::").append(getConstName(field)).append(");\n");
 		}
 		s.append("\t}\n");
@@ -219,7 +219,7 @@ public class PhpCodeGenerator {
 	}
 
 	public String getTrackingPristineState() {
-		return new StringBuilder("\t\t$this->setPristine();\n").toString();
+		return isTrackFieldModifications() ? new StringBuilder("\t\t$this->setPristine();\n").toString() : new String();
 	}
 
 	public String getConsts() {
