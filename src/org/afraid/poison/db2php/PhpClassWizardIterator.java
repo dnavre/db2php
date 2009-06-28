@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import javax.swing.JComponent;
@@ -75,15 +76,31 @@ public final class PhpClassWizardIterator implements WizardDescriptor.Instantiat
 					jc.putClientProperty("WizardPanel_contentNumbered", Boolean.TRUE);
 				}
 			}
-			
+
 		}
 		return panels;
+	}
+
+	private Set<Table> writeCode(Set<Table> tables, CodeGeneratorSettings settings) {
+		Set<Table> failed=new LinkedHashSet<Table>();
+		PhpCodeGenerator generator;
+		for (Table t : tables) {
+			generator=new PhpCodeGenerator(t);
+			generator.setSettings(settings);
+			try {
+				generator.writeCode();
+			} catch (IOException ex) {
+				failed.add(t);
+			}
+		}
+		return failed;
 	}
 
 	public Set instantiate() throws IOException {
 		if (wizard.getValue()==WizardDescriptor.FINISH_OPTION) {
 			PhpClassVisualPanel1 p1=(PhpClassVisualPanel1) getPanels()[0].getComponent();
 			Set<Table> tables=p1.getSelected();
+
 			PhpClassVisualPanel2 p2=(PhpClassVisualPanel2) getPanels()[1].getComponent();
 			CodeGeneratorSettings settings=new CodeGeneratorSettings();
 			settings.setDatabaseLayer((DatabaseLayer) p2.getDatabaseLayerSelection().getSelectedItem());
@@ -92,13 +109,8 @@ public final class PhpClassWizardIterator implements WizardDescriptor.Instantiat
 			settings.setClassNamePrefix(p2.getClassNamePrefix().getText());
 			settings.setClassNamePrefix(p2.getClassNameSuffix().getText());
 			settings.setOutputDirectory(p2.getDirectory());
-			System.err.println(settings);
-			PhpCodeGenerator generator;
-			for (Table t : tables) {
-				generator=new PhpCodeGenerator(t);
-				generator.setSettings(settings);
-				//generator.writeCode();
-			}
+
+			Set<Table> failed=writeCode(tables, settings);
 			DialogDisplayer.getDefault().notify(new NotifyDescriptor.Message(settings));
 
 		}
@@ -146,7 +158,6 @@ public final class PhpClassWizardIterator implements WizardDescriptor.Instantiat
 	// If something changes dynamically (besides moving between panels), e.g.
 	// the number of panels changes in response to user input, then uncomment
 	// the following and call when needed: fireChangeEvent();
-	
 	private Set<ChangeListener> listeners=new HashSet<ChangeListener>(1); // or can use ChangeSupport in NB 6.0
 
 	public final void addChangeListener(ChangeListener l) {
@@ -171,12 +182,11 @@ public final class PhpClassWizardIterator implements WizardDescriptor.Instantiat
 			it.next().stateChanged(ev);
 		}
 	}
-	 
+
 	// You could safely ignore this method. Is is here to keep steps which were
 	// there before this wizard was instantiated. It should be better handled
 	// by NetBeans Wizard API itself rather than needed to be implemented by a
 	// client code.
-
 	private String[] createSteps() {
 		String[] beforeSteps=null;
 		Object prop=wizard.getProperty("WizardPanel_contentData");
