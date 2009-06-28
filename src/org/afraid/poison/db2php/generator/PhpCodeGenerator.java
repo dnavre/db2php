@@ -217,7 +217,7 @@ public class PhpCodeGenerator {
 	}
 
 	public String getTrackingPristineState() {
-		return isTrackFieldModifications() ? new StringBuilder("\t\t$this->setPristine();\n").toString() : new String();
+		return isTrackFieldModifications() ? new StringBuilder("\t\t$this->notifyPristine();\n").toString() : new String();
 	}
 
 	public String getConsts() {

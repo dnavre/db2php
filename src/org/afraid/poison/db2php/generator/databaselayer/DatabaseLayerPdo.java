@@ -87,7 +87,7 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 		}
 		s.append(getStmtCloseCursor());
 		if (generator.isTrackFieldModifications()) {
-			s.append("\t\t$o->setPristine();\n");
+			s.append("\t\t$o->notifyPristine();\n");
 		}
 		s.append("\t\treturn $o;\n");
 		s.append("\t}\n");

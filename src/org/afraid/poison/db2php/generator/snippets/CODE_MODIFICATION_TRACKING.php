@@ -22,7 +22,7 @@
 	}
 
 	/**
-	 * return true if this instance has been modified since the last setPristine() call
+	 * return true if this instance has been modified since the last notifyPristine() call
 	 *
 	 * @return bool
 	 */
@@ -33,6 +33,6 @@
 	/**
 	 * set this instance into pristine state
 	 */
-	public function setPristine() {
+	public function notifyPristine() {
 		$this->oldInstance=null;
 	}
