@@ -13,6 +13,42 @@ public class IOUtil {
 
 	private static final int BUFFER_SIZE=8192;
 
+	public static void closeQuietly(Reader input) {
+		try {
+			if (input!=null) {
+				input.close();
+			}
+		} catch (IOException ioe) {
+		}
+	}
+
+	public static void closeQuietly(Writer output) {
+		try {
+			if (output!=null) {
+				output.close();
+			}
+		} catch (IOException ioe) {
+		}
+	}
+
+	public static void closeQuietly(InputStream input) {
+		try {
+			if (input!=null) {
+				input.close();
+			}
+		} catch (IOException ioe) {
+		}
+	}
+
+	public static void closeQuietly(OutputStream output) {
+		try {
+			if (output!=null) {
+				output.close();
+			}
+		} catch (IOException ioe) {
+		}
+	}
+
 	public static long copy(InputStream input, OutputStream output) throws IOException {
 		byte[] buffer=new byte[BUFFER_SIZE];
 		long cnt=0;
