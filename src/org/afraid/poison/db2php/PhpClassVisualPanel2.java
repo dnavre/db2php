@@ -47,9 +47,8 @@ public final class PhpClassVisualPanel2 extends JPanel {
 
 	@Override
 	public String getName() {
-		return "Step #2";
+		return "Options";
 	}
-
 
 	/** This method is called from within the constructor to
 	 * initialize the form.
@@ -262,13 +261,6 @@ public final class PhpClassVisualPanel2 extends JPanel {
 	}
 
 	/**
-	 * @param buttonBrowse the buttonBrowse to set
-	 */
-	public void setButtonBrowse(javax.swing.JButton buttonBrowse) {
-		this.buttonBrowse=buttonBrowse;
-	}
-
-	/**
 	 * @return the destinationDirectory
 	 */
 	public javax.swing.JTextField getDestinationDirectory() {
@@ -283,7 +275,37 @@ public final class PhpClassVisualPanel2 extends JPanel {
 	}
 
 	public ComboBoxModel getAvailableDatabaseLayers() {
-		return new DefaultComboBoxModel(new Vector<Object>(DatabaseLayer.AVAILABLE));
+		DefaultComboBoxModel dbLayerModel=new DefaultComboBoxModel(new Vector<Object>(DatabaseLayer.AVAILABLE));
+		dbLayerModel.setSelectedItem(DatabaseLayer.PDO);
+		return dbLayerModel;
+	}
+
+	/**
+	 * @return the classNamePrefix
+	 */
+	public javax.swing.JTextField getClassNamePrefix() {
+		return classNamePrefix;
+	}
+
+	/**
+	 * @return the classNameSuffix
+	 */
+	public javax.swing.JTextField getClassNameSuffix() {
+		return classNameSuffix;
+	}
+
+	/**
+	 * @return the databaseLayerSelection
+	 */
+	public javax.swing.JComboBox getDatabaseLayerSelection() {
+		return databaseLayerSelection;
+	}
+
+	/**
+	 * @return the trackModificationsSelection
+	 */
+	public javax.swing.JCheckBox getTrackModificationsSelection() {
+		return trackModificationsSelection;
 	}
 }
 

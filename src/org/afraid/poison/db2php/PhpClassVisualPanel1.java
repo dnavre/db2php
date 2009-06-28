@@ -40,7 +40,7 @@ public final class PhpClassVisualPanel1 extends JPanel {
 
 	@Override
 	public String getName() {
-		return "Step #1";
+		return "Choose Tables";
 	}
 
 	@SuppressWarnings("unchecked")
