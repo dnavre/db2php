@@ -116,4 +116,16 @@ public class CodeGeneratorSettings {
 	public void setOutputDirectory(File outputDirectory) {
 		this.outputDirectory=outputDirectory;
 	}
+
+	@Override
+	public String toString() {
+		return new StringBuilder().append("databaseLayer:").append(getDatabaseLayer()).append("\n")
+				.append("generateChecks:").append(isGenerateChecks()).append("\n")
+				.append("trackFieldModifications:").append(isTrackFieldModifications()).append("\n")
+				.append("classNamePrefix:").append(getClassNamePrefix()).append("\n")
+				.append("classNameSuffix:").append(getClassNameSuffix()).append("\n")
+				.append("outputDirectory:").append(getOutputDirectory()).append("\n").toString();
+	}
+
+
 }
