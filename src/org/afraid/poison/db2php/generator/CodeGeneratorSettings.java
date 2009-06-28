@@ -17,6 +17,7 @@
  */
 package org.afraid.poison.db2php.generator;
 
+import java.io.File;
 import org.afraid.poison.db2php.generator.databaselayer.DatabaseLayer;
 
 /**
@@ -30,6 +31,7 @@ public class CodeGeneratorSettings {
 	private boolean trackFieldModifications=true;
 	private String classNamePrefix=new String();
 	private String classNameSuffix=new String();
+	private File outputDirectory;
 
 	/**
 	 * @return the databaseLayer
@@ -99,5 +101,19 @@ public class CodeGeneratorSettings {
 	 */
 	public void setClassNameSuffix(String classNameSuffix) {
 		this.classNameSuffix=classNameSuffix;
+	}
+
+	/**
+	 * @return the outputDirectory
+	 */
+	public File getOutputDirectory() {
+		return outputDirectory;
+	}
+
+	/**
+	 * @param outputDirectory the outputDirectory to set
+	 */
+	public void setOutputDirectory(File outputDirectory) {
+		this.outputDirectory=outputDirectory;
 	}
 }

@@ -17,12 +17,14 @@
  */
 package org.afraid.poison.db2php.generator;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import org.afraid.poison.db2php.generator.databaselayer.DatabaseLayer;
 import java.util.Set;
 import org.afraid.poison.common.StringUtil;
 import org.afraid.poison.common.CollectionUtil;
+import org.afraid.poison.common.FileUtil;
 import org.afraid.poison.common.IOUtil;
 import org.afraid.poison.common.StringMutator;
 import org.openide.util.Exceptions;
@@ -159,6 +161,10 @@ public class PhpCodeGenerator {
 
 	public String getClassName() {
 		return new StringBuilder().append(getClassNamePrefix()).append(StringUtil.firstCharToUpperCase(toCamelCase(getTable().getName()))).append(getClassNameSuffix()).toString();
+	}
+
+	public String getFileName() {
+		return new StringBuilder(getClassName()).append(".class.php").toString();
 	}
 
 	public String getMemberName(Field field) {
@@ -357,5 +363,17 @@ public class PhpCodeGenerator {
 		s.append("}\n");
 		s.append("?>");
 		return s.toString();
+	}
+
+	public void writeCode(File file) throws IOException {
+		FileUtil.write(getCode(), file);
+	}
+
+	public void writeCode() throws IOException {
+		if (null==getSettings().getOutputDirectory()) {
+			throw new IOException("no directory configured");
+		}
+		File file=new File(getSettings().getOutputDirectory(), getFileName());
+		writeCode(file);
 	}
 }
