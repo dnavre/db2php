@@ -10,5 +10,5 @@ package org.afraid.poison.common;
  * @author andreas.schnaiter
  */
 public interface StringMutator {
-	public String transform(Object s);
+	public String transform(Object input);
 }

@@ -49,7 +49,15 @@ public class StringMutatorPrependAppend implements StringMutator {
 		this.append=append;
 	}
 
-	public String transform(Object s) {
-		return new StringBuilder().append(getPrepend()).append(s).append(getAppend()).toString();
+	public String transform(Object input) {
+		StringBuilder s=new StringBuilder();
+		if (null!=getPrepend()) {
+			s.append(getPrepend());
+		}
+		s.append(input);
+		if (null!=getAppend()) {
+			s.append(getAppend());
+		}
+		return s.toString();
 	}
 }
