@@ -1,9 +1,15 @@
 
 	private $oldInstance=null;
 
+	/**
+	 * get old instance if this has been modified, otherwise return null
+	 *
+	 * @return <type>
+	 */
 	public function getOldInstance() {
 		return $this->oldInstance;
 	}
+
 	/**
 	 * called when the field with the passed id has changed
 	 *

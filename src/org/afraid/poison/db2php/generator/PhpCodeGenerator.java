@@ -333,7 +333,7 @@ public class PhpCodeGenerator {
 		s.append(getMembers());
 		if (isTrackFieldModifications()) {
 			try {
-				s.append(IOUtil.readString(getClass().getResourceAsStream("snippets/CODE_MODIFICATION_TRACKING.php")));
+				s.append(IOUtil.readString(getClass().getResourceAsStream("snippets/CODE_MODIFICATION_TRACKING.php")).replaceAll("<type>", getClassName()));
 			} catch (IOException ex) {
 				Exceptions.printStackTrace(ex);
 			}

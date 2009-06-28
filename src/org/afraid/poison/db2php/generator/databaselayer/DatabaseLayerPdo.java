@@ -63,7 +63,13 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 
 	@Override
 	public String getSelectCode(PhpCodeGenerator generator) {
-		StringBuilder s=new StringBuilder("\tpublic static function ").append(METHOD_SELECT_ID_NAME).append("(PDO $db,");
+		StringBuilder s=new StringBuilder();
+		try {
+			s.append(IOUtil.readString(getClass().getResourceAsStream("DatabaseLayerPdo.snippet.getById.php")).replace("<type>", generator.getClassName()));
+		} catch (IOException ex) {
+			Exceptions.printStackTrace(ex);
+		}
+		s.append("\tpublic static function ").append(METHOD_SELECT_ID_NAME).append("(PDO $db,");
 		s.append(generator.getFieldList(new ArrayList<Field>(generator.getTable().getPrimaryKeys())));
 		s.append(") {\n");
 		s.append(getStmtInit("self::SQL_SELECT_PK"));
@@ -95,7 +101,7 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 		s.append(getBindingCodeField(generator, new ArrayList<Field>(generator.getTable().getFields())));
 		s.append(getStmtExecute());
 		
-		for (Field f : generator.getTable().getPrimaryKeys()) {
+		for (Field f : generator.getTable().getFieldsAutoIncrement()) {
 			s.append("\t\t").append(generator.getSetterCall(f, "$db->lastInsertId()")).append(";\n");
 		}
 		s.append(getStmtCloseCursor());
