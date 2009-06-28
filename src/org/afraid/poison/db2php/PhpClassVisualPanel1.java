@@ -54,16 +54,6 @@ public final class PhpClassVisualPanel1 extends JPanel {
 
 	@Override
 	public boolean isValid() {
-		PhpCodeGenerator g;
-		for (Table t : getSelected()) {
-			g=new PhpCodeGenerator(t);
-			//System.err.println(g.getCode());
-			try {
-				g.writeCode(new File(new File("/tmp"), g.getFileName()));
-			} catch (IOException ex) {
-				//Exceptions.printStackTrace(ex);
-			}
-		}
 		return getSelected().size()>0;
 	}
 
