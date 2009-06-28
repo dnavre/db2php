@@ -32,26 +32,26 @@ public class DatabaseLayerNone extends DatabaseLayer {
 
 	@Override
 	public String getSelectCode(PhpCodeGenerator generator) {
-		return null;
+		return new String();
 	}
 
 	@Override
 	public String getInsertCode(PhpCodeGenerator generator) {
-		return null;
+		return new String();
 	}
 
 	@Override
 	public String getUpdateCode(PhpCodeGenerator generator) {
-		return null;
+		return new String();
 	}
 
 	@Override
 	public String getDeleteCode(PhpCodeGenerator generator) {
-		return null;
+		return new String();
 	}
 
 	@Override
 	public String getSnippet() {
-		return null;
+		return new String();
 	}
 }
