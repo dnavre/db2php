@@ -277,7 +277,7 @@ public final class PhpClassVisualPanel2 extends JPanel {
 	}
 
 	public ComboBoxModel getAvailableDatabaseLayers() {
-		DefaultComboBoxModel dbLayerModel=new DefaultComboBoxModel(new Vector<Object>(DatabaseLayer.AVAILABLE));
+		ComboBoxModel dbLayerModel=new DefaultComboBoxModel(new Vector<Object>(DatabaseLayer.AVAILABLE));
 		dbLayerModel.setSelectedItem(DatabaseLayer.PDO);
 		return dbLayerModel;
 	}
