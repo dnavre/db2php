@@ -17,8 +17,6 @@
  */
 package org.afraid.poison.db2php;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
@@ -26,12 +24,10 @@ import java.util.List;
 import java.util.Set;
 import javax.swing.DefaultListModel;
 import javax.swing.JPanel;
-import org.afraid.poison.db2php.generator.PhpCodeGenerator;
 import org.afraid.poison.db2php.generator.Table;
 import org.netbeans.api.db.explorer.ConnectionManager;
 import org.netbeans.api.db.explorer.DatabaseConnection;
 import org.netbeans.api.db.explorer.support.DatabaseExplorerUIs;
-import org.openide.util.Exceptions;
 
 public final class PhpClassVisualPanel1 extends JPanel {
 
@@ -39,6 +35,7 @@ public final class PhpClassVisualPanel1 extends JPanel {
 	public PhpClassVisualPanel1() {
 		initComponents();
 		DatabaseExplorerUIs.connect(connectionSelector, ConnectionManager.getDefault());
+		getTablesSelection().setCellRenderer(new DatbaseTablesListRenderer());
 	}
 
 	@Override

@@ -33,8 +33,6 @@ import org.afraid.poison.db2php.generator.CodeGeneratorSettings;
 import org.afraid.poison.db2php.generator.PhpCodeGenerator;
 import org.afraid.poison.db2php.generator.Table;
 import org.afraid.poison.db2php.generator.databaselayer.DatabaseLayer;
-import org.openide.DialogDisplayer;
-import org.openide.NotifyDescriptor;
 import org.openide.WizardDescriptor;
 import org.openide.cookies.OpenCookie;
 import org.openide.filesystems.FileObject;
