@@ -22,7 +22,7 @@ public class StringMutatorPrependAppend implements StringMutator {
 	}
 
 	/**
-	 * @return the prepend
+	 * @return the prepend string
 	 */
 	public String getPrepend() {
 		return prepend;
@@ -36,7 +36,7 @@ public class StringMutatorPrependAppend implements StringMutator {
 	}
 
 	/**
-	 * @return the append
+	 * @return the append string
 	 */
 	public String getAppend() {
 		return append;
