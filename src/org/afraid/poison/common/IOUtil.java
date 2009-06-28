@@ -18,7 +18,7 @@ public class IOUtil {
 			if (input!=null) {
 				input.close();
 			}
-		} catch (IOException ioe) {
+		} catch (IOException ex) {
 		}
 	}
 
@@ -27,7 +27,7 @@ public class IOUtil {
 			if (output!=null) {
 				output.close();
 			}
-		} catch (IOException ioe) {
+		} catch (IOException ex) {
 		}
 	}
 
@@ -36,7 +36,7 @@ public class IOUtil {
 			if (input!=null) {
 				input.close();
 			}
-		} catch (IOException ioe) {
+		} catch (IOException ex) {
 		}
 	}
 
@@ -45,7 +45,7 @@ public class IOUtil {
 			if (output!=null) {
 				output.close();
 			}
-		} catch (IOException ioe) {
+		} catch (IOException ex) {
 		}
 	}
 
