@@ -272,9 +272,8 @@ public class PhpCodeGenerator {
 		s.append("\tconst SQL_UPDATE=\"UPDATE ").append(getTable().getName());
 		s.append(" SET ");
 		StringMutator fieldAssign=new StringMutator() {
-
 			public String transform(Object s) {
-				return new StringBuilder(((Field) s).getName()).append("=").append("?").toString();
+				return new StringBuilder(((Field) s).getName()).append("=?").toString();
 			}
 		};
 		s.append(CollectionUtil.join(fields, ",", fieldAssign));

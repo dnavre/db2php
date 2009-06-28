@@ -1,3 +1,4 @@
+
 	private $oldInstance=null;
 
 	public function getOldInstance() {
