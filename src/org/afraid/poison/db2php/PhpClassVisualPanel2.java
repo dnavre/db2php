@@ -314,5 +314,12 @@ public final class PhpClassVisualPanel2 extends JPanel {
 	public javax.swing.JCheckBox getGenerateChecksSelection() {
 		return generateChecksSelection;
 	}
+/*
+	@Override
+	public boolean isValid() {
+		return true; //null!=getDirectory() && getDirectory().isDirectory() && getDirectory().canWrite();
+	}
+*/
+
 }
 
