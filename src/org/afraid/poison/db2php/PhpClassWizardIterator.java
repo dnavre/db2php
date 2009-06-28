@@ -18,6 +18,7 @@
 package org.afraid.poison.db2php;
 
 import java.awt.Component;
+import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
@@ -35,6 +36,10 @@ import org.afraid.poison.db2php.generator.databaselayer.DatabaseLayer;
 import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;
 import org.openide.WizardDescriptor;
+import org.openide.cookies.OpenCookie;
+import org.openide.filesystems.FileObject;
+import org.openide.filesystems.FileUtil;
+import org.openide.loaders.DataObject;
 
 public final class PhpClassWizardIterator implements WizardDescriptor.InstantiatingIterator {
 
@@ -89,11 +94,27 @@ public final class PhpClassWizardIterator implements WizardDescriptor.Instantiat
 			generator.setSettings(settings);
 			try {
 				generator.writeCode();
+				openFile(generator.getFile());
 			} catch (IOException ex) {
 				failed.add(t);
 			}
 		}
 		return failed;
+	}
+
+	private void openFile(File file) {
+		try {
+			FileObject fob=FileUtil.toFileObject(file);
+			if (fob!=null) {
+				DataObject dob=DataObject.find(fob);
+				OpenCookie oc=dob.getLookup().lookup(OpenCookie.class);
+				if (oc!=null) {
+					oc.open();
+				}
+			}
+		} catch (Exception ex) {
+			//Exceptions.printStackTrace(ex);
+		}
 	}
 
 	public Set instantiate() throws IOException {
@@ -107,11 +128,11 @@ public final class PhpClassWizardIterator implements WizardDescriptor.Instantiat
 			settings.setGenerateChecks(p2.getGenerateChecksSelection().isSelected());
 			settings.setTrackFieldModifications(p2.getTrackModificationsSelection().isSelected());
 			settings.setClassNamePrefix(p2.getClassNamePrefix().getText());
-			settings.setClassNamePrefix(p2.getClassNameSuffix().getText());
+			settings.setClassNameSuffix(p2.getClassNameSuffix().getText());
 			settings.setOutputDirectory(p2.getDirectory());
 
 			Set<Table> failed=writeCode(tables, settings);
-			DialogDisplayer.getDefault().notify(new NotifyDescriptor.Message(settings));
+			//DialogDisplayer.getDefault().notify(new NotifyDescriptor.Message(settings));
 
 		}
 		return Collections.EMPTY_SET;
