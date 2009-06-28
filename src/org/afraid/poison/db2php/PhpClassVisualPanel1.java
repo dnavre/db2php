@@ -98,7 +98,7 @@ public final class PhpClassVisualPanel1 extends JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(connectionSelector, 0, 415, Short.MAX_VALUE)))
+                        .addComponent(connectionSelector, 0, 406, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(

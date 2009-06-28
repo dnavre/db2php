@@ -75,6 +75,7 @@ public final class PhpClassVisualPanel2 extends JPanel {
         databaseLayerSelection.setModel(getAvailableDatabaseLayers());
 
         org.openide.awt.Mnemonics.setLocalizedText(generateChecksSelection, org.openide.util.NbBundle.getMessage(PhpClassVisualPanel2.class, "PhpClassVisualPanel2.generateChecksSelection.text")); // NOI18N
+        generateChecksSelection.setEnabled(false);
 
         org.openide.awt.Mnemonics.setLocalizedText(jLabel2, org.openide.util.NbBundle.getMessage(PhpClassVisualPanel2.class, "PhpClassVisualPanel2.jLabel2.text_2")); // NOI18N
 
@@ -93,6 +94,7 @@ public final class PhpClassVisualPanel2 extends JPanel {
             }
         });
 
+        trackModificationsSelection.setSelected(true);
         org.openide.awt.Mnemonics.setLocalizedText(trackModificationsSelection, org.openide.util.NbBundle.getMessage(PhpClassVisualPanel2.class, "PhpClassVisualPanel2.trackModificationsSelection.text")); // NOI18N
 
         org.openide.awt.Mnemonics.setLocalizedText(jLabel3, org.openide.util.NbBundle.getMessage(PhpClassVisualPanel2.class, "PhpClassVisualPanel2.jLabel3.text")); // NOI18N
