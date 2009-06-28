@@ -34,12 +34,12 @@ abstract public class DatabaseLayer {
 	public static final DatabaseLayer MYSQLI=new DatabaseLayerMySQLi();
 	public static final DatabaseLayer ADODB=new DatabaseLayerAdoDb();
 	public static final DatabaseLayer ZEND=new DatabaseLayerZend();
-	public static final Set<DatabaseLayer> AVAILABLE;
 	protected static final String METHOD_SELECT_ID_NAME="getById";
 	protected static final String METHOD_UPDATE_NAME="updateToDatabase";
 	protected static final String METHOD_INSERT_NAME="insertIntoDatabase";
 	protected static final String METHOD_DELETE_NAME="deleteFromDatabase";
 
+	public static final Set<DatabaseLayer> AVAILABLE;
 	static {
 		AVAILABLE=new LinkedHashSet<DatabaseLayer>();
 		AVAILABLE.add(NONE);
