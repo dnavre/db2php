@@ -61,14 +61,20 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 		return new StringBuilder("\t\treturn $affected;\n").toString();
 	}
 
-	@Override
-	public String getSelectCode(PhpCodeGenerator generator) {
+	private String getSnippetFromResource(PhpCodeGenerator generator, String resource) {
 		StringBuilder s=new StringBuilder();
 		try {
-			s.append(IOUtil.readString(getClass().getResourceAsStream("DatabaseLayerPdo.snippet.getById.php")).replace("<type>", generator.getClassName()));
+			s.append(IOUtil.readString(getClass().getResourceAsStream(resource)).replace("<type>", generator.getClassName()));
 		} catch (IOException ex) {
 			Exceptions.printStackTrace(ex);
 		}
+		return s.toString();
+	}
+
+	@Override
+	public String getSelectCode(PhpCodeGenerator generator) {
+		StringBuilder s=new StringBuilder();
+		s.append(getSnippetFromResource(generator, "DatabaseLayerPdo.snippet.getById.php"));
 		s.append("\tpublic static function ").append(METHOD_SELECT_ID_NAME).append("(PDO $db,");
 		s.append(generator.getFieldList(new ArrayList<Field>(generator.getTable().getPrimaryKeys())));
 		s.append(") {\n");
@@ -96,7 +102,9 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 
 	@Override
 	public String getInsertCode(PhpCodeGenerator generator) {
-		StringBuilder s=new StringBuilder("\tpublic function ").append(METHOD_INSERT_NAME).append("(PDO $db) {\n");
+		StringBuilder s=new StringBuilder();
+		s.append(getSnippetFromResource(generator, "DatabaseLayerPdo.snippet.insertIntoDatabase.php"));
+		s.append("\tpublic function ").append(METHOD_INSERT_NAME).append("(PDO $db) {\n");
 		s.append(getStmtInit("self::SQL_INSERT"));
 		s.append(getBindingCodeField(generator, new ArrayList<Field>(generator.getTable().getFields())));
 		s.append(getStmtExecute());
@@ -113,7 +121,9 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 
 	@Override
 	public String getUpdateCode(PhpCodeGenerator generator) {
-		StringBuilder s=new StringBuilder("\tpublic function ").append(METHOD_UPDATE_NAME).append("(PDO $db) {\n");
+		StringBuilder s=new StringBuilder();
+		s.append(getSnippetFromResource(generator, "DatabaseLayerPdo.snippet.updateToDatabase.php"));
+		s.append("\tpublic function ").append(METHOD_UPDATE_NAME).append("(PDO $db) {\n");
 		s.append(getStmtInit("self::SQL_UPDATE"));
 		List<Field> fields=new ArrayList<Field>(generator.getTable().getFields());
 		fields.addAll(generator.getTable().getPrimaryKeys());
@@ -128,7 +138,9 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 
 	@Override
 	public String getDeleteCode(PhpCodeGenerator generator) {
-		StringBuilder s=new StringBuilder("\tpublic function ").append(METHOD_DELETE_NAME).append("(PDO $db");
+		StringBuilder s=new StringBuilder();
+		s.append(getSnippetFromResource(generator, "DatabaseLayerPdo.snippet.deleteFromDatabase.php"));
+		s.append("\tpublic function ").append(METHOD_DELETE_NAME).append("(PDO $db");
 		//s.append(",").append(generator.getFieldList(new ArrayList<Field>(generator.getTable().getPrimaryKeys())));
 		s.append(") {\n");
 		s.append(getStmtInit("self::SQL_DELETE_PK"));
