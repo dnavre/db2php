@@ -1,11 +1,9 @@
-nbproject
-build.xml
-build-before-profiler.xml
-manifest.mf
-nbproject
-test
 build
 dist
+manifest.mf
+nbproject/build-impl.xml
+nbproject/private
+test
 *~
 *.bz2
 *.gz
