@@ -146,7 +146,7 @@ public class Table {
 	 *
 	 * @return the rpimary keys
 	 */
-	public Set<Field> getPrimaryKeys() {
+	public synchronized Set<Field> getPrimaryKeys() {
 		if (null==primaryKeys) {
 			primaryKeys=new LinkedHashSet<Field>();
 			for (Field f : getFields()) {

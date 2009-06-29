@@ -16,10 +16,9 @@ import org.afraid.poison.db2php.generator.Table;
  *
  * @author poison
  */
-class DatbaseTablesListRenderer extends JLabel implements ListCellRenderer {
+class DatbaseTablesListRenderer implements ListCellRenderer {
 
 	public DatbaseTablesListRenderer() {
-		setOpaque(true);
 	}
 
 	/**
@@ -32,19 +31,26 @@ class DatbaseTablesListRenderer extends JLabel implements ListCellRenderer {
 	 * @return
 	 */
 	public Component getListCellRendererComponent(JList list, Object value, int index, boolean iss, boolean chf) {
-		setText(value.toString());
+		JLabel label=new JLabel(value.toString());
+		label.setOpaque(true);
+
 		if (value instanceof Table) {
 			if (((Table) value).getPrimaryKeys().isEmpty()) {
-				setBackground(Color.ORANGE);
-				setToolTipText("No Primary Key!");
+				label.setBackground(Color.ORANGE);
+				label.setToolTipText("No Primary Key!");
+
+			} else {
+				label.setBackground(list.getForeground());
+			}
+			if (iss) {
+				label.setBorder(BorderFactory.createLineBorder(list.getSelectionForeground(), 2));
+			} else {
+				label.setBorder(BorderFactory.createLineBorder(list.getSelectionBackground(), 2));
 			}
 		}
-		if (iss) {
-			setBorder(BorderFactory.createLineBorder(list.getSelectionForeground(), 2));
-		} else {
-			setBorder(BorderFactory.createLineBorder(list.getBackground(), 2));
-		}
+		
 
-		return this;
+
+		return label;
 	}
 }
