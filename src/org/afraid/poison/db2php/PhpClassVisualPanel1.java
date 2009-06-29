@@ -35,7 +35,6 @@ public final class PhpClassVisualPanel1 extends JPanel {
 	public PhpClassVisualPanel1() {
 		initComponents();
 		DatabaseExplorerUIs.connect(connectionSelector, ConnectionManager.getDefault());
-		getTablesSelection().setCellRenderer(new DatbaseTablesListRenderer());
 	}
 
 	@Override
@@ -80,6 +79,7 @@ public final class PhpClassVisualPanel1 extends JPanel {
 
         org.openide.awt.Mnemonics.setLocalizedText(jLabel1, org.openide.util.NbBundle.getMessage(PhpClassVisualPanel1.class, "PhpClassVisualPanel1.jLabel1.text")); // NOI18N
 
+        tablesSelection.setCellRenderer(new DatbaseTablesListRenderer());
         jScrollPane1.setViewportView(tablesSelection);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -93,7 +93,7 @@ public final class PhpClassVisualPanel1 extends JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(connectionSelector, 0, 406, Short.MAX_VALUE)))
+                        .addComponent(connectionSelector, 0, 415, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(

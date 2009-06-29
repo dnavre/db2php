@@ -67,6 +67,11 @@
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
         <Component class="javax.swing.JList" name="tablesSelection">
+          <Properties>
+            <Property name="cellRenderer" type="javax.swing.ListCellRenderer" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="new DatbaseTablesListRenderer()" type="code"/>
+            </Property>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>
