@@ -57,6 +57,7 @@ public class Table {
 	private void initFields(Connection connection) {
 		try {
 			// get list of primary keys
+			//connection.getMetaData().getIdentifierQuoteString();
 			ResultSet rsetPrimaryKeys=connection.getMetaData().getPrimaryKeys(getCatalog(), getSchema(), getName());
 			Set<String> primaryKeyFields=new LinkedHashSet<String>();
 			while (rsetPrimaryKeys.next()) {
