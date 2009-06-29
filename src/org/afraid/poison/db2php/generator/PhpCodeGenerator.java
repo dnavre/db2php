@@ -141,6 +141,11 @@ public class PhpCodeGenerator {
 		getSettings().setClassNameSuffix(classNameSuffix);
 	}
 
+	public static boolean isValidVariableName(String name) {
+		//return name.matches("[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*");
+		return true;
+	}
+
 	public String getClassName() {
 		return new StringBuilder().append(getClassNamePrefix()).append(StringUtil.firstCharToUpperCase(StringUtil.toCamelCase(getTable().getName()))).append(getClassNameSuffix()).toString();
 	}
