@@ -80,6 +80,7 @@ public final class PhpClassVisualPanel1 extends JPanel {
         org.openide.awt.Mnemonics.setLocalizedText(jLabel1, org.openide.util.NbBundle.getMessage(PhpClassVisualPanel1.class, "PhpClassVisualPanel1.jLabel1.text")); // NOI18N
 
         tablesSelection.setCellRenderer(new DatbaseTablesListRenderer());
+        tablesSelection.setEnabled(false);
         jScrollPane1.setViewportView(tablesSelection);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -117,10 +118,18 @@ public final class PhpClassVisualPanel1 extends JPanel {
 			//tablesModel.addElement(conn.getDisplayName());
 			ConnectionManager.getDefault().showConnectionDialog(conn);
 			Set<Table> tables=Table.getTables(conn.getJDBCConnection());
-			for (Table t : tables) {
-				tablesModel.addElement(t);
+			if (!tables.isEmpty()) {
+				getTablesSelection().setEnabled(true);
+				for (Table t : tables) {
+					tablesModel.addElement(t);
+				}
+			} else {
+				tablesModel.addElement("Could not find any tables ...");
+				getTablesSelection().setEnabled(false);
 			}
 			getTablesSelection().setModel(tablesModel);
+		} else {
+			getTablesSelection().setEnabled(false);
 		}
 		getTablesSelection().setModel(tablesModel);
 	}//GEN-LAST:event_connectionSelectorActionPerformed
