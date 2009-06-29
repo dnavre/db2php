@@ -279,7 +279,7 @@ public class PhpCodeGenerator {
 		Set<Field> keys=getTable().getPrimaryKeys();
 		if (!keys.isEmpty()) {
 			s.append(" WHERE ");
-			s.append(CollectionUtil.join(keys, ",", fieldAssign));
+			s.append(CollectionUtil.join(keys, " AND ", fieldAssign));
 		}
 		s.append("\";\n");
 
