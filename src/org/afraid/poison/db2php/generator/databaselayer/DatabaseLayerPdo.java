@@ -36,13 +36,16 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 		return "PDO (PHP Data Objects)";
 	}
 
-	private String getBindingCodeField(PhpCodeGenerator generator, List<Field> fields) {
+	private String getBindingCodeField(PhpCodeGenerator generator, List<Field> fields, int start) {
 		StringBuilder s=new StringBuilder();
-		int i=0;
 		for (Field f : fields) {
-			s.append("\t\t$stmt->bindValue(").append(++i).append(",").append(generator.getGetterCall(f)).append(");\n");
+			s.append("\t\t$stmt->bindValue(").append(++start).append(",").append(generator.getGetterCall(f)).append(");\n");
 		}
 		return s.toString();
+	}
+
+	private String getBindingCodeField(PhpCodeGenerator generator, List<Field> fields) {
+		return getBindingCodeField(generator, fields, 0);
 	}
 
 	private String getStmtInit(String cstr) {
@@ -74,7 +77,7 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 	@Override
 	public String getSelectCode(PhpCodeGenerator generator) {
 		StringBuilder s=new StringBuilder();
-		// append
+		// assign data from hash
 		s.append("\tpublic function ").append("assignByHash").append("($result) {\n");
 		String rAccess;
 		for (Field f : generator.getTable().getFields()) {
@@ -83,7 +86,7 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 		}
 		s.append("\t}\n");
 
-
+		// prepare/execute statement
 		s.append(getSnippetFromResource(generator, "DatabaseLayerPdo.snippet.getById.php"));
 		s.append("\tpublic static function ").append(METHOD_SELECT_ID_NAME).append("(PDO $db,");
 		s.append(generator.getFieldList(new ArrayList<Field>(generator.getTable().getPrimaryKeys())));
@@ -115,10 +118,17 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 	@Override
 	public String getInsertCode(PhpCodeGenerator generator) {
 		StringBuilder s=new StringBuilder();
+		// extra function to bind values
+		s.append("\tprotected function ").append("bindValues").append("(PDOStatement &$stmt) {\n");
+		s.append(getBindingCodeField(generator, new ArrayList<Field>(generator.getTable().getFields())));
+		s.append("\t}\n");
+
+		//
 		s.append(getSnippetFromResource(generator, "DatabaseLayerPdo.snippet.insertIntoDatabase.php"));
 		s.append("\tpublic function ").append(METHOD_INSERT_NAME).append("(PDO $db) {\n");
 		s.append(getStmtInit("self::SQL_INSERT"));
-		s.append(getBindingCodeField(generator, new ArrayList<Field>(generator.getTable().getFields())));
+		//s.append(getBindingCodeField(generator, new ArrayList<Field>(generator.getTable().getFields())));
+		s.append("\t\t$this->bindValues($stmt);\n");
 		s.append(getStmtExecute());
 		
 		for (Field f : generator.getTable().getFieldsAutoIncrement()) {
@@ -137,9 +147,11 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 		s.append(getSnippetFromResource(generator, "DatabaseLayerPdo.snippet.updateToDatabase.php"));
 		s.append("\tpublic function ").append(METHOD_UPDATE_NAME).append("(PDO $db) {\n");
 		s.append(getStmtInit("self::SQL_UPDATE"));
-		List<Field> fields=new ArrayList<Field>(generator.getTable().getFields());
-		fields.addAll(generator.getTable().getPrimaryKeys());
-		s.append(getBindingCodeField(generator, fields));
+		//List<Field> fields=new ArrayList<Field>(generator.getTable().getFields());
+		//fields.addAll(generator.getTable().getPrimaryKeys());
+		//s.append(getBindingCodeField(generator, fields));
+		s.append("\t\t$this->bindValues($stmt);\n");
+		s.append(getBindingCodeField(generator, new ArrayList<Field>(generator.getTable().getPrimaryKeys()), generator.getTable().getFields().size()));
 		s.append(getStmtExecute());
 		s.append(getStmtCloseCursor());
 		s.append(generator.getTrackingPristineState());
