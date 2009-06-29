@@ -40,7 +40,7 @@ class DatbaseTablesListRenderer implements ListCellRenderer {
 				label.setToolTipText("No Primary Key!");
 
 			} else {
-				label.setBackground(list.getForeground());
+				label.setBackground(list.getBackground());
 			}
 			if (iss) {
 				label.setBorder(BorderFactory.createLineBorder(list.getSelectionForeground(), 2));
