@@ -33,6 +33,8 @@ import org.afraid.poison.db2php.generator.CodeGeneratorSettings;
 import org.afraid.poison.db2php.generator.PhpCodeGenerator;
 import org.afraid.poison.db2php.generator.Table;
 import org.afraid.poison.db2php.generator.databaselayer.DatabaseLayer;
+import org.openide.DialogDisplayer;
+import org.openide.NotifyDescriptor;
 import org.openide.WizardDescriptor;
 import org.openide.cookies.OpenCookie;
 import org.openide.filesystems.FileObject;
@@ -130,7 +132,20 @@ public final class PhpClassWizardIterator implements WizardDescriptor.Instantiat
 			settings.setOutputDirectory(p2.getDirectory());
 
 			Set<Table> failed=writeCode(tables, settings);
-			//DialogDisplayer.getDefault().notify(new NotifyDescriptor.Message(settings));
+			if (!failed.isEmpty()) {
+				PhpCodeGenerator generator;
+				StringBuilder failedMessage=new StringBuilder("The following files were not created:\n");
+				for (Table t : failed) {
+					generator=new PhpCodeGenerator(t);
+					generator.setSettings(settings);
+					failedMessage.append(generator.getFileName());
+					if (generator.getFile().exists()) {
+						failedMessage.append(" (already exists, refusing to overwrite)");
+					}
+					failedMessage.append("\n");
+				}
+				DialogDisplayer.getDefault().notify(new NotifyDescriptor.Message(failedMessage));
+			}
 
 		}
 		return Collections.EMPTY_SET;
