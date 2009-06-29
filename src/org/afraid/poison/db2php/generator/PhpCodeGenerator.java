@@ -202,6 +202,7 @@ public class PhpCodeGenerator {
 	public String getFieldList(List<Field> fields) {
 		return CollectionUtil.join(fields, ",", new StringMutator() {
 
+			@Override
 			public String transform(Object s) {
 				return new StringBuilder("$").append(getMemberName((Field) s)).toString();
 			}
@@ -237,6 +238,7 @@ public class PhpCodeGenerator {
 		s.append("\tprivate static $PRIMARY_KEYS=array(");
 		s.append(CollectionUtil.join(getTable().getPrimaryKeys(), ",", new StringMutator() {
 
+			@Override
 			public String transform(Object s) {
 				return new StringBuilder("self::").append(getConstName((Field) s)).toString();
 			}
@@ -246,6 +248,7 @@ public class PhpCodeGenerator {
 		s.append("\tprivate static $FIELD_NAMES=array(\n");
 		s.append(CollectionUtil.join(getTable().getFields(), ",\n", new StringMutator() {
 
+			@Override
 			public String transform(Object s) {
 				Field f=(Field) s;
 				return new StringBuilder("\t\tself::").append(getConstName(f)).append("=>'").append(f.getName()).append("'").toString();
@@ -276,6 +279,7 @@ public class PhpCodeGenerator {
 		s.append(" SET ");
 		StringMutator fieldAssign=new StringMutator() {
 
+			@Override
 			public String transform(Object s) {
 				return new StringBuilder(((Field) s).getName()).append("=?").toString();
 			}
@@ -319,6 +323,7 @@ public class PhpCodeGenerator {
 		s.append("\t\treturn array(\n");
 		s.append(CollectionUtil.join(fields, ",\n", new StringMutator() {
 
+			@Override
 			public String transform(Object s) {
 				Field f=(Field) s;
 				return new StringBuilder("\t\t\tself::").append(getConstName(f)).append("=>").append(getGetterCall(f)).toString();
