@@ -27,6 +27,7 @@ import org.afraid.poison.common.CollectionUtil;
 import org.afraid.poison.db2php.generator.Table;
 
 /**
+ * custom cell renderer for table list
  *
  * @author Andreas Schnaiter <rc.poison@gmail.com>
  */
