@@ -95,6 +95,7 @@ public class Table {
 				field.setDefaultValue(rsetColumns.getString("COLUMN_DEF"));
 				field.setNullable(rsetColumns.getString("IS_NULLABLE").equalsIgnoreCase("YES"));
 				field.setAutoIncrement(rsetColumns.getString("IS_AUTOINCREMENT").equalsIgnoreCase("YES"));
+				field.setComment(rsetColumns.getString("REMARKS"));
 				fields.add(field);
 			}
 			rsetColumns.close();

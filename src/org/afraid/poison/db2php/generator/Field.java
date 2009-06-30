@@ -35,6 +35,7 @@ public class Field {
 	private String defaultValue;
 	private boolean primaryKey=false;
 	private boolean autoIncrement=false;
+	private String comment;
 
 	/**
 	 * @return the name
@@ -167,6 +168,20 @@ public class Field {
 	 */
 	public void setAutoIncrement(boolean autoIncrement) {
 		this.autoIncrement=autoIncrement;
+	}
+
+	/**
+	 * @return the comment
+	 */
+	public String getComment() {
+		return comment;
+	}
+
+	/**
+	 * @param comment the comment to set
+	 */
+	public void setComment(String comment) {
+		this.comment=comment;
 	}
 
 	@Override
