@@ -46,6 +46,7 @@ class DatbaseTablesListRenderer extends JLabel implements ListCellRenderer {
 	 * @param chf has focus
 	 * @return
 	 */
+    @Override
 	public Component getListCellRendererComponent(JList list, Object value, int index, boolean iss, boolean chf) {
 		setText(value.toString());
 		if (value instanceof Table) {
