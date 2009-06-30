@@ -266,22 +266,29 @@ public class PhpCodeGenerator {
 		return s.toString();
 	}
 
+	public String getIdentifierQuoteString() {
+		if ("'".equals(getTable().getIdentifierQuoteString())) {
+			return "\\'";
+		}
+		return getTable().getIdentifierQuoteString();
+	}
+
 	public String getPreparedStatements() {
 		Set<Field> fields=getTable().getFields();
 		StringBuilder s=new StringBuilder();
 
 		// insert query
-		s.append("\tconst SQL_INSERT=\"INSERT INTO ").append(getTable().getName());
-		s.append(" (").append(CollectionUtil.join(fields, ",", getTable().getIdentifierQuoteString(), getTable().getIdentifierQuoteString())).append(") VALUES (").append(StringUtil.repeat("?,", fields.size()-1)).append("?)").append("\";\n");
+		s.append("\tconst SQL_INSERT='INSERT INTO ").append(getTable().getName());
+		s.append(" (").append(CollectionUtil.join(fields, ",", getIdentifierQuoteString(), getIdentifierQuoteString())).append(") VALUES (").append(StringUtil.repeat("?,", fields.size()-1)).append("?)").append("';\n");
 
 		// update query
-		s.append("\tconst SQL_UPDATE=\"UPDATE ").append(getTable().getName());
+		s.append("\tconst SQL_UPDATE='UPDATE ").append(getTable().getName());
 		s.append(" SET ");
 		StringMutator fieldAssign=new StringMutator() {
 
 			@Override
 			public String transform(Object s) {
-				return new StringBuilder().append(getTable().getIdentifierQuoteString()).append(((Field) s).getName()).append(getTable().getIdentifierQuoteString()).append("=?").toString();
+				return new StringBuilder().append(getIdentifierQuoteString()).append(((Field) s).getName()).append(getIdentifierQuoteString()).append("=?").toString();
 			}
 		};
 		s.append(CollectionUtil.join(fields, ",", fieldAssign));
@@ -290,23 +297,23 @@ public class PhpCodeGenerator {
 			s.append(" WHERE ");
 			s.append(CollectionUtil.join(keys, " AND ", fieldAssign));
 		}
-		s.append("\";\n");
+		s.append("';\n");
 
 		// select by id
-		s.append("\tconst SQL_SELECT_PK=\"SELECT * FROM ").append(getTable().getName());
+		s.append("\tconst SQL_SELECT_PK='SELECT * FROM ").append(getTable().getName());
 		if (!keys.isEmpty()) {
 			s.append(" WHERE ");
 			s.append(CollectionUtil.join(keys, " AND ", fieldAssign));
 		}
-		s.append("\";\n");
+		s.append("';\n");
 
 		// delete by id
-		s.append("\tconst SQL_DELETE_PK=\"DELETE FROM ").append(getTable().getName());
+		s.append("\tconst SQL_DELETE_PK='DELETE FROM ").append(getTable().getName());
 		if (!keys.isEmpty()) {
 			s.append(" WHERE ");
 			s.append(CollectionUtil.join(keys, " AND ", fieldAssign));
 		}
-		s.append("\";\n");
+		s.append("';\n");
 		return s.toString();
 	}
 
