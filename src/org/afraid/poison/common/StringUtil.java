@@ -156,7 +156,7 @@ public class StringUtil {
 		if (!(str.contains("_")||str.equals(str.toUpperCase()))) {
 			return str;
 		}
-		String[] split=str.split("_+");
+		String[] split=str.split("[\\s_]+");
 		StringBuilder res=new StringBuilder();
 		boolean first=true;
 		for (String s : split) {
