@@ -78,6 +78,33 @@ abstract public class DatabaseLayer {
 				.append(getDeleteCode(generator)).toString();
 	}
 
+	public String getEscapeCode(String parameter) {
+		StringBuilder s=new StringBuilder();
+		return s.toString();
+	}
+
+	public String getSqlUpdate(PhpCodeGenerator generator)  {
+		StringBuilder s=new StringBuilder();
+		return s.toString();
+	}
+
+	public String getSqlSelect(PhpCodeGenerator generator)  {
+		StringBuilder s=new StringBuilder();
+		return s.toString();
+	}
+
+	public String getSqlInsert(PhpCodeGenerator generator)  {
+		StringBuilder s=new StringBuilder();
+		return s.toString();
+	}
+
+	public String getSqlDelete(PhpCodeGenerator generator)  {
+		StringBuilder s=new StringBuilder();
+		return s.toString();
+	}
+
+
+
 	@Override
 	public String toString() {
 		return getName();
