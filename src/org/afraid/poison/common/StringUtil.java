@@ -153,10 +153,10 @@ public class StringUtil {
 	 * @return the camel case string with the first character lower case
 	 */
 	public static String toCamelCase(String str) {
-		if (!(str.contains("_")||str.equals(str.toUpperCase()))) {
+		if (!(str.matches(".*[^a-zA-Z0-9]+.*")||str.equals(str.toUpperCase()))) {
 			return str;
 		}
-		String[] split=str.split("[\\s_]+");
+		String[] split=str.split("[^a-zA-Z0-9]+");
 		StringBuilder res=new StringBuilder();
 		boolean first=true;
 		for (String s : split) {
