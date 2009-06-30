@@ -38,15 +38,6 @@ class DatbaseTablesListCellRenderer extends JLabel implements ListCellRenderer {
 		setOpaque(true);
 	}
 
-	/**
-	 *
-	 * @param list
-	 * @param value
-	 * @param index
-	 * @param iss is selecte
-	 * @param chf has focus
-	 * @return
-	 */
     @Override
 	public Component getListCellRendererComponent(JList list, Object value, int index, boolean iss, boolean chf) {
 		setText(value.toString());
