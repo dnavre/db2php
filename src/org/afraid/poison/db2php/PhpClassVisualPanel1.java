@@ -79,7 +79,7 @@ public final class PhpClassVisualPanel1 extends JPanel {
 
         org.openide.awt.Mnemonics.setLocalizedText(jLabel1, org.openide.util.NbBundle.getMessage(PhpClassVisualPanel1.class, "PhpClassVisualPanel1.jLabel1.text")); // NOI18N
 
-        tablesSelection.setCellRenderer(new DatbaseTablesListRenderer());
+        tablesSelection.setCellRenderer(new DatbaseTablesListCellRenderer());
         tablesSelection.setEnabled(false);
         jScrollPane1.setViewportView(tablesSelection);
 
