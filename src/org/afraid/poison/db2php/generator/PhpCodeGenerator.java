@@ -272,7 +272,7 @@ public class PhpCodeGenerator {
 
 		// insert query
 		s.append("\tconst SQL_INSERT=\"INSERT INTO ").append(getTable().getName());
-		s.append(" (").append(CollectionUtil.join(fields, ",")).append(") VALUES (").append(StringUtil.repeat("?,", fields.size()-1)).append("?)").append("\";\n");
+		s.append(" (").append(CollectionUtil.join(fields, ",", getTable().getIdentifierQuoteString(), getTable().getIdentifierQuoteString())).append(") VALUES (").append(StringUtil.repeat("?,", fields.size()-1)).append("?)").append("\";\n");
 
 		// update query
 		s.append("\tconst SQL_UPDATE=\"UPDATE ").append(getTable().getName());
@@ -281,7 +281,7 @@ public class PhpCodeGenerator {
 
 			@Override
 			public String transform(Object s) {
-				return new StringBuilder(((Field) s).getName()).append("=?").toString();
+				return new StringBuilder().append(getTable().getIdentifierQuoteString()).append(((Field) s).getName()).append(getTable().getIdentifierQuoteString()).append("=?").toString();
 			}
 		};
 		s.append(CollectionUtil.join(fields, ",", fieldAssign));

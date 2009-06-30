@@ -36,6 +36,7 @@ public class Table {
 	private String name;
 	private Set<Field> fields=null;
 	private Set<Field> primaryKeys=null;
+	private String identifierQuoteString;
 
 	public Table(Connection connection, String tableName) {
 		setName(name);
@@ -56,8 +57,9 @@ public class Table {
 	 */
 	private void initFields(Connection connection) {
 		try {
+			setIdentifierQuoteString(connection.getMetaData().getIdentifierQuoteString());
+			
 			// get list of primary keys
-			//connection.getMetaData().getIdentifierQuoteString();
 			ResultSet rsetPrimaryKeys=connection.getMetaData().getPrimaryKeys(getCatalog(), getSchema(), getName());
 			Set<String> primaryKeyFields=new LinkedHashSet<String>();
 			while (rsetPrimaryKeys.next()) {
@@ -65,6 +67,18 @@ public class Table {
 			}
 			rsetPrimaryKeys.close();
 			rsetPrimaryKeys=null;
+
+			/* TODO: implement
+			// get row identifiers
+			ResultSet rsetRowIdentifiers=connection.getMetaData().getBestRowIdentifier(getCatalog(), getSchema(), getName(), DatabaseMetaData.bestRowNotPseudo, true);
+			rsetRowIdentifiers.close();
+			rsetRowIdentifiers=null;
+
+			// get indexes
+			ResultSet rsetIndexes=connection.getMetaData().getIndexInfo(getCatalog(), getSchema(), getName(), false, false);
+			rsetIndexes.close();
+			rsetIndexes=null;
+			*/
 
 			// get list of fields
 			ResultSet rsetColumns=connection.getMetaData().getColumns(getCatalog(), getSchema(), getName(), null);
@@ -194,6 +208,20 @@ public class Table {
 		Set<Field> notAutoIncrement=getFields();
 		notAutoIncrement.removeAll(getFieldsAutoIncrement());
 		return notAutoIncrement;
+	}
+
+	/**
+	 * @return the identifierQuoteString
+	 */
+	public String getIdentifierQuoteString() {
+		return identifierQuoteString;
+	}
+
+	/**
+	 * @param identifierQuoteString the identifierQuoteString to set
+	 */
+	public void setIdentifierQuoteString(String identifierQuoteString) {
+		this.identifierQuoteString=identifierQuoteString;
 	}
 
 	@Override
