@@ -1,6 +1,5 @@
 build
 dist
-manifest.mf
 nbproject/build-impl.xml
 nbproject/private
 test
