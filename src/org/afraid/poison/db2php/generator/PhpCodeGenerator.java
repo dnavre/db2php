@@ -30,17 +30,23 @@ import org.afraid.poison.common.StringMutator;
 import org.openide.util.Exceptions;
 
 /**
- * generates PHP CLass code from a table
+ * generates PHP code from a table
  *
  * @author Andreas Schnaiter <rc.poison@gmail.com>
  */
 public class PhpCodeGenerator {
 
 	private Table table;
-	private CodeGeneratorSettings settings=new CodeGeneratorSettings();
+	private CodeGeneratorSettings settings;
 
 	public PhpCodeGenerator(Table table) {
 		setTable(table);
+		setSettings(new CodeGeneratorSettings());
+	}
+
+	public PhpCodeGenerator(Table table, CodeGeneratorSettings settings) {
+		setTable(table);
+		setSettings(settings);
 	}
 
 	/**
@@ -146,30 +152,70 @@ public class PhpCodeGenerator {
 		return true;
 	}
 
+	/**
+	 * get the class name
+	 *
+	 * @return the class name
+	 */
 	public String getClassName() {
 		return new StringBuilder().append(getClassNamePrefix()).append(StringUtil.firstCharToUpperCase(StringUtil.toCamelCase(getTable().getName()))).append(getClassNameSuffix()).toString();
 	}
 
+	/**
+	 * get the file name
+	 *
+	 * @return the file name
+	 */
 	public String getFileName() {
 		return new StringBuilder(getClassName()).append(".class.php").toString();
 	}
 
+	/**
+	 * get the member variable name
+	 *
+	 * @param field the field for which to get the member name
+	 * @return the member name
+	 */
 	public String getMemberName(Field field) {
 		return StringUtil.toCamelCase(field.getName());
 	}
 
+	/**
+	 * get the method name
+	 *
+	 * @param field the field for which to get the method name
+	 * @return the method name
+	 */
 	public String getMethodName(Field field) {
 		return StringUtil.firstCharToUpperCase(getMemberName(field));
 	}
 
+	/**
+	 * get the getter name
+	 *
+	 * @param field the field for which to get the getter name
+	 * @return the getter name
+	 */
 	public String getGetterName(Field field) {
 		return new StringBuilder("get").append(getMethodName(field)).toString();
 	}
 
+	/**
+	 * get call to getter
+	 *
+	 * @param f the field for which to get the call to getter
+	 * @return call to getter
+	 */
 	public String getGetterCall(Field f) {
 		return new StringBuilder("$this->").append(getGetterName(f)).append("()").toString();
 	}
 
+	/**
+	 * get getter definition
+	 *
+	 * @param field the field for which to get the getter definition
+	 * @return the getter definition
+	 */
 	public String getGetter(Field field) {
 		StringBuilder s=new StringBuilder("\tpublic function ").append(getGetterName(field)).append("() {\n");
 		s.append("\t\treturn $this->").append(getMemberName(field)).append(";\n");
@@ -177,18 +223,44 @@ public class PhpCodeGenerator {
 		return s.toString();
 	}
 
+	/**
+	 * get the setter name
+	 *
+	 * @param field the field for which to get the setter name
+	 * @return the setter name
+	 */
 	public String getSetterName(Field field) {
 		return new StringBuilder("set").append(getMethodName(field)).toString();
 	}
 
+	/**
+	 * get call to setter
+	 *
+	 * @param f the field for which to get the call to setter
+	 * @param param the parameter to pass in the setter call
+	 * @return call to setter
+	 */
 	public String getSetterCall(Field f, String param, String context) {
 		return new StringBuilder(context).append("->").append(getSetterName(f)).append("(").append(param).append(")").toString();
 	}
 
+	/**
+	 * get call to setter
+	 *
+	 * @param f the field for which to get the call to setter
+	 * @param param the parameter to pass in the setter call
+	 * @return call to setter
+	 */
 	public String getSetterCall(Field f, String param) {
 		return getSetterCall(f, param, "$this");
 	}
 
+	/**
+	 * get setter definition
+	 *
+	 * @param field the field for which to get the setter definition
+	 * @return the setter definition
+	 */
 	public String getSetter(Field field) {
 		StringBuilder s=new StringBuilder("\tpublic function ").append(getSetterName(field)).append("($").append(getMemberName(field)).append(") {\n");
 		if (isTrackFieldModifications()) {
@@ -199,6 +271,12 @@ public class PhpCodeGenerator {
 		return s.toString();
 	}
 
+	/**
+	 * get the comma separated list of fields
+	 *
+	 * @param fields the fields for which to build the list
+	 * @return comma separated list of fields
+	 */
 	public String getFieldList(List<Field> fields) {
 		return CollectionUtil.join(fields, ",", new StringMutator() {
 
@@ -209,6 +287,11 @@ public class PhpCodeGenerator {
 		});
 	}
 
+	/**
+	 * get code for all accessors
+	 * 
+	 * @return code for all accessors
+	 */
 	public String getAccessors() {
 		StringBuilder s=new StringBuilder();
 		for (Field f : getTable().getFields()) {
@@ -218,14 +301,30 @@ public class PhpCodeGenerator {
 		return s.toString();
 	}
 
+	/**
+	 * get constant name
+	 *
+	 * @param the field for which to get the constant name
+	 * @return constant definitions for fields ids
+	 */
 	public String getConstName(Field field) {
 		return new StringBuilder("FIELD_").append(getMemberName(field).toUpperCase()).toString();
 	}
 
+	/**
+	 * get code to notify that object is in pristine state if tracking is enabled
+	 *
+	 * @return code to notify that object is in pristine state
+	 */
 	public String getTrackingPristineState() {
 		return isTrackFieldModifications() ? new StringBuilder("\t\t$this->notifyPristine();\n").toString() : new String();
 	}
 
+	/**
+	 * get constant definitions for fields ids
+	 *
+	 * @return constant definitions for fields ids
+	 */
 	public String getConsts() {
 		StringBuilder s=new StringBuilder();
 		// field ids for misc use
@@ -258,6 +357,11 @@ public class PhpCodeGenerator {
 		return s.toString();
 	}
 
+	/**
+	 * get code for the member declaration
+	 *
+	 * @return code for the member declaration
+	 */
 	public String getMembers() {
 		StringBuilder s=new StringBuilder();
 		for (Field f : getTable().getFields()) {
@@ -266,6 +370,11 @@ public class PhpCodeGenerator {
 		return s.toString();
 	}
 
+	/**
+	 * get the string in which to quote the identifiers in SQL
+	 *
+	 * @return the string in which to quote the identifiers in SQL
+	 */
 	public String getIdentifierQuoteString() {
 		if ("'".equals(getTable().getIdentifierQuoteString())) {
 			return "\\'";
@@ -273,6 +382,11 @@ public class PhpCodeGenerator {
 		return getTable().getIdentifierQuoteString();
 	}
 
+	/**
+	 * get the prepared statements
+	 *
+	 * @return the INSERT/UPDATE/SELECT/DELETE psrepared statements
+	 */
 	public String getPreparedStatements() {
 		Set<Field> fields=getTable().getFields();
 		StringBuilder s=new StringBuilder();
@@ -317,14 +431,30 @@ public class PhpCodeGenerator {
 		return s.toString();
 	}
 
+	/**
+	 * get the method code to get array from object
+	 *
+	 * @return the method code to get array from object
+	 */
 	public String getUtilMethodToArray() {
 		return getUtilMethodArray(getTable().getFields(), "toArray");
 	}
 
+	/**
+	 * get the method code to get array of primary key values
+	 * @return the method code to get array of primary key values
+	 */
 	public String getUtilMethodgetPrimaryKeysToArray() {
 		return getUtilMethodArray(getTable().getPrimaryKeys(), "getPrimaryKeyValues");
 	}
 
+	/**
+	 * helper method to generate array for passed fields
+	 *
+	 * @param fields the fields which to add to the array
+	 * @param methodName the name for the method
+	 * @return code to generate array from passed fields
+	 */
 	private String getUtilMethodArray(Set<Field> fields, String methodName) {
 		StringBuilder s=new StringBuilder("\tpublic function ").append(methodName).append("() {\n");
 		s.append("\t\treturn array(\n");
@@ -342,6 +472,11 @@ public class PhpCodeGenerator {
 		return s.toString();
 	}
 
+	/**
+	 * get all code
+	 *
+	 * @return all code
+	 */
 	public String getCode() {
 		StringBuilder s=new StringBuilder("<?php\n");
 		s.append("class ").append(getClassName()).append(" {\n");
@@ -364,6 +499,12 @@ public class PhpCodeGenerator {
 		return s.toString();
 	}
 
+	/**
+	 * get the file which this tables code will be written to
+	 *
+	 * @return  the file which this tables code will be written to
+	 * @throws IOException if no directoy is set
+	 */
 	public File getFile() throws IOException {
 		if (null==getSettings().getOutputDirectory()) {
 			throw new IOException("no directory configured");
@@ -371,6 +512,12 @@ public class PhpCodeGenerator {
 		return new File(getSettings().getOutputDirectory(), getFileName());
 	}
 
+	/**
+	 * write code to specified file
+	 *
+	 * @param file the file
+	 * @throws IOException if the file exists
+	 */
 	public void writeCode(File file) throws IOException {
 		if (file.exists()) {
 			throw new IOException("file exists, refusing to overwrite");
@@ -378,6 +525,11 @@ public class PhpCodeGenerator {
 		FileUtil.writeString(getCode(), file);
 	}
 
+	/**
+	 * write the code
+	 *
+	 * @throws IOException if the file exists
+	 */
 	public void writeCode() throws IOException {
 		writeCode(getFile());
 	}
