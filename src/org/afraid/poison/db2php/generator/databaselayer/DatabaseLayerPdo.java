@@ -64,16 +64,6 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 		return new StringBuilder("\t\treturn $affected;\n").toString();
 	}
 
-	private String getSnippetFromResource(CodeGenerator generator, String resource) {
-		StringBuilder s=new StringBuilder();
-		try {
-			s.append(IOUtil.readString(getClass().getResourceAsStream(resource)).replace("<type>", generator.getClassName()));
-		} catch (IOException ex) {
-			Exceptions.printStackTrace(ex);
-		}
-		return s.toString();
-	}
-
 	@Override
 	public String getCodeSelect(CodeGenerator generator) {
 		StringBuilder s=new StringBuilder();

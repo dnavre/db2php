@@ -32,26 +32,38 @@ public class DatabaseLayerInterface extends DatabaseLayer {
 
 	@Override
 	public String getCodeSelect(CodeGenerator generator) {
-		throw new UnsupportedOperationException("Not supported yet.");
+		StringBuilder s=new StringBuilder();
+		s.append("\tpublic function ").append("assignByHash").append("($result) {\n");
+		s.append("\t}\n");
+		return s.toString();
 	}
 
 	@Override
 	public String getCodeInsert(CodeGenerator generator) {
-		throw new UnsupportedOperationException("Not supported yet.");
+		StringBuilder s=new StringBuilder();
+		s.append("\tpublic function ").append(METHOD_INSERT_NAME).append("(PDO $db) {\n");
+		s.append("\t}\n");
+		return s.toString();
 	}
 
 	@Override
 	public String getCodeUpdate(CodeGenerator generator) {
-		throw new UnsupportedOperationException("Not supported yet.");
+		StringBuilder s=new StringBuilder();
+		s.append("\tpublic function ").append(METHOD_UPDATE_NAME).append("(PDO $db) {\n");
+		s.append("\t}\n");
+		return s.toString();
 	}
 
 	@Override
 	public String getCodeDelete(CodeGenerator generator) {
-		throw new UnsupportedOperationException("Not supported yet.");
+		StringBuilder s=new StringBuilder();
+		s.append("\tpublic function ").append(METHOD_DELETE_NAME).append("(PDO $db");
+		s.append("\t}\n");
+		return s.toString();
 	}
 
 	@Override
 	public String getSnippet() {
-		throw new UnsupportedOperationException("Not supported yet.");
+		return new String();
 	}
 }

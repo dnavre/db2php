@@ -17,11 +17,14 @@
  */
 package org.afraid.poison.db2php.generator.databaselayer;
 
+import java.io.IOException;
 import org.afraid.poison.db2php.generator.*;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import org.afraid.poison.common.CollectionUtil;
+import org.afraid.poison.common.IOUtil;
 import org.afraid.poison.common.StringMutator;
+import org.openide.util.Exceptions;
 
 /**
  * Database Layer type
@@ -148,6 +151,15 @@ abstract public class DatabaseLayer {
 	}
 
 
+	protected String getSnippetFromResource(CodeGenerator generator, String resource) {
+		StringBuilder s=new StringBuilder();
+		try {
+			s.append(IOUtil.readString(getClass().getResourceAsStream(resource)).replace("<type>", generator.getClassName()));
+		} catch (IOException ex) {
+			Exceptions.printStackTrace(ex);
+		}
+		return s.toString();
+	}
 
 	@Override
 	public String toString() {
