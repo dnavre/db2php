@@ -17,7 +17,7 @@
  */
 package org.afraid.poison.db2php.generator.databaselayer;
 
-import org.afraid.poison.db2php.generator.PhpCodeGenerator;
+import org.afraid.poison.db2php.generator.CodeGenerator;
 
 /**
  *
@@ -31,22 +31,22 @@ public class DatabaseLayerInterface extends DatabaseLayer {
 	}
 
 	@Override
-	public String getSelectCode(PhpCodeGenerator generator) {
+	public String getSelectCode(CodeGenerator generator) {
 		throw new UnsupportedOperationException("Not supported yet.");
 	}
 
 	@Override
-	public String getInsertCode(PhpCodeGenerator generator) {
+	public String getInsertCode(CodeGenerator generator) {
 		throw new UnsupportedOperationException("Not supported yet.");
 	}
 
 	@Override
-	public String getUpdateCode(PhpCodeGenerator generator) {
+	public String getUpdateCode(CodeGenerator generator) {
 		throw new UnsupportedOperationException("Not supported yet.");
 	}
 
 	@Override
-	public String getDeleteCode(PhpCodeGenerator generator) {
+	public String getDeleteCode(CodeGenerator generator) {
 		throw new UnsupportedOperationException("Not supported yet.");
 	}
 

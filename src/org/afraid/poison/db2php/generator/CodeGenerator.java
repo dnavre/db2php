@@ -34,17 +34,17 @@ import org.openide.util.Exceptions;
  *
  * @author Andreas Schnaiter <rc.poison@gmail.com>
  */
-public class PhpCodeGenerator {
+public class CodeGenerator {
 
 	private Table table;
-	private CodeGeneratorSettings settings;
+	private Settings settings;
 
-	public PhpCodeGenerator(Table table) {
+	public CodeGenerator(Table table) {
 		setTable(table);
-		setSettings(new CodeGeneratorSettings());
+		setSettings(new Settings());
 	}
 
-	public PhpCodeGenerator(Table table, CodeGeneratorSettings settings) {
+	public CodeGenerator(Table table, Settings settings) {
 		setTable(table);
 		setSettings(settings);
 	}
@@ -66,14 +66,14 @@ public class PhpCodeGenerator {
 	/**
 	 * @return the settings
 	 */
-	public CodeGeneratorSettings getSettings() {
+	public Settings getSettings() {
 		return settings;
 	}
 
 	/**
 	 * @param settings the settings to set
 	 */
-	public void setSettings(CodeGeneratorSettings settings) {
+	public void setSettings(Settings settings) {
 		this.settings=settings;
 	}
 

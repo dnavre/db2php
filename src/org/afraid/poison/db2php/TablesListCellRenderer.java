@@ -31,9 +31,9 @@ import org.afraid.poison.db2php.generator.Table;
  *
  * @author Andreas Schnaiter <rc.poison@gmail.com>
  */
-class DatbaseTablesListCellRenderer extends JLabel implements ListCellRenderer {
+class TablesListCellRenderer extends JLabel implements ListCellRenderer {
 
-	public DatbaseTablesListCellRenderer() {
+	public TablesListCellRenderer() {
 		super();
 		setOpaque(true);
 	}

@@ -17,7 +17,7 @@
  */
 package org.afraid.poison.db2php.generator.databaselayer;
 
-import org.afraid.poison.db2php.generator.PhpCodeGenerator;
+import org.afraid.poison.db2php.generator.CodeGenerator;
 
 /**
  *
@@ -31,22 +31,22 @@ public class DatabaseLayerNone extends DatabaseLayer {
 	}
 
 	@Override
-	public String getSelectCode(PhpCodeGenerator generator) {
+	public String getSelectCode(CodeGenerator generator) {
 		return new String();
 	}
 
 	@Override
-	public String getInsertCode(PhpCodeGenerator generator) {
+	public String getInsertCode(CodeGenerator generator) {
 		return new String();
 	}
 
 	@Override
-	public String getUpdateCode(PhpCodeGenerator generator) {
+	public String getUpdateCode(CodeGenerator generator) {
 		return new String();
 	}
 
 	@Override
-	public String getDeleteCode(PhpCodeGenerator generator) {
+	public String getDeleteCode(CodeGenerator generator) {
 		return new String();
 	}
 

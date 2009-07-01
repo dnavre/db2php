@@ -28,11 +28,11 @@ import javax.swing.event.ListSelectionListener;
 import org.openide.WizardDescriptor;
 import org.openide.util.HelpCtx;
 
-public class PhpClassWizardPanel1 implements WizardDescriptor.Panel, ListSelectionListener {
+public class PhpClassWizardPanelTableSelection implements WizardDescriptor.Panel, ListSelectionListener {
 
 	private WizardDescriptor wizard;
 
-	public PhpClassWizardPanel1(WizardDescriptor wizard) {
+	public PhpClassWizardPanelTableSelection(WizardDescriptor wizard) {
 		this.wizard=wizard;
 	}
 
@@ -49,8 +49,8 @@ public class PhpClassWizardPanel1 implements WizardDescriptor.Panel, ListSelecti
 	// create only those which really need to be visible.
 	public Component getComponent() {
 		if (component==null) {
-			component=new PhpClassVisualPanel1();
-			((PhpClassVisualPanel1) component).getTablesSelection().addListSelectionListener(this);
+			component=new PhpClassVisualPanelTableSelection();
+			((PhpClassVisualPanelTableSelection) component).getTablesSelection().addListSelectionListener(this);
 		}
 		return component;
 	}

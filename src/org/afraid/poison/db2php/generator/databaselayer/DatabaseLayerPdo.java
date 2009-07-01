@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.afraid.poison.common.IOUtil;
 import org.afraid.poison.db2php.generator.Field;
-import org.afraid.poison.db2php.generator.PhpCodeGenerator;
+import org.afraid.poison.db2php.generator.CodeGenerator;
 import org.openide.util.Exceptions;
 
 /**
@@ -36,7 +36,7 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 		return "PDO (PHP Data Objects)";
 	}
 
-	private String getBindingCodeField(PhpCodeGenerator generator, List<Field> fields, int start) {
+	private String getBindingCodeField(CodeGenerator generator, List<Field> fields, int start) {
 		StringBuilder s=new StringBuilder();
 		for (Field f : fields) {
 			s.append("\t\t$stmt->bindValue(").append(++start).append(",").append(generator.getGetterCall(f)).append(");\n");
@@ -44,7 +44,7 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 		return s.toString();
 	}
 
-	private String getBindingCodeField(PhpCodeGenerator generator, List<Field> fields) {
+	private String getBindingCodeField(CodeGenerator generator, List<Field> fields) {
 		return getBindingCodeField(generator, fields, 0);
 	}
 
@@ -64,7 +64,7 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 		return new StringBuilder("\t\treturn $affected;\n").toString();
 	}
 
-	private String getSnippetFromResource(PhpCodeGenerator generator, String resource) {
+	private String getSnippetFromResource(CodeGenerator generator, String resource) {
 		StringBuilder s=new StringBuilder();
 		try {
 			s.append(IOUtil.readString(getClass().getResourceAsStream(resource)).replace("<type>", generator.getClassName()));
@@ -75,7 +75,7 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 	}
 
 	@Override
-	public String getSelectCode(PhpCodeGenerator generator) {
+	public String getSelectCode(CodeGenerator generator) {
 		StringBuilder s=new StringBuilder();
 		// assign data from hash
 		s.append("\tpublic function ").append("assignByHash").append("($result) {\n");
@@ -116,7 +116,7 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 	}
 
 	@Override
-	public String getInsertCode(PhpCodeGenerator generator) {
+	public String getInsertCode(CodeGenerator generator) {
 		StringBuilder s=new StringBuilder();
 		// extra function to bind values
 		s.append("\tprotected function ").append("bindValues").append("(PDOStatement &$stmt) {\n");
@@ -142,7 +142,7 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 	}
 
 	@Override
-	public String getUpdateCode(PhpCodeGenerator generator) {
+	public String getUpdateCode(CodeGenerator generator) {
 		StringBuilder s=new StringBuilder();
 		s.append(getSnippetFromResource(generator, "DatabaseLayerPdo.snippet.updateToDatabase.php"));
 		s.append("\tpublic function ").append(METHOD_UPDATE_NAME).append("(PDO $db) {\n");
@@ -161,7 +161,7 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 	}
 
 	@Override
-	public String getDeleteCode(PhpCodeGenerator generator) {
+	public String getDeleteCode(CodeGenerator generator) {
 		StringBuilder s=new StringBuilder();
 		s.append(getSnippetFromResource(generator, "DatabaseLayerPdo.snippet.deleteFromDatabase.php"));
 		s.append("\tpublic function ").append(METHOD_DELETE_NAME).append("(PDO $db");

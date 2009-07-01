@@ -24,7 +24,7 @@ import org.afraid.poison.db2php.generator.databaselayer.DatabaseLayer;
  *
  * @author Andreas Schnaiter <rc.poison@gmail.com>
  */
-public class CodeGeneratorSettings {
+public class Settings {
 
 	private DatabaseLayer databaseLayer=DatabaseLayer.PDO;
 	private boolean generateChecks=false;

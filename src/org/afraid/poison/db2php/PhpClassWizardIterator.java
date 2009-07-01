@@ -29,8 +29,8 @@ import java.util.Set;
 import javax.swing.JComponent;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import org.afraid.poison.db2php.generator.CodeGeneratorSettings;
-import org.afraid.poison.db2php.generator.PhpCodeGenerator;
+import org.afraid.poison.db2php.generator.Settings;
+import org.afraid.poison.db2php.generator.CodeGenerator;
 import org.afraid.poison.db2php.generator.Table;
 import org.afraid.poison.db2php.generator.databaselayer.DatabaseLayer;
 import org.openide.DialogDisplayer;
@@ -54,7 +54,7 @@ public final class PhpClassWizardIterator implements WizardDescriptor.Instantiat
 	private WizardDescriptor.Panel[] getPanels() {
 		if (panels==null) {
 			panels=new WizardDescriptor.Panel[]{
-						new PhpClassWizardPanel1(wizard),
+						new PhpClassWizardPanelTableSelection(wizard),
 						new PhpClassWizardPanel2(wizard)
 					};
 			String[] steps=createSteps();
@@ -86,11 +86,11 @@ public final class PhpClassWizardIterator implements WizardDescriptor.Instantiat
 		return panels;
 	}
 
-	private Set<Table> writeCode(Set<Table> tables, CodeGeneratorSettings settings) {
+	private Set<Table> writeCode(Set<Table> tables, Settings settings) {
 		Set<Table> failed=new LinkedHashSet<Table>();
-		PhpCodeGenerator generator;
+		CodeGenerator generator;
 		for (Table t : tables) {
-			generator=new PhpCodeGenerator(t);
+			generator=new CodeGenerator(t);
 			generator.setSettings(settings);
 			try {
 				generator.writeCode();
@@ -119,11 +119,11 @@ public final class PhpClassWizardIterator implements WizardDescriptor.Instantiat
 
 	public Set instantiate() throws IOException {
 		if (wizard.getValue()==WizardDescriptor.FINISH_OPTION) {
-			PhpClassVisualPanel1 p1=(PhpClassVisualPanel1) getPanels()[0].getComponent();
+			PhpClassVisualPanelTableSelection p1=(PhpClassVisualPanelTableSelection) getPanels()[0].getComponent();
 			Set<Table> tables=p1.getSelected();
 
 			PhpClassVisualPanel2 p2=(PhpClassVisualPanel2) getPanels()[1].getComponent();
-			CodeGeneratorSettings settings=new CodeGeneratorSettings();
+			Settings settings=new Settings();
 			settings.setDatabaseLayer((DatabaseLayer) p2.getDatabaseLayerSelection().getSelectedItem());
 			settings.setGenerateChecks(p2.getGenerateChecksSelection().isSelected());
 			settings.setTrackFieldModifications(p2.getTrackModificationsSelection().isSelected());
@@ -133,10 +133,10 @@ public final class PhpClassWizardIterator implements WizardDescriptor.Instantiat
 
 			Set<Table> failed=writeCode(tables, settings);
 			if (!failed.isEmpty()) {
-				PhpCodeGenerator generator;
+				CodeGenerator generator;
 				StringBuilder failedMessage=new StringBuilder("The following files were not created:\n");
 				for (Table t : failed) {
-					generator=new PhpCodeGenerator(t);
+					generator=new CodeGenerator(t);
 					generator.setSettings(settings);
 					failedMessage.append(generator.getFileName());
 					if (generator.getFile().exists()) {

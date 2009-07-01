@@ -59,17 +59,17 @@ abstract public class DatabaseLayer {
 	 */
 	abstract public String getName();
 
-	abstract public String getSelectCode(PhpCodeGenerator generator);
+	abstract public String getSelectCode(CodeGenerator generator);
 
-	abstract public String getInsertCode(PhpCodeGenerator generator);
+	abstract public String getInsertCode(CodeGenerator generator);
 
-	abstract public String getUpdateCode(PhpCodeGenerator generator);
+	abstract public String getUpdateCode(CodeGenerator generator);
 
-	abstract public String getDeleteCode(PhpCodeGenerator generator);
+	abstract public String getDeleteCode(CodeGenerator generator);
 
 	abstract public String getSnippet();
 
-	public String getCode(PhpCodeGenerator generator) {
+	public String getCode(CodeGenerator generator) {
 		return new StringBuilder()
 				.append(getSnippet())
 				.append(getSelectCode(generator))
@@ -83,22 +83,22 @@ abstract public class DatabaseLayer {
 		return s.toString();
 	}
 
-	public String getSqlUpdate(PhpCodeGenerator generator)  {
+	public String getSqlUpdate(CodeGenerator generator)  {
 		StringBuilder s=new StringBuilder();
 		return s.toString();
 	}
 
-	public String getSqlSelect(PhpCodeGenerator generator)  {
+	public String getSqlSelect(CodeGenerator generator)  {
 		StringBuilder s=new StringBuilder();
 		return s.toString();
 	}
 
-	public String getSqlInsert(PhpCodeGenerator generator)  {
+	public String getSqlInsert(CodeGenerator generator)  {
 		StringBuilder s=new StringBuilder();
 		return s.toString();
 	}
 
-	public String getSqlDelete(PhpCodeGenerator generator)  {
+	public String getSqlDelete(CodeGenerator generator)  {
 		StringBuilder s=new StringBuilder();
 		return s.toString();
 	}

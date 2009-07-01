@@ -29,10 +29,10 @@ import org.netbeans.api.db.explorer.ConnectionManager;
 import org.netbeans.api.db.explorer.DatabaseConnection;
 import org.netbeans.api.db.explorer.support.DatabaseExplorerUIs;
 
-public final class PhpClassVisualPanel1 extends JPanel {
+public final class PhpClassVisualPanelTableSelection extends JPanel {
 
-	/** Creates new form PhpClassVisualPanel1 */
-	public PhpClassVisualPanel1() {
+	/** Creates new form PhpClassVisualPanelTableSelection */
+	public PhpClassVisualPanelTableSelection() {
 		initComponents();
 		DatabaseExplorerUIs.connect(connectionSelector, ConnectionManager.getDefault());
 	}
@@ -77,9 +77,9 @@ public final class PhpClassVisualPanel1 extends JPanel {
             }
         });
 
-        org.openide.awt.Mnemonics.setLocalizedText(jLabel1, org.openide.util.NbBundle.getMessage(PhpClassVisualPanel1.class, "PhpClassVisualPanel1.jLabel1.text")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(jLabel1, org.openide.util.NbBundle.getMessage(PhpClassVisualPanelTableSelection.class, "PhpClassVisualPanelTableSelection.jLabel1.text")); // NOI18N
 
-        tablesSelection.setCellRenderer(new DatbaseTablesListCellRenderer());
+        tablesSelection.setCellRenderer(new org.afraid.poison.db2php.TablesListCellRenderer());
         tablesSelection.setEnabled(false);
         jScrollPane1.setViewportView(tablesSelection);
 
