@@ -43,8 +43,8 @@ abstract public class DatabaseLayer {
 	protected static final String METHOD_UPDATE_NAME="updateToDatabase";
 	protected static final String METHOD_INSERT_NAME="insertIntoDatabase";
 	protected static final String METHOD_DELETE_NAME="deleteFromDatabase";
-
 	public static final Set<DatabaseLayer> AVAILABLE;
+
 	static {
 		AVAILABLE=new LinkedHashSet<DatabaseLayer>();
 		AVAILABLE.add(NONE);
@@ -75,16 +75,12 @@ abstract public class DatabaseLayer {
 	abstract public String getSnippet();
 
 	public String getCode(CodeGenerator generator) {
-		return new StringBuilder()
-				.append(getSnippet())
-				.append(getCodeSelect(generator))
-				.append(getCodeInsert(generator))
-				.append(getCodeUpdate(generator))
-				.append(getCodeDelete(generator)).toString();
+		return new StringBuilder().append(getSnippet()).append(getCodeSelect(generator)).append(getCodeInsert(generator)).append(getCodeUpdate(generator)).append(getCodeDelete(generator)).toString();
 	}
 
 	public String getEscapeCode(String parameter) {
 		StringBuilder s=new StringBuilder();
+		s.append("\t\t$db->escapeValue(").append(parameter).append(");\n");
 		return s.toString();
 	}
 
@@ -113,11 +109,11 @@ abstract public class DatabaseLayer {
 	 * @param generator instance of a code generator
 	 * @return update sql query
 	 */
-	public String getSqlUpdate(final CodeGenerator generator)  {
+	public String getSqlUpdate(final CodeGenerator generator) {
 		StringBuilder s=new StringBuilder();
-        Set<Field> fields=generator.getTable().getFields();
-        Set<Field> keys=generator.getTable().getPrimaryKeys();
-       // update query
+		Set<Field> fields=generator.getTable().getFields();
+		Set<Field> keys=generator.getTable().getPrimaryKeys();
+		// update query
 		s.append("UPDATE ").append(generator.getTable().getName());
 		s.append(" SET ");
 		StringMutator fieldAssign=new StringMutatorFieldAssign(generator);
@@ -135,12 +131,12 @@ abstract public class DatabaseLayer {
 	 * @param generator instance of a code generator
 	 * @return select sql query
 	 */
-	public String getSqlSelect(CodeGenerator generator)  {
+	public String getSqlSelect(CodeGenerator generator) {
 		StringBuilder s=new StringBuilder();
-        Set<Field> keys=generator.getTable().getPrimaryKeys();
-        // select by id
+		Set<Field> keys=generator.getTable().getPrimaryKeys();
+		// select by id
 		s.append("SELECT * FROM ").append(generator.getTable().getName());
-        StringMutator fieldAssign=new StringMutatorFieldAssign(generator);
+		StringMutator fieldAssign=new StringMutatorFieldAssign(generator);
 		if (!keys.isEmpty()) {
 			s.append(" WHERE ");
 			s.append(CollectionUtil.join(keys, " AND ", fieldAssign));
@@ -155,22 +151,20 @@ abstract public class DatabaseLayer {
 	 * @param generator instance of a code generator
 	 * @return insert sql query
 	 */
-	public String getSqlInsert(final CodeGenerator generator)  {
+	public String getSqlInsert(final CodeGenerator generator) {
 		StringBuilder s=new StringBuilder();
-        Set<Field> fields=generator.getTable().getFields();
-        // insert query
+		Set<Field> fields=generator.getTable().getFields();
+		// insert query
 		s.append("INSERT INTO ").append(generator.getTable().getName());
-		s.append(" (")
-                .append(CollectionUtil.join(fields, ",", generator.getIdentifierQuoteString(), generator.getIdentifierQuoteString()))
-                .append(") VALUES (");
-        s.append(CollectionUtil.join(fields, ",", new StringMutator() {
+		s.append(" (").append(CollectionUtil.join(fields, ",", generator.getIdentifierQuoteString(), generator.getIdentifierQuoteString())).append(") VALUES (");
+		s.append(CollectionUtil.join(fields, ",", new StringMutator() {
 
-            @Override
-            public String transform(Object input) {
-                return getEscapeCode(generator.getGetterCall(((Field) input)));
-            }
-        }));
-        s.append(")");
+			@Override
+			public String transform(Object input) {
+				return getEscapeCode(generator.getGetterCall(((Field) input)));
+			}
+		}));
+		s.append(")");
 		return s.toString();
 	}
 
@@ -180,19 +174,18 @@ abstract public class DatabaseLayer {
 	 * @param generator instance of a code generator
 	 * @return delete sql query
 	 */
-	public String getSqlDelete(CodeGenerator generator)  {
+	public String getSqlDelete(CodeGenerator generator) {
 		StringBuilder s=new StringBuilder();
-        Set<Field> keys=generator.getTable().getPrimaryKeys();
-        // delete by id
+		Set<Field> keys=generator.getTable().getPrimaryKeys();
+		// delete by id
 		s.append("DELETE FROM ").append(generator.getTable().getName());
-        StringMutator fieldAssign=new StringMutatorFieldAssign(generator);
+		StringMutator fieldAssign=new StringMutatorFieldAssign(generator);
 		if (!keys.isEmpty()) {
 			s.append(" WHERE ");
 			s.append(CollectionUtil.join(keys, " AND ", fieldAssign));
 		}
 		return s.toString();
 	}
-
 
 	/**
 	 * read a snippet and replace '<type>' by the class name
@@ -225,7 +218,7 @@ abstract public class DatabaseLayer {
 			return false;
 		}
 		final DatabaseLayer other=(DatabaseLayer) obj;
-		if ((this.getName()==null)?(other.getName()!=null):!this.getName().equals(other.getName())) {
+		if ((this.getName()==null) ? (other.getName()!=null) : !this.getName().equals(other.getName())) {
 			return false;
 		}
 		return true;
@@ -234,27 +227,21 @@ abstract public class DatabaseLayer {
 	@Override
 	public int hashCode() {
 		int hash=7;
-		hash=17*hash+(this.getName()!=null?this.getName().hashCode():0);
+		hash=17*hash+(this.getName()!=null ? this.getName().hashCode() : 0);
 		return hash;
 	}
 
-    private class StringMutatorFieldAssign implements StringMutator {
+	private class StringMutatorFieldAssign implements StringMutator {
 
-        private final CodeGenerator generator;
+		private final CodeGenerator generator;
 
-        public StringMutatorFieldAssign(CodeGenerator generator) {
-            this.generator=generator;
-        }
+		public StringMutatorFieldAssign(CodeGenerator generator) {
+			this.generator=generator;
+		}
 
-        @Override
-        public String transform(Object s) {
-            return new StringBuilder()
-                    .append(generator.getIdentifierQuoteString())
-                    .append(((Field) s)
-                    .getName())
-                    .append(generator.getIdentifierQuoteString())
-                    .append("=' . ")
-                    .append(getEscapeCode(generator.getGetterCall(((Field) s)))).toString();
-        }
-    }
+		@Override
+		public String transform(Object s) {
+			return new StringBuilder().append(generator.getIdentifierQuoteString()).append(((Field) s).getName()).append(generator.getIdentifierQuoteString()).append("=' . ").append(getEscapeCode(generator.getGetterCall(((Field) s)))).append("\n\t\t. '").toString();
+		}
+	}
 }
