@@ -31,22 +31,22 @@ public class DatabaseLayerNone extends DatabaseLayer {
 	}
 
 	@Override
-	public String getSelectCode(CodeGenerator generator) {
+	public String getCodeSelect(CodeGenerator generator) {
 		return new String();
 	}
 
 	@Override
-	public String getInsertCode(CodeGenerator generator) {
+	public String getCodeInsert(CodeGenerator generator) {
 		return new String();
 	}
 
 	@Override
-	public String getUpdateCode(CodeGenerator generator) {
+	public String getCodeUpdate(CodeGenerator generator) {
 		return new String();
 	}
 
 	@Override
-	public String getDeleteCode(CodeGenerator generator) {
+	public String getCodeDelete(CodeGenerator generator) {
 		return new String();
 	}
 

@@ -75,7 +75,7 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 	}
 
 	@Override
-	public String getSelectCode(CodeGenerator generator) {
+	public String getCodeSelect(CodeGenerator generator) {
 		StringBuilder s=new StringBuilder();
 		// assign data from hash
 		s.append("\tpublic function ").append("assignByHash").append("($result) {\n");
@@ -116,7 +116,7 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 	}
 
 	@Override
-	public String getInsertCode(CodeGenerator generator) {
+	public String getCodeInsert(CodeGenerator generator) {
 		StringBuilder s=new StringBuilder();
 		// extra function to bind values
 		s.append("\tprotected function ").append("bindValues").append("(PDOStatement &$stmt) {\n");
@@ -142,7 +142,7 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 	}
 
 	@Override
-	public String getUpdateCode(CodeGenerator generator) {
+	public String getCodeUpdate(CodeGenerator generator) {
 		StringBuilder s=new StringBuilder();
 		s.append(getSnippetFromResource(generator, "DatabaseLayerPdo.snippet.updateToDatabase.php"));
 		s.append("\tpublic function ").append(METHOD_UPDATE_NAME).append("(PDO $db) {\n");
@@ -161,7 +161,7 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 	}
 
 	@Override
-	public String getDeleteCode(CodeGenerator generator) {
+	public String getCodeDelete(CodeGenerator generator) {
 		StringBuilder s=new StringBuilder();
 		s.append(getSnippetFromResource(generator, "DatabaseLayerPdo.snippet.deleteFromDatabase.php"));
 		s.append("\tpublic function ").append(METHOD_DELETE_NAME).append("(PDO $db");

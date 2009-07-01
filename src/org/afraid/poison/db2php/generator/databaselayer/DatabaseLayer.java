@@ -20,6 +20,9 @@ package org.afraid.poison.db2php.generator.databaselayer;
 import org.afraid.poison.db2php.generator.*;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import org.afraid.poison.common.CollectionUtil;
+import org.afraid.poison.common.StringMutator;
+import org.afraid.poison.common.StringUtil;
 
 /**
  * Database Layer type
@@ -59,23 +62,23 @@ abstract public class DatabaseLayer {
 	 */
 	abstract public String getName();
 
-	abstract public String getSelectCode(CodeGenerator generator);
+	abstract public String getCodeSelect(CodeGenerator generator);
 
-	abstract public String getInsertCode(CodeGenerator generator);
+	abstract public String getCodeInsert(CodeGenerator generator);
 
-	abstract public String getUpdateCode(CodeGenerator generator);
+	abstract public String getCodeUpdate(CodeGenerator generator);
 
-	abstract public String getDeleteCode(CodeGenerator generator);
+	abstract public String getCodeDelete(CodeGenerator generator);
 
 	abstract public String getSnippet();
 
 	public String getCode(CodeGenerator generator) {
 		return new StringBuilder()
 				.append(getSnippet())
-				.append(getSelectCode(generator))
-				.append(getInsertCode(generator))
-				.append(getUpdateCode(generator))
-				.append(getDeleteCode(generator)).toString();
+				.append(getCodeSelect(generator))
+				.append(getCodeInsert(generator))
+				.append(getCodeUpdate(generator))
+				.append(getCodeDelete(generator)).toString();
 	}
 
 	public String getEscapeCode(String parameter) {
@@ -83,23 +86,66 @@ abstract public class DatabaseLayer {
 		return s.toString();
 	}
 
-	public String getSqlUpdate(CodeGenerator generator)  {
+	public String getSqlUpdate(final CodeGenerator generator)  {
 		StringBuilder s=new StringBuilder();
+        Set<Field> fields=generator.getTable().getFields();
+        Set<Field> keys=generator.getTable().getPrimaryKeys();
+       // update query
+		s.append("\tconst SQL_UPDATE='UPDATE ").append(generator.getTable().getName());
+		s.append(" SET ");
+		StringMutator fieldAssign=new StringMutatorFieldAssign(generator);
+		s.append(CollectionUtil.join(fields, ",", fieldAssign));
+		if (!keys.isEmpty()) {
+			s.append(" WHERE ");
+			s.append(CollectionUtil.join(keys, " AND ", fieldAssign));
+		}
+		s.append("';\n");
+
+
+
+
 		return s.toString();
 	}
 
 	public String getSqlSelect(CodeGenerator generator)  {
 		StringBuilder s=new StringBuilder();
+        Set<Field> fields=generator.getTable().getFields();
+        Set<Field> keys=generator.getTable().getPrimaryKeys();
+        // select by id
+		s.append("\tconst SQL_SELECT_PK='SELECT * FROM ").append(generator.getTable().getName());
+        StringMutator fieldAssign=new StringMutatorFieldAssign(generator);
+		if (!keys.isEmpty()) {
+			s.append(" WHERE ");
+			s.append(CollectionUtil.join(keys, " AND ", fieldAssign));
+		}
+		s.append("';\n");
 		return s.toString();
 	}
 
 	public String getSqlInsert(CodeGenerator generator)  {
 		StringBuilder s=new StringBuilder();
+        Set<Field> fields=generator.getTable().getFields();
+        Set<Field> keys=generator.getTable().getPrimaryKeys();
+        // insert query
+		s.append("\tconst SQL_INSERT='INSERT INTO ").append(generator.getTable().getName());
+		s.append(" (").append(CollectionUtil.join(fields, ",", generator.getIdentifierQuoteString(), generator.getIdentifierQuoteString())).append(") VALUES (").append(StringUtil.repeat("?,", fields.size()-1)).append("?)").append("';\n");
+
+
 		return s.toString();
 	}
 
 	public String getSqlDelete(CodeGenerator generator)  {
 		StringBuilder s=new StringBuilder();
+        Set<Field> fields=generator.getTable().getFields();
+        Set<Field> keys=generator.getTable().getPrimaryKeys();
+        // delete by id
+		s.append("\tconst SQL_DELETE_PK='DELETE FROM ").append(generator.getTable().getName());
+        StringMutator fieldAssign=new StringMutatorFieldAssign(generator);
+		if (!keys.isEmpty()) {
+			s.append(" WHERE ");
+			s.append(CollectionUtil.join(keys, " AND ", fieldAssign));
+		}
+		s.append("';\n");
 		return s.toString();
 	}
 
@@ -131,4 +177,18 @@ abstract public class DatabaseLayer {
 		hash=17*hash+(this.getName()!=null?this.getName().hashCode():0);
 		return hash;
 	}
+
+    private static class StringMutatorFieldAssign implements StringMutator {
+
+        private final CodeGenerator generator;
+
+        public StringMutatorFieldAssign(CodeGenerator generator) {
+            this.generator=generator;
+        }
+
+        @Override
+        public String transform(Object s) {
+            return new StringBuilder().append(generator.getIdentifierQuoteString()).append(((Field) s).getName()).append(generator.getIdentifierQuoteString()).append("=?").toString();
+        }
+    }
 }

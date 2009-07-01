@@ -31,22 +31,22 @@ public class DatabaseLayerInterface extends DatabaseLayer {
 	}
 
 	@Override
-	public String getSelectCode(CodeGenerator generator) {
+	public String getCodeSelect(CodeGenerator generator) {
 		throw new UnsupportedOperationException("Not supported yet.");
 	}
 
 	@Override
-	public String getInsertCode(CodeGenerator generator) {
+	public String getCodeInsert(CodeGenerator generator) {
 		throw new UnsupportedOperationException("Not supported yet.");
 	}
 
 	@Override
-	public String getUpdateCode(CodeGenerator generator) {
+	public String getCodeUpdate(CodeGenerator generator) {
 		throw new UnsupportedOperationException("Not supported yet.");
 	}
 
 	@Override
-	public String getDeleteCode(CodeGenerator generator) {
+	public String getCodeDelete(CodeGenerator generator) {
 		throw new UnsupportedOperationException("Not supported yet.");
 	}
 
