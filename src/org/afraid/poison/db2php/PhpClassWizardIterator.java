@@ -86,12 +86,17 @@ public final class PhpClassWizardIterator implements WizardDescriptor.Instantiat
 		return panels;
 	}
 
+    /**
+     * write code for passed tables
+     * @param tables the tables to write code for
+     * @param settings the generator settings
+     * @return the tables for which the code could not be written
+     */
 	private Set<Table> writeCode(Set<Table> tables, Settings settings) {
 		Set<Table> failed=new LinkedHashSet<Table>();
 		CodeGenerator generator;
 		for (Table t : tables) {
-			generator=new CodeGenerator(t);
-			generator.setSettings(settings);
+			generator=new CodeGenerator(t, settings);
 			try {
 				generator.writeCode();
 				openFile(generator.getFile());
@@ -102,6 +107,11 @@ public final class PhpClassWizardIterator implements WizardDescriptor.Instantiat
 		return failed;
 	}
 
+    /**
+     * try to open file in editor
+     *
+     * @param file the file to open
+     */
 	private void openFile(File file) {
 		try {
 			FileObject fob=FileUtil.toFileObject(file);
@@ -117,6 +127,7 @@ public final class PhpClassWizardIterator implements WizardDescriptor.Instantiat
 		}
 	}
 
+    @Override
 	public Set instantiate() throws IOException {
 		if (wizard.getValue()==WizardDescriptor.FINISH_OPTION) {
 			PhpClassVisualPanelTableSelection p1=(PhpClassVisualPanelTableSelection) getPanels()[0].getComponent();
@@ -136,8 +147,7 @@ public final class PhpClassWizardIterator implements WizardDescriptor.Instantiat
 				CodeGenerator generator;
 				StringBuilder failedMessage=new StringBuilder("The following files were not created:\n");
 				for (Table t : failed) {
-					generator=new CodeGenerator(t);
-					generator.setSettings(settings);
+					generator=new CodeGenerator(t, settings);
 					failedMessage.append(generator.getFileName());
 					if (generator.getFile().exists()) {
 						failedMessage.append(" (already exists, refusing to overwrite)");
@@ -151,31 +161,38 @@ public final class PhpClassWizardIterator implements WizardDescriptor.Instantiat
 		return Collections.EMPTY_SET;
 	}
 
+    @Override
 	public void initialize(WizardDescriptor wizard) {
 		this.wizard=wizard;
 
 	}
 
+    @Override
 	public void uninitialize(WizardDescriptor wizard) {
 		panels=null;
 	}
 
+    @Override
 	public WizardDescriptor.Panel current() {
 		return getPanels()[index];
 	}
 
+    @Override
 	public String name() {
 		return index+1+". from "+getPanels().length;
 	}
 
+    @Override
 	public boolean hasNext() {
 		return index<getPanels().length-1;
 	}
 
+    @Override
 	public boolean hasPrevious() {
 		return index>0;
 	}
 
+    @Override
 	public void nextPanel() {
 		if (!hasNext()) {
 			throw new NoSuchElementException();
@@ -183,6 +200,7 @@ public final class PhpClassWizardIterator implements WizardDescriptor.Instantiat
 		index++;
 	}
 
+    @Override
 	public void previousPanel() {
 		if (!hasPrevious()) {
 			throw new NoSuchElementException();
@@ -194,12 +212,14 @@ public final class PhpClassWizardIterator implements WizardDescriptor.Instantiat
 	// the following and call when needed: fireChangeEvent();
 	private Set<ChangeListener> listeners=new HashSet<ChangeListener>(1); // or can use ChangeSupport in NB 6.0
 
+    @Override
 	public final void addChangeListener(ChangeListener l) {
 		synchronized (listeners) {
 			listeners.add(l);
 		}
 	}
 
+    @Override
 	public final void removeChangeListener(ChangeListener l) {
 		synchronized (listeners) {
 			listeners.remove(l);
