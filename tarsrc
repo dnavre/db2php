@@ -1,0 +1,10 @@
+#!/bin/sh
+
+VERSION=$(grep 'OpenIDE-Module-Specification-Version' manifest.mf |grep -Po '[\d.]+$')
+DDIR="db2php-${VERSION}"
+mkdir "$DDIR"
+for f in $(git ls-files); do
+	cp --parents "$f" "${DDIR}"
+done
+tar -v -c "$DDIR"|bzip2 -9> "${DDIR}.tar.bz2"
+rm -rf "$DDIR"
