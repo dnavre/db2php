@@ -22,7 +22,6 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import org.afraid.poison.common.CollectionUtil;
 import org.afraid.poison.common.StringMutator;
-import org.afraid.poison.common.StringUtil;
 
 /**
  * Database Layer type
@@ -91,7 +90,7 @@ abstract public class DatabaseLayer {
         Set<Field> fields=generator.getTable().getFields();
         Set<Field> keys=generator.getTable().getPrimaryKeys();
        // update query
-		s.append("\tconst SQL_UPDATE='UPDATE ").append(generator.getTable().getName());
+		s.append("UPDATE ").append(generator.getTable().getName());
 		s.append(" SET ");
 		StringMutator fieldAssign=new StringMutatorFieldAssign(generator);
 		s.append(CollectionUtil.join(fields, ",", fieldAssign));
@@ -99,20 +98,14 @@ abstract public class DatabaseLayer {
 			s.append(" WHERE ");
 			s.append(CollectionUtil.join(keys, " AND ", fieldAssign));
 		}
-		s.append("';\n");
-
-
-
-
 		return s.toString();
 	}
 
 	public String getSqlSelect(CodeGenerator generator)  {
 		StringBuilder s=new StringBuilder();
-        Set<Field> fields=generator.getTable().getFields();
         Set<Field> keys=generator.getTable().getPrimaryKeys();
         // select by id
-		s.append("\tconst SQL_SELECT_PK='SELECT * FROM ").append(generator.getTable().getName());
+		s.append("SELECT * FROM ").append(generator.getTable().getName());
         StringMutator fieldAssign=new StringMutatorFieldAssign(generator);
 		if (!keys.isEmpty()) {
 			s.append(" WHERE ");
@@ -122,30 +115,35 @@ abstract public class DatabaseLayer {
 		return s.toString();
 	}
 
-	public String getSqlInsert(CodeGenerator generator)  {
+	public String getSqlInsert(final CodeGenerator generator)  {
 		StringBuilder s=new StringBuilder();
         Set<Field> fields=generator.getTable().getFields();
-        Set<Field> keys=generator.getTable().getPrimaryKeys();
         // insert query
-		s.append("\tconst SQL_INSERT='INSERT INTO ").append(generator.getTable().getName());
-		s.append(" (").append(CollectionUtil.join(fields, ",", generator.getIdentifierQuoteString(), generator.getIdentifierQuoteString())).append(") VALUES (").append(StringUtil.repeat("?,", fields.size()-1)).append("?)").append("';\n");
+		s.append("INSERT INTO ").append(generator.getTable().getName());
+		s.append(" (")
+                .append(CollectionUtil.join(fields, ",", generator.getIdentifierQuoteString(), generator.getIdentifierQuoteString()))
+                .append(") VALUES (");
+        s.append(CollectionUtil.join(fields, ",", new StringMutator() {
 
-
+            @Override
+            public String transform(Object input) {
+                return getEscapeCode(generator.getGetterCall(((Field) input)));
+            }
+        }));
+        s.append(")");
 		return s.toString();
 	}
 
 	public String getSqlDelete(CodeGenerator generator)  {
 		StringBuilder s=new StringBuilder();
-        Set<Field> fields=generator.getTable().getFields();
         Set<Field> keys=generator.getTable().getPrimaryKeys();
         // delete by id
-		s.append("\tconst SQL_DELETE_PK='DELETE FROM ").append(generator.getTable().getName());
+		s.append("DELETE FROM ").append(generator.getTable().getName());
         StringMutator fieldAssign=new StringMutatorFieldAssign(generator);
 		if (!keys.isEmpty()) {
 			s.append(" WHERE ");
 			s.append(CollectionUtil.join(keys, " AND ", fieldAssign));
 		}
-		s.append("';\n");
 		return s.toString();
 	}
 
@@ -178,7 +176,7 @@ abstract public class DatabaseLayer {
 		return hash;
 	}
 
-    private static class StringMutatorFieldAssign implements StringMutator {
+    private class StringMutatorFieldAssign implements StringMutator {
 
         private final CodeGenerator generator;
 
@@ -188,7 +186,13 @@ abstract public class DatabaseLayer {
 
         @Override
         public String transform(Object s) {
-            return new StringBuilder().append(generator.getIdentifierQuoteString()).append(((Field) s).getName()).append(generator.getIdentifierQuoteString()).append("=?").toString();
+            return new StringBuilder()
+                    .append(generator.getIdentifierQuoteString())
+                    .append(((Field) s)
+                    .getName())
+                    .append(generator.getIdentifierQuoteString())
+                    .append("=' . ")
+                    .append(getEscapeCode(generator.getGetterCall(((Field) s)))).toString();
         }
     }
 }
