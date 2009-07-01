@@ -88,6 +88,12 @@ abstract public class DatabaseLayer {
 		return s.toString();
 	}
 
+	/**
+	 * get php function that assigns fields by hash
+	 *
+	 * @param generator instance of a code generator
+	 * @return the php function that assigns fields by hash
+	 */
 	public String getAssignByHash(CodeGenerator generator) {
 		StringBuilder s=new StringBuilder();
 		// assign data from hash
@@ -101,6 +107,12 @@ abstract public class DatabaseLayer {
 		return s.toString();
 	}
 
+	/**
+	 * get sql query for update
+	 *
+	 * @param generator instance of a code generator
+	 * @return update sql query
+	 */
 	public String getSqlUpdate(final CodeGenerator generator)  {
 		StringBuilder s=new StringBuilder();
         Set<Field> fields=generator.getTable().getFields();
@@ -117,6 +129,12 @@ abstract public class DatabaseLayer {
 		return s.toString();
 	}
 
+	/**
+	 * get sql for select query
+	 *
+	 * @param generator instance of a code generator
+	 * @return select sql query
+	 */
 	public String getSqlSelect(CodeGenerator generator)  {
 		StringBuilder s=new StringBuilder();
         Set<Field> keys=generator.getTable().getPrimaryKeys();
@@ -131,6 +149,12 @@ abstract public class DatabaseLayer {
 		return s.toString();
 	}
 
+	/**
+	 * get sql for insert query
+	 *
+	 * @param generator instance of a code generator
+	 * @return insert sql query
+	 */
 	public String getSqlInsert(final CodeGenerator generator)  {
 		StringBuilder s=new StringBuilder();
         Set<Field> fields=generator.getTable().getFields();
@@ -150,6 +174,12 @@ abstract public class DatabaseLayer {
 		return s.toString();
 	}
 
+	/**
+	 * get sql for delete query
+	 *
+	 * @param generator instance of a code generator
+	 * @return delete sql query
+	 */
 	public String getSqlDelete(CodeGenerator generator)  {
 		StringBuilder s=new StringBuilder();
         Set<Field> keys=generator.getTable().getPrimaryKeys();
@@ -164,6 +194,13 @@ abstract public class DatabaseLayer {
 	}
 
 
+	/**
+	 * read a snippet and replace '<type>' by the class name
+	 *
+	 * @param generator instance of a code generator
+	 * @param resource path to the resource
+	 * @return snippet with replaced '<type>'
+	 */
 	protected String getSnippetFromResource(CodeGenerator generator, String resource) {
 		StringBuilder s=new StringBuilder();
 		try {
