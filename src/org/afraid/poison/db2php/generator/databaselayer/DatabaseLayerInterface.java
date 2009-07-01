@@ -33,7 +33,9 @@ public class DatabaseLayerInterface extends DatabaseLayer {
 	@Override
 	public String getCodeSelect(CodeGenerator generator) {
 		StringBuilder s=new StringBuilder();
-		s.append("\tpublic function ").append("assignByHash").append("($result) {\n");
+		s.append("\tpublic static function ").append(METHOD_SELECT_ID_NAME).append("(PDO $db,");
+		s.append("\t\t$sql='").append(getSqlSelect(generator)).append("';\n");
+		s.append(getAssignByHash(generator));
 		s.append("\t}\n");
 		return s.toString();
 	}

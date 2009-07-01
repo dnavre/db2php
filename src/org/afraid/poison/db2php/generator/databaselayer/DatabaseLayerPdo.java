@@ -67,14 +67,7 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 	@Override
 	public String getCodeSelect(CodeGenerator generator) {
 		StringBuilder s=new StringBuilder();
-		// assign data from hash
-		s.append("\tpublic function ").append("assignByHash").append("($result) {\n");
-		String rAccess;
-		for (Field f : generator.getTable().getFields()) {
-			rAccess=new StringBuilder("$result['").append(f.getName()).append("']").toString();
-			s.append("\t\t").append(generator.getSetterCall(f, rAccess)).append(";\n");
-		}
-		s.append("\t}\n");
+		s.append(getAssignByHash(generator));
 
 		// prepare/execute statement
 		s.append(getSnippetFromResource(generator, "DatabaseLayerPdo.snippet.getById.php"));

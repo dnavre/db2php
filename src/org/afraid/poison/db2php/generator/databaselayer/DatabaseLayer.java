@@ -48,7 +48,7 @@ abstract public class DatabaseLayer {
 	static {
 		AVAILABLE=new LinkedHashSet<DatabaseLayer>();
 		AVAILABLE.add(NONE);
-		//AVAILABLE.add(INTERFACE);
+		AVAILABLE.add(INTERFACE);
 		AVAILABLE.add(PDO);
 		//AVAILABLE.add(MYSQLI);
 		//AVAILABLE.add(ADODB);
@@ -85,6 +85,19 @@ abstract public class DatabaseLayer {
 
 	public String getEscapeCode(String parameter) {
 		StringBuilder s=new StringBuilder();
+		return s.toString();
+	}
+
+	public String getAssignByHash(CodeGenerator generator) {
+		StringBuilder s=new StringBuilder();
+		// assign data from hash
+		s.append("\tpublic function ").append("assignByHash").append("($result) {\n");
+		String rAccess;
+		for (Field f : generator.getTable().getFields()) {
+			rAccess=new StringBuilder("$result['").append(f.getName()).append("']").toString();
+			s.append("\t\t").append(generator.getSetterCall(f, rAccess)).append(";\n");
+		}
+		s.append("\t}\n");
 		return s.toString();
 	}
 
