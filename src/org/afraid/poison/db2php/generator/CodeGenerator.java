@@ -415,11 +415,11 @@ public class CodeGenerator {
 		StringBuilder s=new StringBuilder();
 
 		// insert query
-		s.append("\tconst SQL_INSERT='INSERT INTO ").append(getTable().getName());
+		s.append("\tconst SQL_INSERT='INSERT INTO ").append(quoteIdentifier(getTable().getName()));
 		s.append(" (").append(CollectionUtil.join(fields, ",", getIdentifierQuoteString(), getIdentifierQuoteString())).append(") VALUES (").append(StringUtil.repeat("?,", fields.size()-1)).append("?)").append("';\n");
 
 		// update query
-		s.append("\tconst SQL_UPDATE='UPDATE ").append(getTable().getName());
+		s.append("\tconst SQL_UPDATE='UPDATE ").append(quoteIdentifier(getTable().getName()));
 		s.append(" SET ");
 		StringMutator fieldAssign=new StringMutator() {
 
@@ -437,7 +437,7 @@ public class CodeGenerator {
 		s.append("';\n");
 
 		// select by id
-		s.append("\tconst SQL_SELECT_PK='SELECT * FROM ").append(getTable().getName());
+		s.append("\tconst SQL_SELECT_PK='SELECT * FROM ").append(quoteIdentifier(getTable().getName()));
 		if (!keys.isEmpty()) {
 			s.append(" WHERE ");
 			s.append(CollectionUtil.join(keys, " AND ", fieldAssign));
@@ -445,7 +445,7 @@ public class CodeGenerator {
 		s.append("';\n");
 
 		// delete by id
-		s.append("\tconst SQL_DELETE_PK='DELETE FROM ").append(getTable().getName());
+		s.append("\tconst SQL_DELETE_PK='DELETE FROM ").append(quoteIdentifier(getTable().getName()));
 		if (!keys.isEmpty()) {
 			s.append(" WHERE ");
 			s.append(CollectionUtil.join(keys, " AND ", fieldAssign));

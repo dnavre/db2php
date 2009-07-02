@@ -139,7 +139,7 @@ abstract public class DatabaseLayer {
 		Set<Field> fields=generator.getTable().getFields();
 		Set<Field> keys=generator.getTable().getFieldsIdentifiers();
 		// update query
-		s.append("'UPDATE ").append(generator.getTable().getName());
+		s.append("'UPDATE ").append(generator.quoteIdentifier(generator.getTable().getName()));
 		s.append(" SET '\n\t\t. ");
 		StringMutator fieldAssign=new StringMutatorFieldAssign(generator);
 		s.append(CollectionUtil.join(fields, " . ','\n\t\t . ", fieldAssign));
@@ -157,7 +157,7 @@ abstract public class DatabaseLayer {
 		StringBuilder s=new StringBuilder();
 		Set<Field> keys=generator.getTable().getFieldsIdentifiers();
 		// select by id
-		s.append("'SELECT * FROM ").append(generator.getTable().getName()).append("'");
+		s.append("'SELECT * FROM ").append(generator.quoteIdentifier(generator.getTable().getName())).append("'");
 
 		s.append(getSqlWhere(generator, keys));
 		return replaceUnneededConcat(s.toString());
@@ -173,7 +173,7 @@ abstract public class DatabaseLayer {
 		StringBuilder s=new StringBuilder();
 		Set<Field> fields=generator.getTable().getFields();
 		// insert query
-		s.append("'INSERT INTO ").append(generator.getTable().getName());
+		s.append("'INSERT INTO ").append(generator.quoteIdentifier(generator.getTable().getName()));
 		s.append(" (").append(CollectionUtil.join(fields, ",", generator.getIdentifierQuoteString(), generator.getIdentifierQuoteString())).append(") VALUES ('\n\t\t . ");
 		s.append(CollectionUtil.join(fields, ". ','\n\t\t . ", new StringMutator() {
 
@@ -196,7 +196,7 @@ abstract public class DatabaseLayer {
 		StringBuilder s=new StringBuilder();
 		Set<Field> keys=generator.getTable().getFieldsIdentifiers();
 		// delete by id
-		s.append("'DELETE FROM ").append(generator.getTable().getName()).append("'");
+		s.append("'DELETE FROM ").append(generator.quoteIdentifier(generator.getTable().getName())).append("'");
 
 		s.append(getSqlWhere(generator, keys));
 		return replaceUnneededConcat(s.toString());
