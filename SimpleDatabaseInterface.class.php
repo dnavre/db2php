@@ -1,6 +1,6 @@
 <?php
 /**
- * interface to use with db2php's Simple INterface Database Layer
+ * interface to use with db2php's Simple Interface Database Layer
  */
 interface SimpleDatabaseInterface {
 	
