@@ -35,7 +35,7 @@ public class DatabaseLayerInterface extends DatabaseLayer {
 	@Override
 	public String getCodeSelect(CodeGenerator generator) {
 		StringBuilder s=new StringBuilder();
-		s.append("\tpublic static function ").append(METHOD_SELECT_ID_NAME).append("(PDO $db");
+		s.append("\tpublic static function ").append(METHOD_SELECT_ID_NAME).append("(SimpleDatabaseInterface $db");
 		if (!generator.getTable().getFieldsIdentifiers().isEmpty()) {
 			s.append(",");
 			s.append(generator.getFieldList(new ArrayList<Field>(generator.getTable().getFieldsIdentifiers())));
@@ -50,7 +50,7 @@ public class DatabaseLayerInterface extends DatabaseLayer {
 	@Override
 	public String getCodeInsert(CodeGenerator generator) {
 		StringBuilder s=new StringBuilder();
-		s.append("\tpublic function ").append(METHOD_INSERT_NAME).append("(PDO $db) {\n");
+		s.append("\tpublic function ").append(METHOD_INSERT_NAME).append("(SimpleDatabaseInterface $db) {\n");
 		s.append("\t\t$sql=").append(getSqlInsert(generator)).append(";\n");
 		s.append("\t}\n");
 		return s.toString();
@@ -59,7 +59,7 @@ public class DatabaseLayerInterface extends DatabaseLayer {
 	@Override
 	public String getCodeUpdate(CodeGenerator generator) {
 		StringBuilder s=new StringBuilder();
-		s.append("\tpublic function ").append(METHOD_UPDATE_NAME).append("(PDO $db) {\n");
+		s.append("\tpublic function ").append(METHOD_UPDATE_NAME).append("(SimpleDatabaseInterface $db) {\n");
 		s.append("\t\t$sql=").append(getSqlUpdate(generator)).append(";\n");
 		s.append("\t}\n");
 		return s.toString();
@@ -68,7 +68,7 @@ public class DatabaseLayerInterface extends DatabaseLayer {
 	@Override
 	public String getCodeDelete(CodeGenerator generator) {
 		StringBuilder s=new StringBuilder();
-		s.append("\tpublic function ").append(METHOD_DELETE_NAME).append("(PDO $db) {\n");
+		s.append("\tpublic function ").append(METHOD_DELETE_NAME).append("(SimpleDatabaseInterface $db) {\n");
 		s.append("\t\t$sql=").append(getSqlDelete(generator)).append(";\n");
 		s.append("\t}\n");
 		return s.toString();
