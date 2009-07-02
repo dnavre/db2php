@@ -72,14 +72,14 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 		// prepare/execute statement
 		s.append(getSnippetFromResource(generator, "DatabaseLayerPdo.snippet.getById.php"));
 		s.append("\tpublic static function ").append(METHOD_SELECT_ID_NAME).append("(PDO $db");
-		if (!generator.getTable().getPrimaryKeys().isEmpty()) {
+		if (!generator.getTable().getFieldsIdentifiers().isEmpty()) {
 			s.append(",");
-			s.append(generator.getFieldList(new ArrayList<Field>(generator.getTable().getPrimaryKeys())));
+			s.append(generator.getFieldList(new ArrayList<Field>(generator.getTable().getFieldsIdentifiers())));
 		}
 		s.append(") {\n");
 		s.append(getStmtInit("self::SQL_SELECT_PK"));
 		int i=0;
-		for (Field f : generator.getTable().getPrimaryKeys()) {
+		for (Field f : generator.getTable().getFieldsIdentifiers()) {
 			s.append("\t\t$stmt->bindValue(").append(++i).append(",$").append(generator.getMemberName(f)).append(");\n");
 		}
 		s.append(getStmtExecute());
@@ -137,7 +137,7 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 		//fields.addAll(generator.getTable().getPrimaryKeys());
 		//s.append(getBindingCodeField(generator, fields));
 		s.append("\t\t$this->bindValues($stmt);\n");
-		s.append(getBindingCodeField(generator, new ArrayList<Field>(generator.getTable().getPrimaryKeys()), generator.getTable().getFields().size()));
+		s.append(getBindingCodeField(generator, new ArrayList<Field>(generator.getTable().getFieldsIdentifiers()), generator.getTable().getFields().size()));
 		s.append(getStmtExecute());
 		s.append(getStmtCloseCursor());
 		s.append(generator.getTrackingPristineState());
@@ -154,7 +154,7 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 		//s.append(",").append(generator.getFieldList(new ArrayList<Field>(generator.getTable().getPrimaryKeys())));
 		s.append(") {\n");
 		s.append(getStmtInit("self::SQL_DELETE_PK"));
-		s.append(getBindingCodeField(generator, new ArrayList<Field>(generator.getTable().getPrimaryKeys())));
+		s.append(getBindingCodeField(generator, new ArrayList<Field>(generator.getTable().getFieldsIdentifiers())));
 		s.append(getStmtExecute());
 		s.append(getStmtCloseCursor());
 		s.append(getReturnResult());

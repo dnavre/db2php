@@ -174,6 +174,14 @@ public class Table {
 		return primaryKeys;
 	}
 
+	public Set<Field> getFieldsIdentifiers() {
+		Set<Field> identifiers=getPrimaryKeys();
+		if (identifiers.isEmpty()) {
+			identifiers.add(getFields().iterator().next());
+		}
+		return identifiers;
+	}
+
 	/**
 	 * get all fields which are not primary keys
 	 *
@@ -181,7 +189,7 @@ public class Table {
 	 */
 	public Set<Field> getFieldsNotPrimaryKeys() {
 		Set<Field> notPrimary=getFields();
-		notPrimary.removeAll(getPrimaryKeys());
+		notPrimary.removeAll(getFieldsIdentifiers());
 		return notPrimary;
 	}
 

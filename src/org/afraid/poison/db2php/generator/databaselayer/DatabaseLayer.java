@@ -133,7 +133,7 @@ abstract public class DatabaseLayer {
 	public String getSqlUpdate(final CodeGenerator generator) {
 		StringBuilder s=new StringBuilder();
 		Set<Field> fields=generator.getTable().getFields();
-		Set<Field> keys=generator.getTable().getPrimaryKeys();
+		Set<Field> keys=generator.getTable().getFieldsIdentifiers();
 		// update query
 		s.append("'UPDATE ").append(generator.getTable().getName());
 		s.append(" SET '\n\t\t. ");
@@ -151,7 +151,7 @@ abstract public class DatabaseLayer {
 	 */
 	public String getSqlSelect(CodeGenerator generator) {
 		StringBuilder s=new StringBuilder();
-		Set<Field> keys=generator.getTable().getPrimaryKeys();
+		Set<Field> keys=generator.getTable().getFieldsIdentifiers();
 		// select by id
 		s.append("'SELECT * FROM ").append(generator.getTable().getName()).append("'");
 
@@ -190,7 +190,7 @@ abstract public class DatabaseLayer {
 	 */
 	public String getSqlDelete(CodeGenerator generator) {
 		StringBuilder s=new StringBuilder();
-		Set<Field> keys=generator.getTable().getPrimaryKeys();
+		Set<Field> keys=generator.getTable().getFieldsIdentifiers();
 		// delete by id
 		s.append("'DELETE FROM ").append(generator.getTable().getName()).append("'");
 

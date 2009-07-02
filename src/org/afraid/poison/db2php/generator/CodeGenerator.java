@@ -335,7 +335,7 @@ public class CodeGenerator {
 		}
 		// list of primary keys
 		s.append("\tprivate static $PRIMARY_KEYS=array(");
-		s.append(CollectionUtil.join(getTable().getPrimaryKeys(), ",", new StringMutator() {
+		s.append(CollectionUtil.join(getTable().getFieldsIdentifiers(), ",", new StringMutator() {
 
 			@Override
 			public String transform(Object s) {
@@ -414,7 +414,7 @@ public class CodeGenerator {
 			}
 		};
 		s.append(CollectionUtil.join(fields, ",", fieldAssign));
-		Set<Field> keys=getTable().getPrimaryKeys();
+		Set<Field> keys=getTable().getFieldsIdentifiers();
 		if (!keys.isEmpty()) {
 			s.append(" WHERE ");
 			s.append(CollectionUtil.join(keys, " AND ", fieldAssign));
@@ -453,7 +453,7 @@ public class CodeGenerator {
 	 * @return the method code to get array of primary key values
 	 */
 	public String getUtilMethodgetPrimaryKeysToArray() {
-		return getUtilMethodArray(getTable().getPrimaryKeys(), "getPrimaryKeyValues");
+		return getUtilMethodArray(getTable().getFieldsIdentifiers(), "getPrimaryKeyValues");
 	}
 
 	/**
