@@ -5,7 +5,7 @@
 interface SimpleDatabaseInterface {
 	
 	/**
-	 * execute sql and return result as hash
+	 * execute sql and return result as hash with the tables field name as index
 	 *
 	 * @param string $sql
 	 * @return array
@@ -13,7 +13,7 @@ interface SimpleDatabaseInterface {
 	public function getResult($sql);
 
 	/**
-	 * execute sql query
+	 * execute sql query and return whatever you like ;)
 	 *
 	 * @param execute $sql
 	 * @return mixed
