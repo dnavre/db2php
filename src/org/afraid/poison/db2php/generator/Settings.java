@@ -32,6 +32,7 @@ public class Settings {
 	private String classNamePrefix=new String();
 	private String classNameSuffix=new String();
 	private File outputDirectory;
+	private String identifierQuoteString;
 
 	/**
 	 * @return the databaseLayer
@@ -117,6 +118,20 @@ public class Settings {
 		this.outputDirectory=outputDirectory;
 	}
 
+	/**
+	 * @return the identifierQuoteString
+	 */
+	public String getIdentifierQuoteString() {
+		return identifierQuoteString;
+	}
+
+	/**
+	 * @param identifierQuoteString the identifierQuoteString to set
+	 */
+	public void setIdentifierQuoteString(String identifierQuoteString) {
+		this.identifierQuoteString=identifierQuoteString;
+	}
+
 	@Override
 	public String toString() {
 		return new StringBuilder().append("databaseLayer:").append(getDatabaseLayer()).append("\n")
@@ -124,6 +139,7 @@ public class Settings {
 				.append("trackFieldModifications:").append(isTrackFieldModifications()).append("\n")
 				.append("classNamePrefix:").append(getClassNamePrefix()).append("\n")
 				.append("classNameSuffix:").append(getClassNameSuffix()).append("\n")
+				.append("identifierQuoteString:").append(getIdentifierQuoteString()).append("\n")
 				.append("outputDirectory:").append(getOutputDirectory()).append("\n").toString();
 	}
 
