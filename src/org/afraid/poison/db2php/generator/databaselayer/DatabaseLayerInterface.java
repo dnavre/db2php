@@ -38,9 +38,9 @@ public class DatabaseLayerInterface extends DatabaseLayer {
 		s.append("\tpublic static function ").append(METHOD_SELECT_ID_NAME).append("(PDO $db,");
 		s.append(generator.getFieldList(new ArrayList<Field>(generator.getTable().getPrimaryKeys())));
 		s.append(") {\n");
-		s.append("\t\t$sql='").append(getSqlSelect(generator)).append("';\n");
-		s.append(getAssignByHash(generator));
+		s.append("\t\t$sql=").append(getSqlSelect(generator)).append(";\n");
 		s.append("\t}\n");
+		s.append(getAssignByHash(generator));
 		return s.toString();
 	}
 
@@ -48,7 +48,7 @@ public class DatabaseLayerInterface extends DatabaseLayer {
 	public String getCodeInsert(CodeGenerator generator) {
 		StringBuilder s=new StringBuilder();
 		s.append("\tpublic function ").append(METHOD_INSERT_NAME).append("(PDO $db) {\n");
-		s.append("\t\t$sql='").append(getSqlInsert(generator)).append("';\n");
+		s.append("\t\t$sql=").append(getSqlInsert(generator)).append(";\n");
 		s.append("\t}\n");
 		return s.toString();
 	}
@@ -57,7 +57,7 @@ public class DatabaseLayerInterface extends DatabaseLayer {
 	public String getCodeUpdate(CodeGenerator generator) {
 		StringBuilder s=new StringBuilder();
 		s.append("\tpublic function ").append(METHOD_UPDATE_NAME).append("(PDO $db) {\n");
-		s.append("\t\t$sql='").append(getSqlUpdate(generator)).append("';\n");
+		s.append("\t\t$sql=").append(getSqlUpdate(generator)).append(";\n");
 		s.append("\t}\n");
 		return s.toString();
 	}
@@ -65,8 +65,8 @@ public class DatabaseLayerInterface extends DatabaseLayer {
 	@Override
 	public String getCodeDelete(CodeGenerator generator) {
 		StringBuilder s=new StringBuilder();
-		s.append("\tpublic function ").append(METHOD_DELETE_NAME).append("(PDO $db");
-		s.append("\t\t$sql='").append(getSqlDelete(generator)).append("';\n");
+		s.append("\tpublic function ").append(METHOD_DELETE_NAME).append("(PDO $db) {\n");
+		s.append("\t\t$sql=").append(getSqlDelete(generator)).append(";\n");
 		s.append("\t}\n");
 		return s.toString();
 	}

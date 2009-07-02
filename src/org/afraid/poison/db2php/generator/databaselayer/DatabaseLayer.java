@@ -80,7 +80,7 @@ abstract public class DatabaseLayer {
 
 	public String getEscapeCode(String parameter) {
 		StringBuilder s=new StringBuilder();
-		s.append("\t\t$db->escapeValue(").append(parameter).append(");\n");
+		s.append("$db->escapeValue(").append(parameter).append(")");
 		return s.toString();
 	}
 
@@ -103,6 +103,10 @@ abstract public class DatabaseLayer {
 		return s.toString();
 	}
 
+	protected String getSqlFieldAssign(CodeGenerator generator, Field f) {
+		return new StringBuilder("'").append(generator.quoteIdentifier(f)).append("=' . ").append(getEscapeCode(generator.getGetterCall(f))).toString();
+	}
+
 	/**
 	 * get sql query for update
 	 *
@@ -114,15 +118,15 @@ abstract public class DatabaseLayer {
 		Set<Field> fields=generator.getTable().getFields();
 		Set<Field> keys=generator.getTable().getPrimaryKeys();
 		// update query
-		s.append("UPDATE ").append(generator.getTable().getName());
-		s.append(" SET ");
+		s.append("'UPDATE ").append(generator.getTable().getName());
+		s.append(" SET '\n\t\t. ");
 		StringMutator fieldAssign=new StringMutatorFieldAssign(generator);
-		s.append(CollectionUtil.join(fields, ",", fieldAssign));
+		s.append(CollectionUtil.join(fields, " . ','\n\t\t . ", fieldAssign));
 		if (!keys.isEmpty()) {
-			s.append(" WHERE ");
-			s.append(CollectionUtil.join(keys, " AND ", fieldAssign));
+			s.append(" . ' WHERE ' . ");
+			s.append(CollectionUtil.join(keys, " . ' AND ' . ", fieldAssign));
 		}
-		return s.toString();
+		return replaceUnneededConcat(s.toString());
 	}
 
 	/**
@@ -135,14 +139,14 @@ abstract public class DatabaseLayer {
 		StringBuilder s=new StringBuilder();
 		Set<Field> keys=generator.getTable().getPrimaryKeys();
 		// select by id
-		s.append("SELECT * FROM ").append(generator.getTable().getName());
-		StringMutator fieldAssign=new StringMutatorFieldAssign(generator);
+		s.append("'SELECT * FROM ").append(generator.getTable().getName());
+
 		if (!keys.isEmpty()) {
-			s.append(" WHERE ");
-			s.append(CollectionUtil.join(keys, " AND ", fieldAssign));
+			StringMutator fieldAssign=new StringMutatorFieldAssign(generator);
+			s.append(" WHERE ' . ");
+			s.append(CollectionUtil.join(keys, " . ' AND ' . ", fieldAssign));
 		}
-		s.append("';\n");
-		return s.toString();
+		return replaceUnneededConcat(s.toString());
 	}
 
 	/**
@@ -155,17 +159,17 @@ abstract public class DatabaseLayer {
 		StringBuilder s=new StringBuilder();
 		Set<Field> fields=generator.getTable().getFields();
 		// insert query
-		s.append("INSERT INTO ").append(generator.getTable().getName());
-		s.append(" (").append(CollectionUtil.join(fields, ",", generator.getIdentifierQuoteString(), generator.getIdentifierQuoteString())).append(") VALUES (");
-		s.append(CollectionUtil.join(fields, ",", new StringMutator() {
+		s.append("'INSERT INTO ").append(generator.getTable().getName());
+		s.append(" (").append(CollectionUtil.join(fields, ",", generator.getIdentifierQuoteString(), generator.getIdentifierQuoteString())).append(") VALUES ('\n\t\t . ");
+		s.append(CollectionUtil.join(fields, ". ','\n\t\t . ", new StringMutator() {
 
 			@Override
 			public String transform(Object input) {
 				return getEscapeCode(generator.getGetterCall(((Field) input)));
 			}
 		}));
-		s.append(")");
-		return s.toString();
+		s.append(" . ')'");
+		return replaceUnneededConcat(s.toString());
 	}
 
 	/**
@@ -178,13 +182,37 @@ abstract public class DatabaseLayer {
 		StringBuilder s=new StringBuilder();
 		Set<Field> keys=generator.getTable().getPrimaryKeys();
 		// delete by id
-		s.append("DELETE FROM ").append(generator.getTable().getName());
-		StringMutator fieldAssign=new StringMutatorFieldAssign(generator);
+		s.append("'DELETE FROM ").append(generator.getTable().getName());
+
 		if (!keys.isEmpty()) {
-			s.append(" WHERE ");
-			s.append(CollectionUtil.join(keys, " AND ", fieldAssign));
+			s.append(" WHERE  ' . ");
+			StringMutator fieldAssign=new StringMutatorFieldAssign(generator);
+			s.append(CollectionUtil.join(keys, " . ' AND ' . ", fieldAssign));
 		}
-		return s.toString();
+		return replaceUnneededConcat(s.toString());
+	}
+
+	/**
+	 * replaces unneded concat operations in PHP code which are there simply because it would be too much work to avoid them in the first place
+	 * @param s the string to clean up
+	 * @return php code without unneeded concats
+	 */
+	protected String replaceUnneededConcat(String s) {
+		return s.replaceAll("\\s*'\\s*\\.\\s*'\\s*", " ");
+	}
+
+	private class StringMutatorFieldAssign implements StringMutator {
+
+		private final CodeGenerator generator;
+
+		public StringMutatorFieldAssign(CodeGenerator generator) {
+			this.generator=generator;
+		}
+
+		@Override
+		public String transform(Object s) {
+			return getSqlFieldAssign(generator, (Field) s);
+		}
 	}
 
 	/**
@@ -229,19 +257,5 @@ abstract public class DatabaseLayer {
 		int hash=7;
 		hash=17*hash+(this.getName()!=null ? this.getName().hashCode() : 0);
 		return hash;
-	}
-
-	private class StringMutatorFieldAssign implements StringMutator {
-
-		private final CodeGenerator generator;
-
-		public StringMutatorFieldAssign(CodeGenerator generator) {
-			this.generator=generator;
-		}
-
-		@Override
-		public String transform(Object s) {
-			return new StringBuilder().append(generator.getIdentifierQuoteString()).append(((Field) s).getName()).append(generator.getIdentifierQuoteString()).append("=' . ").append(getEscapeCode(generator.getGetterCall(((Field) s)))).append("\n\t\t. '").toString();
-		}
 	}
 }

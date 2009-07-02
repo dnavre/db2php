@@ -382,6 +382,14 @@ public class CodeGenerator {
 		return getTable().getIdentifierQuoteString();
 	}
 
+	public String quoteIdentifier(String identifier) {
+		return new StringBuilder().append(getIdentifierQuoteString()).append(identifier).append(getIdentifierQuoteString()).toString();
+	}
+
+	public String quoteIdentifier(Field identifier) {
+		return quoteIdentifier(identifier.getName());
+	}
+
 	/**
 	 * get the prepared statements
 	 *
