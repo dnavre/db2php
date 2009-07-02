@@ -141,6 +141,7 @@ public final class PhpClassWizardIterator implements WizardDescriptor.Instantiat
 			settings.setClassNamePrefix(p2.getClassNamePrefix().getText());
 			settings.setClassNameSuffix(p2.getClassNameSuffix().getText());
 			settings.setOutputDirectory(p2.getDirectory());
+			settings.setIdentifierQuoteString((String) p2.getIdentifierQuoteString().getSelectedItem());
 
 			Set<Table> failed=writeCode(tables, settings);
 			if (!failed.isEmpty()) {

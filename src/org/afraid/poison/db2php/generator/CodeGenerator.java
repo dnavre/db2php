@@ -376,16 +376,31 @@ public class CodeGenerator {
 	 * @return the string in which to quote the identifiers in SQL
 	 */
 	public String getIdentifierQuoteString() {
-		if ("'".equals(getTable().getIdentifierQuoteString())) {
+		String quote=getSettings().getIdentifierQuoteString()==null ? getTable().getIdentifierQuoteString() : getSettings().getIdentifierQuoteString();
+		if ("'".equals(quote)) {
 			return "\\'";
+		} else if (" ".equals(quote)) {
+			return "";
 		}
 		return getTable().getIdentifierQuoteString();
 	}
 
+	/**
+	 * quote identifier
+	 *
+	 * @param identifier the identifier to quote
+	 * @return the quoted identifier
+	 */
 	public String quoteIdentifier(String identifier) {
 		return new StringBuilder().append(getIdentifierQuoteString()).append(identifier).append(getIdentifierQuoteString()).toString();
 	}
 
+	/**
+	 * quote identifier
+	 *
+	 * @param identifier the identifier to quote
+	 * @return the quoted identifier
+	 */
 	public String quoteIdentifier(Field identifier) {
 		return quoteIdentifier(identifier.getName());
 	}

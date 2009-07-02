@@ -32,7 +32,7 @@ public class Settings {
 	private String classNamePrefix=new String();
 	private String classNameSuffix=new String();
 	private File outputDirectory;
-	private String identifierQuoteString;
+	private String identifierQuoteString=null;
 
 	/**
 	 * @return the databaseLayer
