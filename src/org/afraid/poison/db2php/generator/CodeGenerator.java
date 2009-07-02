@@ -382,7 +382,7 @@ public class CodeGenerator {
 		} else if (" ".equals(quote)) {
 			return "";
 		}
-		return getTable().getIdentifierQuoteString();
+		return quote;
 	}
 
 	/**
