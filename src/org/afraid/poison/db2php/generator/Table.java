@@ -21,6 +21,7 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.logging.Level;
@@ -195,7 +196,7 @@ public class Table {
 	 * @return the fields
 	 */
 	public Set<Field> getFields() {
-		return fields;
+		return new LinkedHashSet<Field>(fields);
 	}
 
 	/**
@@ -212,7 +213,7 @@ public class Table {
 				}
 			}
 		}
-		return primaryKeys;
+		return new LinkedHashSet<Field>(primaryKeys);
 	}
 
 	/**
@@ -243,7 +244,7 @@ public class Table {
 	 * @return all fields which are not primary keys
 	 */
 	public Set<Field> getFieldsNotPrimaryKeys() {
-		Set<Field> notPrimary=new LinkedHashSet<Field>(getFields());
+		Set<Field> notPrimary=getFields();
 		notPrimary.removeAll(getPrimaryKeys());
 		return notPrimary;
 	}
@@ -314,7 +315,7 @@ public class Table {
 	 * @return all fields which are not autoincrement fields
 	 */
 	public Set<Field> getFieldsNotAutoIncrement() {
-		Set<Field> notAutoIncrement=new LinkedHashSet<Field>(getFields());
+		Set<Field> notAutoIncrement=getFields();
 		notAutoIncrement.removeAll(getFieldsAutoIncrement());
 		return notAutoIncrement;
 	}
