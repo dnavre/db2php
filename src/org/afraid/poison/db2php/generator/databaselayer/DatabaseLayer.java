@@ -18,12 +18,13 @@
 package org.afraid.poison.db2php.generator.databaselayer;
 
 import java.io.IOException;
-import org.afraid.poison.db2php.generator.*;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import org.afraid.poison.common.CollectionUtil;
 import org.afraid.poison.common.IOUtil;
 import org.afraid.poison.common.StringMutator;
+import org.afraid.poison.db2php.generator.CodeGenerator;
+import org.afraid.poison.db2php.generator.Field;
 import org.openide.util.Exceptions;
 
 /**
@@ -196,6 +197,10 @@ abstract public class DatabaseLayer {
 
 		s.append(getSqlWhere(generator, keys));
 		return replaceUnneededConcat(s.toString());
+	}
+
+	protected String getReturnResult() {
+		return new StringBuilder("\t\treturn $affected;\n").toString();
 	}
 
 	/**

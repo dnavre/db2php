@@ -32,6 +32,10 @@ public class DatabaseLayerInterface extends DatabaseLayer {
 		return "Simple Interface";
 	}
 
+	private String getCodeExecute() {
+		return new StringBuilder("\t\t$affected=$db->executeSql($sql);\n").toString();
+	}
+
 	@Override
 	public String getCodeSelect(CodeGenerator generator) {
 		StringBuilder s=new StringBuilder();
@@ -42,6 +46,13 @@ public class DatabaseLayerInterface extends DatabaseLayer {
 		}
 		s.append(") {\n");
 		s.append("\t\t$sql=").append(getSqlSelect(generator)).append(";\n");
+		s.append("\t\t$result=$db->getResult($sql);\n");
+		s.append("\t\t$o=new ").append(generator.getClassName()).append("();\n");
+		s.append("\t\t$o->assignByHash($result);\n");
+		if (generator.isTrackFieldModifications()) {
+			s.append("\t\t$o->notifyPristine();\n");
+		}
+		s.append("\t\treturn $o;\n");
 		s.append("\t}\n");
 		s.append(getAssignByHash(generator));
 		return s.toString();
@@ -52,6 +63,12 @@ public class DatabaseLayerInterface extends DatabaseLayer {
 		StringBuilder s=new StringBuilder();
 		s.append("\tpublic function ").append(METHOD_INSERT_NAME).append("(SimpleDatabaseInterface $db) {\n");
 		s.append("\t\t$sql=").append(getSqlInsert(generator)).append(";\n");
+		s.append(getCodeExecute());
+		for (Field f : generator.getTable().getFieldsAutoIncrement()) {
+			s.append("\t\t").append(generator.getSetterCall(f, "$db->lastInsertId()")).append(";\n");
+		}
+		s.append(generator.getTrackingPristineState());
+		s.append(getReturnResult());
 		s.append("\t}\n");
 		return s.toString();
 	}
@@ -61,6 +78,9 @@ public class DatabaseLayerInterface extends DatabaseLayer {
 		StringBuilder s=new StringBuilder();
 		s.append("\tpublic function ").append(METHOD_UPDATE_NAME).append("(SimpleDatabaseInterface $db) {\n");
 		s.append("\t\t$sql=").append(getSqlUpdate(generator)).append(";\n");
+		s.append(getCodeExecute());
+		s.append(generator.getTrackingPristineState());
+		s.append(getReturnResult());
 		s.append("\t}\n");
 		return s.toString();
 	}
@@ -70,6 +90,8 @@ public class DatabaseLayerInterface extends DatabaseLayer {
 		StringBuilder s=new StringBuilder();
 		s.append("\tpublic function ").append(METHOD_DELETE_NAME).append("(SimpleDatabaseInterface $db) {\n");
 		s.append("\t\t$sql=").append(getSqlDelete(generator)).append(";\n");
+		s.append(getCodeExecute());
+		s.append(getReturnResult());
 		s.append("\t}\n");
 		return s.toString();
 	}

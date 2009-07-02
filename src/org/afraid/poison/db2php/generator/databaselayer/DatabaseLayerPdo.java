@@ -60,10 +60,6 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 		return new StringBuilder("\t\t$stmt->closeCursor();\n").toString();
 	}
 
-	private String getReturnResult() {
-		return new StringBuilder("\t\treturn $affected;\n").toString();
-	}
-
 	@Override
 	public String getCodeSelect(CodeGenerator generator) {
 		StringBuilder s=new StringBuilder();
@@ -86,12 +82,6 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 		s.append("\t\t$result=$stmt->fetch(PDO::FETCH_ASSOC);\n");
 		s.append("\t\t$o=new ").append(generator.getClassName()).append("();\n");
 		s.append("\t\t$o->assignByHash($result);\n");
-		/*
-		for (Field f : generator.getTable().getFields()) {
-			rAccess=new StringBuilder("$result['").append(f.getName()).append("']").toString();
-			s.append("\t\t").append(generator.getSetterCall(f, rAccess, "$o")).append(";\n");
-		}
-		*/
 		s.append(getStmtCloseCursor());
 		if (generator.isTrackFieldModifications()) {
 			s.append("\t\t$o->notifyPristine();\n");
@@ -133,9 +123,6 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 		s.append(getSnippetFromResource(generator, "DatabaseLayerPdo.snippet.updateToDatabase.php"));
 		s.append("\tpublic function ").append(METHOD_UPDATE_NAME).append("(PDO $db) {\n");
 		s.append(getStmtInit("self::SQL_UPDATE"));
-		//List<Field> fields=new ArrayList<Field>(generator.getTable().getFields());
-		//fields.addAll(generator.getTable().getPrimaryKeys());
-		//s.append(getBindingCodeField(generator, fields));
 		s.append("\t\t$this->bindValues($stmt);\n");
 		s.append(getBindingCodeField(generator, new ArrayList<Field>(generator.getTable().getFieldsIdentifiers()), generator.getTable().getFields().size()));
 		s.append(getStmtExecute());
