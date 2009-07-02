@@ -174,6 +174,11 @@ public class Table {
 		return primaryKeys;
 	}
 
+	/**
+	 * get fields by which a single record should be identified. returns the primary keys unless none are there. in that case it tries to guess.
+	 *
+	 * @return fields by which a single record should be identified
+	 */
 	public Set<Field> getFieldsIdentifiers() {
 		Set<Field> identifiers=getPrimaryKeys();
 		if (identifiers.isEmpty()) {
@@ -189,7 +194,7 @@ public class Table {
 	 */
 	public Set<Field> getFieldsNotPrimaryKeys() {
 		Set<Field> notPrimary=getFields();
-		notPrimary.removeAll(getFieldsIdentifiers());
+		notPrimary.removeAll(getPrimaryKeys());
 		return notPrimary;
 	}
 
