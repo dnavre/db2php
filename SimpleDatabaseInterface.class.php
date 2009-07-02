@@ -10,9 +10,7 @@ interface SimpleDatabaseInterface {
 	 * @param string $sql
 	 * @return array
 	 */
-	public function getResult($sql) {
-		return $x;
-	}
+	public function getResult($sql);
 
 	/**
 	 * execute sql query
@@ -20,9 +18,7 @@ interface SimpleDatabaseInterface {
 	 * @param execute $sql
 	 * @return mixed
 	 */
-	public function executeSql($sql) {
-		return $x;
-	}
+	public function executeSql($sql);
 	
 	/**
 	 * escape and quote value for use in sql query. second parameter is the field id in case you need special handling for a particular field.
@@ -31,8 +27,6 @@ interface SimpleDatabaseInterface {
 	 * @param int $fieldId
 	 * @return string
 	 */
-	public function escapeValue($value, $fieldId) {
-		return $x;
-	}
+	public function escapeValue($value, $fieldId);
 }
 ?>
