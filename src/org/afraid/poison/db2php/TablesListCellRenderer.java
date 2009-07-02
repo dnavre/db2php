@@ -45,7 +45,7 @@ class TablesListCellRenderer extends JLabel implements ListCellRenderer {
 			Table t=(Table) value;
 			if (t.getPrimaryKeys().isEmpty()) {
 				setBackground(Color.ORANGE);
-				setToolTipText(new StringBuilder("Table ").append(t.getName()).append(" has no primary key!").toString());
+				setToolTipText(new StringBuilder("Table ").append(t.getName()).append(" has no primary key! Will be using: ").append(CollectionUtil.join(t.getFieldsIdentifiers(), ", ")).toString());
 				if (iss) {
 					setBorder(BorderFactory.createLineBorder(list.getSelectionBackground(), 2));
 				} else {
