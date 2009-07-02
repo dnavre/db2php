@@ -243,7 +243,7 @@ public class Table {
 	 * @return all fields which are not primary keys
 	 */
 	public Set<Field> getFieldsNotPrimaryKeys() {
-		Set<Field> notPrimary=getFields();
+		Set<Field> notPrimary=new LinkedHashSet<Field>(getFields());
 		notPrimary.removeAll(getPrimaryKeys());
 		return notPrimary;
 	}
@@ -286,7 +286,7 @@ public class Table {
 	public Set<Field> getFieldsIndexesNonUnique() {
 		Set<Field> indexesNonUnique=new LinkedHashSet<Field>();
 		for (Field f : getFields()) {
-			if (f.isRowIdentifier()) {
+			if (f.isIndexNonUnique()) {
 				indexesNonUnique.add(f);
 			}
 		}
@@ -314,7 +314,7 @@ public class Table {
 	 * @return all fields which are not autoincrement fields
 	 */
 	public Set<Field> getFieldsNotAutoIncrement() {
-		Set<Field> notAutoIncrement=getFields();
+		Set<Field> notAutoIncrement=new LinkedHashSet<Field>(getFields());
 		notAutoIncrement.removeAll(getFieldsAutoIncrement());
 		return notAutoIncrement;
 	}
