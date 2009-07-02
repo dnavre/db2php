@@ -205,6 +205,7 @@
             <StringItem index="2" value="&quot;"/>
           </StringArray>
         </Property>
+        <Property name="selectedIndex" type="int" value="1"/>
         <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
           <ResourceString bundle="org/afraid/poison/db2php/Bundle.properties" key="PhpClassVisualPanel2.identifierQuoteString.toolTipText" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
