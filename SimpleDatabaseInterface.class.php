@@ -3,6 +3,7 @@
  * interface for use with db2php
  */
 interface SimpleDatabaseInterface {
+	
 	/**
 	 * execute sql and return result as hash
 	 *
@@ -12,6 +13,7 @@ interface SimpleDatabaseInterface {
 	public function getResult($sql) {
 		return $x;
 	}
+
 	/**
 	 * execute sql query
 	 *
@@ -21,13 +23,15 @@ interface SimpleDatabaseInterface {
 	public function executeSql($sql) {
 		return $x;
 	}
+	
 	/**
-	 * escape and quote value for use in sql query
+	 * escape and quote value for use in sql query. second parameter is the field id in case you need special handling for a particular field.
 	 *
 	 * @param mixed $value
+	 * @param int $fieldId
 	 * @return string
 	 */
-	public function escapeValue($value) {
+	public function escapeValue($value, $fieldId) {
 		return $x;
 	}
 }

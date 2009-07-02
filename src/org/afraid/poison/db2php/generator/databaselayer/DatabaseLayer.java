@@ -81,9 +81,9 @@ abstract public class DatabaseLayer {
 		return new StringBuilder().append(getSnippet()).append(getCodeSelect(generator)).append(getCodeInsert(generator)).append(getCodeUpdate(generator)).append(getCodeDelete(generator)).toString();
 	}
 
-	public String getEscapeCode(String parameter) {
+	public String getEscapeCode(CodeGenerator generator, Field f) {
 		StringBuilder s=new StringBuilder();
-		s.append("$db->escapeValue(").append(parameter).append(")");
+		s.append("$db->escapeValue(").append(generator.getGetterCall(f)).append(",").append("self::").append(generator.getConstName(f)).append(")");
 		return s.toString();
 	}
 
@@ -108,7 +108,7 @@ abstract public class DatabaseLayer {
 	}
 
 	protected String getSqlFieldAssign(CodeGenerator generator, Field f) {
-		return new StringBuilder("'").append(generator.quoteIdentifier(f)).append("=' . ").append(getEscapeCode(generator.getGetterCall(f))).toString();
+		return new StringBuilder("'").append(generator.quoteIdentifier(f)).append("=' . ").append(getEscapeCode(generator, f)).toString();
 	}
 
 	/**
@@ -170,6 +170,7 @@ abstract public class DatabaseLayer {
 	 * @return insert sql query
 	 */
 	public String getSqlInsert(final CodeGenerator generator) {
+		// TODO add which the value gets passed through before beeing assigned to allow handling special types
 		StringBuilder s=new StringBuilder();
 		Set<Field> fields=generator.getTable().getFields();
 		// insert query
@@ -179,7 +180,7 @@ abstract public class DatabaseLayer {
 
 			@Override
 			public String transform(Object input) {
-				return getEscapeCode(generator.getGetterCall(((Field) input)));
+				return getEscapeCode(generator, (Field) input);
 			}
 		}));
 		s.append(" . ')'");
