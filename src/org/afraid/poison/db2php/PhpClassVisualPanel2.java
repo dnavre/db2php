@@ -330,6 +330,20 @@ public final class PhpClassVisualPanel2 extends JPanel {
 	public javax.swing.JCheckBox getGenerateChecksSelection() {
 		return generateChecksSelection;
 	}
+
+	/**
+	 * @return the identifierQuoteString
+	 */
+	public javax.swing.JComboBox getIdentifierQuoteString() {
+		return identifierQuoteString;
+	}
+
+	/**
+	 * @param identifierQuoteString the identifierQuoteString to set
+	 */
+	public void setIdentifierQuoteString(javax.swing.JComboBox identifierQuoteString) {
+		this.identifierQuoteString=identifierQuoteString;
+	}
 /*
 	@Override
 	public boolean isValid() {
