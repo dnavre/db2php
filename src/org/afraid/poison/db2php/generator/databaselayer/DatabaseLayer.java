@@ -96,6 +96,7 @@ abstract public class DatabaseLayer {
 	public String getAssignByHash(CodeGenerator generator) {
 		StringBuilder s=new StringBuilder();
 		// assign data from hash
+		s.append(getSnippetFromFile(generator, "DatabaseLayer.assignByHash.php"));
 		s.append("\tpublic function ").append("assignByHash").append("($result) {\n");
 		String rAccess;
 		for (Field f : generator.getTable().getFields()) {
