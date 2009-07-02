@@ -70,7 +70,7 @@ public final class PhpClassVisualPanel2 extends JPanel {
         jLabel4 = new javax.swing.JLabel();
         classNameSuffix = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        identifierQuoteString = new javax.swing.JTextField();
+        identifierQuoteString = new javax.swing.JComboBox();
 
         org.openide.awt.Mnemonics.setLocalizedText(jLabel1, org.openide.util.NbBundle.getMessage(PhpClassVisualPanel2.class, "PhpClassVisualPanel2.jLabel1.text_2")); // NOI18N
 
@@ -83,6 +83,7 @@ public final class PhpClassVisualPanel2 extends JPanel {
 
         destinationDirectory.setEditable(false);
         destinationDirectory.setText(getDirectory().getAbsolutePath());
+        destinationDirectory.setToolTipText(org.openide.util.NbBundle.getMessage(PhpClassVisualPanel2.class, "PhpClassVisualPanel2.destinationDirectory.toolTipText")); // NOI18N
         destinationDirectory.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 destinationDirectoryActionPerformed(evt);
@@ -98,6 +99,7 @@ public final class PhpClassVisualPanel2 extends JPanel {
 
         trackModificationsSelection.setSelected(true);
         org.openide.awt.Mnemonics.setLocalizedText(trackModificationsSelection, org.openide.util.NbBundle.getMessage(PhpClassVisualPanel2.class, "PhpClassVisualPanel2.trackModificationsSelection.text")); // NOI18N
+        trackModificationsSelection.setToolTipText(org.openide.util.NbBundle.getMessage(PhpClassVisualPanel2.class, "PhpClassVisualPanel2.trackModificationsSelection.toolTipText")); // NOI18N
 
         org.openide.awt.Mnemonics.setLocalizedText(jLabel3, org.openide.util.NbBundle.getMessage(PhpClassVisualPanel2.class, "PhpClassVisualPanel2.jLabel3.text")); // NOI18N
 
@@ -109,7 +111,7 @@ public final class PhpClassVisualPanel2 extends JPanel {
 
         org.openide.awt.Mnemonics.setLocalizedText(jLabel5, org.openide.util.NbBundle.getMessage(PhpClassVisualPanel2.class, "PhpClassVisualPanel2.jLabel5.text")); // NOI18N
 
-        identifierQuoteString.setText(org.openide.util.NbBundle.getMessage(PhpClassVisualPanel2.class, "PhpClassVisualPanel2.identifierQuoteString.text")); // NOI18N
+        identifierQuoteString.setModel(new javax.swing.DefaultComboBoxModel(new String[] { " ", "`", "\"" }));
         identifierQuoteString.setToolTipText(org.openide.util.NbBundle.getMessage(PhpClassVisualPanel2.class, "PhpClassVisualPanel2.identifierQuoteString.toolTipText")); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -124,7 +126,7 @@ public final class PhpClassVisualPanel2 extends JPanel {
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addComponent(jLabel5)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(identifierQuoteString, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE))
+                                .addComponent(identifierQuoteString, 0, 118, Short.MAX_VALUE))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addComponent(jLabel4)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -197,7 +199,7 @@ public final class PhpClassVisualPanel2 extends JPanel {
     private javax.swing.JComboBox databaseLayerSelection;
     private javax.swing.JTextField destinationDirectory;
     private javax.swing.JCheckBox generateChecksSelection;
-    private javax.swing.JTextField identifierQuoteString;
+    private javax.swing.JComboBox identifierQuoteString;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
