@@ -71,8 +71,11 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 
 		// prepare/execute statement
 		s.append(getSnippetFromResource(generator, "DatabaseLayerPdo.snippet.getById.php"));
-		s.append("\tpublic static function ").append(METHOD_SELECT_ID_NAME).append("(PDO $db,");
-		s.append(generator.getFieldList(new ArrayList<Field>(generator.getTable().getPrimaryKeys())));
+		s.append("\tpublic static function ").append(METHOD_SELECT_ID_NAME).append("(PDO $db");
+		if (!generator.getTable().getPrimaryKeys().isEmpty()) {
+			s.append(",");
+			s.append(generator.getFieldList(new ArrayList<Field>(generator.getTable().getPrimaryKeys())));
+		}
 		s.append(") {\n");
 		s.append(getStmtInit("self::SQL_SELECT_PK"));
 		int i=0;

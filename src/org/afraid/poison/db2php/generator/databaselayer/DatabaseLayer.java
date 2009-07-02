@@ -108,6 +108,23 @@ abstract public class DatabaseLayer {
 	}
 
 	/**
+	 * get where part of query
+	 *
+	 * @param generator instance of a code generator
+	 * @param keys the keys to use
+	 * @return
+	 */
+	private String getSqlWhere(CodeGenerator generator, Set<Field> keys) {
+		StringBuilder s=new StringBuilder();
+		StringMutator fieldAssign=new StringMutatorFieldAssign(generator);
+		if (!keys.isEmpty()) {
+			s.append(" . ' WHERE ' . ");
+			s.append(CollectionUtil.join(keys, " . ' AND ' . ", fieldAssign));
+		}
+		return s.toString();
+	}
+
+	/**
 	 * get sql query for update
 	 *
 	 * @param generator instance of a code generator
@@ -122,10 +139,7 @@ abstract public class DatabaseLayer {
 		s.append(" SET '\n\t\t. ");
 		StringMutator fieldAssign=new StringMutatorFieldAssign(generator);
 		s.append(CollectionUtil.join(fields, " . ','\n\t\t . ", fieldAssign));
-		if (!keys.isEmpty()) {
-			s.append(" . ' WHERE ' . ");
-			s.append(CollectionUtil.join(keys, " . ' AND ' . ", fieldAssign));
-		}
+		s.append(getSqlWhere(generator, keys));
 		return replaceUnneededConcat(s.toString());
 	}
 
@@ -139,13 +153,9 @@ abstract public class DatabaseLayer {
 		StringBuilder s=new StringBuilder();
 		Set<Field> keys=generator.getTable().getPrimaryKeys();
 		// select by id
-		s.append("'SELECT * FROM ").append(generator.getTable().getName());
+		s.append("'SELECT * FROM ").append(generator.getTable().getName()).append("'");
 
-		if (!keys.isEmpty()) {
-			StringMutator fieldAssign=new StringMutatorFieldAssign(generator);
-			s.append(" WHERE ' . ");
-			s.append(CollectionUtil.join(keys, " . ' AND ' . ", fieldAssign));
-		}
+		s.append(getSqlWhere(generator, keys));
 		return replaceUnneededConcat(s.toString());
 	}
 
@@ -182,13 +192,9 @@ abstract public class DatabaseLayer {
 		StringBuilder s=new StringBuilder();
 		Set<Field> keys=generator.getTable().getPrimaryKeys();
 		// delete by id
-		s.append("'DELETE FROM ").append(generator.getTable().getName());
+		s.append("'DELETE FROM ").append(generator.getTable().getName()).append("'");
 
-		if (!keys.isEmpty()) {
-			s.append(" WHERE  ' . ");
-			StringMutator fieldAssign=new StringMutatorFieldAssign(generator);
-			s.append(CollectionUtil.join(keys, " . ' AND ' . ", fieldAssign));
-		}
+		s.append(getSqlWhere(generator, keys));
 		return replaceUnneededConcat(s.toString());
 	}
 

@@ -35,8 +35,11 @@ public class DatabaseLayerInterface extends DatabaseLayer {
 	@Override
 	public String getCodeSelect(CodeGenerator generator) {
 		StringBuilder s=new StringBuilder();
-		s.append("\tpublic static function ").append(METHOD_SELECT_ID_NAME).append("(PDO $db,");
-		s.append(generator.getFieldList(new ArrayList<Field>(generator.getTable().getPrimaryKeys())));
+		s.append("\tpublic static function ").append(METHOD_SELECT_ID_NAME).append("(PDO $db");
+		if (!generator.getTable().getPrimaryKeys().isEmpty()) {
+			s.append(",");
+			s.append(generator.getFieldList(new ArrayList<Field>(generator.getTable().getPrimaryKeys())));
+		}
 		s.append(") {\n");
 		s.append("\t\t$sql=").append(getSqlSelect(generator)).append(";\n");
 		s.append("\t}\n");
