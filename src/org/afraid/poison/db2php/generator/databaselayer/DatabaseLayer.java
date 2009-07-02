@@ -170,7 +170,7 @@ abstract public class DatabaseLayer {
 	 * @return insert sql query
 	 */
 	public String getSqlInsert(final CodeGenerator generator) {
-		// TODO add which the value gets passed through before beeing assigned to allow handling special types
+		// TODO add method which the value gets passed through before beeing assigned to allow handling special types
 		StringBuilder s=new StringBuilder();
 		Set<Field> fields=generator.getTable().getFields();
 		// insert query
