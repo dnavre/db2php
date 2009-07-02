@@ -18,10 +18,13 @@
 package org.afraid.poison.db2php.generator;
 
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.openide.util.Exceptions;
 
 /**
@@ -58,27 +61,59 @@ public class Table {
 	private void initFields(Connection connection) {
 		try {
 			setIdentifierQuoteString(connection.getMetaData().getIdentifierQuoteString());
-			
+
 			// get list of primary keys
-			ResultSet rsetPrimaryKeys=connection.getMetaData().getPrimaryKeys(getCatalog(), getSchema(), getName());
 			Set<String> primaryKeyFields=new LinkedHashSet<String>();
-			while (rsetPrimaryKeys.next()) {
-				primaryKeyFields.add(rsetPrimaryKeys.getString("COLUMN_NAME"));
+			ResultSet rsetPrimaryKeys=null;
+			try {
+				rsetPrimaryKeys=connection.getMetaData().getPrimaryKeys(getCatalog(), getSchema(), getName());
+				while (rsetPrimaryKeys.next()) {
+					primaryKeyFields.add(rsetPrimaryKeys.getString("COLUMN_NAME"));
+				}
+				rsetPrimaryKeys.close();
+			} catch (SQLException ex) {
+				Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
 			}
-			rsetPrimaryKeys.close();
 			rsetPrimaryKeys=null;
 
-			/* TODO: implement
 			// get row identifiers
-			ResultSet rsetRowIdentifiers=connection.getMetaData().getBestRowIdentifier(getCatalog(), getSchema(), getName(), DatabaseMetaData.bestRowNotPseudo, true);
-			rsetRowIdentifiers.close();
+			Set<String> rowIdentifiers=new LinkedHashSet<String>();
+			ResultSet rsetRowIdentifiers=null;
+			try {
+				rsetRowIdentifiers=connection.getMetaData().getBestRowIdentifier(getCatalog(), getSchema(), getName(), DatabaseMetaData.bestRowNotPseudo, true);
+				while (rsetRowIdentifiers.next()) {
+					rowIdentifiers.add(rsetRowIdentifiers.getString("COLUMN_NAME"));
+				}
+				rsetRowIdentifiers.close();
+			} catch (SQLException ex) {
+				Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
+			}
 			rsetRowIdentifiers=null;
 
 			// get indexes
-			ResultSet rsetIndexes=connection.getMetaData().getIndexInfo(getCatalog(), getSchema(), getName(), false, false);
-			rsetIndexes.close();
+			Set<String> indexesUnique=new LinkedHashSet<String>();
+			Set<String> indexesNonUnique=new LinkedHashSet<String>();
+			ResultSet rsetIndexes=null;
+			try {
+				rsetIndexes=connection.getMetaData().getIndexInfo(getCatalog(), getSchema(), getName(), false, false);
+				String fieldName;
+				boolean unique;
+				while (rsetIndexes.next()) {
+					// NON_UNIQUE
+					fieldName=rsetIndexes.getString("COLUMN_NAME");
+					unique=!rsetIndexes.getBoolean("NON_UNIQUE");
+					if (unique) {
+						indexesUnique.add(fieldName);
+					} else {
+						indexesNonUnique.add(fieldName);
+					}
+				}
+				rsetIndexes.close();
+			} catch (SQLException ex) {
+				Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
+			}
 			rsetIndexes=null;
-			*/
+
 
 			// get list of fields
 			ResultSet rsetColumns=connection.getMetaData().getColumns(getCatalog(), getSchema(), getName(), null);
@@ -96,6 +131,12 @@ public class Table {
 				field.setNullable(rsetColumns.getString("IS_NULLABLE").equalsIgnoreCase("YES"));
 				field.setAutoIncrement(rsetColumns.getString("IS_AUTOINCREMENT").equalsIgnoreCase("YES"));
 				field.setComment(rsetColumns.getString("REMARKS"));
+				field.setRowIdentifier(rowIdentifiers.contains(field.getName()));
+				if (indexesUnique.contains(field.getName())) {
+					field.setIndex(Field.INDEX_UNIQUE);
+				} else if (indexesNonUnique.contains(field.getName())) {
+					field.setIndex(Field.INDEX_NON_UNIQUE);
+				}
 				fields.add(field);
 			}
 			rsetColumns.close();
@@ -182,7 +223,16 @@ public class Table {
 	public Set<Field> getFieldsIdentifiers() {
 		Set<Field> identifiers=getPrimaryKeys();
 		if (identifiers.isEmpty()) {
-			identifiers.add(getFields().iterator().next());
+			identifiers=getFieldsBestRowIdentifiers();
+			if (identifiers.isEmpty()) {
+				identifiers=getFieldsIndexesUnique();
+				if (identifiers.isEmpty()) {
+					identifiers=getFieldsIndexesNonUnique();
+					if (identifiers.isEmpty()) {
+						identifiers.add(getFields().iterator().next());
+					}
+				}
+			}
 		}
 		return identifiers;
 	}
@@ -196,6 +246,51 @@ public class Table {
 		Set<Field> notPrimary=getFields();
 		notPrimary.removeAll(getPrimaryKeys());
 		return notPrimary;
+	}
+
+	/**
+	 * get fields which are reported as best row identifiers by the jdbc driver
+	 *
+	 * @return fields which are reported as best row identifiers by the jdbc driver
+	 */
+	public Set<Field> getFieldsBestRowIdentifiers() {
+		Set<Field> bestRowIdentifiers=new LinkedHashSet<Field>();
+		for (Field f : getFields()) {
+			if (f.isRowIdentifier()) {
+				bestRowIdentifiers.add(f);
+			}
+		}
+		return bestRowIdentifiers;
+	}
+
+	/**
+	 * get the unique indexes
+	 *
+	 * @return unique indexes
+	 */
+	public Set<Field> getFieldsIndexesUnique() {
+		Set<Field> indexesUnique=new LinkedHashSet<Field>();
+		for (Field f : getFields()) {
+			if (f.isIndexUnique()) {
+				indexesUnique.add(f);
+			}
+		}
+		return indexesUnique;
+	}
+
+	/**
+	 * get the non-unique indexes
+	 *
+	 * @return non-unique indexes
+	 */
+	public Set<Field> getFieldsIndexesNonUnique() {
+		Set<Field> indexesNonUnique=new LinkedHashSet<Field>();
+		for (Field f : getFields()) {
+			if (f.isRowIdentifier()) {
+				indexesNonUnique.add(f);
+			}
+		}
+		return indexesNonUnique;
 	}
 
 	/**

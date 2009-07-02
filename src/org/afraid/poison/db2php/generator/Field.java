@@ -26,6 +26,9 @@ import org.afraid.poison.common.StringUtil;
  */
 public class Field {
 
+	public static final int INDEX_NONE=0;
+	public static final int INDEX_UNIQUE=1;
+	public static final int INDEX_NON_UNIQUE=2;
 	private String name;
 	private int type;
 	private String typeName;
@@ -36,6 +39,8 @@ public class Field {
 	private boolean primaryKey=false;
 	private boolean autoIncrement=false;
 	private String comment;
+	private boolean rowIdentifier;
+	private int index=0;
 
 	/**
 	 * @return the name
@@ -184,6 +189,52 @@ public class Field {
 		this.comment=comment;
 	}
 
+	/**
+	 * @return the rowIdentifier
+	 */
+	public boolean isRowIdentifier() {
+		return rowIdentifier;
+	}
+
+	/**
+	 * @param rowIdentifier the rowIdentifier to set
+	 */
+	public void setRowIdentifier(boolean identifier) {
+		this.rowIdentifier=identifier;
+	}
+
+	/**
+	 * @return the index
+	 */
+	public int getIndex() {
+		return index;
+	}
+
+	/**
+	 * @param index the index to set
+	 */
+	public void setIndex(int index) {
+		this.index=index;
+	}
+
+	/**
+	 * check if unique index
+	 *
+	 * @return true if unique index
+	 */
+	public boolean isIndexUnique() {
+		return getIndex()==INDEX_UNIQUE;
+	}
+
+	/**
+	 * check if non-unique index
+	 *
+	 * @return true if non-unique index
+	 */
+	public boolean isIndexNonUnique() {
+		return getIndex()==INDEX_NON_UNIQUE;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (obj==null) {
@@ -196,50 +247,20 @@ public class Field {
 		if ((this.name==null) ? (other.name!=null) : !this.name.equals(other.name)) {
 			return false;
 		}
-		if (this.type!=other.type) {
-			return false;
-		}
-		if ((this.typeName==null) ? (other.typeName!=null) : !this.typeName.equals(other.typeName)) {
-			return false;
-		}
-		if (this.size!=other.size) {
-			return false;
-		}
-		if (this.decimalDigits!=other.decimalDigits) {
-			return false;
-		}
-		if (this.nullable!=other.nullable) {
-			return false;
-		}
-		if ((this.defaultValue==null) ? (other.defaultValue!=null) : !this.defaultValue.equals(other.defaultValue)) {
-			return false;
-		}
-		if (this.primaryKey!=other.primaryKey) {
-			return false;
-		}
-		if (this.autoIncrement!=other.autoIncrement) {
-			return false;
-		}
 		return true;
 	}
 
 	@Override
 	public int hashCode() {
-		int hash=3;
-		hash=73*hash+(this.name!=null ? this.name.hashCode() : 0);
-		hash=73*hash+this.type;
-		hash=73*hash+(this.typeName!=null ? this.typeName.hashCode() : 0);
-		hash=73*hash+this.size;
-		hash=73*hash+(this.nullable ? 1 : 0);
-		hash=73*hash+(this.defaultValue!=null ? this.defaultValue.hashCode() : 0);
-		hash=73*hash+(this.primaryKey ? 1 : 0);
-		hash=73*hash+(this.autoIncrement ? 1 : 0);
+		int hash=7;
+		hash=61*hash+(this.name!=null ? this.name.hashCode() : 0);
 		return hash;
 	}
+
+
 
 	@Override
 	public String toString() {
 		return getName();
 	}
-
 }
