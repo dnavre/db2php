@@ -39,6 +39,7 @@ public class DatabaseLayerInterface extends DatabaseLayer {
 	@Override
 	public String getCodeSelect(CodeGenerator generator) {
 		StringBuilder s=new StringBuilder();
+		s.append(getAssignByHash(generator));
 		s.append(getSnippetFromResource(generator, "DatabaseLayerInterface.snippet.getById.php"));
 		s.append("\tpublic static function ").append(METHOD_SELECT_ID_NAME).append("(SimpleDatabaseInterface $db");
 		if (!generator.getTable().getFieldsIdentifiers().isEmpty()) {
@@ -55,7 +56,6 @@ public class DatabaseLayerInterface extends DatabaseLayer {
 		}
 		s.append("\t\treturn $o;\n");
 		s.append("\t}\n");
-		s.append(getAssignByHash(generator));
 		return s.toString();
 	}
 
