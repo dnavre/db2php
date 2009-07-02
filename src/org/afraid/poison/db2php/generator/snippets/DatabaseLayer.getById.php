@@ -2,6 +2,6 @@
 	/**
 	 * get element by it's primary key(s)
 	 *
-	 * @param PDO $db
+	 * @param <dbType> $db
 	 * @return <type>
 	 */

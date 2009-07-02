@@ -65,6 +65,8 @@ abstract public class DatabaseLayer {
 	 */
 	abstract public String getName();
 
+	abstract public String getDbTypeName();
+
 	abstract public String getCodeSelect(CodeGenerator generator);
 
 	abstract public String getCodeInsert(CodeGenerator generator);
@@ -233,10 +235,11 @@ abstract public class DatabaseLayer {
 	 * @param resource path to the resource
 	 * @return snippet with replaced '<type>'
 	 */
-	protected String getSnippetFromResource(CodeGenerator generator, String resource) {
+	protected String getSnippetFromFile(CodeGenerator generator, String fileName) {
 		StringBuilder s=new StringBuilder();
 		try {
-			s.append(IOUtil.readString(getClass().getResourceAsStream(resource)).replace("<type>", generator.getClassName()));
+			String contents=IOUtil.readString(getClass().getResourceAsStream(new StringBuilder("/org/afraid/poison/db2php/generator/snippets/").append(fileName).toString()));
+			s.append(contents.replace("<type>", generator.getClassName()).replace("<dbType>", getDbTypeName()));
 		} catch (IOException ex) {
 			Exceptions.printStackTrace(ex);
 		}

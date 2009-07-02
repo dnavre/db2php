@@ -31,9 +31,16 @@ import org.openide.util.Exceptions;
  */
 public class DatabaseLayerPdo extends DatabaseLayer {
 
+	private static final String name="PDO (PHP Data Objects)";
+
 	@Override
 	public String getName() {
-		return "PDO (PHP Data Objects)";
+		return name;
+	}
+
+	@Override
+	public String getDbTypeName() {
+		return "PDO";
 	}
 
 	private String getBindingCodeField(CodeGenerator generator, List<Field> fields, int start) {
@@ -66,7 +73,7 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 		s.append(getAssignByHash(generator));
 
 		// prepare/execute statement
-		s.append(getSnippetFromResource(generator, "DatabaseLayerPdo.snippet.getById.php"));
+		s.append(getSnippetFromFile(generator, "DatabaseLayer.getById.php"));
 		s.append("\tpublic static function ").append(METHOD_SELECT_ID_NAME).append("(PDO $db");
 		if (!generator.getTable().getFieldsIdentifiers().isEmpty()) {
 			s.append(",");
@@ -100,13 +107,13 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 		s.append("\t}\n");
 
 		//
-		s.append(getSnippetFromResource(generator, "DatabaseLayerPdo.snippet.insertIntoDatabase.php"));
+		s.append(getSnippetFromFile(generator, "DatabaseLayer.insertIntoDatabase.php"));
 		s.append("\tpublic function ").append(METHOD_INSERT_NAME).append("(PDO $db) {\n");
 		s.append(getStmtInit("self::SQL_INSERT"));
 		//s.append(getBindingCodeField(generator, new ArrayList<Field>(generator.getTable().getFields())));
 		s.append("\t\t$this->bindValues($stmt);\n");
 		s.append(getStmtExecute());
-		
+
 		for (Field f : generator.getTable().getFieldsAutoIncrement()) {
 			s.append("\t\t").append(generator.getSetterCall(f, "$db->lastInsertId()")).append(";\n");
 		}
@@ -120,7 +127,7 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 	@Override
 	public String getCodeUpdate(CodeGenerator generator) {
 		StringBuilder s=new StringBuilder();
-		s.append(getSnippetFromResource(generator, "DatabaseLayerPdo.snippet.updateToDatabase.php"));
+		s.append(getSnippetFromFile(generator, "DatabaseLayer.updateToDatabase.php"));
 		s.append("\tpublic function ").append(METHOD_UPDATE_NAME).append("(PDO $db) {\n");
 		s.append(getStmtInit("self::SQL_UPDATE"));
 		s.append("\t\t$this->bindValues($stmt);\n");
@@ -136,7 +143,7 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 	@Override
 	public String getCodeDelete(CodeGenerator generator) {
 		StringBuilder s=new StringBuilder();
-		s.append(getSnippetFromResource(generator, "DatabaseLayerPdo.snippet.deleteFromDatabase.php"));
+		s.append(getSnippetFromFile(generator, "DatabaseLayer.deleteFromDatabase.php"));
 		s.append("\tpublic function ").append(METHOD_DELETE_NAME).append("(PDO $db");
 		//s.append(",").append(generator.getFieldList(new ArrayList<Field>(generator.getTable().getPrimaryKeys())));
 		s.append(") {\n");
@@ -153,7 +160,7 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 	public String getSnippet() {
 		String s=new String();
 		try {
-			s=IOUtil.readString(getClass().getResourceAsStream("DatabaseLayerPdo.snippet.php"));
+			s=IOUtil.readString(getClass().getResourceAsStream("/org/afraid/poison/db2php/generator/snippets/DatabaseLayerPdo.php"));
 		} catch (IOException ex) {
 			Exceptions.printStackTrace(ex);
 		}

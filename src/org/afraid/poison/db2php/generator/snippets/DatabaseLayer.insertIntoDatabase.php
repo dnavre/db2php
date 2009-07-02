@@ -3,6 +3,6 @@
 	/**
 	 * insert into database
 	 *
-	 * @param PDO $db
+	 * @param <dbType> $db
 	 * @return mixed
 	 */

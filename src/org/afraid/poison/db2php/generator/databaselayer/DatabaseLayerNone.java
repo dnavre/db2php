@@ -25,9 +25,16 @@ import org.afraid.poison.db2php.generator.CodeGenerator;
  */
 public class DatabaseLayerNone extends DatabaseLayer {
 
+	private static final String name="none";
+
 	@Override
 	public String getName() {
-		return "none";
+		return name;
+	}
+
+	@Override
+	public String getDbTypeName() {
+		return new String();
 	}
 
 	@Override

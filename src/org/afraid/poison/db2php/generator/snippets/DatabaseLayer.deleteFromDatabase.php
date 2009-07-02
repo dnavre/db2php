@@ -3,6 +3,6 @@
 	/**
 	 * delete from database
 	 *
-	 * @param PDO $db
+	 * @param <dbType> $db
 	 * @return mixed
 	 */

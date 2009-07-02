@@ -31,6 +31,11 @@ public class DatabaseLayerMySQLi extends DatabaseLayer {
 	}
 
 	@Override
+	public String getDbTypeName() {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
+
+	@Override
 	public String getCodeSelect(CodeGenerator generator) {
 		throw new UnsupportedOperationException("Not supported yet.");
 	}
