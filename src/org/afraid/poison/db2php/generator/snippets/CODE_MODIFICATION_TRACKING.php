@@ -1,4 +1,9 @@
 
+	/**
+	 * store for old instance after object has been modified
+	 *
+	 * @var <type>
+	 */
 	private $oldInstance=null;
 
 	/**
@@ -17,7 +22,8 @@
 	 */
 	protected function notifyChanged($fieldId) {
 		if (is_null($this->getOldInstance())) {
-			$this->oldInstance=$this;
+			$this->oldInstance=clone $this;
+			$this->oldInstance->notifyPristine();
 		}
 	}
 
