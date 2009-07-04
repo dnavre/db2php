@@ -21,6 +21,6 @@ package org.afraid.poison.db2php.generator;
  *
  * @author Andreas Schnaiter <rc.poison@gmail.com>
  */
-public class MemberVariable {
+public class MemberVariable extends MemberBase {
 
 }
