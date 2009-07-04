@@ -81,9 +81,15 @@ abstract public class DatabaseLayer {
 		return new StringBuilder().append(getSnippet()).append(getCodeSelect(generator)).append(getCodeInsert(generator)).append(getCodeUpdate(generator)).append(getCodeDelete(generator)).toString();
 	}
 
-	public String getEscapeCode(CodeGenerator generator, Field f) {
+	public String getEscapeCode(CodeGenerator generator, Field f, boolean fromOldValue) {
 		StringBuilder s=new StringBuilder();
-		s.append("$db->escapeValue(").append(generator.getGetterCall(f)).append(",").append("self::").append(generator.getConstName(f)).append(")");
+		s.append("$db->escapeValue(");
+		if (fromOldValue) {
+			s.append(generator.getGetterCallOldInstance(f));
+		} else {
+			s.append(generator.getGetterCall(f));
+		}
+		s.append(",").append("self::").append(generator.getConstName(f)).append(")");
 		return s.toString();
 	}
 
@@ -107,8 +113,10 @@ abstract public class DatabaseLayer {
 		return s.toString();
 	}
 
-	protected String getSqlFieldAssign(CodeGenerator generator, Field f) {
-		return new StringBuilder("'").append(generator.quoteIdentifier(f)).append("=' . ").append(getEscapeCode(generator, f)).toString();
+	protected String getSqlFieldAssign(CodeGenerator generator, Field f, boolean fromOldValue) {
+		StringBuilder s=new StringBuilder();
+		s.append("'").append(generator.quoteIdentifier(f)).append("=' . ").append(getEscapeCode(generator, f, fromOldValue)).toString();
+		return s.toString();
 	}
 
 	/**
@@ -180,7 +188,7 @@ abstract public class DatabaseLayer {
 
 			@Override
 			public String transform(Object input) {
-				return getEscapeCode(generator, (Field) input);
+				return getEscapeCode(generator, (Field) input, false);
 			}
 		}));
 		s.append(" . ')'");
@@ -226,7 +234,7 @@ abstract public class DatabaseLayer {
 
 		@Override
 		public String transform(Object s) {
-			return getSqlFieldAssign(generator, (Field) s);
+			return getSqlFieldAssign(generator, (Field) s, false);
 		}
 	}
 

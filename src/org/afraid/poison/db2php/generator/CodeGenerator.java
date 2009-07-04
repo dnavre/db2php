@@ -211,6 +211,16 @@ public class CodeGenerator {
 	}
 
 	/**
+	 * get getter call on old instance
+	 *
+	 * @param f the field for which to get the call to getter
+	 * @return getter call on old instance
+	 */
+	public String getGetterCallOldInstance(Field f) {
+		return new StringBuilder("$this->getOldInstance()->").append(getGetterName(f)).append("()").toString();
+	}
+
+	/**
 	 * get getter definition
 	 *
 	 * @param field the field for which to get the getter definition

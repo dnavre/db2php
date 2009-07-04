@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import org.afraid.poison.common.IOUtil;
+import org.afraid.poison.common.StringUtil;
 import org.afraid.poison.db2php.generator.Field;
 import org.afraid.poison.db2php.generator.CodeGenerator;
 import org.openide.util.Exceptions;
@@ -43,16 +44,23 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 		return "PDO";
 	}
 
-	private String getBindingCodeField(CodeGenerator generator, List<Field> fields, int start) {
+	private String getBindingCodeField(CodeGenerator generator, List<Field> fields, int start, boolean fromOldValue, int identLevel) {
 		StringBuilder s=new StringBuilder();
+		String ident=StringUtil.repeat("\t\t", identLevel);
 		for (Field f : fields) {
-			s.append("\t\t$stmt->bindValue(").append(++start).append(",").append(generator.getGetterCall(f)).append(");\n");
+			s.append(ident).append("$stmt->bindValue(").append(++start).append(",");
+			if (fromOldValue) {
+				s.append(generator.getGetterCallOldInstance(f));
+			} else {
+				s.append(generator.getGetterCall(f));
+			}
+			s.append(");\n");
 		}
 		return s.toString();
 	}
 
 	private String getBindingCodeField(CodeGenerator generator, List<Field> fields) {
-		return getBindingCodeField(generator, fields, 0);
+		return getBindingCodeField(generator, fields, 0, false, 2);
 	}
 
 	private String getStmtInit(String cstr) {
@@ -131,7 +139,15 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 		s.append("\tpublic function ").append(METHOD_UPDATE_NAME).append("(PDO $db) {\n");
 		s.append(getStmtInit("self::SQL_UPDATE"));
 		s.append("\t\t$this->bindValues($stmt);\n");
-		s.append(getBindingCodeField(generator, new ArrayList<Field>(generator.getTable().getFieldsIdentifiers()), generator.getTable().getFields().size()));
+		if (false && generator.isTrackFieldModifications()) {
+			s.append("\t\tif (!is_null($this->getOldInstance())) {\n");
+			s.append(getBindingCodeField(generator, new ArrayList<Field>(generator.getTable().getFieldsIdentifiers()), generator.getTable().getFields().size(), true, 3));
+			s.append("\t\t} else {\n");
+			s.append(getBindingCodeField(generator, new ArrayList<Field>(generator.getTable().getFieldsIdentifiers()), generator.getTable().getFields().size(), false, 3));
+			s.append("\t\t}\n");
+		} else {
+			s.append(getBindingCodeField(generator, new ArrayList<Field>(generator.getTable().getFieldsIdentifiers()), generator.getTable().getFields().size(), false, 3));
+		}
 		s.append(getStmtExecute());
 		s.append(getStmtCloseCursor());
 		s.append(generator.getTrackingPristineState());
