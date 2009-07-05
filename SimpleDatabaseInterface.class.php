@@ -28,5 +28,12 @@ interface SimpleDatabaseInterface {
 	 * @return string
 	 */
 	public function escapeValue($value, $fieldId);
+
+	/**
+	 * get the last insert id
+	 *
+	 * @return mixed
+	 */
+	public function lastInsertId();
 }
 ?>
