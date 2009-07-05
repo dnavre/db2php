@@ -351,23 +351,39 @@ public class Table {
 	 * @param conn the database connection for which to get the tables
 	 * @return the tables for the passed connection
 	 */
-	public static Set<Table> getTables(Connection conn) {
+	public static Set<Table> getTables(Connection conn, TableListener listener) {
 		Set<Table> tables=new LinkedHashSet<Table>();
 		try {
 			ResultSet rsetTables=conn.getMetaData().getTables(null, null, null, null);
 			String tableName;
+			Table table;
 			while (rsetTables.next()) {
-				tables.add(
-						new Table(
+				table=new Table(
 						conn,
 						rsetTables.getString("TABLE_CAT"),
 						rsetTables.getString("TABLE_SCHEM"),
-						rsetTables.getString("TABLE_NAME")));
+						rsetTables.getString("TABLE_NAME"));
+				tables.add(table);
+
+				if (null!=listener) {
+					TableEvent evt=new TableEvent(conn, table);
+					listener.tableStatusChanged(evt);
+				}
 			}
 		} catch (SQLException ex) {
 			Exceptions.printStackTrace(ex);
 		}
 		return tables;
+	}
+
+	/**
+	 * get list of tables
+	 *
+	 * @param conn the database connection for which to get the tables
+	 * @return the tables for the passed connection
+	 */
+	public static Set<Table> getTables(Connection conn) {
+		return getTables(conn, null);
 	}
 
 	@Override
