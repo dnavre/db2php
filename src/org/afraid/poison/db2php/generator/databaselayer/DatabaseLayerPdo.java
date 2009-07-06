@@ -46,7 +46,7 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 
 	private String getBindingCodeField(CodeGenerator generator, List<Field> fields, int start, boolean fromOldValue, int identLevel) {
 		StringBuilder s=new StringBuilder();
-		String ident=StringUtil.repeat("\t\t", identLevel);
+		String ident=StringUtil.repeat("\t", identLevel);
 		for (Field f : fields) {
 			s.append(ident).append("$stmt->bindValue(").append(++start).append(",");
 			if (fromOldValue) {
