@@ -38,21 +38,40 @@ class TablesListCellRenderer extends JLabel implements ListCellRenderer {
 		setOpaque(true);
 	}
 
-    @Override
+	@Override
 	public Component getListCellRendererComponent(JList list, Object value, int index, boolean iss, boolean chf) {
 		setText(value.toString());
 		if (value instanceof Table) {
 			Table t=(Table) value;
+			StringBuilder tooltipText=new StringBuilder("<html><h1>").append(t.getName()).append("</h1><br />");
+			if (!t.getPrimaryKeys().isEmpty()) {
+				tooltipText.append("<strong>Primary key(s): </strong>").append(CollectionUtil.join(t.getPrimaryKeys(), ", ")).append("<br />");
+			} else {
+				tooltipText.append("<strong>Has no primary key!</strong><br />");
+				tooltipText.append("<strong>Will be using: </strong>").append(CollectionUtil.join(t.getFieldsIdentifiers(), ", ")).append("<br />");
+			}
+
+			if (!t.getFieldsBestRowIdentifiers().isEmpty()) {
+				tooltipText.append("<strong>Best Identifiers per Driver: </strong>").append(CollectionUtil.join(t.getFieldsBestRowIdentifiers(), ", ")).append("<br />");
+			}
+			if (!t.getFieldsIndexesUnique().isEmpty()) {
+				tooltipText.append("<strong>Unique Indexes: </strong>").append(CollectionUtil.join(t.getFieldsIndexesUnique(), ", ")).append("<br />");
+			}
+			if (!t.getFieldsIndexesNonUnique().isEmpty()) {
+				tooltipText.append("<strong>Non-Unique Indexes: </strong>").append(CollectionUtil.join(t.getFieldsIndexesNonUnique(), ", ")).append("<br />");
+			}
+			tooltipText.append("</html>");
+			setToolTipText(tooltipText.toString());
 			if (t.getPrimaryKeys().isEmpty()) {
 				setBackground(Color.ORANGE);
-				setToolTipText(new StringBuilder("Table ").append(t.getName()).append(" has no primary key! Will be using: ").append(CollectionUtil.join(t.getFieldsIdentifiers(), ", ")).toString());
+				//setToolTipText(new StringBuilder("Table ").append(t.getName()).append(" has no primary key! Will be using: ").append(CollectionUtil.join(t.getFieldsIdentifiers(), ", ")).toString());
 				if (iss) {
 					setBorder(BorderFactory.createLineBorder(list.getSelectionBackground(), 2));
 				} else {
 					setBorder(BorderFactory.createLineBorder(Color.WHITE, 2));
 				}
 			} else {
-				setToolTipText(new StringBuilder("Primary key(s) of ").append(t.getName()).append(": ").append(CollectionUtil.join(t.getPrimaryKeys(), ", ")).toString());
+				//setToolTipText(new StringBuilder("Primary key(s) of ").append(t.getName()).append(": ").append(CollectionUtil.join(t.getPrimaryKeys(), ", ")).toString());
 				if (iss) {
 					setBorder(BorderFactory.createLineBorder(list.getSelectionBackground(), 2));
 					setBackground(list.getSelectionBackground());
