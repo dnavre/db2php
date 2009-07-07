@@ -43,7 +43,7 @@ class TablesListCellRenderer extends JLabel implements ListCellRenderer {
 		setText(value.toString());
 		if (value instanceof Table) {
 			Table t=(Table) value;
-			StringBuilder tooltipText=new StringBuilder("<html><h1>").append(t.getName()).append("</h1><br />");
+			StringBuilder tooltipText=new StringBuilder("<html><h2>").append(t.getName()).append("</h2>");
 			if (!t.getPrimaryKeys().isEmpty()) {
 				tooltipText.append("<strong>Primary key(s): </strong>").append(CollectionUtil.join(t.getPrimaryKeys(), ", ")).append("<br />");
 			} else {
