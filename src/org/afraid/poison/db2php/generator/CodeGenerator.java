@@ -278,7 +278,7 @@ public class CodeGenerator {
 	 */
 	public String getSetter(Field field) {
 		StringBuilder s=new StringBuilder();
-		s.append(getSnippetFromFile(getSettings().isFluentInterface() ? "CodeGenerator.set.php" : "CodeGenerator.set.fluent.php", field));
+		s.append(getSnippetFromFile(getSettings().isFluentInterface() ? "CodeGenerator.set.fluent.php" : "CodeGenerator.set.php", field));
 		s.append("\tpublic function ").append(getSetterName(field)).append("($").append(getMemberName(field)).append(") {\n");
 		if (isTrackFieldModifications()) {
 			s.append("\t\t$this->notifyChanged(self::").append(getConstName(field)).append(");\n");
@@ -537,7 +537,7 @@ public class CodeGenerator {
 		try {
 			String contents=IOUtil.readString(getClass().getResourceAsStream(new StringBuilder(SNIPPET_PATH).append(fileName).toString()));
 			if (null!=field) {
-				contents=contents.replace("<fieldName>", field.getName()); //.replace("<fieldSqlType>", field.getTypeName());
+				contents=contents.replace("<fieldName>", field.getName()).replace("<memberName>", getMemberName(field));
 
 			}
 			s.append(contents.replace("<type>", getClassName()));

@@ -2,6 +2,6 @@
 	/**
 	 * set value for <fieldName>
 	 *
-	 * @param mixed $fldId
+	 * @param mixed $<memberName>
 	 * @return <type>
 	 */
