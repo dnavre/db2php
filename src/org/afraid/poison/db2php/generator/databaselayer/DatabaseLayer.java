@@ -247,12 +247,8 @@ abstract public class DatabaseLayer {
 	 */
 	protected String getSnippetFromFile(CodeGenerator generator, String fileName) {
 		StringBuilder s=new StringBuilder();
-		try {
-			String contents=IOUtil.readString(getClass().getResourceAsStream(new StringBuilder("/org/afraid/poison/db2php/generator/snippets/").append(fileName).toString()));
-			s.append(contents.replace("<type>", generator.getClassName()).replace("<dbType>", getDbTypeName()));
-		} catch (IOException ex) {
-			Exceptions.printStackTrace(ex);
-		}
+		String contents=generator.getSnippetFromFile(fileName);
+		s.append(contents.replace("<dbType>", getDbTypeName()));
 		return s.toString();
 	}
 

@@ -22,6 +22,8 @@ import java.io.IOException;
 import java.util.List;
 import org.afraid.poison.db2php.generator.databaselayer.DatabaseLayer;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.afraid.poison.common.StringUtil;
 import org.afraid.poison.common.CollectionUtil;
 import org.afraid.poison.common.FileUtil;
@@ -36,6 +38,7 @@ import org.openide.util.Exceptions;
  */
 public class CodeGenerator {
 
+	private static final String SNIPPET_PATH="/org/afraid/poison/db2php/generator/snippets/";
 	private Table table;
 	private Settings settings;
 
@@ -227,7 +230,9 @@ public class CodeGenerator {
 	 * @return the getter definition
 	 */
 	public String getGetter(Field field) {
-		StringBuilder s=new StringBuilder("\tpublic function ").append(getGetterName(field)).append("() {\n");
+		StringBuilder s=new StringBuilder();
+		s.append(getSnippetFromFile("CodeGenerator.get.php", field));
+		s.append("\tpublic function ").append(getGetterName(field)).append("() {\n");
 		s.append("\t\treturn $this->").append(getMemberName(field)).append(";\n");
 		s.append("\t}\n");
 		return s.toString();
@@ -272,7 +277,9 @@ public class CodeGenerator {
 	 * @return the setter definition
 	 */
 	public String getSetter(Field field) {
-		StringBuilder s=new StringBuilder("\tpublic function ").append(getSetterName(field)).append("($").append(getMemberName(field)).append(") {\n");
+		StringBuilder s=new StringBuilder();
+		s.append(getSnippetFromFile(getSettings().isFluentInterface() ? "CodeGenerator.set.php" : "CodeGenerator.set.fluent.php", field));
+		s.append("\tpublic function ").append(getSetterName(field)).append("($").append(getMemberName(field)).append(") {\n");
 		if (isTrackFieldModifications()) {
 			s.append("\t\t$this->notifyChanged(self::").append(getConstName(field)).append(");\n");
 		}
@@ -509,6 +516,38 @@ public class CodeGenerator {
 	}
 
 	/**
+	 * read a snippet and replace '<type>' by the class name
+	 * 
+	 * @param fileName filename of the snippet
+	 * @return snippet with replaced '<type>'
+	 */
+	public String getSnippetFromFile(String fileName) {
+		return getSnippetFromFile(fileName, null);
+	}
+
+	/**
+	 * read a snippet and replace '<variable>'
+	 *
+	 * @param fileName filename of the snippet
+	 * @param field table field from which to take values
+	 * @return snippet with replaced '<variables>'
+	 */
+	public String getSnippetFromFile(String fileName, Field field) {
+		StringBuilder s=new StringBuilder();
+		try {
+			String contents=IOUtil.readString(getClass().getResourceAsStream(new StringBuilder(SNIPPET_PATH).append(fileName).toString()));
+			if (null!=field) {
+				contents=contents.replace("<fieldName>", field.getName()); //.replace("<fieldSqlType>", field.getTypeName());
+
+			}
+			s.append(contents.replace("<type>", getClassName()));
+		} catch (IOException ex) {
+			Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
+		}
+		return s.toString();
+	}
+
+	/**
 	 * get all code
 	 *
 	 * @return all code
@@ -520,6 +559,7 @@ public class CodeGenerator {
 		s.append(getConsts());
 		s.append(getMembers());
 		if (isTrackFieldModifications()) {
+			s.append(getSnippetFromFile("snippets/CODE_MODIFICATION_TRACKING.php"));
 			try {
 				s.append(IOUtil.readString(getClass().getResourceAsStream("snippets/CODE_MODIFICATION_TRACKING.php")).replaceAll("<type>", getClassName()));
 			} catch (IOException ex) {
