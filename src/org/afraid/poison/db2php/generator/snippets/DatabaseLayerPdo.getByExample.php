@@ -7,9 +7,9 @@
 	 * @return <type>[]
 	 */
 	public static function getByExample(PDO $db,<type> $example, $conjunctive=true) {
-		$instanceValues=$example->toArray();
+		$exampleValues=$example->toArray();
 		$filter=array();
-		foreach ($instanceValues as $fieldId=>$value) {
+		foreach ($exampleValues as $fieldId=>$value) {
 			if (!is_null($value)) {
 				$filter[$fieldId]=$value;
 			}
@@ -49,8 +49,7 @@
 		while($result=$stmt->fetch(PDO::FETCH_ASSOC)) {
 			$o=new <type>();
 			$o->assignByHash($result);
-			$o->notifyPristine();
-			$resultInstances[]=$o;
+<pristine>			$resultInstances[]=$o;
 		}
 		$stmt->closeCursor();
 		return $resultInstances;
