@@ -20,8 +20,10 @@ package org.afraid.poison.db2php;
 import java.io.File;
 import java.net.URISyntaxException;
 import java.util.Vector;
+import java.util.prefs.Preferences;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import org.afraid.poison.db2php.generator.databaselayer.DatabaseLayer;
 import org.netbeans.api.project.Project;
@@ -31,6 +33,7 @@ import org.openide.filesystems.FileChooserBuilder;
 import org.openide.filesystems.FileObject;
 import org.openide.filesystems.FileStateInvalidException;
 import org.openide.util.Exceptions;
+import org.openide.util.NbPreferences;
 
 public final class PhpClassVisualPanel2 extends JPanel {
 
@@ -188,11 +191,19 @@ public final class PhpClassVisualPanel2 extends JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
 	private void buttonBrowseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBrowseActionPerformed
+		JFileChooser fChooser=new JFileChooser(getDirectory());
+		fChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		fChooser.setMultiSelectionEnabled(false);
+		if (JFileChooser.APPROVE_OPTION==fChooser.showOpenDialog(buttonBrowse)) {
+			setDirectory(fChooser.getSelectedFile());
+		}
+		/*
 		FileChooserBuilder fileChooser=new FileChooserBuilder(getClass());
 		fileChooser.setDefaultWorkingDirectory(getDirectory());
+		//fileChooser.set
 		fileChooser.setDirectoriesOnly(true);
 		setDirectory(fileChooser.showOpenDialog());
-		getDestinationDirectory().setText(getDirectory().getAbsolutePath());
+		 */
 	}//GEN-LAST:event_buttonBrowseActionPerformed
 
 	private void destinationDirectoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_destinationDirectoryActionPerformed
@@ -274,6 +285,7 @@ public final class PhpClassVisualPanel2 extends JPanel {
 	 */
 	public void setDirectory(File directory) {
 		this.directory=directory;
+		getDestinationDirectory().setText(directory.getAbsolutePath());
 	}
 
 	/**
@@ -352,12 +364,41 @@ public final class PhpClassVisualPanel2 extends JPanel {
 		return fluentInterfaceSelection;
 	}
 
-/*
+	public void readSettings() {
+		Preferences pref=NbPreferences.forModule(getClass());
+		String setting=pref.get("DatabaseLayer", null);
+		if (null!=setting) {
+			
+		}
+		getClassNamePrefix().setText(pref.get("ClassNamePrefix", ""));
+		getClassNameSuffix().setText(pref.get("ClassNameSuffix", "Model"));
+		setting=pref.get("IdentifierQuoteString", null);
+		if (null!=setting) {
+
+		}
+		getGenerateChecksSelection().setSelected(pref.getBoolean("TypeChecks", false));
+		getTrackModificationsSelection().setSelected(pref.getBoolean("TrackModifications", true));
+		getFluentInterfaceSelection().setSelected(pref.getBoolean("FluentInterface", true));
+
+	}
+
+	public void storeSettings() {
+		Preferences pref=NbPreferences.forModule(getClass());
+		pref.put("DatabaseLayer", ((DatabaseLayer) getDatabaseLayerSelection().getSelectedItem()).getDbTypeName());
+		pref.put("ClassNamePrefix", getClassNamePrefix().getText());
+		pref.put("ClassNameSuffix", getClassNameSuffix().getText());
+		pref.put("IdentifierQuoteString", getIdentifierQuoteString().getSelectedItem().toString());
+		pref.putBoolean("TypeChecks", getGenerateChecksSelection().isSelected());
+		pref.putBoolean("TrackModifications", getTrackModificationsSelection().isSelected());
+		pref.putBoolean("FluentInterface", getFluentInterfaceSelection().isSelected());
+
+	}
+
+	/*
 	@Override
 	public boolean isValid() {
-		return true; //null!=getDirectory() && getDirectory().isDirectory() && getDirectory().canWrite();
+	return true; //null!=getDirectory() && getDirectory().isDirectory() && getDirectory().canWrite();
 	}
-*/
-
+	 */
 }
 
