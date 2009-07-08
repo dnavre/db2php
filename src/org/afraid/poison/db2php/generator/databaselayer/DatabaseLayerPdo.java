@@ -146,7 +146,7 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 			s.append(getBindingCodeField(generator, new ArrayList<Field>(generator.getTable().getFieldsIdentifiers()), generator.getTable().getFields().size(), false, 3));
 			s.append("\t\t}\n");
 		} else {
-			s.append(getBindingCodeField(generator, new ArrayList<Field>(generator.getTable().getFieldsIdentifiers()), generator.getTable().getFields().size(), false, 3));
+			s.append(getBindingCodeField(generator, new ArrayList<Field>(generator.getTable().getFieldsIdentifiers()), generator.getTable().getFields().size(), false, 2));
 		}
 		s.append(getStmtExecute());
 		s.append(getStmtCloseCursor());
