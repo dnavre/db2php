@@ -346,7 +346,7 @@ public class CodeGenerator {
 	 */
 	public String getConsts() {
 		StringBuilder s=new StringBuilder();
-		s.append("\t\tconst SQL_IDENTIFIER_QUOTE='").append(getIdentifierQuoteString()).append("';\n");
+		s.append("\tconst SQL_IDENTIFIER_QUOTE='").append(getIdentifierQuoteString()).append("';\n");
 		// field ids for misc use
 		int i=0;
 		for (Field f : getTable().getFields()) {

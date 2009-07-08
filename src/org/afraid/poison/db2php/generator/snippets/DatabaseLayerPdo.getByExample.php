@@ -6,7 +6,7 @@
 	 * @param <type> $example
 	 * @return <type>[]
 	 */
-	public static function getByExample(PDO $db,<type> $example, $conjunctive=true) {
+	public static function getByExample(PDO $db,<type> $example, $and=true) {
 		$exampleValues=$example->toArray();
 		$filter=array();
 		foreach ($exampleValues as $fieldId=>$value) {
@@ -14,7 +14,7 @@
 				$filter[$fieldId]=$value;
 			}
 		}
-		return self::getByFilter($db, $filter, $conjunctive);
+		return self::getByFilter($db, $filter, $and);
 	}
 
 	/**
@@ -22,10 +22,10 @@
 	 *
 	 * @param PDO $db
 	 * @param array $filter
-	 * @param boolean $conjunctive
+	 * @param boolean $and
 	 * @return <type>[]
 	 */
-	public static function getByFilter(PDO $db, $filter, $conjunctive=true) {
+	public static function getByFilter(PDO $db, $filter, $and=true) {
 		$sql='SELECT * FROM `tbltarifeoffline`';
 		$first=true;
 		$usedValues=array();
@@ -34,7 +34,7 @@
 				$sql.=' WHERE ';
 				$first=false;
 			} else {
-				$sql.=$conjunctive ? ' AND ' : ' OR ';
+				$sql.=$and ? ' AND ' : ' OR ';
 			}
 			$sql.=self::SQL_IDENTIFIER_QUOTE . self::$FIELD_NAMES[$fieldId] . self::SQL_IDENTIFIER_QUOTE . '=?';
 			$usedValues[]=$value;
