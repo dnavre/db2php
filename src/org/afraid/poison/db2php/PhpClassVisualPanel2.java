@@ -120,6 +120,7 @@ public final class PhpClassVisualPanel2 extends JPanel {
         identifierQuoteString.setToolTipText(org.openide.util.NbBundle.getMessage(PhpClassVisualPanel2.class, "PhpClassVisualPanel2.identifierQuoteString.toolTipText")); // NOI18N
 
         org.openide.awt.Mnemonics.setLocalizedText(fluentInterfaceSelection, org.openide.util.NbBundle.getMessage(PhpClassVisualPanel2.class, "PhpClassVisualPanel2.fluentInterfaceSelection.text")); // NOI18N
+        fluentInterfaceSelection.setToolTipText(org.openide.util.NbBundle.getMessage(PhpClassVisualPanel2.class, "PhpClassVisualPanel2.fluentInterfaceSelection.toolTipText")); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
