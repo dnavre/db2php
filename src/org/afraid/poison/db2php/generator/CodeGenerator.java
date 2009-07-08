@@ -537,7 +537,7 @@ public class CodeGenerator {
 		try {
 			String contents=IOUtil.readString(getClass().getResourceAsStream(new StringBuilder(SNIPPET_PATH).append(fileName).toString()));
 			if (null!=field) {
-				contents=contents.replace("<fieldName>", field.getName()).replace("<memberName>", getMemberName(field));
+				contents=contents.replace("<fieldName>", field.getName()).replace("<memberName>", getMemberName(field)).replace("<fieldInfo>", field.getInfoText()).replace("<fieldComment>", field.getComment());
 
 			}
 			s.append(contents.replace("<type>", getClassName()));

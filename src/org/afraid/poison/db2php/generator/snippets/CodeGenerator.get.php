@@ -1,6 +1,8 @@
 
 	/**
-	 * get value for <fieldName>
+	 * get value for <fieldName> <fieldComment>
+	 *
+	 * <fieldInfo>
 	 *
 	 * @return mixed
 	 */

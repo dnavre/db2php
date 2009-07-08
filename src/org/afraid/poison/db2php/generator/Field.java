@@ -235,6 +235,23 @@ public class Field {
 		return getIndex()==INDEX_NON_UNIQUE;
 	}
 
+	/**
+	 * get a bit of human readable information for this field
+	 *
+	 * @return a bit of human readable information for this field
+	 */
+	public String getInfoText() {
+		StringBuilder s=new StringBuilder();
+		s.append("type:").append(getTypeName()).append(",");
+		s.append("size:").append(getSize()).append(",");
+		s.append("nullable:").append(isNullable()).append(",");
+		s.append("default:").append(getDefaultValue()).append(",");
+		s.append("primary:").append(isPrimaryKey()).append(",");
+		s.append("unique:").append(isIndexUnique()).append(",");
+		s.append("index:").append(isIndexNonUnique());
+		return s.toString();
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (obj==null) {
