@@ -29,6 +29,7 @@ public class Settings {
 	private DatabaseLayer databaseLayer=DatabaseLayer.PDO;
 	private boolean generateChecks=false;
 	private boolean trackFieldModifications=true;
+	private boolean fluentInterface=true;
 	private String classNamePrefix=new String();
 	private String classNameSuffix=new String();
 	private File outputDirectory;
@@ -74,6 +75,20 @@ public class Settings {
 	 */
 	public void setTrackFieldModifications(boolean trackFieldModifications) {
 		this.trackFieldModifications=trackFieldModifications;
+	}
+
+	/**
+	 * @return the fluentInterface
+	 */
+	public boolean isFluentInterface() {
+		return fluentInterface;
+	}
+
+	/**
+	 * @param fluentInterface the fluentInterface to set
+	 */
+	public void setFluentInterface(boolean fluentInterface) {
+		this.fluentInterface=fluentInterface;
 	}
 
 	/**

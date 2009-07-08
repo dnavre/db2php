@@ -44,6 +44,7 @@
                       </Group>
                       <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="fluentInterfaceSelection" min="-2" max="-2" attributes="0"/>
                           <Component id="generateChecksSelection" min="-2" max="-2" attributes="0"/>
                           <Component id="trackModificationsSelection" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
@@ -79,6 +80,7 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="classNameSuffix" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="fluentInterfaceSelection" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -208,6 +210,13 @@
         <Property name="selectedIndex" type="int" value="1"/>
         <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
           <ResourceString bundle="org/afraid/poison/db2php/Bundle.properties" key="PhpClassVisualPanel2.identifierQuoteString.toolTipText" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+        </Property>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="fluentInterfaceSelection">
+      <Properties>
+        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="org/afraid/poison/db2php/Bundle.properties" key="PhpClassVisualPanel2.fluentInterfaceSelection.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>

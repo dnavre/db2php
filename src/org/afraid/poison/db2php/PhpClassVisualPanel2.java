@@ -71,6 +71,7 @@ public final class PhpClassVisualPanel2 extends JPanel {
         classNameSuffix = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         identifierQuoteString = new javax.swing.JComboBox();
+        fluentInterfaceSelection = new javax.swing.JCheckBox();
 
         org.openide.awt.Mnemonics.setLocalizedText(jLabel1, org.openide.util.NbBundle.getMessage(PhpClassVisualPanel2.class, "PhpClassVisualPanel2.jLabel1.text_2")); // NOI18N
 
@@ -115,6 +116,8 @@ public final class PhpClassVisualPanel2 extends JPanel {
         identifierQuoteString.setSelectedIndex(1);
         identifierQuoteString.setToolTipText(org.openide.util.NbBundle.getMessage(PhpClassVisualPanel2.class, "PhpClassVisualPanel2.identifierQuoteString.toolTipText")); // NOI18N
 
+        org.openide.awt.Mnemonics.setLocalizedText(fluentInterfaceSelection, org.openide.util.NbBundle.getMessage(PhpClassVisualPanel2.class, "PhpClassVisualPanel2.fluentInterfaceSelection.text")); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -142,6 +145,7 @@ public final class PhpClassVisualPanel2 extends JPanel {
                                 .addComponent(databaseLayerSelection, 0, 144, Short.MAX_VALUE)))
                         .addGap(12, 12, 12)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(fluentInterfaceSelection)
                             .addComponent(generateChecksSelection)
                             .addComponent(trackModificationsSelection)))
                     .addGroup(layout.createSequentialGroup()
@@ -168,7 +172,8 @@ public final class PhpClassVisualPanel2 extends JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(classNameSuffix, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(classNameSuffix, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fluentInterfaceSelection))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
@@ -199,6 +204,7 @@ public final class PhpClassVisualPanel2 extends JPanel {
     private javax.swing.JTextField classNameSuffix;
     private javax.swing.JComboBox databaseLayerSelection;
     private javax.swing.JTextField destinationDirectory;
+    private javax.swing.JCheckBox fluentInterfaceSelection;
     private javax.swing.JCheckBox generateChecksSelection;
     private javax.swing.JComboBox identifierQuoteString;
     private javax.swing.JLabel jLabel1;
@@ -340,11 +346,12 @@ public final class PhpClassVisualPanel2 extends JPanel {
 	}
 
 	/**
-	 * @param identifierQuoteString the identifierQuoteString to set
+	 * @return the fluentInterfaceSelection
 	 */
-	public void setIdentifierQuoteString(javax.swing.JComboBox identifierQuoteString) {
-		this.identifierQuoteString=identifierQuoteString;
+	public javax.swing.JCheckBox getFluentInterfaceSelection() {
+		return fluentInterfaceSelection;
 	}
+
 /*
 	@Override
 	public boolean isValid() {
