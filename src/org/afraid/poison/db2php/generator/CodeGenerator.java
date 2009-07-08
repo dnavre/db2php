@@ -559,12 +559,7 @@ public class CodeGenerator {
 		s.append(getConsts());
 		s.append(getMembers());
 		if (isTrackFieldModifications()) {
-			s.append(getSnippetFromFile("snippets/CODE_MODIFICATION_TRACKING.php"));
-			try {
-				s.append(IOUtil.readString(getClass().getResourceAsStream("snippets/CODE_MODIFICATION_TRACKING.php")).replaceAll("<type>", getClassName()));
-			} catch (IOException ex) {
-				Exceptions.printStackTrace(ex);
-			}
+			s.append(getSnippetFromFile("CODE_MODIFICATION_TRACKING.php"));
 		}
 		s.append(getAccessors());
 		s.append(getUtilMethodToArray());
