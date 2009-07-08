@@ -346,7 +346,6 @@ public class CodeGenerator {
 	 */
 	public String getConsts() {
 		StringBuilder s=new StringBuilder();
-		s.append("\tconst SQL_IDENTIFIER_QUOTE='").append(getIdentifierQuoteString()).append("';\n");
 		// field ids for misc use
 		int i=0;
 		for (Field f : getTable().getFields()) {
@@ -433,6 +432,7 @@ public class CodeGenerator {
 	public String getPreparedStatements() {
 		Set<Field> fields=getTable().getFields();
 		StringBuilder s=new StringBuilder();
+		s.append("\tconst SQL_IDENTIFIER_QUOTE='").append(getIdentifierQuoteString()).append("';\n");
 
 		// insert query
 		s.append("\tconst SQL_INSERT='INSERT INTO ").append(quoteIdentifier(getTable().getName()));
