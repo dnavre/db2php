@@ -36,7 +36,7 @@
 			} else {
 				$sql.=$conjunctive ? ' AND ' : ' OR ';
 			}
-			$sql.='`' . self::$FIELD_NAMES[$fieldId] . '`' . '=?';
+			$sql.=SQL_IDENTIFIER_QUOTE . self::$FIELD_NAMES[$fieldId] . SQL_IDENTIFIER_QUOTE . '=?';
 			$usedValues[]=$value;
 		}
 		$stmt=self::prepareStatement($db, $sql);
