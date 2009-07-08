@@ -29,7 +29,6 @@ import org.afraid.poison.common.CollectionUtil;
 import org.afraid.poison.common.FileUtil;
 import org.afraid.poison.common.IOUtil;
 import org.afraid.poison.common.StringMutator;
-import org.openide.util.Exceptions;
 
 /**
  * generates PHP code from a table

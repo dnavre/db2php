@@ -25,7 +25,6 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.openide.util.Exceptions;
 
 /**
  * represents meta data for a table in a database
@@ -143,7 +142,7 @@ public class Table {
 			rsetColumns=null;
 
 		} catch (SQLException ex) {
-			Exceptions.printStackTrace(ex);
+			Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
 		}
 	}
 
@@ -371,7 +370,7 @@ public class Table {
 				}
 			}
 		} catch (SQLException ex) {
-			Exceptions.printStackTrace(ex);
+			Logger.getLogger(Table.class.getName()).log(Level.SEVERE, null, ex);
 		}
 		return tables;
 	}

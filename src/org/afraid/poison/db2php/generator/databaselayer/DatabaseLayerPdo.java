@@ -20,11 +20,12 @@ package org.afraid.poison.db2php.generator.databaselayer;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.afraid.poison.common.IOUtil;
 import org.afraid.poison.common.StringUtil;
 import org.afraid.poison.db2php.generator.Field;
 import org.afraid.poison.db2php.generator.CodeGenerator;
-import org.openide.util.Exceptions;
 
 /**
  *
@@ -179,7 +180,7 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 		try {
 			s=IOUtil.readString(getClass().getResourceAsStream("/org/afraid/poison/db2php/generator/snippets/DatabaseLayerPdo.php"));
 		} catch (IOException ex) {
-			Exceptions.printStackTrace(ex);
+			Logger.getLogger(getClass().getCanonicalName()).log(Level.SEVERE, null, ex);
 		}
 		return s;
 	}
