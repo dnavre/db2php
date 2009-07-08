@@ -278,7 +278,7 @@ public class CodeGenerator {
 		}
 		s.append("\t\t$this->").append(getMemberName(field)).append("=$").append(getMemberName(field)).append(";\n");
 		if (getSettings().isFluentInterface()) {
-			s.append("\t\treturn $this;");
+			s.append("\t\treturn $this;\n");
 		}
 		s.append("\t}\n");
 		return s.toString();
