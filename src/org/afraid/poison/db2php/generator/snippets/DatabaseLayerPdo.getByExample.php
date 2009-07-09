@@ -38,9 +38,9 @@
 			$sql.=self::SQL_IDENTIFIER_QUOTE . self::$FIELD_NAMES[$fieldId] . self::SQL_IDENTIFIER_QUOTE . '=?';
 		}
 		$stmt=self::prepareStatement($db, $sql);
-		$ecnt=count($filter);
-		for ($i=0; $i<$ecnt; ++$i) {
-			$stmt->bindValue(1+$i, $filter[$i]);
+		$i=0;
+		foreach ($filter as $value) {
+			$stmt->bindValue(++$i, $value);
 		}
 		$affected=$stmt->execute();
 		$resultInstances=array();
