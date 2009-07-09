@@ -91,7 +91,11 @@
                     </run-dependency>
                 </dependency>
             </module-dependencies>
-            <public-packages/>
+            <public-packages>
+                <package>org.afraid.poison.common</package>
+                <package>org.afraid.poison.db2php.generator</package>
+                <package>org.afraid.poison.db2php.generator.databaselayer</package>
+            </public-packages>
         </data>
     </configuration>
 </project>
