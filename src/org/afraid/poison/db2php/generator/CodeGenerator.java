@@ -231,7 +231,8 @@ public class CodeGenerator {
 	public String getGetter(Field field) {
 		StringBuilder s=new StringBuilder();
 		s.append(getSnippetFromFile("CodeGenerator.get.php", field));
-		s.append("\tpublic function ").append(getGetterName(field)).append("() {\n");
+		s.append("\tpublic function ");
+		s.append(getGetterName(field)).append("() {\n");
 		s.append("\t\treturn $this->").append(getMemberName(field)).append(";\n");
 		s.append("\t}\n");
 		return s.toString();
@@ -278,7 +279,11 @@ public class CodeGenerator {
 	public String getSetter(Field field) {
 		StringBuilder s=new StringBuilder();
 		s.append(getSnippetFromFile(getSettings().isFluentInterface() ? "CodeGenerator.set.fluent.php" : "CodeGenerator.set.php", field));
-		s.append("\tpublic function ").append(getSetterName(field)).append("($").append(getMemberName(field)).append(") {\n");
+		s.append("\tpublic function ");
+		if (getSettings().isFluentInterface()) {
+			s.append("&");
+		}
+		s.append(getSetterName(field)).append("($").append(getMemberName(field)).append(") {\n");
 		if (isTrackFieldModifications()) {
 			s.append("\t\t$this->notifyChanged(self::").append(getConstName(field)).append(");\n");
 		}

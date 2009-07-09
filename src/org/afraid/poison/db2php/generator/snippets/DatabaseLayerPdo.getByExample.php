@@ -26,9 +26,8 @@
 	 * @return <type>[]
 	 */
 	public static function getByFilter(PDO $db, $filter, $and=true) {
-		$sql='SELECT * FROM `tbltarifeoffline`';
+		$sql='SELECT * FROM <tableNameQuoted>';
 		$first=true;
-		$usedValues=array();
 		foreach ($filter as $fieldId=>$value) {
 			if ($first) {
 				$sql.=' WHERE ';
@@ -37,12 +36,11 @@
 				$sql.=$and ? ' AND ' : ' OR ';
 			}
 			$sql.=self::SQL_IDENTIFIER_QUOTE . self::$FIELD_NAMES[$fieldId] . self::SQL_IDENTIFIER_QUOTE . '=?';
-			$usedValues[]=$value;
 		}
 		$stmt=self::prepareStatement($db, $sql);
-		$ecnt=count($usedValues);
+		$ecnt=count($filter);
 		for ($i=0; $i<$ecnt; ++$i) {
-			$stmt->bindValue(1+$i, $usedValues[$i]);
+			$stmt->bindValue(1+$i, $filter[$i]);
 		}
 		$affected=$stmt->execute();
 		$resultInstances=array();

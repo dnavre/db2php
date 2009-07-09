@@ -96,14 +96,17 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 			s.append("\t\t$stmt->bindValue(").append(++i).append(",$").append(generator.getMemberName(f)).append(");\n");
 		}
 		s.append(getStmtExecute());
-		s.append("\t\t$result=$stmt->fetch(PDO::FETCH_ASSOC);\n");
+		s.append("\t\tif(!($result=$stmt->fetch(PDO::FETCH_ASSOC))) {\n");
+		s.append("\t\t\treturn null;\n");
+		s.append("\t\t}\n");
+
 		s.append("\t\t$o=new ").append(generator.getClassName()).append("();\n");
 		s.append("\t\t$o->assignByHash($result);\n");
 		s.append(getStmtCloseCursor());
 		if (generator.isTrackFieldModifications()) {
 			s.append("\t\t$o->notifyPristine();\n");
 		}
-		s.append("\t\treturn $o;\n");
+		s.append("\t\t\treturn $o;\n");
 		s.append("\t}\n");
 		return s.toString();
 	}

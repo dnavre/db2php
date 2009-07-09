@@ -245,7 +245,7 @@ abstract public class DatabaseLayer {
 	protected String getSnippetFromFile(CodeGenerator generator, String fileName) {
 		StringBuilder s=new StringBuilder();
 		String contents=generator.getSnippetFromFile(fileName);
-		s.append(contents.replace("<dbType>", getDbTypeName()));
+		s.append(contents.replace("<dbType>", getDbTypeName()).replace("<tableName>", generator.getTable().getName()).replace("<tableNameQuoted>", generator.quoteIdentifier(generator.getTable().getName())));
 		return s.toString();
 	}
 
