@@ -1,6 +1,6 @@
 #!/bin/sh
 
-VERSION=$(grep 'OpenIDE-Module-Specification-Version' manifest.mf |grep -Po '[\d.]+$')
+VERSION=$(grep 'OpenIDE-Module-Specification-Version' manifest.mf |grep -Po '[^\s:]+$')
 DDIR="db2php-${VERSION}"
 mkdir "$DDIR"
 for f in $(git ls-files); do
