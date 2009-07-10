@@ -19,7 +19,7 @@ public class CollectionUtil {
 	 * @param delim the delimiter
 	 * @return the delimited string
 	 */
-	public static String join(Collection c, String delim) {
+	public static String join(Collection<?> c, String delim) {
 		return join(c, delim, null);
 	}
 
@@ -32,7 +32,7 @@ public class CollectionUtil {
 	 * @param append the string to append to each element
 	 * @return the delimited string
 	 */
-	public static String join(Collection<Object> c, String delim, String prepend, String append) {
+	public static String join(Collection<?> c, String delim, String prepend, String append) {
 		return join(c, delim, new StringMutatorPrependAppend(prepend, append));
 	}
 
@@ -41,10 +41,10 @@ public class CollectionUtil {
 	 *
 	 * @param c the collection of elements to join
 	 * @param delim the delimiter
-	 * @param mutator
+	 * @param mutator the string mutator to use
 	 * @return the delimited string
 	 */
-	public static String join(Collection c, String delim, StringMutator mutator) {
+	public static String join(Collection<?> c, String delim, StringMutator mutator) {
 		StringBuilder s=new StringBuilder();
 		boolean first=true;
 		for (Object o : c) {
@@ -68,7 +68,7 @@ public class CollectionUtil {
 	 * @param c list of objects
 	 * @return the max length
 	 */
-	public static int getStringLengthMax(Collection c) {
+	public static int getStringLengthMax(Collection<?> c) {
 		int max=0;
 		int len;
 		for (Object o : c) {
@@ -85,7 +85,7 @@ public class CollectionUtil {
 	 * @param c list of objects
 	 * @return the minimum length
 	 */
-	public static int getStringLengthMin(Collection c) {
+	public static int getStringLengthMin(Collection<?> c) {
 		int min=0;
 		int len;
 		for (Object o : c) {
