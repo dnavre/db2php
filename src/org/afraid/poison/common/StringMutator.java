@@ -7,8 +7,14 @@ package org.afraid.poison.common;
 
 /**
  *
- * @author andreas.schnaiter
+ * @author poison
  */
 public interface StringMutator {
+	/**
+	 * transform input
+	 *
+	 * @param input the value to transform
+	 * @return result of the transformation
+	 */
 	public String transform(Object input);
 }

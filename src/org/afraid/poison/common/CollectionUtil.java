@@ -32,7 +32,7 @@ public class CollectionUtil {
 	 * @param append the string to append to each element
 	 * @return the delimited string
 	 */
-	public static String join(Collection c, String delim, String prepend, String append) {
+	public static String join(Collection<Object> c, String delim, String prepend, String append) {
 		return join(c, delim, new StringMutatorPrependAppend(prepend, append));
 	}
 
@@ -41,6 +41,7 @@ public class CollectionUtil {
 	 *
 	 * @param c the collection of elements to join
 	 * @param delim the delimiter
+	 * @param mutator
 	 * @return the delimited string
 	 */
 	public static String join(Collection c, String delim, StringMutator mutator) {

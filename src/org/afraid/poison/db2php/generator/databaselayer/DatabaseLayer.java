@@ -31,16 +31,49 @@ import org.afraid.poison.db2php.generator.Field;
  */
 abstract public class DatabaseLayer {
 
+	/**
+	 * No Databaes Layer
+	 */
 	public static final DatabaseLayer NONE=new DatabaseLayerNone();
+	/**
+	 * Simple Interface Databaes Layer
+	 */
 	public static final DatabaseLayer INTERFACE=new DatabaseLayerInterface();
+	/**
+	 * PDO Databaes Layer
+	 */
 	public static final DatabaseLayer PDO=new DatabaseLayerPdo();
+	/**
+	 * MySQLi datab
+	 */
 	public static final DatabaseLayer MYSQLI=new DatabaseLayerMySQLi();
+	/**
+	 * ADODB Databaes Layer
+	 */
 	public static final DatabaseLayer ADODB=new DatabaseLayerAdoDb();
+	/**
+	 * ZEND Databaes Layer
+	 */
 	public static final DatabaseLayer ZEND=new DatabaseLayerZend();
+	/**
+	 * name of the method to get by id
+	 */
 	protected static final String METHOD_SELECT_ID_NAME="getById";
+	/**
+	 * update method name
+	 */
 	protected static final String METHOD_UPDATE_NAME="updateToDatabase";
+	/**
+	 * insert method name
+	 */
 	protected static final String METHOD_INSERT_NAME="insertIntoDatabase";
+	/**
+	 * delete method name
+	 */
 	protected static final String METHOD_DELETE_NAME="deleteFromDatabase";
+	/**
+	 * the available database layers
+	 */
 	public static final Set<DatabaseLayer> AVAILABLE;
 
 	static {
@@ -54,6 +87,9 @@ abstract public class DatabaseLayer {
 
 	}
 
+	/**
+	 * CTOR
+	 */
 	protected DatabaseLayer() {
 	}
 
@@ -62,22 +98,69 @@ abstract public class DatabaseLayer {
 	 */
 	abstract public String getName();
 
+	/**
+	 * get database type name (in PHP)
+	 *
+	 * @return the database type name from PHP
+	 */
 	abstract public String getDbTypeName();
 
+	/**
+	 * get select code
+	 *
+	 * @param generator a code generator
+	 * @return the generated select code
+	 */
 	abstract public String getCodeSelect(CodeGenerator generator);
 
+	/**
+	 * get insert code
+	 *
+	 * @param generator a code generator
+	 * @return the generated insert code
+	 */
 	abstract public String getCodeInsert(CodeGenerator generator);
 
+	/**
+	 *
+	 * @param generator a code generator
+	 * @return
+	 */
 	abstract public String getCodeUpdate(CodeGenerator generator);
 
+	/**
+	 * get delete code
+	 *
+	 * @param generator a code generator
+	 * @return the generated delete code
+	 */
 	abstract public String getCodeDelete(CodeGenerator generator);
 
+	/**
+	 * get code snippet
+	 *
+	 * @return the code snippet
+	 */
 	abstract public String getSnippet();
 
+	/**
+	 * get complete db code
+	 *
+	 * @param generator a code generator
+	 * @return the db code
+	 */
 	public String getCode(CodeGenerator generator) {
 		return new StringBuilder().append(getSnippet()).append(getCodeSelect(generator)).append(getCodeInsert(generator)).append(getCodeUpdate(generator)).append(getCodeDelete(generator)).toString();
 	}
 
+	/**
+	 * get code to escape code for passed field
+	 *
+	 * @param generator a code generator
+	 * @param f the field
+	 * @param fromOldValue if to use old value
+	 * @return the escape code for the passed field
+	 */
 	public String getEscapeCode(CodeGenerator generator, Field f, boolean fromOldValue) {
 		StringBuilder s=new StringBuilder();
 		s.append("$db->escapeValue(");
@@ -110,6 +193,14 @@ abstract public class DatabaseLayer {
 		return s.toString();
 	}
 
+	/**
+	 * get code to assign field in SQL
+	 *
+	 * @param generator a code generator
+	 * @param f the field
+	 * @param fromOldValue weather to use old value
+	 * @return code to assign a field in SQL
+	 */
 	protected String getSqlFieldAssign(CodeGenerator generator, Field f, boolean fromOldValue) {
 		StringBuilder s=new StringBuilder();
 		s.append("'").append(generator.quoteIdentifier(f)).append("=' . ").append(getEscapeCode(generator, f, fromOldValue)).toString();
@@ -208,6 +299,11 @@ abstract public class DatabaseLayer {
 		return replaceUnneededConcat(s.toString());
 	}
 
+	/**
+	 * return result from $stmt->execute()
+	 *
+	 * @return the result from $stmt->execute()
+	 */
 	protected String getReturnResult() {
 		return new StringBuilder("\t\treturn $affected;\n").toString();
 	}
@@ -239,7 +335,7 @@ abstract public class DatabaseLayer {
 	 * read a snippet and replace '<type>' by the class name
 	 *
 	 * @param generator instance of a code generator
-	 * @param resource path to the resource
+	 * @param fileName name of the file
 	 * @return snippet with replaced '<type>'
 	 */
 	protected String getSnippetFromFile(CodeGenerator generator, String fileName) {

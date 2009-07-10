@@ -23,10 +23,22 @@ package org.afraid.poison.db2php.generator;
  */
 abstract public class MemberBase {
 
-    public static final int PRIVATE=1;
-    public static final int PROTECTED=2;
-    public static final int PUBLIC=4;
-    public static final int STATIC=8;
+	/**
+	 * private member
+	 */
+	public static final int PRIVATE=1;
+	/**
+	 * protected member
+	 */
+	public static final int PROTECTED=2;
+	/**
+	 * public member
+	 */
+	public static final int PUBLIC=4;
+	/**
+	 * static member
+	 */
+	public static final int STATIC=8;
     private int scope;
     private String name;
 

@@ -26,6 +26,12 @@ import java.util.EventObject;
 public class TableEvent extends EventObject {
 	private final Table table;
 	
+	/**
+	 * CTOR
+	 *
+	 * @param source event source
+	 * @param table table for the event
+	 */
 	public TableEvent(Object source, Table table) {
 		super(source);
 		this.table=table;

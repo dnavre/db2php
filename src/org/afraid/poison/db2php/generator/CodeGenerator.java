@@ -41,11 +41,22 @@ public class CodeGenerator {
 	private Table table;
 	private Settings settings;
 
+	/**
+	 * CTOR
+	 *
+	 * @param table the table to operate on
+	 */
 	public CodeGenerator(Table table) {
 		setTable(table);
 		setSettings(new Settings());
 	}
 
+	/**
+	 * CTOR
+	 *
+	 * @param table the table to operate on
+	 * @param settings the settings
+	 */
 	public CodeGenerator(Table table, Settings settings) {
 		setTable(table);
 		setSettings(settings);
@@ -149,6 +160,12 @@ public class CodeGenerator {
 		getSettings().setClassNameSuffix(classNameSuffix);
 	}
 
+	/**
+	 * check if passed string is valid PHP variable name
+	 *
+	 * @param name the variable name
+	 * @return true if is valid PHP variable name
+	 */
 	public static boolean isValidVariableName(String name) {
 		//return name.matches("[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*");
 		return true;
@@ -253,6 +270,7 @@ public class CodeGenerator {
 	 *
 	 * @param f the field for which to get the call to setter
 	 * @param param the parameter to pass in the setter call
+	 * @param context context for the setter call
 	 * @return call to setter
 	 */
 	public String getSetterCall(Field f, String param, String context) {
@@ -328,7 +346,7 @@ public class CodeGenerator {
 	/**
 	 * get constant name
 	 *
-	 * @param the field for which to get the constant name
+	 * @param field
 	 * @return constant definitions for fields ids
 	 */
 	public String getConstName(Field field) {

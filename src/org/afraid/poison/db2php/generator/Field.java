@@ -26,8 +26,17 @@ import org.afraid.poison.common.StringUtil;
  */
 public class Field {
 
+	/**
+	 * field is not an index
+	 */
 	public static final int INDEX_NONE=0;
+	/**
+	 * field is a unique index
+	 */
 	public static final int INDEX_UNIQUE=1;
+	/**
+	 * field is non-unique index
+	 */
 	public static final int INDEX_NON_UNIQUE=2;
 	private String name;
 	private int type;
@@ -197,7 +206,7 @@ public class Field {
 	}
 
 	/**
-	 * @param rowIdentifier the rowIdentifier to set
+	 * @param identifier the rowIdentifier
 	 */
 	public void setRowIdentifier(boolean identifier) {
 		this.rowIdentifier=identifier;

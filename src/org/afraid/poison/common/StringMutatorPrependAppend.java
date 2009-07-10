@@ -13,9 +13,18 @@ public class StringMutatorPrependAppend implements StringMutator {
 	private String prepend;
 	private String append;
 
+	/**
+	 * CTOR
+	 */
 	public StringMutatorPrependAppend() {
 	}
 
+	/**
+	 * CTOR
+	 *
+	 * @param prepend string to prepend
+	 * @param append string to append
+	 */
 	public StringMutatorPrependAppend(String prepend, String append) {
 		setPrepend(prepend);
 		setAppend(append);
@@ -49,6 +58,13 @@ public class StringMutatorPrependAppend implements StringMutator {
 		this.append=append;
 	}
 
+	/**
+	 * prepend and append specified string to passed value
+	 *
+	 * @param input the input
+	 * @return the resulting string
+	 */
+	@Override
 	public String transform(Object input) {
 		StringBuilder s=new StringBuilder();
 		if (null!=getPrepend()) {

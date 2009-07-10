@@ -40,11 +40,25 @@ public class Table {
 	private Set<Field> primaryKeys=null;
 	private String identifierQuoteString;
 
+	/**
+	 * CTOR
+	 *
+	 * @param connection connection from which to init values
+	 * @param tableName the name of the table to read
+	 */
 	public Table(Connection connection, String tableName) {
 		setName(name);
 		initFields(connection);
 	}
 
+	/**
+	 * CTOR
+	 *
+	 * @param connection connection from which to init values
+	 * @param catalog the tables catalog
+	 * @param schema the tables scheme
+	 * @param name the name of the table to read
+	 */
 	public Table(Connection connection, String catalog, String schema, String name) {
 		setName(name);
 		setCatalog(catalog);
@@ -348,6 +362,7 @@ public class Table {
 	 * get list of tables
 	 *
 	 * @param conn the database connection for which to get the tables
+	 * @param listener the listener which gets an event each time a table is read
 	 * @return the tables for the passed connection
 	 */
 	public static Set<Table> getTables(Connection conn, TableListener listener) {

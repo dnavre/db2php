@@ -9,8 +9,19 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.StringReader;
 
+/**
+ *
+ * @author poison
+ */
 public class FileUtil {
 
+	/**
+	 * open input stream from file
+	 *
+	 * @param file the file
+	 * @return the input strean
+	 * @throws IOException
+	 */
 	public static FileInputStream openInputStream(File file) throws IOException {
 		if (file.exists()) {
 			if (file.isDirectory()) {
@@ -25,6 +36,13 @@ public class FileUtil {
 		return new FileInputStream(file);
 	}
 
+	/**
+	 * open output stream from file
+	 *
+	 * @param file the file
+	 * @return the output stream
+	 * @throws IOException
+	 */
 	public static FileOutputStream openOutputStream(File file) throws IOException {
 		if (file.exists()) {
 			if (file.isDirectory()) {
@@ -44,12 +62,26 @@ public class FileUtil {
 		return new FileOutputStream(file);
 	}
 
+	/**
+	 * write string to file
+	 *
+	 * @param data the string to write
+	 * @param file the file to write to
+	 * @throws IOException
+	 */
 	public static void writeString(String data, File file) throws IOException {
 		OutputStream out=openOutputStream(file);
 		IOUtil.copy(new StringReader(data), out);
 		IOUtil.closeQuietly(out);
 	}
 
+	/**
+	 * read string from file
+	 *
+	 * @param file the file to read from
+	 * @return the contents of the file
+	 * @throws IOException
+	 */
 	public static String readString(File file) throws IOException {
 		InputStream in=openInputStream(file);
 		String s=IOUtil.readString(in);
