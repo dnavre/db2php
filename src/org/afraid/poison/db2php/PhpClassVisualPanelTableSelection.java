@@ -44,7 +44,7 @@ public final class PhpClassVisualPanelTableSelection extends JPanel {
 
 	@SuppressWarnings("unchecked")
 	public Set<Table> getSelected() {
-		List selectedObjects=getTablesSelection()!=null?Arrays.asList(getTablesSelection().getSelectedValues()):new ArrayList();
+		List selectedObjects=getTablesSelection()!=null ? Arrays.asList(getTablesSelection().getSelectedValues()) : new ArrayList();
 		return new LinkedHashSet<Table>(selectedObjects);
 	}
 
