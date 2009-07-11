@@ -119,6 +119,7 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 	public String getCodeInsert(CodeGenerator generator) {
 		StringBuilder s=new StringBuilder();
 		// extra function to bind values
+		s.append(getSnippetFromFile(generator, "DatabaseLayerPdo.bindValues.php"));
 		s.append("\tprotected function ").append("bindValues").append("(PDOStatement &$stmt) {\n");
 		s.append(getBindingCodeField(generator, new ArrayList<Field>(generator.getTable().getFields())));
 		s.append("\t}\n");
