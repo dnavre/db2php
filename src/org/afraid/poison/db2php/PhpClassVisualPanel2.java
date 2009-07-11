@@ -29,7 +29,6 @@ import org.afraid.poison.db2php.generator.databaselayer.DatabaseLayer;
 import org.netbeans.api.project.Project;
 import org.netbeans.spi.project.ui.templates.support.Templates;
 import org.openide.WizardDescriptor;
-import org.openide.filesystems.FileChooserBuilder;
 import org.openide.filesystems.FileObject;
 import org.openide.filesystems.FileStateInvalidException;
 import org.openide.util.Exceptions;
@@ -199,13 +198,6 @@ public final class PhpClassVisualPanel2 extends JPanel {
 		if (JFileChooser.APPROVE_OPTION==fChooser.showOpenDialog(buttonBrowse)) {
 			setDirectory(fChooser.getSelectedFile());
 		}
-		/*
-		FileChooserBuilder fileChooser=new FileChooserBuilder(getClass());
-		fileChooser.setDefaultWorkingDirectory(getDirectory());
-		//fileChooser.set
-		fileChooser.setDirectoriesOnly(true);
-		setDirectory(fileChooser.showOpenDialog());
-		 */
 	}//GEN-LAST:event_buttonBrowseActionPerformed
 
 	private void destinationDirectoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_destinationDirectoryActionPerformed
