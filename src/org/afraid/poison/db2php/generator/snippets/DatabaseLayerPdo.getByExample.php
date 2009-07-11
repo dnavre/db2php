@@ -43,6 +43,10 @@
 			$stmt->bindValue(++$i, $value);
 		}
 		$affected=$stmt->execute();
+		if (false===$affected) {
+			$stmt->closeCursor();
+			throw new Exception($stmt->errorCode() . ':' . var_export($stmt->errorInfo(), true), 0);
+		}
 		$resultInstances=array();
 		while($result=$stmt->fetch(PDO::FETCH_ASSOC)) {
 			$o=new <type>();

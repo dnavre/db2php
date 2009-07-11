@@ -96,6 +96,7 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 			s.append("\t\t$stmt->bindValue(").append(++i).append(",$").append(generator.getMemberName(f)).append(");\n");
 		}
 		s.append(getStmtExecute());
+		s.append(getSnippetFromFile(generator, "DatabaseLayer.exception.php"));
 		s.append("\t\t$result=$stmt->fetch(PDO::FETCH_ASSOC);\n");
 		s.append(getStmtCloseCursor());
 
@@ -128,7 +129,7 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 		//s.append(getBindingCodeField(generator, new ArrayList<Field>(generator.getTable().getFields())));
 		s.append("\t\t$this->bindValues($stmt);\n");
 		s.append(getStmtExecute());
-
+		s.append(getSnippetFromFile(generator, "DatabaseLayer.exception.php"));
 		for (Field f : generator.getTable().getFieldsAutoIncrement()) {
 			s.append("\t\t").append(generator.getSetterCall(f, "$db->lastInsertId()")).append(";\n");
 		}
@@ -156,6 +157,7 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 			s.append(getBindingCodeField(generator, new ArrayList<Field>(generator.getTable().getFieldsIdentifiers()), generator.getTable().getFields().size(), false, 2));
 		}
 		s.append(getStmtExecute());
+		s.append(getSnippetFromFile(generator, "DatabaseLayer.exception.php"));
 		s.append(getStmtCloseCursor());
 		s.append(generator.getTrackingPristineState());
 		s.append(getReturnResult());
@@ -173,6 +175,7 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 		s.append(getStmtInit("self::SQL_DELETE_PK"));
 		s.append(getBindingCodeField(generator, new ArrayList<Field>(generator.getTable().getFieldsIdentifiers())));
 		s.append(getStmtExecute());
+		s.append(getSnippetFromFile(generator, "DatabaseLayer.exception.php"));
 		s.append(getStmtCloseCursor());
 		s.append(getReturnResult());
 		s.append("\t}\n");
