@@ -583,7 +583,7 @@ public class CodeGenerator {
 		s.append(getConsts());
 		s.append(getMembers());
 		if (isTrackFieldModifications()) {
-			s.append(getSnippetFromFile("CODE_MODIFICATION_TRACKING.php"));
+			s.append(getSnippetFromFile("CodeGenerator.modificationTracking.php"));
 		}
 		s.append(getAccessors());
 		s.append(getUtilMethodToArray());
