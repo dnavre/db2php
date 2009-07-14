@@ -149,7 +149,7 @@ public class StringUtil {
 
 	/**
 	 * tries to convert input string to camel case it it is all upper case or contains _
-	 * @param str the tring containing _
+	 * @param str the string containing _
 	 * @return the camel case string with the first character lower case
 	 */
 	public static String toCamelCase(String str) {
