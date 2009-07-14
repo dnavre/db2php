@@ -239,19 +239,33 @@ public final class PhpClassVisualPanel2 extends JPanel {
 	 */
 	public synchronized File getDefaultDirectory() {
 		if (null==defaultDirectory) {
-			Project project=Templates.getProject(getWizard());
-			defaultDirectory=new File(System.getProperty("user.home"));
-			if (null!=project) {
-				FileObject projectDirectory=project.getProjectDirectory();
-				if (null!=projectDirectory) {
-					try {
-						defaultDirectory=new File(projectDirectory.getURL().toURI());
-					} catch (FileStateInvalidException ex) {
-						Exceptions.printStackTrace(ex);
-					} catch (URISyntaxException ex) {
-						Exceptions.printStackTrace(ex);
+			FileObject targetFolder=Templates.getTargetFolder(getWizard());
+			if (null!=targetFolder) {
+				try {
+					defaultDirectory=new File(targetFolder.getURL().toURI());
+				} catch (FileStateInvalidException ex) {
+					Exceptions.printStackTrace(ex);
+				} catch (URISyntaxException ex) {
+					Exceptions.printStackTrace(ex);
+				}
+			}
+			if (null==defaultDirectory) {
+				Project project=Templates.getProject(getWizard());
+				if (null!=project) {
+					FileObject projectDirectory=project.getProjectDirectory();
+					if (null!=projectDirectory) {
+						try {
+							defaultDirectory=new File(projectDirectory.getURL().toURI());
+						} catch (FileStateInvalidException ex) {
+							Exceptions.printStackTrace(ex);
+						} catch (URISyntaxException ex) {
+							Exceptions.printStackTrace(ex);
+						}
 					}
 				}
+			}
+			if (null==defaultDirectory) {
+				defaultDirectory=new File(System.getProperty("user.home"));
 			}
 		}
 		return defaultDirectory;
