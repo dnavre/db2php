@@ -25,6 +25,7 @@ import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
+import org.afraid.poison.common.ui.InputVerifierPattern;
 import org.afraid.poison.db2php.generator.databaselayer.DatabaseLayer;
 import org.netbeans.api.project.Project;
 import org.netbeans.spi.project.ui.templates.support.Templates;
@@ -39,13 +40,20 @@ public final class PhpClassVisualPanel2 extends JPanel {
 	private WizardDescriptor wizard;
 	private File defaultDirectory;
 	private File directory;
+	private InputVerifierPattern inputVerifier;
 
 	/** Creates new form PhpClassVisualPanel2 */
 	public PhpClassVisualPanel2(WizardDescriptor wizard) {
 		setWizard(wizard);
+		inputVerifier=new InputVerifierPattern();
+		inputVerifier.setPattern("^[a-zA-z0-9_]*$");
 
 		initComponents();
 		readSettings();
+
+		getClassNamePrefix().setInputVerifier(inputVerifier);
+		
+		getClassNameSuffix().setInputVerifier(inputVerifier);
 	}
 
 	@Override
