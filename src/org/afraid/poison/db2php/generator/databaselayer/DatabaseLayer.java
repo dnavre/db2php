@@ -32,27 +32,27 @@ import org.afraid.poison.db2php.generator.Field;
 abstract public class DatabaseLayer {
 
 	/**
-	 * No Databaes Layer
+	 * No Database Layer
 	 */
 	public static final DatabaseLayer NONE=new DatabaseLayerNone();
 	/**
-	 * Simple Interface Databaes Layer
+	 * Simple Interface Database Layer
 	 */
 	public static final DatabaseLayer INTERFACE=new DatabaseLayerInterface();
 	/**
-	 * PDO Databaes Layer
+	 * PDO Database Layer
 	 */
 	public static final DatabaseLayer PDO=new DatabaseLayerPdo();
 	/**
-	 * MySQLi datab
+	 * MySQLi Database Layer
 	 */
 	public static final DatabaseLayer MYSQLI=new DatabaseLayerMySQLi();
 	/**
-	 * ADODB Databaes Layer
+	 * ADODB Database Layer
 	 */
 	public static final DatabaseLayer ADODB=new DatabaseLayerAdoDb();
 	/**
-	 * ZEND Databaes Layer
+	 * ZEND Database Layer
 	 */
 	public static final DatabaseLayer ZEND=new DatabaseLayerZend();
 	/**
@@ -86,6 +86,11 @@ abstract public class DatabaseLayer {
 		//AVAILABLE.add(ZEND);
 
 	}
+
+	/**
+	 * default quote strings
+	 */
+	public static final String[] DEFAULT_QUOTE_STRINGS=new String[] { " ", "`", "\"" };
 
 	/**
 	 * CTOR
@@ -309,7 +314,7 @@ abstract public class DatabaseLayer {
 	}
 
 	/**
-	 * replaces unneded concat operations in PHP code which are there simply because it would be too much work to avoid them in the first place
+	 * replaces unneeded concat operations in PHP code which are there simply because it would be too much work to avoid them in the first place
 	 * @param s the string to clean up
 	 * @return php code without unneeded concats
 	 */
