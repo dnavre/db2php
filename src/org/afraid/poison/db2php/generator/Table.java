@@ -86,8 +86,10 @@ public class Table {
 				rsetPrimaryKeys.close();
 			} catch (SQLException ex) {
 				Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
+			} finally {
+				rsetPrimaryKeys=null;
 			}
-			rsetPrimaryKeys=null;
+			
 
 			// get row identifiers
 			Set<String> rowIdentifiers=new LinkedHashSet<String>();
@@ -100,8 +102,10 @@ public class Table {
 				rsetRowIdentifiers.close();
 			} catch (SQLException ex) {
 				Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
+			} finally {
+				rsetRowIdentifiers=null;
 			}
-			rsetRowIdentifiers=null;
+			
 
 			// get indexes
 			Set<String> indexesUnique=new LinkedHashSet<String>();
@@ -124,8 +128,10 @@ public class Table {
 				rsetIndexes.close();
 			} catch (SQLException ex) {
 				Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
+			} finally {
+				rsetIndexes=null;
 			}
-			rsetIndexes=null;
+			
 
 
 			// get list of fields
@@ -367,8 +373,9 @@ public class Table {
 	 */
 	public static Set<Table> getTables(Connection conn, TableListener listener) {
 		Set<Table> tables=new LinkedHashSet<Table>();
+		ResultSet rsetTables=null;
 		try {
-			ResultSet rsetTables=conn.getMetaData().getTables(null, null, null, null);
+			rsetTables=conn.getMetaData().getTables(null, null, null, null);
 			String tableName;
 			Table table;
 			while (rsetTables.next()) {
@@ -384,8 +391,11 @@ public class Table {
 					listener.tableStatusChanged(evt);
 				}
 			}
+			rsetTables.close();
 		} catch (SQLException ex) {
 			Logger.getLogger(Table.class.getName()).log(Level.SEVERE, null, ex);
+		} finally {
+			rsetTables=null;
 		}
 		return tables;
 	}
