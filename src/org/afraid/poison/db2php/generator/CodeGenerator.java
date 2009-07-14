@@ -167,8 +167,7 @@ public class CodeGenerator {
 	 * @return true if is valid PHP variable name
 	 */
 	public static boolean isValidVariableName(String name) {
-		//return name.matches("[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*");
-		return true;
+		return name.matches("^[a-zA-Z_\\x7f-\\xff][a-zA-Z0-9_\\x7f-\\xff]*$");
 	}
 
 	/**
