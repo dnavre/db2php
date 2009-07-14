@@ -143,7 +143,7 @@ public final class PhpClassWizardIterator implements WizardDescriptor.Instantiat
 			settings.setClassNameSuffix(p2.getClassNameSuffix().getText());
 			settings.setOutputDirectory(p2.getDirectory());
 			settings.setIdentifierQuoteString((String) p2.getIdentifierQuoteString().getSelectedItem());
-
+			p2.storeSettings();
 			Set<Table> failed=writeCode(tables, settings);
 			if (!failed.isEmpty()) {
 				CodeGenerator generator;

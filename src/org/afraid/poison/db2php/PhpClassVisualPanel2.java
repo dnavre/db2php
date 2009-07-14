@@ -45,6 +45,7 @@ public final class PhpClassVisualPanel2 extends JPanel {
 		setWizard(wizard);
 
 		initComponents();
+		readSettings();
 	}
 
 	@Override
@@ -114,8 +115,7 @@ public final class PhpClassVisualPanel2 extends JPanel {
 
         org.openide.awt.Mnemonics.setLocalizedText(jLabel5, org.openide.util.NbBundle.getMessage(PhpClassVisualPanel2.class, "PhpClassVisualPanel2.jLabel5.text")); // NOI18N
 
-        identifierQuoteString.setModel(new javax.swing.DefaultComboBoxModel(new String[] { " ", "`", "\"" }));
-        identifierQuoteString.setSelectedIndex(1);
+        identifierQuoteString.setModel(new javax.swing.DefaultComboBoxModel(DatabaseLayer.DEFAULT_QUOTE_STRINGS));
         identifierQuoteString.setToolTipText(org.openide.util.NbBundle.getMessage(PhpClassVisualPanel2.class, "PhpClassVisualPanel2.identifierQuoteString.toolTipText")); // NOI18N
 
         fluentInterfaceSelection.setSelected(true);
@@ -281,7 +281,7 @@ public final class PhpClassVisualPanel2 extends JPanel {
 	/**
 	 * @return the directory
 	 */
-	public File getDirectory() {
+	public synchronized File getDirectory() {
 		if (null==directory) {
 			return getDefaultDirectory();
 		}
@@ -291,7 +291,7 @@ public final class PhpClassVisualPanel2 extends JPanel {
 	/**
 	 * @param directory the directory to set
 	 */
-	public void setDirectory(File directory) {
+	public synchronized void setDirectory(File directory) {
 		this.directory=directory;
 		getDestinationDirectory().setText(directory.getAbsolutePath());
 	}
@@ -376,14 +376,17 @@ public final class PhpClassVisualPanel2 extends JPanel {
 		Preferences pref=NbPreferences.forModule(getClass());
 		String setting=pref.get("DatabaseLayer", null);
 		if (null!=setting) {
-			
+			for (DatabaseLayer databaseLayer : DatabaseLayer.AVAILABLE) {
+				if (databaseLayer.getDbTypeName().equals(setting)) {
+					getDatabaseLayerSelection().setSelectedItem(databaseLayer);
+					break;
+				}
+			}
 		}
 		getClassNamePrefix().setText(pref.get("ClassNamePrefix", ""));
 		getClassNameSuffix().setText(pref.get("ClassNameSuffix", "Model"));
-		setting=pref.get("IdentifierQuoteString", null);
-		if (null!=setting) {
-
-		}
+		setting=pref.get("IdentifierQuoteString", DatabaseLayer.DEFAULT_QUOTE_STRINGS[1]);
+		getIdentifierQuoteString().setSelectedItem(setting);
 		getGenerateChecksSelection().setSelected(pref.getBoolean("TypeChecks", false));
 		getTrackModificationsSelection().setSelected(pref.getBoolean("TrackModifications", true));
 		getFluentInterfaceSelection().setSelected(pref.getBoolean("FluentInterface", true));

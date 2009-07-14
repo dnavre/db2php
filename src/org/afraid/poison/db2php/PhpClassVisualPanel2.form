@@ -200,14 +200,9 @@
     </Component>
     <Component class="javax.swing.JComboBox" name="identifierQuoteString">
       <Properties>
-        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="3">
-            <StringItem index="0" value=" "/>
-            <StringItem index="1" value="`"/>
-            <StringItem index="2" value="&quot;"/>
-          </StringArray>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="new javax.swing.DefaultComboBoxModel(DatabaseLayer.DEFAULT_QUOTE_STRINGS)" type="code"/>
         </Property>
-        <Property name="selectedIndex" type="int" value="1"/>
         <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
           <ResourceString bundle="org/afraid/poison/db2php/Bundle.properties" key="PhpClassVisualPanel2.identifierQuoteString.toolTipText" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
