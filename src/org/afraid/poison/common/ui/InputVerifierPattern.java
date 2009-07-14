@@ -4,6 +4,7 @@
  */
 package org.afraid.poison.common.ui;
 
+import java.awt.Color;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.InputVerifier;
@@ -73,6 +74,13 @@ public class InputVerifierPattern extends InputVerifier {
 			Matcher matcher=getPattern().matcher(textComponent.getText());
 			valid=matcher.lookingAt();
 		}
+		/*
+		if (valid) {
+			input.setBackground(Color.WHITE);
+		} else {
+			input.setBackground(Color.RED);
+		}
+		*/
 		return valid;
 	}
 }
