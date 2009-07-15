@@ -4,6 +4,7 @@
  */
 package org.afraid.poison.common;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -95,5 +96,20 @@ public class CollectionUtil {
 			}
 		}
 		return min;
+	}
+
+	/**
+	 * create list from array
+	 * @param <T>
+	 * @param values
+	 * @return array values in list
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T> ArrayList<T> fromArray(T... values) {
+		ArrayList<T> list=new ArrayList<T>();
+		for (Object o : values) {
+			list.add((T) o);
+		}
+		return list;
 	}
 }
