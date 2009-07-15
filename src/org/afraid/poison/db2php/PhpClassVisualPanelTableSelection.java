@@ -41,6 +41,9 @@ public final class PhpClassVisualPanelTableSelection extends JPanel {
 	}
 
 	public Set<Table> getSelected() {
+		if (null==getTablesSelection().getSelectedValues()) {
+			return new LinkedHashSet<Table>();
+		}
 		return new LinkedHashSet<Table>(Arrays.asList((Table[]) getTablesSelection().getSelectedValues()));
 	}
 
