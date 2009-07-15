@@ -19,6 +19,7 @@ package org.afraid.poison.db2php;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -42,10 +43,8 @@ public final class PhpClassVisualPanelTableSelection extends JPanel {
 		return "Choose Tables";
 	}
 
-	@SuppressWarnings("unchecked")
 	public Set<Table> getSelected() {
-		List selectedObjects=getTablesSelection()!=null ? Arrays.asList(getTablesSelection().getSelectedValues()) : new ArrayList();
-		return new LinkedHashSet<Table>(selectedObjects);
+		return new LinkedHashSet<Table>(Arrays.asList((Table[]) getTablesSelection().getSelectedValues()));
 	}
 
 	@Override
