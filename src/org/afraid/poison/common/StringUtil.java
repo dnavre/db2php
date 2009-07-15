@@ -18,7 +18,7 @@ public class StringUtil {
 	 * repeat passed string specified number of times
 	 *
 	 * @param string the string to repeat
-	 * @param times number of tiime to repeat the string
+	 * @param times number of times to repeat the string
 	 * @return the repeated string
 	 */
 	public static String repeat(String string, int times) {
