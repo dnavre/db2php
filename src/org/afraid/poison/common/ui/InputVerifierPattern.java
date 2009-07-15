@@ -20,6 +20,7 @@ public class InputVerifierPattern extends InputVerifier {
 	public static final int LENGTH_UNLIMITED=-1;
 	private int maxLength=LENGTH_UNLIMITED;
 	private Pattern pattern=null;
+	private InputVerifierHandler postAction=null;
 
 	public InputVerifierPattern() {
 		super();
@@ -60,6 +61,20 @@ public class InputVerifierPattern extends InputVerifier {
 		setPattern(Pattern.compile(pattern));
 	}
 
+	/**
+	 * @return the postAction
+	 */
+	public InputVerifierHandler getPostAction() {
+		return postAction;
+	}
+
+	/**
+	 * @param postAction the postAction to set
+	 */
+	public void setPostAction(InputVerifierHandler postAction) {
+		this.postAction=postAction;
+	}
+
 	@Override
 	public boolean verify(JComponent input) {
 		if (!(input instanceof JTextComponent)) {
@@ -74,13 +89,9 @@ public class InputVerifierPattern extends InputVerifier {
 			Matcher matcher=getPattern().matcher(textComponent.getText());
 			valid=matcher.lookingAt();
 		}
-		/*
-		if (valid) {
-			input.setBackground(Color.WHITE);
-		} else {
-			input.setBackground(Color.RED);
+		if (null!=getPostAction()) {
+			return getPostAction().performPostValidationAction(input, valid);
 		}
-		*/
 		return valid;
 	}
 }
