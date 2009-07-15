@@ -179,10 +179,10 @@ abstract public class DatabaseLayer {
 	}
 
 	/**
-	 * get php function that assigns fields by hash
+	 * get PHP function that assigns fields by hash
 	 *
 	 * @param generator instance of a code generator
-	 * @return the php function that assigns fields by hash
+	 * @return the PHP function that assigns fields by hash
 	 */
 	public String getAssignByHash(CodeGenerator generator) {
 		StringBuilder s=new StringBuilder();
@@ -230,10 +230,10 @@ abstract public class DatabaseLayer {
 	}
 
 	/**
-	 * get sql query for update
+	 * get SQL query for update
 	 *
 	 * @param generator instance of a code generator
-	 * @return update sql query
+	 * @return update SQL query
 	 */
 	public String getSqlUpdate(final CodeGenerator generator) {
 		StringBuilder s=new StringBuilder();
@@ -249,10 +249,10 @@ abstract public class DatabaseLayer {
 	}
 
 	/**
-	 * get sql for select query
+	 * get SQL for select query
 	 *
 	 * @param generator instance of a code generator
-	 * @return select sql query
+	 * @return select SQL query
 	 */
 	public String getSqlSelect(CodeGenerator generator) {
 		StringBuilder s=new StringBuilder();
@@ -265,10 +265,10 @@ abstract public class DatabaseLayer {
 	}
 
 	/**
-	 * get sql for insert query
+	 * get SQL for insert query
 	 *
 	 * @param generator instance of a code generator
-	 * @return insert sql query
+	 * @return insert SQL query
 	 */
 	public String getSqlInsert(final CodeGenerator generator) {
 		// TODO add method which the value gets passed through before beeing assigned to allow handling special types
@@ -289,10 +289,10 @@ abstract public class DatabaseLayer {
 	}
 
 	/**
-	 * get sql for delete query
+	 * get SQL for delete query
 	 *
 	 * @param generator instance of a code generator
-	 * @return delete sql query
+	 * @return delete SQL query
 	 */
 	public String getSqlDelete(CodeGenerator generator) {
 		StringBuilder s=new StringBuilder();
@@ -316,7 +316,7 @@ abstract public class DatabaseLayer {
 	/**
 	 * replaces unneeded concat operations in PHP code which are there simply because it would be too much work to avoid them in the first place
 	 * @param s the string to clean up
-	 * @return php code without unneeded concats
+	 * @return PHP code without unneeded concats
 	 */
 	protected String replaceUnneededConcat(String s) {
 		return s.replaceAll("\\s*'\\s*\\.\\s*'\\s*", " ");
