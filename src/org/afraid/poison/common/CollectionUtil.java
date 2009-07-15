@@ -13,7 +13,7 @@ import java.util.Collection;
 public class CollectionUtil {
 
 	/**
-	 * join elements as string seperated by the passed delimiter
+	 * join elements as string separated by the passed delimiter
 	 *
 	 * @param c the collection of elements to join
 	 * @param delim the delimiter
@@ -24,7 +24,7 @@ public class CollectionUtil {
 	}
 
 	/**
-	 * join elements as string seperated by the passed delimiter and prepend/append passed parameter to each element
+	 * join elements as string separated by the passed delimiter and prepend/append passed parameter to each element
 	 *
 	 * @param c the collection of elements to join
 	 * @param delim the delimiter
@@ -37,7 +37,7 @@ public class CollectionUtil {
 	}
 
 	/**
-	 * join elements as string seperated by the passed delimiter
+	 * join elements as string separated by the passed delimiter
 	 *
 	 * @param c the collection of elements to join
 	 * @param delim the delimiter
