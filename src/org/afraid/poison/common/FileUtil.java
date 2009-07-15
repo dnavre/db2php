@@ -19,7 +19,7 @@ public class FileUtil {
 	 * open input stream from file
 	 *
 	 * @param file the file
-	 * @return the input strean
+	 * @return the input stream
 	 * @throws IOException
 	 */
 	public static FileInputStream openInputStream(File file) throws IOException {
