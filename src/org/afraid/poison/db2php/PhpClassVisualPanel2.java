@@ -17,14 +17,18 @@
  */
 package org.afraid.poison.db2php;
 
+import java.awt.Color;
 import java.io.File;
 import java.net.URISyntaxException;
 import java.util.Vector;
 import java.util.prefs.Preferences;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
+import javax.swing.text.JTextComponent;
+import org.afraid.poison.common.ui.InputVerifierHandler;
 import org.afraid.poison.common.ui.InputVerifierPattern;
 import org.afraid.poison.db2php.generator.databaselayer.DatabaseLayer;
 import org.netbeans.api.project.Project;
@@ -47,6 +51,20 @@ public final class PhpClassVisualPanel2 extends JPanel {
 		setWizard(wizard);
 		inputVerifier=new InputVerifierPattern();
 		inputVerifier.setPattern("^[a-zA-z0-9_]*$");
+		inputVerifier.setPostAction(new InputVerifierHandler() {
+
+			@Override
+			public boolean performPostValidationAction(JComponent input, boolean valid) {
+				if (!(input instanceof JTextComponent)) {
+					return valid;
+				}
+				JTextComponent textComponent=(JTextComponent) input;
+				if (!valid) {
+					textComponent.setText(textComponent.getText().replaceAll("[^a-zA-z0-9_]+", ""));
+				}
+				return valid;
+			}
+		});
 
 		initComponents();
 		readSettings();
