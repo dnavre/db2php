@@ -2,5 +2,5 @@ Manifest-Version: 1.0
 OpenIDE-Module: org.afraid.poison.db2php/1
 OpenIDE-Module-Layer: org/afraid/poison/db2php/layer.xml
 OpenIDE-Module-Localizing-Bundle: org/afraid/poison/db2php/Bundle.properties
-OpenIDE-Module-Specification-Version: 1.2.2
+OpenIDE-Module-Specification-Version: 1.2.3
 
