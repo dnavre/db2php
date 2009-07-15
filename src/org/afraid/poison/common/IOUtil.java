@@ -18,7 +18,7 @@ public class IOUtil {
 	private static final int BUFFER_SIZE=8192;
 
 	/**
-	 * close passed reader and surpress exception
+	 * close passed reader and suppress exception
 	 *
 	 * @param input the reader
 	 */
@@ -32,7 +32,7 @@ public class IOUtil {
 	}
 
 	/**
-	 * close passed writer and surpress exception
+	 * close passed writer and suppress exception
 	 *
 	 * @param output the writer
 	 */
@@ -46,7 +46,7 @@ public class IOUtil {
 	}
 
 	/**
-	 * close passed input stream and surpress exception
+	 * close passed input stream and suppress exception
 	 *
 	 * @param input the input stream
 	 */
@@ -60,7 +60,7 @@ public class IOUtil {
 	}
 
 	/**
-	 * close passed output stream and surpress exception
+	 * close passed output stream and suppress exception
 	 *
 	 * @param output the output stream
 	 */
@@ -137,7 +137,7 @@ public class IOUtil {
 	}
 
 	/**
-	 * read everthing into a string
+	 * read everything into a string
 	 *
 	 * @param input the input
 	 * @return content of the input
