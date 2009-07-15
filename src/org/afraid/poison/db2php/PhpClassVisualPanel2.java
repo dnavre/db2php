@@ -17,7 +17,6 @@
  */
 package org.afraid.poison.db2php;
 
-import java.awt.Color;
 import java.io.File;
 import java.net.URISyntaxException;
 import java.util.Vector;

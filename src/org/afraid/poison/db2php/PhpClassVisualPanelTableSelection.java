@@ -17,7 +17,6 @@
  */
 package org.afraid.poison.db2php;
 
-import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import javax.swing.DefaultListModel;
