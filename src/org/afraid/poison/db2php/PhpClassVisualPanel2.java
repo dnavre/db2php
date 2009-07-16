@@ -43,34 +43,14 @@ public final class PhpClassVisualPanel2 extends JPanel {
 	private WizardDescriptor wizard;
 	private File defaultDirectory;
 	private File directory;
-	private InputVerifierPattern inputVerifier;
+	private InputVerifierPattern inputVerifierClassName;
 
 	/** Creates new form PhpClassVisualPanel2 */
 	public PhpClassVisualPanel2(WizardDescriptor wizard) {
 		setWizard(wizard);
-		inputVerifier=new InputVerifierPattern();
-		inputVerifier.setPattern("^[a-zA-z0-9_]*$");
-		inputVerifier.setPostAction(new InputVerifierHandler() {
-
-			@Override
-			public boolean performPostValidationAction(JComponent input, boolean valid) {
-				if (!(input instanceof JTextComponent)) {
-					return valid;
-				}
-				JTextComponent textComponent=(JTextComponent) input;
-				if (!valid) {
-					textComponent.setText(textComponent.getText().replaceAll("[^a-zA-z0-9_]+", ""));
-				}
-				return valid;
-			}
-		});
-
 		initComponents();
 		readSettings();
 
-		getClassNamePrefix().setInputVerifier(inputVerifier);
-		
-		getClassNameSuffix().setInputVerifier(inputVerifier);
 	}
 
 	@Override
@@ -95,8 +75,10 @@ public final class PhpClassVisualPanel2 extends JPanel {
         trackModificationsSelection = new javax.swing.JCheckBox();
         jLabel3 = new javax.swing.JLabel();
         classNamePrefix = new javax.swing.JTextField();
+        classNamePrefix.setInputVerifier(getInputVerifierClassName());
         jLabel4 = new javax.swing.JLabel();
         classNameSuffix = new javax.swing.JTextField();
+        classNameSuffix.setInputVerifier(getInputVerifierClassName());
         jLabel5 = new javax.swing.JLabel();
         identifierQuoteString = new javax.swing.JComboBox();
         fluentInterfaceSelection = new javax.swing.JCheckBox();
@@ -428,6 +410,38 @@ public final class PhpClassVisualPanel2 extends JPanel {
 		pref.putBoolean("TrackModifications", getTrackModificationsSelection().isSelected());
 		pref.putBoolean("FluentInterface", getFluentInterfaceSelection().isSelected());
 
+	}
+
+	/**
+	 * @return the inputVerifierClassName
+	 */
+	public synchronized InputVerifierPattern getInputVerifierClassName() {
+		if (null==inputVerifierClassName) {
+			inputVerifierClassName=new InputVerifierPattern();
+			inputVerifierClassName.setPattern("^[a-zA-z0-9_]*$");
+			inputVerifierClassName.setPostAction(new InputVerifierHandler() {
+
+				@Override
+				public boolean performPostValidationAction(JComponent input, boolean valid) {
+					if (!(input instanceof JTextComponent)) {
+						return valid;
+					}
+					JTextComponent textComponent=(JTextComponent) input;
+					if (!valid) {
+						textComponent.setText(textComponent.getText().replaceAll("[^a-zA-z0-9_]+", ""));
+					}
+					return valid;
+				}
+			});
+		}
+		return inputVerifierClassName;
+	}
+
+	/**
+	 * @param inputVerifierClassName the inputVerifierClassName to set
+	 */
+	public void setInputVerifierClassName(InputVerifierPattern inputVerifierClassName) {
+		this.inputVerifierClassName=inputVerifierClassName;
 	}
 
 	/*
