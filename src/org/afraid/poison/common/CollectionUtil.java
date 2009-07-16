@@ -100,6 +100,7 @@ public class CollectionUtil {
 
 	/**
 	 * create list from array
+	 *
 	 * @param <T>
 	 * @param values
 	 * @return array values in list
@@ -109,6 +110,25 @@ public class CollectionUtil {
 		ArrayList<T> list=new ArrayList<T>();
 		for (Object o : values) {
 			list.add((T) o);
+		}
+		return list;
+	}
+
+
+	/**
+	 * filter list of random types and only return only the matching type
+	 *
+	 * @param <T>
+	 * @param clazz
+	 * @param values
+	 * @return list of <T>
+	 */
+	public static <T> ArrayList<T> filterType(Class<T> clazz, Iterable<?> values) {
+		ArrayList<T> list=new ArrayList<T>();
+		for (Object o : values) {
+			if (clazz.isInstance(o)) {
+				list.add(clazz.cast(o));
+			}
 		}
 		return list;
 	}
