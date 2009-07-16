@@ -5,6 +5,7 @@
 package org.afraid.poison.common;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 /**
@@ -114,7 +115,6 @@ public class CollectionUtil {
 		return list;
 	}
 
-
 	/**
 	 * filter list of random types and only return only the matching type
 	 *
@@ -131,5 +131,17 @@ public class CollectionUtil {
 			}
 		}
 		return list;
+	}
+
+	/**
+	 * filter list of random types and only return only the matching type
+	 *
+	 * @param <T>
+	 * @param clazz
+	 * @param values
+	 * @return list of <T>
+	 */
+	public static <T> ArrayList<T> filterType(Class<T> clazz, Object[] values) {
+		return filterType(clazz, Arrays.asList(values));
 	}
 }
