@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 VERSION=$(grep 'OpenIDE-Module-Specification-Version' manifest.mf |grep -Po '[^\s:]+$')
 DDIR="db2php-${VERSION}"
