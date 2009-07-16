@@ -21,6 +21,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import javax.swing.DefaultListModel;
 import javax.swing.JPanel;
+import org.afraid.poison.common.CollectionUtil;
 import org.afraid.poison.db2php.generator.Table;
 import org.netbeans.api.db.explorer.ConnectionManager;
 import org.netbeans.api.db.explorer.DatabaseConnection;
@@ -41,12 +42,10 @@ public final class PhpClassVisualPanelTableSelection extends JPanel {
 
 	public Set<Table> getSelected() {
 		LinkedHashSet<Table> selected=new LinkedHashSet<Table>();
-		if (null==getTablesSelection() || null==getTablesSelection().getSelectedValues()) {
+		if (null==getTablesSelection()) {
 			return selected;
 		}
-		for(Object o : getTablesSelection().getSelectedValues()) {
-			selected.add((Table) o);
-		}
+		selected.addAll(CollectionUtil.filterType(Table.class, getTablesSelection().getSelectedValues()));
 		return selected;
 	}
 
