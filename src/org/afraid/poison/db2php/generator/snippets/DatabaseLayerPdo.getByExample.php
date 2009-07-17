@@ -26,6 +26,9 @@
 	 * @return <type>[]
 	 */
 	public static function getByFilter(PDO $db, $filter, $and=true) {
+		if ($filter instanceof DFC) {
+			$filter=array($filter);
+		}
 		$sql='SELECT * FROM <tableNameQuoted>'
 		. self::getSqlWhere($filter, $and);
 
