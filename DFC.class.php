@@ -163,6 +163,11 @@ class DFC {
 		throw new UnexpectedValueException('can not handle mode:' . $mode);
 	}
 
+	/**
+	 * get SQL operator and value assignment
+	 *
+	 * @return string
+	 */
 	public function getSqlOperatorPrepared() {
 		if (0!=(self::IS_NULL&$this->getMode())) {
 			return $this->getSqlOperator();
