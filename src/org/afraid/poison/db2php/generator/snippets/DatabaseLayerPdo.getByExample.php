@@ -26,21 +26,13 @@
 	 * @return <type>[]
 	 */
 	public static function getByFilter(PDO $db, $filter, $and=true) {
-		$sql='SELECT * FROM <tableNameQuoted>';
-		$first=true;
-		foreach ($filter as $fieldId=>$value) {
-			if ($first) {
-				$sql.=' WHERE ';
-				$first=false;
-			} else {
-				$sql.=$and ? ' AND ' : ' OR ';
-			}
-			$sql.=self::SQL_IDENTIFIER_QUOTE . self::$FIELD_NAMES[$fieldId] . self::SQL_IDENTIFIER_QUOTE . '=?';
-		}
+		$sql='SELECT * FROM <tableNameQuoted>'
+		. self::getSqlWhere($filter, $and);
+
 		$stmt=self::prepareStatement($db, $sql);
 		$i=0;
 		foreach ($filter as $value) {
-			$stmt->bindValue(++$i, $value);
+			$stmt->bindValue(++$i, $value instanceof DFC ? $value->getSqlValue() : $value);
 		}
 		$affected=$stmt->execute();
 		if (false===$affected) {
@@ -55,4 +47,34 @@
 		}
 		$stmt->closeCursor();
 		return $resultInstances;
+	}
+
+	/**
+	 * get sql WHERE part from filter
+	 *
+	 * @param array $filter
+	 * @param bool $and
+	 * @return string
+	 */
+	protected static function getSqlWhere($filter, $and) {
+		$sql=null;
+		$andString=$and ? ' AND ' : ' OR ';
+		$first=true;
+		foreach ($filter as $fieldId=>$value) {
+			if ($first) {
+				$sql.=' WHERE ';
+				$first=false;
+			} else {
+				$sql.=$andString;
+			}
+			if ($value instanceof DFC) {
+				/* @var $value DFC */
+				$sql.=self::SQL_IDENTIFIER_QUOTE . self::$FIELD_NAMES[$value->getField()] . self::SQL_IDENTIFIER_QUOTE
+				. $value->getSqlOperator() . '?';
+
+			} else {
+				$sql.=self::SQL_IDENTIFIER_QUOTE . self::$FIELD_NAMES[$fieldId] . self::SQL_IDENTIFIER_QUOTE . '=?';
+			}
+		}
+		return $sql;
 	}
