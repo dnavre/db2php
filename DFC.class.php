@@ -25,6 +25,7 @@ class DFC {
 	 */
 	private $value;
 	/**
+	 * match mode
 	 *
 	 * @var int
 	 */
@@ -97,7 +98,58 @@ class DFC {
 		$this->mode = $mode;
 	}
 
+	/**
+	 * get SQL operator
+	 *
+	 * @return string
+	 */
+	public function getSqlOperator() {
+		$mode=$this->getMode();
+		$not=0!=(self::NOT&$mode);
+		if (self::EXACT==$mode) {
+			return '=';
+		} elseif (self::NOT==$mode) {
+			return '!=';
+		} elseif (0!=(self::GREATER&$mode)) {
+			if ($not) {
+				return '<=';
+			}
+			return '>';
+		} elseif (0!=(self::SMALLER&$mode)) {
+			if ($not) {
+				return '>=';
+			}
+			return '<';
+		} elseif (0!=((self::CONTAINS|self::BEGINS_WITH|self::ENDS_WITH|self::WILDCARDS)&$mode)) {
+			if ($not) {
+				return ' NOT LIKE ';
+			}
+			return ' LIKE ';
+		}
+		throw new UnexpectedValueException('can not handle mode:' . $mode);
+	}
 
+	/**
+	 * get value for use in SQL
+	 *
+	 * @return string
+	 */
+	public function getSqlValue() {
+		$mode=$this->getMode();
+		if (0!=(self::CONTAINS&$mode)) {
+			return '%' . $this->getValue() . '%';
+		} elseif (0!=(self::BEGINS_WITH&$mode)) {
+			return $this->getValue() . '%';
+		} elseif (0!=(self::ENDS_WITH&$mode)) {
+			return '%' . $this->getValue();
+		} elseif (0!=(self::WILDCARDS&$mode)) {
+			return str_replace(
+				array('.', '*'),
+				array('_', '%'),
+				$this->getValue());
+		}
+		return $this->getValue();
+	}
 
 }
 
