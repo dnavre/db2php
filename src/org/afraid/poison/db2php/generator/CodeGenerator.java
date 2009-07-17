@@ -349,7 +349,7 @@ public class CodeGenerator {
 	 * @return constant definitions for fields ids
 	 */
 	public String getConstName(Field field) {
-		return new StringBuilder("FIELD_").append(getMemberName(field).toUpperCase()).toString();
+		return new StringBuilder("FIELD_").append(field.getName().replaceAll("[^a-zA-Z0-9_]", "").toUpperCase()).toString();
 	}
 
 	/**
