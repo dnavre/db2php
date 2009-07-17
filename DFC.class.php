@@ -3,13 +3,42 @@
  * single filter element to determine a criteria for matching a field
  */
 class DFC {
+	/**
+	 * match exact value
+	 */
 	const EXACT=0;
+	/**
+	 * fields value contains
+	 */
 	const CONTAINS=1;
+	/**
+	 * fields value begins with
+	 */
 	const BEGINS_WITH=2;
+	/**
+	 * fields value ends with
+	 */
 	const ENDS_WITH=4;
+	/**
+	 * fields value is greater than
+	 */
 	const GREATER=8;
+	/**
+	 * fields value is smaller than
+	 */
 	const SMALLER=16;
+	/**
+	 * fields value matches wildcards ('.' and '*')
+	 */
 	const WILDCARDS=32;
+	/**
+	 * fields value is null
+	 */
+	const IS_NULL=64;
+	/**
+	 * negate condition.
+	 * For example: DFC::NOT|DFC::CONTAINS will match field not containing the value
+	 */
 	const NOT=65536;
 
 	/**
@@ -59,7 +88,7 @@ class DFC {
 	 * @param int $field
 	 */
 	public function setField($field) {
-		$this->field = $field;
+		$this->field=$field;
 	}
 
 	/**
@@ -77,7 +106,7 @@ class DFC {
 	 * @param string $value
 	 */
 	public function setValue($value) {
-		$this->value = $value;
+		$this->value=$value;
 	}
 
 	/**
@@ -95,7 +124,7 @@ class DFC {
 	 * @param int $mode
 	 */
 	public function setMode($mode) {
-		$this->mode = $mode;
+		$this->mode=$mode;
 	}
 
 	/**
@@ -125,8 +154,20 @@ class DFC {
 				return ' NOT LIKE ';
 			}
 			return ' LIKE ';
+		} elseif (0!=(self::IS_NULL&$mode)) {
+			if ($not) {
+				return ' NOT IS NULL';
+			}
+			return ' IS NULL';
 		}
 		throw new UnexpectedValueException('can not handle mode:' . $mode);
+	}
+
+	public function getSqlOperatorPrepared() {
+		if (0!=(self::IS_NULL&$this->getMode())) {
+			return $this->getSqlOperator();
+		}
+		return $this->getSqlOperator() . '?';
 	}
 
 	/**
@@ -147,6 +188,8 @@ class DFC {
 				array('.', '*'),
 				array('_', '%'),
 				$this->getValue());
+		} elseif (0!=(self::IS_NULL&$mode)) {
+			return null;
 		}
 		return $this->getValue();
 	}

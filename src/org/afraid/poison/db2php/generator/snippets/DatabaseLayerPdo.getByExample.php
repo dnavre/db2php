@@ -32,7 +32,11 @@
 		$stmt=self::prepareStatement($db, $sql);
 		$i=0;
 		foreach ($filter as $value) {
-			$stmt->bindValue(++$i, $value instanceof DFC ? $value->getSqlValue() : $value);
+			$dfc=$value instanceof DFC;
+			if ($dfc && 0!=(DFC::IS_NULL&$value->getMode()) {
+				continue;
+			}
+			$stmt->bindValue(++$i, $dfc ? $value->getSqlValue() : $value);
 		}
 		$affected=$stmt->execute();
 		if (false===$affected) {
@@ -70,7 +74,7 @@
 			if ($value instanceof DFC) {
 				/* @var $value DFC */
 				$sql.=self::SQL_IDENTIFIER_QUOTE . self::$FIELD_NAMES[$value->getField()] . self::SQL_IDENTIFIER_QUOTE
-				. $value->getSqlOperator() . '?';
+				. $value->getSqlOperatorPrepared();
 
 			} else {
 				$sql.=self::SQL_IDENTIFIER_QUOTE . self::$FIELD_NAMES[$fieldId] . self::SQL_IDENTIFIER_QUOTE . '=?';
