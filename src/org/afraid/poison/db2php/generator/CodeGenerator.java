@@ -581,6 +581,7 @@ public class CodeGenerator {
 		s.append(getPreparedStatements());
 		s.append(getConsts());
 		s.append(getMembers());
+		s.append(getSnippetFromFile("CodeGenerator.php"));
 		if (isTrackFieldModifications()) {
 			s.append(getSnippetFromFile("CodeGenerator.modificationTracking.php"));
 		}
