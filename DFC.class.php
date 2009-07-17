@@ -156,7 +156,7 @@ class DFC {
 			return ' LIKE ';
 		} elseif (0!=(self::IS_NULL&$mode)) {
 			if ($not) {
-				return ' NOT IS NULL';
+				return ' IS NOT NULL';
 			}
 			return ' IS NULL';
 		}

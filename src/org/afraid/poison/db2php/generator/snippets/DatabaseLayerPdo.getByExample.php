@@ -36,7 +36,7 @@
 		$i=0;
 		foreach ($filter as $value) {
 			$dfc=$value instanceof DFC;
-			if ($dfc && 0!=(DFC::IS_NULL&$value->getMode()) {
+			if ($dfc && 0!=(DFC::IS_NULL&$value->getMode())) {
 				continue;
 			}
 			$stmt->bindValue(++$i, $dfc ? $value->getSqlValue() : $value);
