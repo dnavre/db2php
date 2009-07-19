@@ -2,7 +2,6 @@ build
 dist
 nbproject/build-impl.xml
 nbproject/private
-test
 *~
 *.log
 *.bz2
