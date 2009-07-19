@@ -1,6 +1,6 @@
 
 	/**
-	 * bind all values to statement
+	 * Bind all values to statement
 	 *
 	 * @param PDOStatement $stmt
 	 */

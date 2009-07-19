@@ -1,6 +1,6 @@
 
 	/**
-	 * get array with field id as index and field name as value
+	 * Get array with field id as index and field name as value
 	 *
 	 * @return array
 	 */
@@ -9,7 +9,7 @@
 	}
 
 	/**
-	 * get array with field ids of identifiers
+	 * Get array with field ids of identifiers
 	 *
 	 * @return array
 	 */

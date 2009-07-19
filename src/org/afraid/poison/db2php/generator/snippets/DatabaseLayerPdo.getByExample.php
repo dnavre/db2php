@@ -1,9 +1,11 @@
 
 	/**
-	 * get elements by example
+	 * Query by Example.
 	 *
-	 * @param PDO $db
-	 * @param <type> $example
+	 * Match by attributes of passed example instance and return matched rows as an array of <type> instances
+	 *
+	 * @param PDO $db a PDO Database instance
+	 * @param <type> $example an example instance
 	 * @return <type>[]
 	 */
 	public static function getByExample(PDO $db,<type> $example, $and=true) {
@@ -18,9 +20,14 @@
 	}
 
 	/**
-	 * get elements by filter. The filter is an hash with the field id as index and the value as filter value
+	 * Query by filter.
 	 *
-	 * @param PDO $db
+	 * The filter can be either an hash with the field id as index and the value as filter value,
+	 * or a array of DFC instances.
+	 *
+	 * Will return matched rows as an array of <type> instances.
+	 *
+	 * @param PDO $db a PDO Database instance
 	 * @param array $filter
 	 * @param boolean $and
 	 * @return <type>[]
@@ -57,7 +64,7 @@
 	}
 
 	/**
-	 * get sql WHERE part from filter
+	 * Get sql WHERE part from filter.
 	 *
 	 * @param array $filter
 	 * @param bool $and
@@ -85,3 +92,23 @@
 		}
 		return $sql;
 	}
+
+	/**
+	 * Execute query and return matched rows as an array of <type> instances.
+	 *
+	 * @param PDO $db a PDO Database instance
+	 * @param string $sql
+	 * @return <type>[]
+	 */
+	public static function getBySql(PDO $db, $sql) {
+		$stmt=$db->query($sql);
+		$resultInstances=array();
+		while($result=$stmt->fetch(PDO::FETCH_ASSOC)) {
+			$o=new <type>();
+			$o->assignByHash($result);
+<pristine>			$resultInstances[]=$o;
+		}
+		$stmt->closeCursor();
+		return $resultInstances;
+	}
+

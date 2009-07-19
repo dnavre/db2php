@@ -60,7 +60,7 @@
 	}
 
 	/**
-	 * enable statement cache
+	 * Enable statement cache
 	 *
 	 * @param bool $cache
 	 */
@@ -69,7 +69,7 @@
 	}
 
 	/**
-	 * check if statement cache is enabled
+	 * Check if statement cache is enabled
 	 *
 	 * @return bool
 	 */
