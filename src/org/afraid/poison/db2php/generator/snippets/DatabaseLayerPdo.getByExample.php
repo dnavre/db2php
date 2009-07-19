@@ -94,7 +94,9 @@
 	}
 
 	/**
-	 * Execute query and return matched rows as an array of <type> instances.
+	 * Execute select query and return matched rows as an array of <type> instances.
+	 *
+	 * The query should of course be on the table for this entity class and return all fields.
 	 *
 	 * @param PDO $db a PDO Database instance
 	 * @param string $sql
