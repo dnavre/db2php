@@ -48,7 +48,7 @@ public class DatabaseLayerInterface extends DatabaseLayer {
 		StringBuilder s=new StringBuilder();
 		s.append(getAssignByHash(generator));
 		s.append(getSnippetFromFile(generator, "DatabaseLayer.getById.php"));
-		s.append("\tpublic static function ").append(METHOD_SELECT_ID_NAME).append("(SimpleDatabaseInterface $db");
+		s.append("\tpublic static function ").append(METHOD_SELECT_ID_NAME).append("(").append(getDbTypeName()).append(" $db");
 		if (!generator.getTable().getFieldsIdentifiers().isEmpty()) {
 			s.append(",");
 			s.append(generator.getFieldList(new ArrayList<Field>(generator.getTable().getFieldsIdentifiers())));
@@ -70,7 +70,7 @@ public class DatabaseLayerInterface extends DatabaseLayer {
 	public String getCodeInsert(CodeGenerator generator) {
 		StringBuilder s=new StringBuilder();
 		s.append(getSnippetFromFile(generator, "DatabaseLayer.insertIntoDatabase.php"));
-		s.append("\tpublic function ").append(METHOD_INSERT_NAME).append("(SimpleDatabaseInterface $db) {\n");
+		s.append("\tpublic function ").append(METHOD_INSERT_NAME).append("(").append(getDbTypeName()).append(" $db) {\n");
 		s.append("\t\t$sql=").append(getSqlInsert(generator)).append(";\n");
 		s.append(getCodeExecute());
 		for (Field f : generator.getTable().getFieldsAutoIncrement()) {
@@ -86,7 +86,7 @@ public class DatabaseLayerInterface extends DatabaseLayer {
 	public String getCodeUpdate(CodeGenerator generator) {
 		StringBuilder s=new StringBuilder();
 		s.append(getSnippetFromFile(generator, "DatabaseLayer.updateToDatabase.php"));
-		s.append("\tpublic function ").append(METHOD_UPDATE_NAME).append("(SimpleDatabaseInterface $db) {\n");
+		s.append("\tpublic function ").append(METHOD_UPDATE_NAME).append("(").append(getDbTypeName()).append(" $db) {\n");
 		s.append("\t\t$sql=").append(getSqlUpdate(generator)).append(";\n");
 		s.append(getCodeExecute());
 		s.append(generator.getTrackingPristineState());
@@ -99,7 +99,7 @@ public class DatabaseLayerInterface extends DatabaseLayer {
 	public String getCodeDelete(CodeGenerator generator) {
 		StringBuilder s=new StringBuilder();
 		s.append(getSnippetFromFile(generator, "DatabaseLayer.deleteFromDatabase.php"));
-		s.append("\tpublic function ").append(METHOD_DELETE_NAME).append("(SimpleDatabaseInterface $db) {\n");
+		s.append("\tpublic function ").append(METHOD_DELETE_NAME).append("(").append(getDbTypeName()).append(" $db) {\n");
 		s.append("\t\t$sql=").append(getSqlDelete(generator)).append(";\n");
 		s.append(getCodeExecute());
 		s.append(getReturnResult());

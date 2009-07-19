@@ -85,7 +85,7 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 
 		// prepare/execute statement
 		s.append(getSnippetFromFile(generator, "DatabaseLayer.getById.php"));
-		s.append("\tpublic static function ").append(METHOD_SELECT_ID_NAME).append("(PDO $db");
+		s.append("\tpublic static function ").append(METHOD_SELECT_ID_NAME).append("(").append(getDbTypeName()).append(" $db");
 		if (!generator.getTable().getFieldsIdentifiers().isEmpty()) {
 			s.append(",");
 			s.append(generator.getFieldList(new ArrayList<Field>(generator.getTable().getFieldsIdentifiers())));
@@ -126,12 +126,13 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 
 		//
 		s.append(getSnippetFromFile(generator, "DatabaseLayer.insertIntoDatabase.php"));
-		s.append("\tpublic function ").append(METHOD_INSERT_NAME).append("(PDO $db) {\n");
+		s.append("\tpublic function ").append(METHOD_INSERT_NAME).append("(").append(getDbTypeName()).append(" $db) {\n");
 		s.append(getStmtInit("self::SQL_INSERT"));
 		//s.append(getBindingCodeField(generator, new ArrayList<Field>(generator.getTable().getFields())));
 		s.append("\t\t$this->bindValues($stmt);\n");
 		s.append(getStmtExecute());
 		s.append(getSnippetFromFile(generator, SNIPPET_EXCEPTION));
+		// TODO: check how to safely fetch insert ids
 		for (Field f : generator.getTable().getFieldsAutoIncrement()) {
 			s.append("\t\t").append(generator.getSetterCall(f, "$db->lastInsertId()")).append(";\n");
 		}
@@ -146,7 +147,7 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 	public String getCodeUpdate(CodeGenerator generator) {
 		StringBuilder s=new StringBuilder();
 		s.append(getSnippetFromFile(generator, "DatabaseLayer.updateToDatabase.php"));
-		s.append("\tpublic function ").append(METHOD_UPDATE_NAME).append("(PDO $db) {\n");
+		s.append("\tpublic function ").append(METHOD_UPDATE_NAME).append("(").append(getDbTypeName()).append(" $db) {\n");
 		s.append(getStmtInit("self::SQL_UPDATE"));
 		s.append("\t\t$this->bindValues($stmt);\n");
 		if (false && generator.isTrackFieldModifications()) {
@@ -171,7 +172,7 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 	public String getCodeDelete(CodeGenerator generator) {
 		StringBuilder s=new StringBuilder();
 		s.append(getSnippetFromFile(generator, "DatabaseLayer.deleteFromDatabase.php"));
-		s.append("\tpublic function ").append(METHOD_DELETE_NAME).append("(PDO $db");
+		s.append("\tpublic function ").append(METHOD_DELETE_NAME).append("(").append(getDbTypeName()).append(" $db");
 		//s.append(",").append(generator.getFieldList(new ArrayList<Field>(generator.getTable().getPrimaryKeys())));
 		s.append(") {\n");
 		s.append(getStmtInit("self::SQL_DELETE_PK"));
