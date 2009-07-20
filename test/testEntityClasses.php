@@ -30,7 +30,7 @@ $filter=new DFC(ProductModel::FIELD_PURCHASE_COST, 1000, DFC::NOT|DFC::SMALLER);
 $products=ProductModel::getByFilter($db, $filter);
 listProducts($products);
 
-echo ' -> get all products with a purchase smaller than 1000 and the description containg Computer' . "\n";
+echo ' -> get all products with a purchase cost smaller than 1000 and the description containg Computer' . "\n";
 $filter=array (
 	new DFC(ProductModel::FIELD_PURCHASE_COST, 1000, DFC::SMALLER),
 	new DFC(ProductModel::FIELD_DESCRIPTION, 'Computer', DFC::CONTAINS)
