@@ -503,7 +503,7 @@ public class CodeGenerator {
 	 * @return the method code to get array from object
 	 */
 	public String getUtilMethodToArray() {
-		return getUtilMethodArray(getTable().getFields(), "toArray");
+		return new StringBuilder().append(getSnippetFromFile("CodeGenerator.toArray.php")).append(getUtilMethodArray(getTable().getFields(), "toArray")).toString();
 	}
 
 	/**
@@ -511,7 +511,7 @@ public class CodeGenerator {
 	 * @return the method code to get array of primary key values
 	 */
 	public String getUtilMethodgetPrimaryKeysToArray() {
-		return getUtilMethodArray(getTable().getFieldsIdentifiers(), "getPrimaryKeyValues");
+		return new StringBuilder().append(getSnippetFromFile("CodeGenerator.getPrimaryKeyValues.php")).append(getUtilMethodArray(getTable().getFieldsIdentifiers(), "getPrimaryKeyValues")).toString();
 	}
 
 	/**
