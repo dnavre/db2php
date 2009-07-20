@@ -294,6 +294,13 @@ class ProductModel {
 	public function getDescription() {
 		return $this->description;
 	}
+
+
+	/**
+	 * return array with the field id as index and the field value as value.
+	 *
+	 * @return array
+	 */
 	public function toArray() {
 		return array(
 			self::FIELD_PRODUCT_ID=>$this->getProductId(),
@@ -305,6 +312,13 @@ class ProductModel {
 			self::FIELD_AVAILABLE=>$this->getAvailable(),
 			self::FIELD_DESCRIPTION=>$this->getDescription());
 	}
+
+
+	/**
+	 * return array with the field id as index and the field value as value for the identifier fields.
+	 *
+	 * @return array
+	 */
 	public function getPrimaryKeyValues() {
 		return array(
 			self::FIELD_PRODUCT_ID=>$this->getProductId());

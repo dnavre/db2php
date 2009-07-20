@@ -406,6 +406,13 @@ class CustomerModel {
 	public function getCreditLimit() {
 		return $this->creditLimit;
 	}
+
+
+	/**
+	 * return array with the field id as index and the field value as value.
+	 *
+	 * @return array
+	 */
 	public function toArray() {
 		return array(
 			self::FIELD_CUSTOMER_ID=>$this->getCustomerId(),
@@ -421,6 +428,13 @@ class CustomerModel {
 			self::FIELD_EMAIL=>$this->getEmail(),
 			self::FIELD_CREDIT_LIMIT=>$this->getCreditLimit());
 	}
+
+
+	/**
+	 * return array with the field id as index and the field value as value for the identifier fields.
+	 *
+	 * @return array
+	 */
 	public function getPrimaryKeyValues() {
 		return array(
 			self::FIELD_CUSTOMER_ID=>$this->getCustomerId());
