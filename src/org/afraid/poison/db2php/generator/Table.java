@@ -67,7 +67,7 @@ public class Table {
 	}
 
 	/**
-	 * initialize field list
+	 * initialise field list
 	 *
 	 * @param connection the connection to work on
 	 */

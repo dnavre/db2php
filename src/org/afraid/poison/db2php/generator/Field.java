@@ -17,6 +17,9 @@
  */
 package org.afraid.poison.db2php.generator;
 
+import java.lang.reflect.Array;
+import java.sql.Types;
+import java.util.Arrays;
 import org.afraid.poison.common.StringUtil;
 
 /**
@@ -37,7 +40,14 @@ public class Field {
 	/**
 	 * field is non-unique index
 	 */
-	public static final int INDEX_NON_UNIQUE=2;
+	public static final int INDEX_NON_UNIQUE=2;/**
+	 * number types
+	 */
+	public static final int[] NUMBER_TYPES={Types.BIGINT, Types.DECIMAL, Types.DOUBLE, Types.FLOAT, Types.INTEGER, Types.NUMERIC, Types.SMALLINT, Types.TINYINT};
+	static {
+		Arrays.sort(NUMBER_TYPES);
+	}
+
 	private String name;
 	private int type;
 	private String typeName;
@@ -259,6 +269,15 @@ public class Field {
 		s.append("unique:").append(isIndexUnique()).append(",");
 		s.append("index:").append(isIndexNonUnique());
 		return s.toString();
+	}
+
+	/**
+	 * check if field type is a numeric type
+	 *
+	 * @return true if numeric type
+	 */
+	public boolean isNumberType() {
+		return Arrays.binarySearch(NUMBER_TYPES, getType())>=0;
 	}
 
 	@Override

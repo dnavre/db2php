@@ -19,6 +19,8 @@ package org.afraid.poison.db2php.generator;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.sql.Types;
 import java.util.List;
 import org.afraid.poison.db2php.generator.databaselayer.DatabaseLayer;
 import java.util.Set;
@@ -374,6 +376,7 @@ public class CodeGenerator {
 			//s.append("\tconst FIELD_").append(getMethodName(f).toUpperCase()).append("=").append((int) Math.pow(2, i++)).append("\n");
 			s.append("\tconst ").append(getConstName(f)).append("=").append(i++).append(";\n");
 		}
+		
 		// list of primary keys
 		s.append("\tprivate static $PRIMARY_KEYS=array(");
 		s.append(CollectionUtil.join(getTable().getFieldsIdentifiers(), ",", new StringMutator() {
@@ -384,6 +387,7 @@ public class CodeGenerator {
 			}
 		}));
 		s.append(");\n");
+
 		// field id to field name mapping
 		s.append("\tprivate static $FIELD_NAMES=array(\n");
 		s.append(CollectionUtil.join(getTable().getFields(), ",\n", new StringMutator() {
@@ -392,6 +396,36 @@ public class CodeGenerator {
 			public String transform(Object s) {
 				Field f=(Field) s;
 				return new StringBuilder("\t\tself::").append(getConstName(f)).append("=>'").append(f.getName()).append("'").toString();
+			}
+		}));
+		s.append(");\n");
+
+		// default values
+		s.append("\tprivate static $DEFAULT_VALUES=array(\n");
+		s.append(CollectionUtil.join(getTable().getFields(), ",\n", new StringMutator() {
+
+			@Override
+			public String transform(Object input) {
+				Field f=(Field) input;
+				StringBuilder s=new StringBuilder("\t\t");
+				s.append("'").append(f.getName()).append("'=>");
+				if (f.isAutoIncrement() || (f.isNullable() && null==f.getDefaultValue())) {
+					s.append("null");
+				} else if (null==f.getDefaultValue()) {
+					if (f.isNumberType()) {
+						s.append("0");
+					} else {
+						s.append("''");
+					}
+				} else {
+					if (f.isNumberType()) {
+						s.append(f.getDefaultValue());
+					} else {
+						s.append("'").append(f.getDefaultValue()).append("'");
+					}
+					Double.parseDouble(f.getDefaultValue());
+				}
+				return s.toString();
 			}
 		}));
 		s.append(");\n");
@@ -598,7 +632,7 @@ public class CodeGenerator {
 	 * get the file which this tables code will be written to
 	 *
 	 * @return  the file which this tables code will be written to
-	 * @throws IOException if no directoy is set
+	 * @throws IOException if no directory is set
 	 */
 	public File getFile() throws IOException {
 		if (null==getSettings().getOutputDirectory()) {
