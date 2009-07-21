@@ -16,3 +16,12 @@
 	public static function getIdentifierFields() {
 		return self::$PRIMARY_KEYS;
 	}
+
+	/**
+	 * Assign default values according to table
+	 * 
+	 */
+	public function assignDefaultValues() {
+		$this->assignByHash(self::$DEFAULT_VALUES);
+	}
+
