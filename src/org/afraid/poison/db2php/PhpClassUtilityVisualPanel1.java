@@ -27,20 +27,39 @@ public final class PhpClassUtilityVisualPanel1 extends JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        dfc = new javax.swing.JCheckBox();
+        simpleDatabaseInterface = new javax.swing.JCheckBox();
+
+        org.openide.awt.Mnemonics.setLocalizedText(dfc, org.openide.util.NbBundle.getMessage(PhpClassUtilityVisualPanel1.class, "PhpClassUtilityVisualPanel1.dfc.text")); // NOI18N
+
+        org.openide.awt.Mnemonics.setLocalizedText(simpleDatabaseInterface, org.openide.util.NbBundle.getMessage(PhpClassUtilityVisualPanel1.class, "PhpClassUtilityVisualPanel1.simpleDatabaseInterface.text")); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(dfc)
+                    .addComponent(simpleDatabaseInterface))
+                .addContainerGap(194, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(dfc)
+                .addGap(18, 18, 18)
+                .addComponent(simpleDatabaseInterface)
+                .addContainerGap(228, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBox dfc;
+    private javax.swing.JCheckBox simpleDatabaseInterface;
     // End of variables declaration//GEN-END:variables
 }
 
