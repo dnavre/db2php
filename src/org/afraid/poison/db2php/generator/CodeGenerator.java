@@ -19,6 +19,7 @@ package org.afraid.poison.db2php.generator;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.sql.Types;
 import java.util.List;
@@ -591,8 +592,10 @@ public class CodeGenerator {
 	 */
 	public String getSnippetFromFile(String fileName, Field field) {
 		StringBuilder s=new StringBuilder();
+		InputStream is=null;
 		try {
-			String contents=IOUtil.readString(getClass().getResourceAsStream(new StringBuilder(SNIPPET_PATH).append(fileName).toString()));
+			is=getClass().getResourceAsStream(new StringBuilder(SNIPPET_PATH).append(fileName).toString());
+			String contents=IOUtil.readString(is);
 			if (null!=field) {
 				contents=contents.replace("<fieldName>", field.getName()).replace("<memberName>", getMemberName(field)).replace("<fieldInfo>", field.getInfoText()).replace("<fieldComment>", field.getComment());
 
@@ -600,6 +603,8 @@ public class CodeGenerator {
 			s.append(contents.replace("<type>", getClassName()));
 		} catch (IOException ex) {
 			Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
+		} finally {
+			IOUtil.closeQuietly(is);
 		}
 		return s.toString();
 	}

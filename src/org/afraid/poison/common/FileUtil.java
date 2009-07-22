@@ -62,6 +62,12 @@ public class FileUtil {
 		return new FileOutputStream(file);
 	}
 
+	public static void copy(InputStream is, File file) throws IOException {
+		OutputStream out=openOutputStream(file);
+		IOUtil.copy(is, out);
+		IOUtil.closeQuietly(out);
+	}
+
 	/**
 	 * write string to file
 	 *

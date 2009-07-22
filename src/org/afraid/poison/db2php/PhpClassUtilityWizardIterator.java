@@ -5,13 +5,18 @@
 package org.afraid.poison.db2php;
 
 import java.awt.Component;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collections;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import javax.swing.JComponent;
 import javax.swing.event.ChangeListener;
+import org.afraid.poison.common.FileUtil;
+import org.afraid.poison.common.IOUtil;
 import org.openide.WizardDescriptor;
+import org.openide.util.Exceptions;
 import sun.security.pkcs11.P11TlsKeyMaterialGenerator;
 
 public final class PhpClassUtilityWizardIterator implements WizardDescriptor.InstantiatingIterator {
@@ -58,14 +63,25 @@ public final class PhpClassUtilityWizardIterator implements WizardDescriptor.Ins
 	}
 
 	@Override
-	public Set instantiate() throws IOException {
+	public Set instantiate() {
 		if (wizard.getValue()==WizardDescriptor.FINISH_OPTION) {
-			PhpClassUtilityVisualPanel1 p1=(PhpClassUtilityVisualPanel1)getPanels()[0].getComponent();
-			if (p1.isSetDfc()) {
-				getClass().getClassLoader().getResourceAsStream("");
-			}
-			if (p1.isSetSimpleDatabaseInterface()) {
-				
+			PhpClassUtilityVisualPanel1 p1=(PhpClassUtilityVisualPanel1) getPanels()[0].getComponent();
+			String path="/org/afraid/poison/db2php/generator/utility/";
+			InputStream is=null;
+			try {
+				if (p1.isSetDfc()) {
+					is=getClass().getResourceAsStream("/org/afraid/poison/db2php/generator/utility/DFC.class.php");
+					FileUtil.copy(is, new File(p1.getDirectory(), "DFC.class.php"));
+				}
+				if (p1.isSetSimpleDatabaseInterface()) {
+					is=getClass().getResourceAsStream("/org/afraid/poison/db2php/generator/utility/SimpleDatabaseInterface.class.php");
+					FileUtil.copy(is, new File(p1.getDirectory(), "SimpleDatabaseInterface.class.php"));
+				}
+
+			} catch (IOException ex) {
+				Exceptions.printStackTrace(ex);
+			} finally {
+				IOUtil.closeQuietly(is);
 			}
 		}
 		return Collections.EMPTY_SET;
