@@ -60,8 +60,10 @@ public final class PhpClassUtilityVisualPanel1 extends JPanel {
         destinationDirectory = new javax.swing.JTextField();
         buttonBrowse = new javax.swing.JButton();
 
+        dfc.setSelected(true);
         org.openide.awt.Mnemonics.setLocalizedText(dfc, org.openide.util.NbBundle.getMessage(PhpClassUtilityVisualPanel1.class, "PhpClassUtilityVisualPanel1.dfc.text")); // NOI18N
 
+        simpleDatabaseInterface.setSelected(true);
         org.openide.awt.Mnemonics.setLocalizedText(simpleDatabaseInterface, org.openide.util.NbBundle.getMessage(PhpClassUtilityVisualPanel1.class, "PhpClassUtilityVisualPanel1.simpleDatabaseInterface.text")); // NOI18N
 
         org.openide.awt.Mnemonics.setLocalizedText(jLabel2, org.openide.util.NbBundle.getMessage(PhpClassUtilityVisualPanel1.class, "PhpClassUtilityVisualPanel1.jLabel2.text")); // NOI18N
