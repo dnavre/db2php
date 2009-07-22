@@ -16,6 +16,11 @@ public class PhpClassUtilityWizardPanel1 implements WizardDescriptor.Panel {
 	 * component from this class, just use getComponent().
 	 */
 	private Component component;
+	private WizardDescriptor wizard;
+
+	public PhpClassUtilityWizardPanel1(WizardDescriptor wizard) {
+		setWizard(wizard);
+	}
 
 	// Get the visual component for the panel. In this template, the component
 	// is kept separate. This can be more efficient: if the wizard is created
@@ -23,7 +28,7 @@ public class PhpClassUtilityWizardPanel1 implements WizardDescriptor.Panel {
 	// create only those which really need to be visible.
 	public Component getComponent() {
 		if (component==null) {
-			component=new PhpClassUtilityVisualPanel1();
+			component=new PhpClassUtilityVisualPanel1(getWizard());
 		}
 		return component;
 	}
@@ -82,6 +87,20 @@ public class PhpClassUtilityWizardPanel1 implements WizardDescriptor.Panel {
 	}
 
 	public void storeSettings(Object settings) {
+	}
+
+	/**
+	 * @return the wizard
+	 */
+	public WizardDescriptor getWizard() {
+		return wizard;
+	}
+
+	/**
+	 * @param wizard the wizard to set
+	 */
+	public void setWizard(WizardDescriptor wizard) {
+		this.wizard=wizard;
 	}
 }
 

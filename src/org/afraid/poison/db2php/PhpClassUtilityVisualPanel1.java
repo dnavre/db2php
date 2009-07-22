@@ -5,12 +5,26 @@
 
 package org.afraid.poison.db2php;
 
+import java.io.File;
+import java.net.URISyntaxException;
+import javax.swing.JFileChooser;
 import javax.swing.JPanel;
+import org.netbeans.api.project.Project;
+import org.netbeans.spi.project.ui.templates.support.Templates;
+import org.openide.WizardDescriptor;
+import org.openide.filesystems.FileObject;
+import org.openide.filesystems.FileStateInvalidException;
+import org.openide.util.Exceptions;
 
 public final class PhpClassUtilityVisualPanel1 extends JPanel {
 
+	private File defaultDirectory;
+	private File directory;
+	private WizardDescriptor wizard;
+
     /** Creates new form PhpClassUtilityVisualPanel1 */
-    public PhpClassUtilityVisualPanel1() {
+    public PhpClassUtilityVisualPanel1(WizardDescriptor wizard) {
+		setWizard(wizard);
         initComponents();
     }
 
@@ -19,6 +33,19 @@ public final class PhpClassUtilityVisualPanel1 extends JPanel {
         return "Step #1";
     }
 
+	/**
+	 * @return the wizard
+	 */
+	public WizardDescriptor getWizard() {
+		return wizard;
+	}
+
+	/**
+	 * @param wizard the wizard to set
+	 */
+	public void setWizard(WizardDescriptor wizard) {
+		this.wizard=wizard;
+	}
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -29,10 +56,31 @@ public final class PhpClassUtilityVisualPanel1 extends JPanel {
 
         dfc = new javax.swing.JCheckBox();
         simpleDatabaseInterface = new javax.swing.JCheckBox();
+        jLabel2 = new javax.swing.JLabel();
+        destinationDirectory = new javax.swing.JTextField();
+        buttonBrowse = new javax.swing.JButton();
 
         org.openide.awt.Mnemonics.setLocalizedText(dfc, org.openide.util.NbBundle.getMessage(PhpClassUtilityVisualPanel1.class, "PhpClassUtilityVisualPanel1.dfc.text")); // NOI18N
 
         org.openide.awt.Mnemonics.setLocalizedText(simpleDatabaseInterface, org.openide.util.NbBundle.getMessage(PhpClassUtilityVisualPanel1.class, "PhpClassUtilityVisualPanel1.simpleDatabaseInterface.text")); // NOI18N
+
+        org.openide.awt.Mnemonics.setLocalizedText(jLabel2, org.openide.util.NbBundle.getMessage(PhpClassUtilityVisualPanel1.class, "PhpClassUtilityVisualPanel1.jLabel2.text")); // NOI18N
+
+        destinationDirectory.setEditable(false);
+        destinationDirectory.setText(getDirectory().getAbsolutePath());
+        destinationDirectory.setToolTipText(org.openide.util.NbBundle.getMessage(PhpClassUtilityVisualPanel1.class, "PhpClassUtilityVisualPanel1.destinationDirectory.toolTipText")); // NOI18N
+        destinationDirectory.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                destinationDirectoryActionPerformed(evt);
+            }
+        });
+
+        org.openide.awt.Mnemonics.setLocalizedText(buttonBrowse, org.openide.util.NbBundle.getMessage(PhpClassUtilityVisualPanel1.class, "PhpClassUtilityVisualPanel1.buttonBrowse.text")); // NOI18N
+        buttonBrowse.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonBrowseActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -42,8 +90,14 @@ public final class PhpClassUtilityVisualPanel1 extends JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(dfc)
-                    .addComponent(simpleDatabaseInterface))
-                .addContainerGap(194, Short.MAX_VALUE))
+                    .addComponent(simpleDatabaseInterface)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(destinationDirectory, javax.swing.GroupLayout.DEFAULT_SIZE, 260, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(buttonBrowse)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -52,14 +106,118 @@ public final class PhpClassUtilityVisualPanel1 extends JPanel {
                 .addComponent(dfc)
                 .addGap(18, 18, 18)
                 .addComponent(simpleDatabaseInterface)
-                .addContainerGap(228, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 191, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(destinationDirectory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2)
+                    .addComponent(buttonBrowse))
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
+	private void destinationDirectoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_destinationDirectoryActionPerformed
+		// TODO add your handling code here:
+}//GEN-LAST:event_destinationDirectoryActionPerformed
+
+	private void buttonBrowseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBrowseActionPerformed
+		JFileChooser fChooser=new JFileChooser(getDirectory());
+		fChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		fChooser.setMultiSelectionEnabled(false);
+		if (JFileChooser.APPROVE_OPTION==fChooser.showOpenDialog(buttonBrowse)) {
+			setDirectory(fChooser.getSelectedFile());
+		}
+}//GEN-LAST:event_buttonBrowseActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton buttonBrowse;
+    private javax.swing.JTextField destinationDirectory;
     private javax.swing.JCheckBox dfc;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JCheckBox simpleDatabaseInterface;
     // End of variables declaration//GEN-END:variables
+
+
+	/**
+	 * @return the defaultDirectory
+	 */
+	public synchronized File getDefaultDirectory() {
+		if (null==defaultDirectory) {
+			FileObject targetFolder=Templates.getTargetFolder(getWizard());
+			if (null!=targetFolder) {
+				try {
+					defaultDirectory=new File(targetFolder.getURL().toURI());
+				} catch (FileStateInvalidException ex) {
+					Exceptions.printStackTrace(ex);
+				} catch (URISyntaxException ex) {
+					Exceptions.printStackTrace(ex);
+				}
+			}
+			if (null==defaultDirectory) {
+				Project project=Templates.getProject(getWizard());
+				if (null!=project) {
+					FileObject projectDirectory=project.getProjectDirectory();
+					if (null!=projectDirectory) {
+						try {
+							defaultDirectory=new File(projectDirectory.getURL().toURI());
+						} catch (FileStateInvalidException ex) {
+							Exceptions.printStackTrace(ex);
+						} catch (URISyntaxException ex) {
+							Exceptions.printStackTrace(ex);
+						}
+					}
+				}
+			}
+			if (null==defaultDirectory) {
+				defaultDirectory=new File(System.getProperty("user.home"));
+			}
+		}
+		return defaultDirectory;
+	}
+
+	/**
+	 * @param defaultDirectory the defaultDirectory to set
+	 */
+	public void setDefaultDirectory(File defaultDirectory) {
+		this.defaultDirectory=defaultDirectory;
+	}
+
+	/**
+	 * @return the directory
+	 */
+	public synchronized File getDirectory() {
+		if (null==directory) {
+			return getDefaultDirectory();
+		}
+		return directory;
+	}
+
+	/**
+	 * @param directory the directory to set
+	 */
+	public synchronized void setDirectory(File directory) {
+		this.directory=directory;
+		getDestinationDirectory().setText(directory.getAbsolutePath());
+	}
+	/**
+	 * @return the dfc
+	 */
+	public boolean isSetDfc() {
+		return dfc.isSelected();
+	}
+
+	/**
+	 * @return the simpleDatabaseInterface
+	 */
+	public boolean isSetSimpleDatabaseInterface() {
+		return simpleDatabaseInterface.isSelected();
+	}
+
+	/**
+	 * @return the destinationDirectory
+	 */
+	public javax.swing.JTextField getDestinationDirectory() {
+		return destinationDirectory;
+	}
 }
 

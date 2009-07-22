@@ -12,6 +12,7 @@ import java.util.Set;
 import javax.swing.JComponent;
 import javax.swing.event.ChangeListener;
 import org.openide.WizardDescriptor;
+import sun.security.pkcs11.P11TlsKeyMaterialGenerator;
 
 public final class PhpClassUtilityWizardIterator implements WizardDescriptor.InstantiatingIterator {
 
@@ -26,7 +27,7 @@ public final class PhpClassUtilityWizardIterator implements WizardDescriptor.Ins
 	private WizardDescriptor.Panel[] getPanels() {
 		if (panels==null) {
 			panels=new WizardDescriptor.Panel[]{
-						new PhpClassUtilityWizardPanel1()
+						new PhpClassUtilityWizardPanel1(wizard)
 					};
 			String[] steps=createSteps();
 			for (int i=0; i<panels.length; i++) {
@@ -56,34 +57,51 @@ public final class PhpClassUtilityWizardIterator implements WizardDescriptor.Ins
 		return panels;
 	}
 
+	@Override
 	public Set instantiate() throws IOException {
+		if (wizard.getValue()==WizardDescriptor.FINISH_OPTION) {
+			PhpClassUtilityVisualPanel1 p1=(PhpClassUtilityVisualPanel1)getPanels()[0].getComponent();
+			if (p1.isSetDfc()) {
+				getClass().getClassLoader().getResourceAsStream("");
+			}
+			if (p1.isSetSimpleDatabaseInterface()) {
+				
+			}
+		}
 		return Collections.EMPTY_SET;
 	}
 
+	@Override
 	public void initialize(WizardDescriptor wizard) {
 		this.wizard=wizard;
 	}
 
+	@Override
 	public void uninitialize(WizardDescriptor wizard) {
 		panels=null;
 	}
 
+	@Override
 	public WizardDescriptor.Panel current() {
 		return getPanels()[index];
 	}
 
+	@Override
 	public String name() {
 		return index+1+". from "+getPanels().length;
 	}
 
+	@Override
 	public boolean hasNext() {
 		return index<getPanels().length-1;
 	}
 
+	@Override
 	public boolean hasPrevious() {
 		return index>0;
 	}
 
+	@Override
 	public void nextPanel() {
 		if (!hasNext()) {
 			throw new NoSuchElementException();
@@ -91,6 +109,7 @@ public final class PhpClassUtilityWizardIterator implements WizardDescriptor.Ins
 		index++;
 	}
 
+	@Override
 	public void previousPanel() {
 		if (!hasPrevious()) {
 			throw new NoSuchElementException();
@@ -99,9 +118,11 @@ public final class PhpClassUtilityWizardIterator implements WizardDescriptor.Ins
 	}
 
 	// If nothing unusual changes in the middle of the wizard, simply:
+	@Override
 	public void addChangeListener(ChangeListener l) {
 	}
 
+	@Override
 	public void removeChangeListener(ChangeListener l) {
 	}
 
