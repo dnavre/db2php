@@ -40,14 +40,7 @@
 		. self::getSqlWhere($filter, $and);
 
 		$stmt=self::prepareStatement($db, $sql);
-		$i=0;
-		foreach ($filter as $value) {
-			$dfc=$value instanceof DFC;
-			if ($dfc && 0!=(DFC::IS_NULL&$value->getMode())) {
-				continue;
-			}
-			$stmt->bindValue(++$i, $dfc ? $value->getSqlValue() : $value);
-		}
+		self::bindValuesForFilter($stmt, $filter);
 		$affected=$stmt->execute();
 		if (false===$affected) {
 			$stmt->closeCursor();
@@ -94,6 +87,23 @@
 	}
 
 	/**
+	 * bind values from filter to statement
+	 *
+	 * @param PDOStatement $stmt
+	 * @param array $filter
+	 */
+	protected static function bindValuesForFilter(&$stmt, $filter) {
+		$i=0;
+		foreach ($filter as $value) {
+			$dfc=$value instanceof DFC;
+			if ($dfc && 0!=(DFC::IS_NULL&$value->getMode())) {
+				continue;
+			}
+			$stmt->bindValue(++$i, $dfc ? $value->getSqlValue() : $value);
+		}
+	}
+
+	/**
 	 * Execute select query and return matched rows as an array of <type> instances.
 	 *
 	 * The query should of course be on the table for this entity class and return all fields.
@@ -114,3 +124,34 @@
 		return $resultInstances;
 	}
 
+	/**
+	 * Delete rows matching the filter
+	 *
+	 * The filter can be either an hash with the field id as index and the value as filter value,
+	 * or a array of DFC instances.
+	 *
+	 * @param PDO $db
+	 * @param array $filter
+	 * @param bool $and
+	 * @return mixed
+	 */
+	private static function deleteByFilter(PDO $db, $filter, $and=true) {
+		if ($filter instanceof DFC) {
+			$filter=array($filter);
+		}
+		if (0==count($filter)) {
+			throw new InvalidArgumentException('refusing to delete without filter'); // just comment out this line if you are brave
+		}
+		$sql='DELETE FROM <tableNameQuoted>'
+		. self::getSqlWhere($filter, $and);
+		$stmt=self::prepareStatement($db, $sql);
+		self::bindValuesForFilter($stmt, $filter);
+		$affected=$stmt->execute();
+		$affected=$stmt->execute();
+		if (false===$affected) {
+			$stmt->closeCursor();
+			throw new Exception($stmt->errorCode() . ':' . var_export($stmt->errorInfo(), true), 0);
+		}
+		$stmt->closeCursor();
+		return $affected;
+	}
