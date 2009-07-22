@@ -20,8 +20,6 @@ package org.afraid.poison.db2php.generator;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.math.BigDecimal;
-import java.sql.Types;
 import java.util.List;
 import org.afraid.poison.db2php.generator.databaselayer.DatabaseLayer;
 import java.util.Set;

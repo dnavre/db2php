@@ -17,7 +17,6 @@ import org.afraid.poison.common.FileUtil;
 import org.afraid.poison.common.IOUtil;
 import org.openide.WizardDescriptor;
 import org.openide.util.Exceptions;
-import sun.security.pkcs11.P11TlsKeyMaterialGenerator;
 
 public final class PhpClassUtilityWizardIterator implements WizardDescriptor.InstantiatingIterator {
 

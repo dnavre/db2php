@@ -17,7 +17,6 @@
  */
 package org.afraid.poison.db2php.generator;
 
-import java.lang.reflect.Array;
 import java.sql.Types;
 import java.util.Arrays;
 import org.afraid.poison.common.StringUtil;
