@@ -418,11 +418,14 @@ public class CodeGenerator {
 					}
 				} else {
 					if (f.isNumberType()) {
-						s.append(f.getDefaultValue());
+						if (0==f.getDefaultValue().length()) {
+							s.append('0');
+						} else {
+							s.append(f.getDefaultValue());
+						}
 					} else {
 						s.append("'").append(f.getDefaultValue()).append("'");
 					}
-					Double.parseDouble(f.getDefaultValue());
 				}
 				return s.toString();
 			}
