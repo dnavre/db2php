@@ -30,6 +30,7 @@ public class Settings {
 	private boolean generateChecks=false;
 	private boolean trackFieldModifications=true;
 	private boolean fluentInterface=true;
+	private boolean camelCaseFairy;
 	private String classNamePrefix=new String();
 	private String classNameSuffix=new String();
 	private File outputDirectory;
@@ -89,6 +90,20 @@ public class Settings {
 	 */
 	public void setFluentInterface(boolean fluentInterface) {
 		this.fluentInterface=fluentInterface;
+	}
+
+	/**
+	 * @return the camelCaseFairy
+	 */
+	public boolean isCamelCaseFairy() {
+		return camelCaseFairy;
+	}
+
+	/**
+	 * @param camelCaseFairy the camelCaseFairy to set
+	 */
+	public void setCamelCaseFairy(boolean camelCaseFairy) {
+		this.camelCaseFairy=camelCaseFairy;
 	}
 
 	/**
