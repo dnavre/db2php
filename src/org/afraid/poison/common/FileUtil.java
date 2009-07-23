@@ -94,4 +94,16 @@ public class FileUtil {
 		IOUtil.closeQuietly(in);
 		return s;
 	}
+
+	public static String getPackagePath(String packageName) {
+		return new StringBuilder("/").append(packageName.replace(".", "/")).toString();
+	}
+
+	public static String getPackagePath(Class<?> clazz) {
+		return getPackagePath(clazz.getPackage().getName());
+	}
+
+	public static String getPackagePath(Object o) {
+		return getPackagePath(o.getClass());
+	}
 }
