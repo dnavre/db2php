@@ -100,4 +100,41 @@ public class CamelCaseFairy {
 
 		return s;
 	}
+
+
+		/**
+	 * tries to convert input string to camel case it it is all upper case or contains _
+	 *
+	 * @param str the string containing _
+	 * @param camelCaseFairy camel case fairy, should you believe in magic
+	 * @return the camel case string with the first character lower case
+	 */
+	public static String toCamelCaseSimple(String str, CamelCaseFairy camelCaseFairy) {
+		if (!(str.matches(".*[^a-zA-Z0-9]+.*")||str.equals(str.toUpperCase()))) {
+			return str;
+		}
+
+		String[] split=str.split("[^a-zA-Z0-9]+");
+		StringBuilder res=new StringBuilder();
+		boolean first=true;
+		for (String s : split) {
+			if (null!=camelCaseFairy) {
+				s=camelCaseFairy.toCamelCase(s);
+				if (first) {
+					first=false;
+					res.append(StringUtil.firstCharToLowerCase(s));
+				} else {
+					res.append(s);
+				}
+			} else {
+				if (first) {
+					res.append(s.toLowerCase());
+					first=false;
+				} else {
+					res.append(StringUtil.capitalize(s));
+				}
+			}
+		}
+		return res.toString();
+	}
 }

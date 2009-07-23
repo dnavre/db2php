@@ -165,32 +165,7 @@ public class StringUtil {
 	 * @return the camel case string with the first character lower case
 	 */
 	public static String toCamelCase(String str, CamelCaseFairy camelCaseFairy) {
-		if (!(str.matches(".*[^a-zA-Z0-9]+.*")||str.equals(str.toUpperCase()))) {
-			return str;
-		}
-
-		String[] split=str.split("[^a-zA-Z0-9]+");
-		StringBuilder res=new StringBuilder();
-		boolean first=true;
-		for (String s : split) {
-			if (null!=camelCaseFairy) {
-				s=camelCaseFairy.toCamelCase(s);
-				if (first) {
-					first=false;
-					res.append(firstCharToLowerCase(s));
-				} else {
-					res.append(s);
-				}
-			} else {
-				if (first) {
-					res.append(s.toLowerCase());
-					first=false;
-				} else {
-					res.append(capitalize(s));
-				}
-			}
-		}
-		return res.toString();
+		return CamelCaseFairy.toCamelCaseSimple(str, camelCaseFairy);
 	}
 
 	/**
