@@ -30,7 +30,7 @@ public class Settings {
 	private boolean generateChecks=false;
 	private boolean trackFieldModifications=true;
 	private boolean fluentInterface=true;
-	private boolean camelCaseFairy;
+	private boolean camelCaseFairy=true;
 	private String classNamePrefix=new String();
 	private String classNameSuffix=new String();
 	private File outputDirectory;
