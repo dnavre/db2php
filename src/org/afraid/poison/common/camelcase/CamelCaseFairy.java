@@ -28,7 +28,7 @@ public class CamelCaseFairy {
 
 	private Set<String> dictionary=null;
 
-	private Set<String> getDictionary() {
+	private synchronized Set<String> getDictionary() {
 		if (null==dictionary) {
 			dictionary=new LinkedHashSet<String>();
 			InputStream in=null;
