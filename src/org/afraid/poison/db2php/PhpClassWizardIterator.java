@@ -29,6 +29,7 @@ import java.util.Set;
 import javax.swing.JComponent;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import org.afraid.poison.common.camelcase.CamelCaseFairy;
 import org.afraid.poison.db2php.generator.Settings;
 import org.afraid.poison.db2php.generator.CodeGenerator;
 import org.afraid.poison.db2php.generator.Table;
@@ -95,8 +96,10 @@ public final class PhpClassWizardIterator implements WizardDescriptor.Instantiat
 	private Set<Table> writeCode(Set<Table> tables, Settings settings) {
 		Set<Table> failed=new LinkedHashSet<Table>();
 		CodeGenerator generator;
+		CamelCaseFairy ccf=new CamelCaseFairy();
 		for (Table t : tables) {
 			generator=new CodeGenerator(t, settings);
+			generator.setCamelCaseFairy(ccf);
 			try {
 				generator.writeCode();
 				openFile(generator.getFile());
