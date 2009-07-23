@@ -58,6 +58,9 @@ public class CamelCaseFairy {
 	}
 
 	public String toCamelCase(String s) {
+		if (0==s.length() || null==s) {
+			return s;
+		}
 		ArrayList<String> allContained=new ArrayList<String>();
 		StringBuilder sb=new StringBuilder(s.toLowerCase());
 		int pos;
@@ -70,6 +73,9 @@ public class CamelCaseFairy {
 					break;
 				}
 			}
+		}
+		if (0!=sb.length()) {
+			allContained.add(sb.toString());
 		}
 		for (String cw : allContained) {
 			/*
