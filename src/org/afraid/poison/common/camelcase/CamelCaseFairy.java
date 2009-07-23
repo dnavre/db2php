@@ -109,7 +109,7 @@ public class CamelCaseFairy {
 	 * @param camelCaseFairy camel case fairy, should you believe in magic
 	 * @return the camel case string with the first character lower case
 	 */
-	public static String toCamelCaseSimple(String str, CamelCaseFairy camelCaseFairy) {
+	public static String toCamelCase(String str, CamelCaseFairy camelCaseFairy) {
 		String[] split=str.split("[^a-zA-Z0-9]+");
 		StringBuilder res=new StringBuilder();
 		boolean first=true;

@@ -179,7 +179,7 @@ public class CodeGenerator {
 	 * @return the class name
 	 */
 	public String getClassName() {
-		return new StringBuilder().append(getClassNamePrefix()).append(StringUtil.firstCharToUpperCase(StringUtil.toCamelCase(getTable().getName(), getCamelCaseFairy()))).append(getClassNameSuffix()).toString();
+		return new StringBuilder().append(getClassNamePrefix()).append(StringUtil.firstCharToUpperCase(CamelCaseFairy.toCamelCase(getTable().getName(), getCamelCaseFairy()))).append(getClassNameSuffix()).toString();
 	}
 
 	/**
@@ -198,7 +198,7 @@ public class CodeGenerator {
 	 * @return the member name
 	 */
 	public String getMemberName(Field field) {
-		return StringUtil.toCamelCase(field.getName(), getCamelCaseFairy());
+		return CamelCaseFairy.toCamelCase(field.getName(), getCamelCaseFairy());
 	}
 
 	/**

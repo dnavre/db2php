@@ -156,25 +156,4 @@ public class StringUtil {
 	public static String firstCharToLowerCase(String str) {
 		return new StringBuilder(str.substring(0, 1).toLowerCase()).append(str.substring(1)).toString();
 	}
-
-	/**
-	 * tries to convert input string to camel case it it is all upper case or contains _
-	 *
-	 * @param str the string containing _
-	 * @param camelCaseFairy camel case fairy, should you believe in magic
-	 * @return the camel case string with the first character lower case
-	 */
-	public static String toCamelCase(String str, CamelCaseFairy camelCaseFairy) {
-		return CamelCaseFairy.toCamelCaseSimple(str, camelCaseFairy);
-	}
-
-	/**
-	 * tries to convert input string to camel case it it is all upper case or contains _
-	 *
-	 * @param str the string containing _
-	 * @return the camel case string with the first character lower case
-	 */
-	public static String toCamelCase(String str) {
-		return toCamelCase(str, null);
-	}
 }
