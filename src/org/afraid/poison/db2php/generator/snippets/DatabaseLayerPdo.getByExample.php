@@ -135,7 +135,7 @@
 	 * @param bool $and
 	 * @return mixed
 	 */
-	private static function deleteByFilter(PDO $db, $filter, $and=true) {
+	public static function deleteByFilter(PDO $db, $filter, $and=true) {
 		if ($filter instanceof DFC) {
 			$filter=array($filter);
 		}
