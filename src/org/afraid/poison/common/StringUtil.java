@@ -178,8 +178,9 @@ public class StringUtil {
 				if (first) {
 					first=false;
 					res.append(firstCharToLowerCase(s));
+				} else {
+					res.append(s);
 				}
-				res.append(s);
 			} else {
 				if (first) {
 					res.append(s.toLowerCase());

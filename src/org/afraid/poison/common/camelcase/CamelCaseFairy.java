@@ -61,8 +61,9 @@ public class CamelCaseFairy {
 		if (0==s.length() || null==s) {
 			return s;
 		}
+		s=s.toLowerCase();
 		ArrayList<String> allContained=new ArrayList<String>();
-		StringBuilder sb=new StringBuilder(s.toLowerCase());
+		StringBuilder sb=new StringBuilder(s);
 		int pos;
 		for (String word : getDictionary()) {
 			pos=sb.indexOf(word);
