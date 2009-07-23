@@ -14,8 +14,11 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
+import org.afraid.poison.common.CollectionUtil;
 import org.afraid.poison.common.FileUtil;
 import org.afraid.poison.common.IOUtil;
+import org.afraid.poison.common.StringMutator;
 import org.afraid.poison.common.StringUtil;
 
 /**
@@ -36,7 +39,6 @@ public class CamelCaseFairy {
 			try {
 				// aspell dump master english|grep -Pi '^[a-z]{2,}$'|tr [A-Z] [a-z]|sort|uniq|awk '{ print length(), $0 | "sort -rn" }'|awk '{ print $2}'
 				String path=new StringBuilder(FileUtil.getPackagePath(getClass())).append("/wordlist.en").toString();
-				//String path=new StringBuilder("/").append(getClass().getPackage().getName().replace(".", "/")).append("/wordlist.en").toString();
 				System.err.println(path);
 				in=getClass().getResourceAsStream(path);
 
@@ -76,7 +78,14 @@ public class CamelCaseFairy {
 			}
 		}
 		if (0!=sb.length()) {
-			allContained.add(sb.toString());
+			String regex=CollectionUtil.join(allContained, "|", new StringMutator() {
+
+				@Override
+				public String transform(Object input) {
+					return Pattern.quote(input.toString());
+				}
+			});
+			allContained.addAll(CollectionUtil.fromArray(sb.toString().split(regex)));
 		}
 		for (String cw : allContained) {
 			/*
