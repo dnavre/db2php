@@ -96,7 +96,10 @@ public final class PhpClassWizardIterator implements WizardDescriptor.Instantiat
 	private Set<Table> writeCode(Set<Table> tables, Settings settings) {
 		Set<Table> failed=new LinkedHashSet<Table>();
 		CodeGenerator generator;
-		CamelCaseFairy ccf=new CamelCaseFairy();
+		CamelCaseFairy ccf=null;
+		if (settings.isCamelCaseFairy()) {
+			ccf=new CamelCaseFairy();
+		}
 		for (Table t : tables) {
 			generator=new CodeGenerator(t, settings);
 			generator.setCamelCaseFairy(ccf);
