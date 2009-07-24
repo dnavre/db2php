@@ -1,11 +1,11 @@
 #!/bin/bash
 
-VERSION=$(grep 'OpenIDE-Module-Specification-Version' manifest.mf |grep -Po '[^\s:]+$')
+. .version
 DDIR="db2php-${VERSION}"
 mkdir "$DDIR"
 for f in $(git ls-files); do
 	cp --parents "$f" "${DDIR}"
 done
-cp "src/org/afraid/poison/db2php/generator/utility/DFC.class.php" "src/org/afraid/poison/db2php/generator/utility/SimpleDatabaseInterface.class.php" "${DDIR}"
+cp src/org/afraid/poison/db2php/generator/utility/* "${DDIR}"
 tar -v -c "$DDIR"|bzip2 -9> "${DDIR}.tar.bz2"
 rm -rf "$DDIR"
