@@ -10,12 +10,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import org.afraid.poison.common.CollectionUtil;
+import org.afraid.poison.common.Dictionary;
 import org.afraid.poison.common.FileUtil;
 import org.afraid.poison.common.IOUtil;
 import org.afraid.poison.common.StringMutator;
@@ -33,6 +36,8 @@ public class CamelCaseFairy {
 
 	private synchronized Set<String> getDictionary() {
 		if (null==dictionary) {
+			dictionary=Dictionary.DENGLISCH.getDictionary();
+			/*
 			dictionary=new LinkedHashSet<String>();
 			InputStream in=null;
 			BufferedReader br=null;
@@ -55,6 +60,7 @@ public class CamelCaseFairy {
 				IOUtil.closeQuietly(br);
 				IOUtil.closeQuietly(in);
 			}
+			*/
 		}
 		return dictionary;
 	}
