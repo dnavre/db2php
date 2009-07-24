@@ -144,6 +144,9 @@ public class StringUtil {
 	 * @return the resulting string
 	 */
 	public static String firstCharToUpperCase(String str) {
+		if (0==str.length()) {
+			return str;
+		}
 		return new StringBuilder(str.substring(0, 1).toUpperCase()).append(str.substring(1)).toString();
 	}
 
@@ -154,6 +157,9 @@ public class StringUtil {
 	 * @return the resulting string
 	 */
 	public static String firstCharToLowerCase(String str) {
+		if (0==str.length()) {
+			return str;
+		}
 		return new StringBuilder(str.substring(0, 1).toLowerCase()).append(str.substring(1)).toString();
 	}
 }
