@@ -1,0 +1,11 @@
+#!/bin/bash
+
+. .version
+./tarsrc || exit 1
+ant nbm || exit 1
+cp build/org-afraid-poison-db2php.nbm org-afraid-poison-db2php-${VERSION}.nbm
+for file in"db2php-${VERSION}.tar.bz2" "org-afraid-poison-db2php-${VERSION}.nbm"; do
+	#googlecode_upload.py
+	echo "$file"
+done
+
