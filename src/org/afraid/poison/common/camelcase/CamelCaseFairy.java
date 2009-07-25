@@ -4,24 +4,13 @@
  */
 package org.afraid.poison.common.camelcase;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import org.afraid.poison.common.string.StringOccurrence;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Pattern;
-import org.afraid.poison.common.CollectionUtil;
-import org.afraid.poison.common.Dictionary;
-import org.afraid.poison.common.FileUtil;
-import org.afraid.poison.common.IOUtil;
-import org.afraid.poison.common.StringMutator;
+import org.afraid.poison.common.camelcase.Dictionary.Language;
 import org.afraid.poison.common.StringUtil;
 
 /**
@@ -32,83 +21,73 @@ import org.afraid.poison.common.StringUtil;
  */
 public class CamelCaseFairy {
 
+	private Dictionary.Language language;
 	private Set<String> dictionary=null;
+
+	public CamelCaseFairy() {
+		this(Dictionary.EN);
+	}
+
+	public CamelCaseFairy(Language language) {
+		this.language=language;
+	}
 
 	private synchronized Set<String> getDictionary() {
 		if (null==dictionary) {
 			dictionary=Dictionary.DENGLISCH.getDictionary();
-			/*
-			dictionary=new LinkedHashSet<String>();
-			InputStream in=null;
-			BufferedReader br=null;
-			try {
-				// aspell dump master english|grep -Pi '^[a-z]{2,}$'|tr [A-Z] [a-z]|sort|uniq|awk '{ print length(), $0 | "sort -rn" }'|awk '{ print $2}'
-				String path=new StringBuilder(FileUtil.getPackagePath(getClass())).append("/wordlist.en").toString();
-				System.err.println(path);
-				in=getClass().getResourceAsStream(path);
-
-				br=new BufferedReader(new InputStreamReader(in));
-				String word;
-				while (null!=(word=br.readLine())) {
-					dictionary.add(word);
-				}
-			} catch (FileNotFoundException ex) {
-				Logger.getLogger(CamelCaseFairy.class.getName()).log(Level.SEVERE, null, ex);
-			} catch (IOException ex) {
-				Logger.getLogger(CamelCaseFairy.class.getName()).log(Level.SEVERE, null, ex);
-			} finally {
-				IOUtil.closeQuietly(br);
-				IOUtil.closeQuietly(in);
-			}
-			*/
 		}
 		return dictionary;
 	}
 
 	public String toCamelCase(String s) {
-		if (0==s.length() || null==s) {
+		if (0==s.length()||null==s) {
 			return s;
 		}
 		s=s.toLowerCase();
-		ArrayList<String> allContained=new ArrayList<String>();
-		StringBuilder sb=new StringBuilder(s);
-		int pos;
-		for (String word : getDictionary()) {
-			pos=sb.indexOf(word);
-			if (-1!=pos) {
-				allContained.add(word);
-				sb.delete(pos, pos+word.length());
-				if (0==sb.length()) {
-					break;
-				}
-			}
-		}
-		if (0!=sb.length()) {
-			String regex=CollectionUtil.join(allContained, "|", new StringMutator() {
 
-				@Override
-				public String transform(Object input) {
-					return Pattern.quote(input.toString());
-				}
-			});
-			allContained.addAll(CollectionUtil.fromArray(sb.toString().split(regex)));
-		}
-		for (String cw : allContained) {
-			/*
-			pos=s.indexOf(cw);
-			if (0!=pos) {
-			s=s.replace(cw, StringUtil.firstCharToUpperCase(cw));
+		List<StringOccurrence> allContained=new ArrayList<StringOccurrence>();
+		String remaining=new String(s);
+		Set<StringOccurrence> wordOccurrences;
+		for (String word : getDictionary()) {
+			if (word.equals("database")) {
+				System.err.println("WTF?");
 			}
-			 */
-			s=s.replace(cw, StringUtil.firstCharToUpperCase(cw));
+			if (remaining.contains(word)) {
+				wordOccurrences=StringUtil.findOccurrences(word, s);
+				if (!wordOccurrences.isEmpty()) {
+					for (StringOccurrence ac : allContained) {
+						ac.removeSubSequences(wordOccurrences);
+						if (wordOccurrences.isEmpty()) {
+							break;
+						}
+					}
+					allContained.addAll(wordOccurrences);
+					remaining=remaining.replaceAll(Pattern.quote(word), "");
+					if (0==remaining.length()) {
+						break;
+					}
+				}
+			}
+		}
+
+		Collections.sort(allContained, new StringOccurrence.Comparator());
+		int lastEnd=0;
+		StringBuffer sb=new StringBuffer(s);
+		for (StringOccurrence cw : allContained) {
+			System.err.println(""+lastEnd+" - "+cw.toString());
+			if (lastEnd!=cw.getStart()) {
+				System.err.println("bad boy! you get reward. you get big!:"+s.substring(lastEnd, cw.getStart()));
+				sb.replace(lastEnd, cw.getStart(), StringUtil.firstCharToUpperCase(s.substring(lastEnd, cw.getStart())));
+			}
+			sb.replace(cw.getStart(), cw.getEnd(), StringUtil.firstCharToUpperCase(cw.getString()));
+			lastEnd=cw.getEnd();
 		}
 		System.err.println(allContained);
 
-		return s;
+		return sb.toString();
 	}
 
-
-		/**
+	/**
 	 * tries to convert input string to camel case it it is all upper case or contains _
 	 *
 	 * @param str the string containing _

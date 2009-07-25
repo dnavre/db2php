@@ -6,8 +6,10 @@ package org.afraid.poison.common;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
-import org.afraid.poison.common.camelcase.CamelCaseFairy;
+import java.util.Set;
+import org.afraid.poison.common.string.StringOccurrence;
 
 /**
  *
@@ -161,5 +163,18 @@ public class StringUtil {
 			return str;
 		}
 		return new StringBuilder(str.substring(0, 1).toLowerCase()).append(str.substring(1)).toString();
+	}
+
+	public static Set<StringOccurrence> findOccurrences(String needle, String haystack) {
+		Set<StringOccurrence> occurrences=new HashSet<StringOccurrence>();
+		int lastEnd=0;
+		int pos;
+		StringOccurrence so;
+		while (-1!=(pos=haystack.indexOf(needle, lastEnd))) {
+			so=new StringOccurrence(needle, pos);
+			occurrences.add(so);
+			lastEnd=so.getEnd();
+		}
+		return occurrences;
 	}
 }

@@ -3,8 +3,10 @@
  * and open the template in the editor.
  */
 
-package org.afraid.poison.common;
+package org.afraid.poison.common.camelcase;
 
+import org.afraid.poison.common.string.CharSequenceLengthComparator;
+import org.afraid.poison.common.*;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -70,7 +72,7 @@ public class Dictionary {
 		}
 	};
 
-	public final static Language DENGLISCH=new LanguageSorted(new CharSequenceLengthComparator()) {
+	public final static Language DENGLISCH=new LanguageSorted(new CharSequenceLengthComparator(false)) {
 
 		@Override
 		public String[] getLanguageFiles() {
@@ -84,7 +86,7 @@ public class Dictionary {
 			BufferedReader br=null;
 			try {
 				// aspell dump master english|grep -Pi '^[a-z]{2,}$'|tr [A-Z] [a-z]|sort|uniq|awk '{ print length(), $0 | "sort -rn" }'|awk '{ print $2}'
-				String path=new StringBuilder(FileUtil.getPackagePath(Dictionary.class)).append("/wordlist.").append(lang).toString();
+				String path=new StringBuilder(FileUtil.getPackagePath(CamelCaseFairy.class)).append("/wordlist.").append(lang).toString();
 				System.err.println(path);
 				in=Dictionary.class.getResourceAsStream(path);
 

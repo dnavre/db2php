@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package org.afraid.poison.common;
+package org.afraid.poison.common.string;
 
 /**
  *

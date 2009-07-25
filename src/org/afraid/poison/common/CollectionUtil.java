@@ -4,6 +4,8 @@
  */
 package org.afraid.poison.common;
 
+import org.afraid.poison.common.string.StringMutatorPrependAppend;
+import org.afraid.poison.common.string.StringMutator;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
