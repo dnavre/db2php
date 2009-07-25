@@ -1,0 +1,5 @@
+#!/bin/bash
+
+PROJECT="db2php"
+USER=""
+PASSWORD=""

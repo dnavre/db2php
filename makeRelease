@@ -1,0 +1,12 @@
+#!/bin/bash
+
+. .version
+./tarsrc || exit 1
+ant nbm || exit 1
+cp build/org-afraid-poison-db2php.nbm org-afraid-poison-db2php-${VERSION}.nbm || exit 1
+
+#. .googlecode || exit 1
+upcmd="../googlecode_upload.py -p \"$PROJECT\" -u \"$USER\" -w \"$PASSWORD\""
+$upcmd -s "Source code v${VERSION}" "db2php-${VERSION}.tar.bz2"
+$upcmd -s "NetBeans plugin v${VERSION}" "org-afraid-poison-db2php-${VERSION}.nbm"
+

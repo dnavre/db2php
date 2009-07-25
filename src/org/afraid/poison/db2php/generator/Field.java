@@ -18,7 +18,9 @@
 package org.afraid.poison.db2php.generator;
 
 import java.sql.Types;
+import java.util.ArrayList;
 import java.util.Arrays;
+import org.afraid.poison.common.CollectionUtil;
 import org.afraid.poison.common.StringUtil;
 
 /**
@@ -267,6 +269,38 @@ public class Field {
 		s.append("primary:").append(isPrimaryKey()).append(",");
 		s.append("unique:").append(isIndexUnique()).append(",");
 		s.append("index:").append(isIndexNonUnique());
+		return s.toString();
+	}
+
+	/**
+	 * get a bit of human readable information for this field
+	 *
+	 * @return a bit of human readable information for this field
+	 */
+	public String getInfoTextCompact() {
+		StringBuilder s=new StringBuilder();
+		s.append("type:").append(getTypeName()).append(",");
+		s.append("size:").append(getSize()).append(",");
+		s.append("default:").append(getDefaultValue());
+		ArrayList<String> prop=new ArrayList<String>();
+		if (isPrimaryKey()) {
+			prop.add("primary");
+		}
+		if (isIndexUnique()) {
+			prop.add("unique");
+		}
+		if (isIndexNonUnique()) {
+			prop.add("index");
+		}
+		if (isAutoIncrement()) {
+			prop.add("autoincrement");
+		}
+		if (isNullable()) {
+			prop.add("nullable");
+		}
+		if (!prop.isEmpty()) {
+			s.append(",").append(CollectionUtil.join(prop, ","));
+		}
 		return s.toString();
 	}
 

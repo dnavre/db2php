@@ -6,4 +6,6 @@ nbproject/private
 *.log
 *.bz2
 *.gz
+*.nbm
+.googlecode
 code.google
