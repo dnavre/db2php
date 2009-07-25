@@ -91,6 +91,9 @@ public class CamelCaseFairy {
 			sb.replace(cw.getStart(), cw.getEnd(), StringUtil.firstCharToUpperCase(cw.getString()));
 			lastEnd=cw.getEnd();
 		}
+		if (lastEnd!=sb.length()) {
+			sb.replace(lastEnd, sb.length(), StringUtil.firstCharToUpperCase(s.substring(lastEnd, sb.length())));
+		}
 		// TODO: unrecognised word at end should also be camelcase
 		return sb.toString();
 	}
