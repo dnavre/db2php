@@ -67,7 +67,7 @@ public class StringOccurrence {
 		while (i.hasNext()) {
 			stringOccurrence=i.next();
 			if (isInSequence(stringOccurrence)) {
-				System.err.println("removing:" + stringOccurrence.toString() + " because of:" + toString());
+				//System.err.println("removing:" + stringOccurrence.toString() + " because of:" + toString());
 				i.remove();
 			}
 		}

@@ -95,14 +95,32 @@ public class FileUtil {
 		return s;
 	}
 
+	/**
+	 * get the package path
+	 *
+	 * @param packageName name of the package
+	 * @return the package path
+	 */
 	public static String getPackagePath(String packageName) {
 		return new StringBuilder("/").append(packageName.replace(".", "/")).toString();
 	}
 
+	/**
+	 * get the package path
+	 *
+	 * @param clazz class for which to get the package pa
+	 * @return the package path
+	 */
 	public static String getPackagePath(Class<?> clazz) {
 		return getPackagePath(clazz.getPackage().getName());
 	}
 
+	/**
+	 * get the package path
+	 *
+	 * @param o object for which to get the package path
+	 * @return the package path
+	 */
 	public static String getPackagePath(Object o) {
 		return getPackagePath(o.getClass());
 	}

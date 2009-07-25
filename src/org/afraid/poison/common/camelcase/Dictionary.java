@@ -19,7 +19,6 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.afraid.poison.common.camelcase.CamelCaseFairy;
 
 /**
  *
@@ -87,7 +86,6 @@ public class Dictionary {
 			try {
 				// aspell dump master english|grep -Pi '^[a-z]{2,}$'|tr [A-Z] [a-z]|sort|uniq|awk '{ print length(), $0 | "sort -rn" }'|awk '{ print $2}'
 				String path=new StringBuilder(FileUtil.getPackagePath(CamelCaseFairy.class)).append("/wordlist.").append(lang).toString();
-				System.err.println(path);
 				in=Dictionary.class.getResourceAsStream(path);
 
 				br=new BufferedReader(new InputStreamReader(in));

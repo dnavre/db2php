@@ -165,6 +165,12 @@ public class StringUtil {
 		return new StringBuilder(str.substring(0, 1).toLowerCase()).append(str.substring(1)).toString();
 	}
 
+	/**
+	 * searches for occurrences and returns StringOccurrence#s so the position is known
+	 * @param needle the string to search for
+	 * @param haystack the string to search in
+	 * @return the found occurrences
+	 */
 	public static Set<StringOccurrence> findOccurrences(String needle, String haystack) {
 		Set<StringOccurrence> occurrences=new HashSet<StringOccurrence>();
 		int lastEnd=0;

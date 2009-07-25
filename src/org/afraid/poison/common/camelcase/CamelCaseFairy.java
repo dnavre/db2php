@@ -24,14 +24,27 @@ public class CamelCaseFairy {
 	private Dictionary.Language language;
 	private Set<String> dictionary=null;
 
+	/**
+	 * CTOR
+	 */
 	public CamelCaseFairy() {
 		this(Dictionary.EN);
 	}
 
+	/**
+	 * CTOR
+	 *
+	 * @param language the language to use
+	 */
 	public CamelCaseFairy(Language language) {
 		this.language=language;
 	}
 
+	/**
+	 * get dictionary data instance
+	 *
+	 * @return the dictionary data
+	 */
 	private synchronized Set<String> getDictionary() {
 		if (null==dictionary) {
 			dictionary=Dictionary.DENGLISCH.getDictionary();
@@ -39,6 +52,12 @@ public class CamelCaseFairy {
 		return dictionary;
 	}
 
+	/**
+	 * convert passed string to CamelCase using magic
+	 *
+	 * @param s the string to convert to CamelCase
+	 * @return the CamelCase string
+	 */
 	public String toCamelCase(String s) {
 		if (0==s.length()||null==s) {
 			return s;
@@ -49,9 +68,6 @@ public class CamelCaseFairy {
 		String remaining=new String(s);
 		Set<StringOccurrence> wordOccurrences;
 		for (String word : getDictionary()) {
-			if (word.equals("database")) {
-				System.err.println("WTF?");
-			}
 			if (remaining.contains(word)) {
 				wordOccurrences=StringUtil.findOccurrences(word, s);
 				if (!wordOccurrences.isEmpty()) {
@@ -74,15 +90,12 @@ public class CamelCaseFairy {
 		int lastEnd=0;
 		StringBuffer sb=new StringBuffer(s);
 		for (StringOccurrence cw : allContained) {
-			System.err.println(""+lastEnd+" - "+cw.toString());
 			if (lastEnd!=cw.getStart()) {
-				System.err.println("bad boy! you get reward. you get big!:"+s.substring(lastEnd, cw.getStart()));
 				sb.replace(lastEnd, cw.getStart(), StringUtil.firstCharToUpperCase(s.substring(lastEnd, cw.getStart())));
 			}
 			sb.replace(cw.getStart(), cw.getEnd(), StringUtil.firstCharToUpperCase(cw.getString()));
 			lastEnd=cw.getEnd();
 		}
-		System.err.println(allContained);
 
 		return sb.toString();
 	}
