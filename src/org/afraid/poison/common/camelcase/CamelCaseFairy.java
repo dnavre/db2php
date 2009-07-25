@@ -10,7 +10,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
-import org.afraid.poison.common.camelcase.Dictionary.Language;
+import org.afraid.poison.common.camelcase.Dictionary.Descriptor;
 import org.afraid.poison.common.StringUtil;
 
 /**
@@ -21,35 +21,29 @@ import org.afraid.poison.common.StringUtil;
  */
 public class CamelCaseFairy {
 
-	private Dictionary.Language language;
-	private Set<String> dictionary=null;
+	private Dictionary.Descriptor language;
+	private Set<String> wordList=null;
 
-	/**
-	 * CTOR
-	 */
-	public CamelCaseFairy() {
-		this(Dictionary.EN);
-	}
 
 	/**
 	 * CTOR
 	 *
 	 * @param language the language to use
 	 */
-	public CamelCaseFairy(Language language) {
+	public CamelCaseFairy(Descriptor language) {
 		this.language=language;
 	}
 
 	/**
-	 * get dictionary data instance
+	 * get wordList data instance
 	 *
-	 * @return the dictionary data
+	 * @return the wordList data
 	 */
-	private synchronized Set<String> getDictionary() {
-		if (null==dictionary) {
-			dictionary=Dictionary.DENGLISCH.getDictionary();
+	private synchronized Set<String> getWordList() {
+		if (null==wordList) {
+			wordList=Dictionary.DENGLISCH.getWordList();
 		}
-		return dictionary;
+		return wordList;
 	}
 
 	/**
@@ -67,7 +61,7 @@ public class CamelCaseFairy {
 		List<StringOccurrence> allContained=new ArrayList<StringOccurrence>();
 		String remaining=new String(s);
 		Set<StringOccurrence> wordOccurrences;
-		for (String word : getDictionary()) {
+		for (String word : getWordList()) {
 			if (remaining.contains(word)) {
 				wordOccurrences=StringUtil.findOccurrences(word, s);
 				if (!wordOccurrences.isEmpty()) {

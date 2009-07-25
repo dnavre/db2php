@@ -25,9 +25,11 @@ import java.util.logging.Logger;
  * @author schnaiter
  */
 public class Dictionary {
-	public static abstract class  Language {
+	public static abstract class  Descriptor {
 		abstract public String[] getLanguageFiles();
-		public Set<String> getDictionary() {
+		abstract public String getId();
+		
+		public Set<String> getWordList() {
 			if (1==getLanguageFiles().length) {
 				return readDictionary(getLanguageFiles()[0]);
 			}
@@ -39,7 +41,7 @@ public class Dictionary {
 		}
 	}
 	
-	public static abstract class  LanguageSorted extends Language {
+	public static abstract class  LanguageSorted extends Descriptor {
 		Comparator<CharSequence> comparator;
 
 		public LanguageSorted(Comparator<CharSequence> comparator) {
@@ -47,35 +49,24 @@ public class Dictionary {
 		}
 		
 		@Override
-		public Set<String> getDictionary() {
-			ArrayList<String> list=new ArrayList<String>(super.getDictionary());
+		public Set<String> getWordList() {
+			ArrayList<String> list=new ArrayList<String>(super.getWordList());
 			Collections.sort(list, comparator);
 			return new LinkedHashSet<String>(list);
 		}
 		
 	}
 
-	public final static Language EN=new Language() {
-
-		@Override
-		public String[] getLanguageFiles() {
-			return new String[] {"en"};
-		}
-	};
-
-	public final static Language DE=new Language() {
-
-		@Override
-		public String[] getLanguageFiles() {
-			return new String[] {"de"};
-		}
-	};
-
-	public final static Language DENGLISCH=new LanguageSorted(new CharSequenceLengthComparator(false)) {
+	public final static Descriptor DENGLISCH=new LanguageSorted(new CharSequenceLengthComparator(false)) {
 
 		@Override
 		public String[] getLanguageFiles() {
 			return new String[] {"de", "en"};
+		}
+
+		@Override
+		public String getId() {
+			throw new UnsupportedOperationException("Not supported yet.");
 		}
 	};
 
@@ -100,10 +91,9 @@ public class Dictionary {
 		return dictionary;
 	}
 
-	public static LinkedHashSet<String> readDictionary(String lang) {
+	public static LinkedHashSet<String> readDictionary(String path) {
 		LinkedHashSet<String> dictionary=new LinkedHashSet<String>();
 		InputStream in=null;
-		String path=new StringBuilder(FileUtil.getPackagePath(CamelCaseFairy.class)).append("/wordlist.").append(lang).toString();
 		in=Dictionary.class.getResourceAsStream(path);
 		dictionary=readDictionary(in);
 		IOUtil.closeQuietly(in);

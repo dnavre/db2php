@@ -98,7 +98,7 @@ public final class PhpClassWizardIterator implements WizardDescriptor.Instantiat
 		CodeGenerator generator;
 		CamelCaseFairy ccf=null;
 		if (settings.isCamelCaseFairy()) {
-			ccf=new CamelCaseFairy();
+			//ccf=new CamelCaseFairy();
 		}
 		for (Table t : tables) {
 			generator=new CodeGenerator(t, settings);
