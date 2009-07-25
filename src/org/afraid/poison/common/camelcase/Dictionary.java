@@ -57,19 +57,6 @@ public class Dictionary {
 		
 	}
 
-	public final static Descriptor DENGLISCH=new LanguageSorted(new CharSequenceLengthComparator(false)) {
-
-		@Override
-		public String[] getLanguageFiles() {
-			return new String[] {"de", "en"};
-		}
-
-		@Override
-		public String getId() {
-			throw new UnsupportedOperationException("Not supported yet.");
-		}
-	};
-
 	public static LinkedHashSet<String> readDictionary(InputStream in) {
 		BufferedReader br=null;
 		LinkedHashSet<String> dictionary=readDictionary(in);
@@ -95,6 +82,9 @@ public class Dictionary {
 		LinkedHashSet<String> dictionary=new LinkedHashSet<String>();
 		InputStream in=null;
 		in=Dictionary.class.getResourceAsStream(path);
+		if (null==in) {
+			return dictionary;
+		}
 		dictionary=readDictionary(in);
 		IOUtil.closeQuietly(in);
 		return dictionary;

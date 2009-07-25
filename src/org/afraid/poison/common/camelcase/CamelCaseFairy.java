@@ -21,17 +21,17 @@ import org.afraid.poison.common.StringUtil;
  */
 public class CamelCaseFairy {
 
-	private Dictionary.Descriptor language;
+	private Dictionary.Descriptor descriptor;
 	private Set<String> wordList=null;
 
 
 	/**
 	 * CTOR
 	 *
-	 * @param language the language to use
+	 * @param descriptor the descriptor to use
 	 */
-	public CamelCaseFairy(Descriptor language) {
-		this.language=language;
+	public CamelCaseFairy(Descriptor descriptor) {
+		this.descriptor=descriptor;
 	}
 
 	/**
@@ -41,7 +41,7 @@ public class CamelCaseFairy {
 	 */
 	private synchronized Set<String> getWordList() {
 		if (null==wordList) {
-			wordList=Dictionary.DENGLISCH.getWordList();
+			wordList=descriptor.getWordList();
 		}
 		return wordList;
 	}
@@ -85,12 +85,13 @@ public class CamelCaseFairy {
 		StringBuffer sb=new StringBuffer(s);
 		for (StringOccurrence cw : allContained) {
 			if (lastEnd!=cw.getStart()) {
+				// CamelCase for gaps
 				sb.replace(lastEnd, cw.getStart(), StringUtil.firstCharToUpperCase(s.substring(lastEnd, cw.getStart())));
 			}
 			sb.replace(cw.getStart(), cw.getEnd(), StringUtil.firstCharToUpperCase(cw.getString()));
 			lastEnd=cw.getEnd();
 		}
-
+		// TODO: unrecognised word at end should also be camelcase
 		return sb.toString();
 	}
 
