@@ -5,7 +5,6 @@
 
 package org.afraid.poison.common.camelcase;
 
-import org.afraid.poison.common.string.CharSequenceLengthComparator;
 import org.afraid.poison.common.*;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -41,10 +40,10 @@ public class Dictionary {
 		}
 	}
 	
-	public static abstract class  LanguageSorted extends Descriptor {
+	public static abstract class  DescriptorSorted extends Descriptor {
 		Comparator<CharSequence> comparator;
 
-		public LanguageSorted(Comparator<CharSequence> comparator) {
+		public DescriptorSorted(Comparator<CharSequence> comparator) {
 			this.comparator=comparator;
 		}
 		
