@@ -58,7 +58,7 @@ public class Dictionary {
 
 	public static LinkedHashSet<String> readDictionary(InputStream in) {
 		BufferedReader br=null;
-		LinkedHashSet<String> dictionary=readDictionary(in);
+		LinkedHashSet<String> dictionary=new LinkedHashSet<String>();
 		try {
 
 			// aspell dump master english|grep -Pi '^[a-z]{2,}$'|tr [A-Z] [a-z]|sort|uniq|awk '{ print length(), $0 | "sort -rn" }'|awk '{ print $2}'

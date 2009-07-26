@@ -4,15 +4,21 @@
  */
 package org.afraid.poison.common.camelcase.deen;
 
-import org.afraid.poison.common.camelcase.Dictionary.Descriptor;
+import java.util.Comparator;
+import org.afraid.poison.common.camelcase.Dictionary.DescriptorSorted;
 import org.afraid.poison.common.camelcase.de.LanguageDE;
 import org.afraid.poison.common.camelcase.en.LanguageEN;
+import org.afraid.poison.common.string.CharSequenceLengthComparator;
 
 /**
  *
  * @author poison
  */
-public class LanguageDEEN extends Descriptor {
+public class LanguageDEEN extends DescriptorSorted {
+
+	public LanguageDEEN() {
+		super(new CharSequenceLengthComparator(false));
+	}
 
 	@Override
 	public String[] getLanguageFiles() {
