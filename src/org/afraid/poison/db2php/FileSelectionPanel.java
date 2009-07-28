@@ -36,6 +36,10 @@ public class FileSelectionPanel extends javax.swing.JPanel {
         initComponents();
     }
 
+	public FileSelectionPanel() {
+		this(null);
+	}
+
 
 	/**
 	 * @return the wizard
@@ -49,17 +53,23 @@ public class FileSelectionPanel extends javax.swing.JPanel {
 	 */
 	public void setWizard(WizardDescriptor wizard) {
 		this.wizard=wizard;
+		if (null!=wizard) {
+			setDefaultDirectory(null);
+			getDefaultDirectory();
+		}
 	}
 
 	/**
 	 * @return the defaultDirectory
 	 */
 	public synchronized File getDefaultDirectory() {
-		if (null==defaultDirectory) {
+		if (null==getWizard()) {
+			setDefaultDirectory(new File(System.getProperty("user.home")));
+		} else if (null==defaultDirectory) {
 			FileObject targetFolder=Templates.getTargetFolder(getWizard());
 			if (null!=targetFolder) {
 				try {
-					defaultDirectory=new File(targetFolder.getURL().toURI());
+					setDefaultDirectory(new File(targetFolder.getURL().toURI()));
 				} catch (FileStateInvalidException ex) {
 					Exceptions.printStackTrace(ex);
 				} catch (URISyntaxException ex) {
@@ -72,7 +82,7 @@ public class FileSelectionPanel extends javax.swing.JPanel {
 					FileObject projectDirectory=project.getProjectDirectory();
 					if (null!=projectDirectory) {
 						try {
-							defaultDirectory=new File(projectDirectory.getURL().toURI());
+							setDefaultDirectory(new File(projectDirectory.getURL().toURI()));
 						} catch (FileStateInvalidException ex) {
 							Exceptions.printStackTrace(ex);
 						} catch (URISyntaxException ex) {
@@ -82,7 +92,7 @@ public class FileSelectionPanel extends javax.swing.JPanel {
 				}
 			}
 			if (null==defaultDirectory) {
-				defaultDirectory=new File(System.getProperty("user.home"));
+				setDefaultDirectory(new File(System.getProperty("user.home")));
 			}
 		}
 		return defaultDirectory;
@@ -93,6 +103,9 @@ public class FileSelectionPanel extends javax.swing.JPanel {
 	 */
 	public void setDefaultDirectory(File defaultDirectory) {
 		this.defaultDirectory=defaultDirectory;
+		if (null!=this.defaultDirectory && null==directory && null!=getDestinationDirectory()) {
+			getDestinationDirectory().setText(this.defaultDirectory.getAbsolutePath());
+		}
 	}
 
 	/**

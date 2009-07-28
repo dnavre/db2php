@@ -38,8 +38,8 @@ public final class PhpClassVisualPanel2 extends JPanel {
 
 	/** Creates new form PhpClassVisualPanel2 */
 	public PhpClassVisualPanel2(WizardDescriptor wizard) {
-		setWizard(wizard);
 		initComponents();
+		setWizard(wizard);
 		readSettings();
 
 	}
@@ -70,7 +70,7 @@ public final class PhpClassVisualPanel2 extends JPanel {
         jLabel5 = new javax.swing.JLabel();
         identifierQuoteString = new javax.swing.JComboBox();
         fluentInterfaceSelection = new javax.swing.JCheckBox();
-        fileSelectionPanel = new FileSelectionPanel(getWizard());
+        fileSelectionPanel = new org.afraid.poison.db2php.FileSelectionPanel();
 
         org.openide.awt.Mnemonics.setLocalizedText(jLabel1, org.openide.util.NbBundle.getMessage(PhpClassVisualPanel2.class, "PhpClassVisualPanel2.jLabel1.text_2")); // NOI18N
 
@@ -100,43 +100,32 @@ public final class PhpClassVisualPanel2 extends JPanel {
         org.openide.awt.Mnemonics.setLocalizedText(fluentInterfaceSelection, org.openide.util.NbBundle.getMessage(PhpClassVisualPanel2.class, "PhpClassVisualPanel2.fluentInterfaceSelection.text")); // NOI18N
         fluentInterfaceSelection.setToolTipText(org.openide.util.NbBundle.getMessage(PhpClassVisualPanel2.class, "PhpClassVisualPanel2.fluentInterfaceSelection.toolTipText")); // NOI18N
 
-        javax.swing.GroupLayout fileSelectionPanelLayout = new javax.swing.GroupLayout(fileSelectionPanel);
-        fileSelectionPanel.setLayout(fileSelectionPanelLayout);
-        fileSelectionPanelLayout.setHorizontalGroup(
-            fileSelectionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 388, Short.MAX_VALUE)
-        );
-        fileSelectionPanelLayout.setVerticalGroup(
-            fileSelectionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 152, Short.MAX_VALUE)
-        );
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(fileSelectionPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(fileSelectionPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addComponent(jLabel5)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(identifierQuoteString, 0, 118, Short.MAX_VALUE))
+                                .addComponent(identifierQuoteString, 0, 130, Short.MAX_VALUE))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addComponent(jLabel4)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(classNameSuffix, javax.swing.GroupLayout.DEFAULT_SIZE, 133, Short.MAX_VALUE))
+                                .addComponent(classNameSuffix, javax.swing.GroupLayout.DEFAULT_SIZE, 145, Short.MAX_VALUE))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addComponent(jLabel3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(classNamePrefix, javax.swing.GroupLayout.DEFAULT_SIZE, 132, Short.MAX_VALUE))
+                                .addComponent(classNamePrefix, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(databaseLayerSelection, 0, 144, Short.MAX_VALUE)))
+                                .addComponent(databaseLayerSelection, 0, 156, Short.MAX_VALUE)))
                         .addGap(12, 12, 12)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(fluentInterfaceSelection)
@@ -166,8 +155,8 @@ public final class PhpClassVisualPanel2 extends JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(identifierQuoteString, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(fileSelectionPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 121, Short.MAX_VALUE)
+                .addComponent(fileSelectionPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -176,7 +165,7 @@ public final class PhpClassVisualPanel2 extends JPanel {
     private javax.swing.JTextField classNamePrefix;
     private javax.swing.JTextField classNameSuffix;
     private javax.swing.JComboBox databaseLayerSelection;
-    private javax.swing.JPanel fileSelectionPanel;
+    private org.afraid.poison.db2php.FileSelectionPanel fileSelectionPanel;
     private javax.swing.JCheckBox fluentInterfaceSelection;
     private javax.swing.JCheckBox generateChecksSelection;
     private javax.swing.JComboBox identifierQuoteString;
@@ -199,13 +188,14 @@ public final class PhpClassVisualPanel2 extends JPanel {
 	 */
 	public void setWizard(WizardDescriptor wizard) {
 		this.wizard=wizard;
+		getFileSelectionPanel().setWizard(wizard);
 	}
 
 	/**
 	 * @return the directory
 	 */
 	public synchronized File getDirectory() {
-		return ((FileSelectionPanel) getFileSelectionPanel()).getDirectory();
+		return getFileSelectionPanel().getDirectory();
 	}
 
 	public ComboBoxModel getAvailableDatabaseLayers() {
@@ -331,7 +321,7 @@ public final class PhpClassVisualPanel2 extends JPanel {
 	/**
 	 * @return the fileSelectionPanel
 	 */
-	private javax.swing.JPanel getFileSelectionPanel() {
+	private FileSelectionPanel getFileSelectionPanel() {
 		return fileSelectionPanel;
 	}
 

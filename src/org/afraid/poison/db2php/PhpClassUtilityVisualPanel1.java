@@ -14,8 +14,8 @@ public final class PhpClassUtilityVisualPanel1 extends JPanel {
 
 	/** Creates new form PhpClassUtilityVisualPanel1 */
 	public PhpClassUtilityVisualPanel1(WizardDescriptor wizard) {
-		setWizard(wizard);
 		initComponents();
+		setWizard(wizard);
 	}
 
 	@Override
@@ -35,6 +35,7 @@ public final class PhpClassUtilityVisualPanel1 extends JPanel {
 	 */
 	public void setWizard(WizardDescriptor wizard) {
 		this.wizard=wizard;
+		getFileSelectionPanel().setWizard(wizard);
 	}
 
 	/** This method is called from within the constructor to
@@ -47,24 +48,13 @@ public final class PhpClassUtilityVisualPanel1 extends JPanel {
 
         dfc = new javax.swing.JCheckBox();
         simpleDatabaseInterface = new javax.swing.JCheckBox();
-        fileSelectionPanel = new FileSelectionPanel(getWizard());
+        fileSelectionPanel = new org.afraid.poison.db2php.FileSelectionPanel();
 
         dfc.setSelected(true);
         org.openide.awt.Mnemonics.setLocalizedText(dfc, org.openide.util.NbBundle.getMessage(PhpClassUtilityVisualPanel1.class, "PhpClassUtilityVisualPanel1.dfc.text")); // NOI18N
 
         simpleDatabaseInterface.setSelected(true);
         org.openide.awt.Mnemonics.setLocalizedText(simpleDatabaseInterface, org.openide.util.NbBundle.getMessage(PhpClassUtilityVisualPanel1.class, "PhpClassUtilityVisualPanel1.simpleDatabaseInterface.text")); // NOI18N
-
-        javax.swing.GroupLayout fileSelectionPanelLayout = new javax.swing.GroupLayout(fileSelectionPanel);
-        fileSelectionPanel.setLayout(fileSelectionPanelLayout);
-        fileSelectionPanelLayout.setHorizontalGroup(
-            fileSelectionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 372, Short.MAX_VALUE)
-        );
-        fileSelectionPanelLayout.setVerticalGroup(
-            fileSelectionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 198, Short.MAX_VALUE)
-        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -73,7 +63,7 @@ public final class PhpClassUtilityVisualPanel1 extends JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(fileSelectionPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(fileSelectionPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
                     .addComponent(dfc)
                     .addComponent(simpleDatabaseInterface))
                 .addContainerGap())
@@ -85,14 +75,14 @@ public final class PhpClassUtilityVisualPanel1 extends JPanel {
                 .addComponent(dfc)
                 .addGap(18, 18, 18)
                 .addComponent(simpleDatabaseInterface)
-                .addGap(18, 18, 18)
-                .addComponent(fileSelectionPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 167, Short.MAX_VALUE)
+                .addComponent(fileSelectionPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox dfc;
-    private javax.swing.JPanel fileSelectionPanel;
+    private org.afraid.poison.db2php.FileSelectionPanel fileSelectionPanel;
     private javax.swing.JCheckBox simpleDatabaseInterface;
     // End of variables declaration//GEN-END:variables
 
@@ -100,7 +90,7 @@ public final class PhpClassUtilityVisualPanel1 extends JPanel {
 	 * @return the directory
 	 */
 	public File getDirectory() {
-		return ((FileSelectionPanel) getFileSelectionPanel()).getDirectory();
+		return getFileSelectionPanel().getDirectory();
 	}
 
 	/**
@@ -120,7 +110,7 @@ public final class PhpClassUtilityVisualPanel1 extends JPanel {
 	/**
 	 * @return the fileSelectionPanel
 	 */
-	private javax.swing.JPanel getFileSelectionPanel() {
+	private FileSelectionPanel getFileSelectionPanel() {
 		return fileSelectionPanel;
 	}
 }
