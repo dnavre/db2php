@@ -7,7 +7,9 @@ package org.afraid.poison.common.camelcase;
 import org.afraid.poison.common.string.StringOccurrence;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 import org.afraid.poison.common.camelcase.Dictionary.Descriptor;
@@ -23,7 +25,7 @@ public class CamelCaseFairy {
 
 	private Dictionary.Descriptor descriptor;
 	private Set<String> wordList=null;
-
+	private Map<String, String> cache=new HashMap<String, String>();
 
 	/**
 	 * CTOR
@@ -57,7 +59,10 @@ public class CamelCaseFairy {
 			return s;
 		}
 		s=s.toLowerCase();
-
+		String cr=cache.get(s);
+		if (null!=cr) {
+			return cr;
+		}
 		List<StringOccurrence> allContained=new ArrayList<StringOccurrence>();
 		String remaining=new String(s);
 		Set<StringOccurrence> wordOccurrences;
@@ -94,6 +99,7 @@ public class CamelCaseFairy {
 		if (lastEnd!=sb.length()) {
 			sb.replace(lastEnd, sb.length(), StringUtil.firstCharToUpperCase(s.substring(lastEnd, sb.length())));
 		}
+		cache.put(s, sb.toString());
 		return sb.toString();
 	}
 
