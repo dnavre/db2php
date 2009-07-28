@@ -30,7 +30,9 @@ import javax.swing.JComponent;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import org.afraid.poison.common.camelcase.CamelCaseFairy;
+import org.afraid.poison.common.camelcase.de.LanguageDE;
 import org.afraid.poison.common.camelcase.deen.LanguageDEEN;
+import org.afraid.poison.common.camelcase.en.LanguageEN;
 import org.afraid.poison.db2php.generator.Settings;
 import org.afraid.poison.db2php.generator.CodeGenerator;
 import org.afraid.poison.db2php.generator.Table;
@@ -97,13 +99,9 @@ public final class PhpClassWizardIterator implements WizardDescriptor.Instantiat
 	private Set<Table> writeCode(Set<Table> tables, Settings settings) {
 		Set<Table> failed=new LinkedHashSet<Table>();
 		CodeGenerator generator;
-		CamelCaseFairy ccf=null;
-		if (settings.isCamelCaseFairy()) {
-			ccf=new CamelCaseFairy(new LanguageDEEN());
-		}
 		for (Table t : tables) {
 			generator=new CodeGenerator(t, settings);
-			generator.setCamelCaseFairy(ccf);
+			generator.setCamelCaseFairy(settings.getCamelCaseFairy());
 			try {
 				generator.writeCode();
 				openFile(generator.getFile());
@@ -150,6 +148,14 @@ public final class PhpClassWizardIterator implements WizardDescriptor.Instantiat
 			settings.setClassNameSuffix(p2.getClassNameSuffix().getText());
 			settings.setOutputDirectory(p2.getDirectory());
 			settings.setIdentifierQuoteString((String) p2.getIdentifierQuoteString().getSelectedItem());
+			String ccfs=(String) p2.getCamelCaseFairy().getSelectedItem();
+			if ("en".equals(ccfs)) {
+				settings.setCamelCaseFairy(new CamelCaseFairy(new LanguageEN()));
+			} else if ("de".equals(ccfs)) {
+				settings.setCamelCaseFairy(new CamelCaseFairy(new LanguageDE()));
+			} else if ("deen".equals(ccfs)) {
+				settings.setCamelCaseFairy(new CamelCaseFairy(new LanguageDEEN()));
+			}
 			p2.storeSettings();
 			Set<Table> failed=writeCode(tables, settings);
 			if (!failed.isEmpty()) {
