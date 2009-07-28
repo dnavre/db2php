@@ -29,7 +29,8 @@ import org.afraid.poison.common.StringUtil;
 import org.afraid.poison.common.CollectionUtil;
 import org.afraid.poison.common.FileUtil;
 import org.afraid.poison.common.IOUtil;
-import org.afraid.poison.common.StringMutator;
+import org.afraid.poison.common.camelcase.CamelCaseFairy;
+import org.afraid.poison.common.string.StringMutator;
 
 /**
  * generates PHP code from a table
@@ -41,6 +42,7 @@ public class CodeGenerator {
 	private static final String SNIPPET_PATH="/org/afraid/poison/db2php/generator/snippets/";
 	private Table table;
 	private Settings settings;
+	private CamelCaseFairy camelCaseFairy;
 
 	/**
 	 * CTOR
@@ -177,7 +179,7 @@ public class CodeGenerator {
 	 * @return the class name
 	 */
 	public String getClassName() {
-		return new StringBuilder().append(getClassNamePrefix()).append(StringUtil.firstCharToUpperCase(StringUtil.toCamelCase(getTable().getName()))).append(getClassNameSuffix()).toString();
+		return new StringBuilder().append(getClassNamePrefix()).append(StringUtil.firstCharToUpperCase(CamelCaseFairy.toCamelCase(getTable().getName(), getCamelCaseFairy()))).append(getClassNameSuffix()).toString();
 	}
 
 	/**
@@ -196,7 +198,7 @@ public class CodeGenerator {
 	 * @return the member name
 	 */
 	public String getMemberName(Field field) {
-		return StringUtil.toCamelCase(field.getName());
+		return CamelCaseFairy.toCamelCase(field.getName(), getCamelCaseFairy());
 	}
 
 	/**
@@ -485,7 +487,7 @@ public class CodeGenerator {
 	/**
 	 * get the prepared statements
 	 *
-	 * @return the INSERT/UPDATE/SELECT/DELETE psrepared statements
+	 * @return the INSERT/UPDATE/SELECT/DELETE prepared statements
 	 */
 	public String getPreparedStatements() {
 		Set<Field> fields=getTable().getFields();
@@ -667,5 +669,19 @@ public class CodeGenerator {
 	 */
 	public void writeCode() throws IOException {
 		writeCode(getFile());
+	}
+
+	/**
+	 * @return the camelCaseFairy
+	 */
+	public CamelCaseFairy getCamelCaseFairy() {
+		return camelCaseFairy;
+	}
+
+	/**
+	 * @param camelCaseFairy the camelCaseFairy to set
+	 */
+	public void setCamelCaseFairy(CamelCaseFairy camelCaseFairy) {
+		this.camelCaseFairy=camelCaseFairy;
 	}
 }

@@ -18,6 +18,7 @@
 package org.afraid.poison.db2php.generator;
 
 import java.io.File;
+import org.afraid.poison.common.camelcase.CamelCaseFairy;
 import org.afraid.poison.db2php.generator.databaselayer.DatabaseLayer;
 
 /**
@@ -30,6 +31,7 @@ public class Settings {
 	private boolean generateChecks=false;
 	private boolean trackFieldModifications=true;
 	private boolean fluentInterface=true;
+	private CamelCaseFairy camelCaseFairy=null;
 	private String classNamePrefix=new String();
 	private String classNameSuffix=new String();
 	private File outputDirectory;
@@ -89,6 +91,20 @@ public class Settings {
 	 */
 	public void setFluentInterface(boolean fluentInterface) {
 		this.fluentInterface=fluentInterface;
+	}
+
+	/**
+	 * @return the camelCaseFairy
+	 */
+	public CamelCaseFairy getCamelCaseFairy() {
+		return camelCaseFairy;
+	}
+
+	/**
+	 * @param camelCaseFairy the camelCaseFairy to set
+	 */
+	public void setCamelCaseFairy(CamelCaseFairy camelCaseFairy) {
+		this.camelCaseFairy=camelCaseFairy;
 	}
 
 	/**

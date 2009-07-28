@@ -6,10 +6,7 @@ package org.afraid.poison.common;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import org.afraid.poison.common.string.StringOccurrence;
 
 /**
  *
@@ -139,8 +136,9 @@ public class StringUtil {
 		return firstCharToUpperCase(str.toLowerCase());
 	}
 
+
 	/**
-	 * make first character uppercase
+	 * make first character if the string uppercase
 	 *
 	 * @param str the string to work on
 	 * @return the resulting string
@@ -153,34 +151,25 @@ public class StringUtil {
 	}
 
 	/**
-	 * make first character lowercase
-	 *
-	 * @param str the string to work on
-	 * @return the resulting string
+	 * tries to convert input string to camel case it it is all upper case or contains _
+	 * @param str the string containing _
+	 * @return the camel case string with the first character lower case
 	 */
-	public static String firstCharToLowerCase(String str) {
-		if (0==str.length()) {
+	public static String toCamelCase(String str) {
+		if (!(str.matches(".*[^a-zA-Z0-9]+.*")||str.equals(str.toUpperCase()))) {
 			return str;
 		}
-		return new StringBuilder(str.substring(0, 1).toLowerCase()).append(str.substring(1)).toString();
-	}
-
-	/**
-	 * searches for occurrences and returns StringOccurrence#s so the position is known
-	 * @param needle the string to search for
-	 * @param haystack the string to search in
-	 * @return the found occurrences
-	 */
-	public static Set<StringOccurrence> findOccurrences(String needle, String haystack) {
-		Set<StringOccurrence> occurrences=new HashSet<StringOccurrence>();
-		int lastEnd=0;
-		int pos;
-		StringOccurrence so;
-		while (-1!=(pos=haystack.indexOf(needle, lastEnd))) {
-			so=new StringOccurrence(needle, pos);
-			occurrences.add(so);
-			lastEnd=so.getEnd();
+		String[] split=str.split("[^a-zA-Z0-9]+");
+		StringBuilder res=new StringBuilder();
+		boolean first=true;
+		for (String s : split) {
+			if (first) {
+				res.append(s.toLowerCase());
+				first=false;
+			} else {
+				res.append(capitalize(s));
+			}
 		}
-		return occurrences;
+		return res.toString();
 	}
 }

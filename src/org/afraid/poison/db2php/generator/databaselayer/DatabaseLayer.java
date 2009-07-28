@@ -20,7 +20,7 @@ package org.afraid.poison.db2php.generator.databaselayer;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import org.afraid.poison.common.CollectionUtil;
-import org.afraid.poison.common.StringMutator;
+import org.afraid.poison.common.string.StringMutator;
 import org.afraid.poison.db2php.generator.CodeGenerator;
 import org.afraid.poison.db2php.generator.Field;
 

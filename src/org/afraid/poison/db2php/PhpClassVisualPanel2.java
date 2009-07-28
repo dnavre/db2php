@@ -18,37 +18,28 @@
 package org.afraid.poison.db2php;
 
 import java.io.File;
-import java.net.URISyntaxException;
 import java.util.Vector;
 import java.util.prefs.Preferences;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComponent;
-import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.text.JTextComponent;
 import org.afraid.poison.common.ui.InputVerifierHandler;
 import org.afraid.poison.common.ui.InputVerifierPattern;
 import org.afraid.poison.db2php.generator.databaselayer.DatabaseLayer;
-import org.netbeans.api.project.Project;
-import org.netbeans.spi.project.ui.templates.support.Templates;
 import org.openide.WizardDescriptor;
-import org.openide.filesystems.FileObject;
-import org.openide.filesystems.FileStateInvalidException;
-import org.openide.util.Exceptions;
 import org.openide.util.NbPreferences;
 
 public final class PhpClassVisualPanel2 extends JPanel {
 
 	private WizardDescriptor wizard;
-	private File defaultDirectory;
-	private File directory;
 	private InputVerifierPattern inputVerifierClassName;
 
 	/** Creates new form PhpClassVisualPanel2 */
 	public PhpClassVisualPanel2(WizardDescriptor wizard) {
-		setWizard(wizard);
 		initComponents();
+		setWizard(wizard);
 		readSettings();
 
 	}
@@ -69,9 +60,6 @@ public final class PhpClassVisualPanel2 extends JPanel {
         jLabel1 = new javax.swing.JLabel();
         databaseLayerSelection = new javax.swing.JComboBox();
         generateChecksSelection = new javax.swing.JCheckBox();
-        jLabel2 = new javax.swing.JLabel();
-        destinationDirectory = new javax.swing.JTextField();
-        buttonBrowse = new javax.swing.JButton();
         trackModificationsSelection = new javax.swing.JCheckBox();
         jLabel3 = new javax.swing.JLabel();
         classNamePrefix = new javax.swing.JTextField();
@@ -82,6 +70,9 @@ public final class PhpClassVisualPanel2 extends JPanel {
         jLabel5 = new javax.swing.JLabel();
         identifierQuoteString = new javax.swing.JComboBox();
         fluentInterfaceSelection = new javax.swing.JCheckBox();
+        fileSelectionPanel = new org.afraid.poison.db2php.FileSelectionPanel();
+        camelCaseFairy = new javax.swing.JComboBox();
+        jLabel2 = new javax.swing.JLabel();
 
         org.openide.awt.Mnemonics.setLocalizedText(jLabel1, org.openide.util.NbBundle.getMessage(PhpClassVisualPanel2.class, "PhpClassVisualPanel2.jLabel1.text_2")); // NOI18N
 
@@ -89,24 +80,6 @@ public final class PhpClassVisualPanel2 extends JPanel {
 
         org.openide.awt.Mnemonics.setLocalizedText(generateChecksSelection, org.openide.util.NbBundle.getMessage(PhpClassVisualPanel2.class, "PhpClassVisualPanel2.generateChecksSelection.text")); // NOI18N
         generateChecksSelection.setEnabled(false);
-
-        org.openide.awt.Mnemonics.setLocalizedText(jLabel2, org.openide.util.NbBundle.getMessage(PhpClassVisualPanel2.class, "PhpClassVisualPanel2.jLabel2.text_2")); // NOI18N
-
-        destinationDirectory.setEditable(false);
-        destinationDirectory.setText(getDirectory().getAbsolutePath());
-        destinationDirectory.setToolTipText(org.openide.util.NbBundle.getMessage(PhpClassVisualPanel2.class, "PhpClassVisualPanel2.destinationDirectory.toolTipText")); // NOI18N
-        destinationDirectory.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                destinationDirectoryActionPerformed(evt);
-            }
-        });
-
-        org.openide.awt.Mnemonics.setLocalizedText(buttonBrowse, org.openide.util.NbBundle.getMessage(PhpClassVisualPanel2.class, "PhpClassVisualPanel2.buttonBrowse.text")); // NOI18N
-        buttonBrowse.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonBrowseActionPerformed(evt);
-            }
-        });
 
         trackModificationsSelection.setSelected(true);
         org.openide.awt.Mnemonics.setLocalizedText(trackModificationsSelection, org.openide.util.NbBundle.getMessage(PhpClassVisualPanel2.class, "PhpClassVisualPanel2.trackModificationsSelection.text")); // NOI18N
@@ -129,42 +102,45 @@ public final class PhpClassVisualPanel2 extends JPanel {
         org.openide.awt.Mnemonics.setLocalizedText(fluentInterfaceSelection, org.openide.util.NbBundle.getMessage(PhpClassVisualPanel2.class, "PhpClassVisualPanel2.fluentInterfaceSelection.text")); // NOI18N
         fluentInterfaceSelection.setToolTipText(org.openide.util.NbBundle.getMessage(PhpClassVisualPanel2.class, "PhpClassVisualPanel2.fluentInterfaceSelection.toolTipText")); // NOI18N
 
+        camelCaseFairy.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "<disabled>", "en", "de", "deen" }));
+
+        org.openide.awt.Mnemonics.setLocalizedText(jLabel2, org.openide.util.NbBundle.getMessage(PhpClassVisualPanel2.class, "PhpClassVisualPanel2.jLabel2.text_2")); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(fileSelectionPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addComponent(jLabel5)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(identifierQuoteString, 0, 118, Short.MAX_VALUE))
+                                .addComponent(identifierQuoteString, 0, 130, Short.MAX_VALUE))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addComponent(jLabel4)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(classNameSuffix, javax.swing.GroupLayout.DEFAULT_SIZE, 133, Short.MAX_VALUE))
+                                .addComponent(classNameSuffix, javax.swing.GroupLayout.DEFAULT_SIZE, 145, Short.MAX_VALUE))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addComponent(jLabel3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(classNamePrefix, javax.swing.GroupLayout.DEFAULT_SIZE, 132, Short.MAX_VALUE))
+                                .addComponent(classNamePrefix, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(databaseLayerSelection, 0, 144, Short.MAX_VALUE)))
+                                .addComponent(databaseLayerSelection, 0, 156, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(camelCaseFairy, 0, 153, Short.MAX_VALUE)))
                         .addGap(12, 12, 12)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(fluentInterfaceSelection)
                             .addComponent(generateChecksSelection)
-                            .addComponent(trackModificationsSelection)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(destinationDirectory, javax.swing.GroupLayout.DEFAULT_SIZE, 276, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(buttonBrowse)))
+                            .addComponent(trackModificationsSelection))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -189,33 +165,22 @@ public final class PhpClassVisualPanel2 extends JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(identifierQuoteString, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(destinationDirectory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(buttonBrowse))
-                .addContainerGap(139, Short.MAX_VALUE))
+                    .addComponent(camelCaseFairy, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 92, Short.MAX_VALUE)
+                .addComponent(fileSelectionPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
-	private void buttonBrowseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBrowseActionPerformed
-		JFileChooser fChooser=new JFileChooser(getDirectory());
-		fChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		fChooser.setMultiSelectionEnabled(false);
-		if (JFileChooser.APPROVE_OPTION==fChooser.showOpenDialog(buttonBrowse)) {
-			setDirectory(fChooser.getSelectedFile());
-		}
-	}//GEN-LAST:event_buttonBrowseActionPerformed
-
-	private void destinationDirectoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_destinationDirectoryActionPerformed
-		// TODO add your handling code here:
-	}//GEN-LAST:event_destinationDirectoryActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton buttonBrowse;
+    private javax.swing.JComboBox camelCaseFairy;
     private javax.swing.JTextField classNamePrefix;
     private javax.swing.JTextField classNameSuffix;
     private javax.swing.JComboBox databaseLayerSelection;
-    private javax.swing.JTextField destinationDirectory;
+    private org.afraid.poison.db2php.FileSelectionPanel fileSelectionPanel;
     private javax.swing.JCheckBox fluentInterfaceSelection;
     private javax.swing.JCheckBox generateChecksSelection;
     private javax.swing.JComboBox identifierQuoteString;
@@ -239,89 +204,14 @@ public final class PhpClassVisualPanel2 extends JPanel {
 	 */
 	public void setWizard(WizardDescriptor wizard) {
 		this.wizard=wizard;
-	}
-
-	/**
-	 * @return the defaultDirectory
-	 */
-	public synchronized File getDefaultDirectory() {
-		if (null==defaultDirectory) {
-			FileObject targetFolder=Templates.getTargetFolder(getWizard());
-			if (null!=targetFolder) {
-				try {
-					defaultDirectory=new File(targetFolder.getURL().toURI());
-				} catch (FileStateInvalidException ex) {
-					Exceptions.printStackTrace(ex);
-				} catch (URISyntaxException ex) {
-					Exceptions.printStackTrace(ex);
-				}
-			}
-			if (null==defaultDirectory) {
-				Project project=Templates.getProject(getWizard());
-				if (null!=project) {
-					FileObject projectDirectory=project.getProjectDirectory();
-					if (null!=projectDirectory) {
-						try {
-							defaultDirectory=new File(projectDirectory.getURL().toURI());
-						} catch (FileStateInvalidException ex) {
-							Exceptions.printStackTrace(ex);
-						} catch (URISyntaxException ex) {
-							Exceptions.printStackTrace(ex);
-						}
-					}
-				}
-			}
-			if (null==defaultDirectory) {
-				defaultDirectory=new File(System.getProperty("user.home"));
-			}
-		}
-		return defaultDirectory;
-	}
-
-	/**
-	 * @param defaultDirectory the defaultDirectory to set
-	 */
-	public void setDefaultDirectory(File defaultDirectory) {
-		this.defaultDirectory=defaultDirectory;
+		getFileSelectionPanel().setWizard(wizard);
 	}
 
 	/**
 	 * @return the directory
 	 */
 	public synchronized File getDirectory() {
-		if (null==directory) {
-			return getDefaultDirectory();
-		}
-		return directory;
-	}
-
-	/**
-	 * @param directory the directory to set
-	 */
-	public synchronized void setDirectory(File directory) {
-		this.directory=directory;
-		getDestinationDirectory().setText(directory.getAbsolutePath());
-	}
-
-	/**
-	 * @return the buttonBrowse
-	 */
-	public javax.swing.JButton getButtonBrowse() {
-		return buttonBrowse;
-	}
-
-	/**
-	 * @return the destinationDirectory
-	 */
-	public javax.swing.JTextField getDestinationDirectory() {
-		return destinationDirectory;
-	}
-
-	/**
-	 * @param destinationDirectory the destinationDirectory to set
-	 */
-	public void setDestinationDirectory(javax.swing.JTextField destinationDirectory) {
-		this.destinationDirectory=destinationDirectory;
+		return getFileSelectionPanel().getDirectory();
 	}
 
 	public ComboBoxModel getAvailableDatabaseLayers() {
@@ -397,6 +287,7 @@ public final class PhpClassVisualPanel2 extends JPanel {
 		getGenerateChecksSelection().setSelected(pref.getBoolean("TypeChecks", false));
 		getTrackModificationsSelection().setSelected(pref.getBoolean("TrackModifications", true));
 		getFluentInterfaceSelection().setSelected(pref.getBoolean("FluentInterface", true));
+		getCamelCaseFairy().setSelectedItem(pref.get("CamelCaseFairy", "en"));
 
 	}
 
@@ -409,6 +300,7 @@ public final class PhpClassVisualPanel2 extends JPanel {
 		pref.putBoolean("TypeChecks", getGenerateChecksSelection().isSelected());
 		pref.putBoolean("TrackModifications", getTrackModificationsSelection().isSelected());
 		pref.putBoolean("FluentInterface", getFluentInterfaceSelection().isSelected());
+		pref.put("CamelCaseFairy", getCamelCaseFairy().getSelectedItem().toString());
 
 	}
 
@@ -442,6 +334,20 @@ public final class PhpClassVisualPanel2 extends JPanel {
 	 */
 	public void setInputVerifierClassName(InputVerifierPattern inputVerifierClassName) {
 		this.inputVerifierClassName=inputVerifierClassName;
+	}
+
+	/**
+	 * @return the fileSelectionPanel
+	 */
+	private FileSelectionPanel getFileSelectionPanel() {
+		return fileSelectionPanel;
+	}
+
+	/**
+	 * @return the camelCaseFairy
+	 */
+	public javax.swing.JComboBox getCamelCaseFairy() {
+		return camelCaseFairy;
 	}
 
 	/*
