@@ -100,6 +100,9 @@
             <public-packages>
                 <package>org.afraid.poison.common</package>
                 <package>org.afraid.poison.common.camelcase</package>
+                <package>org.afraid.poison.common.camelcase.de</package>
+                <package>org.afraid.poison.common.camelcase.deen</package>
+                <package>org.afraid.poison.common.camelcase.en</package>
                 <package>org.afraid.poison.common.interfaces</package>
                 <package>org.afraid.poison.common.string</package>
                 <package>org.afraid.poison.common.ui</package>
