@@ -49,8 +49,6 @@ public class PhpClassWizardPanel2 implements WizardDescriptor.Panel, ActionListe
 	public Component getComponent() {
 		if (component==null) {
 			component=new PhpClassVisualPanel2(getWizard());
-			((PhpClassVisualPanel2) component).getDestinationDirectory().addActionListener(this);
-
 		}
 		return component;
 	}
