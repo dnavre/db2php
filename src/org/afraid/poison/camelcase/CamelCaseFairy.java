@@ -8,6 +8,7 @@ import org.afraid.poison.common.string.StringOccurrence;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -49,20 +50,12 @@ public class CamelCaseFairy {
 	}
 
 	/**
-	 * convert passed string to CamelCase using magic
-	 *
-	 * @param s the string to convert to CamelCase
-	 * @return the CamelCase string
+	 * get occurrences of words from word list in string
+	 * 
+	 * @param s the string to search for occurrences
+	 * @return occurrences of words from dictionary
 	 */
-	public String toCamelCase(String s) {
-		if (0==s.length()||null==s) {
-			return s;
-		}
-		s=s.toLowerCase();
-		String cr=cache.get(s);
-		if (null!=cr) {
-			return cr;
-		}
+	public Set<StringOccurrence> getWordOccurrences(String s) {
 		List<StringOccurrence> allContained=new ArrayList<StringOccurrence>();
 		String remaining=new String(s);
 		Set<StringOccurrence> wordOccurrences;
@@ -86,6 +79,25 @@ public class CamelCaseFairy {
 		}
 
 		Collections.sort(allContained, new StringOccurrence.Comparator());
+		return new LinkedHashSet<StringOccurrence>(allContained);
+	}
+
+	/**
+	 * convert passed string to CamelCase using magic
+	 *
+	 * @param s the string to convert to CamelCase
+	 * @return the CamelCase string
+	 */
+	public String toCamelCase(String s) {
+		if (0==s.length()||null==s) {
+			return s;
+		}
+		s=s.toLowerCase();
+		String cr=cache.get(s);
+		if (null!=cr) {
+			return cr;
+		}
+		Set<StringOccurrence> allContained=getWordOccurrences(s);
 		int lastEnd=0;
 		StringBuffer sb=new StringBuffer(s);
 		for (StringOccurrence cw : allContained) {
