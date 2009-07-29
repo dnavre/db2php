@@ -18,7 +18,7 @@
 package org.afraid.poison.db2php.generator;
 
 import java.io.File;
-import org.afraid.poison.common.camelcase.CamelCaseFairy;
+import org.afraid.poison.camelcase.CamelCaseFairy;
 import org.afraid.poison.db2php.generator.databaselayer.DatabaseLayer;
 
 /**

@@ -3,12 +3,12 @@
  * and open the template in the editor.
  */
 
-package org.afraid.poison.common.camelcase.de;
+package org.afraid.poison.camelcase.de;
 
 import org.afraid.poison.common.camelcase.en.*;
 import org.afraid.poison.common.FileUtil;
-import org.afraid.poison.common.camelcase.CamelCaseFairy;
-import org.afraid.poison.common.camelcase.Dictionary.Descriptor;
+import org.afraid.poison.camelcase.CamelCaseFairy;
+import org.afraid.poison.camelcase.Dictionary.Descriptor;
 
 /**
  *
