@@ -4,7 +4,6 @@
  */
 package org.afraid.poison.camelcase.deen;
 
-import java.util.Comparator;
 import org.afraid.poison.camelcase.Dictionary.DescriptorSorted;
 import org.afraid.poison.camelcase.de.LanguageDE;
 import org.afraid.poison.camelcase.en.LanguageEN;

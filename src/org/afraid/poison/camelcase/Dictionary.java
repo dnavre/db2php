@@ -5,7 +5,6 @@
 
 package org.afraid.poison.camelcase;
 
-import org.afraid.poison.common.*;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -18,6 +17,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.afraid.poison.common.IOUtil;
 
 /**
  *
