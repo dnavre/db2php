@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package org.afraid.poison.common.camelcase;
+package org.afraid.poison.camelcase;
 
 import org.afraid.poison.common.*;
 import java.io.BufferedReader;

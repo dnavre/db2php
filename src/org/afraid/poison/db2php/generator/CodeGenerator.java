@@ -29,7 +29,7 @@ import org.afraid.poison.common.StringUtil;
 import org.afraid.poison.common.CollectionUtil;
 import org.afraid.poison.common.FileUtil;
 import org.afraid.poison.common.IOUtil;
-import org.afraid.poison.common.camelcase.CamelCaseFairy;
+import org.afraid.poison.camelcase.CamelCaseFairy;
 import org.afraid.poison.common.string.StringMutator;
 
 /**

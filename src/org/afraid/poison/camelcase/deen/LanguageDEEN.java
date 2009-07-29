@@ -2,12 +2,12 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.afraid.poison.common.camelcase.deen;
+package org.afraid.poison.camelcase.deen;
 
 import java.util.Comparator;
-import org.afraid.poison.common.camelcase.Dictionary.DescriptorSorted;
-import org.afraid.poison.common.camelcase.de.LanguageDE;
-import org.afraid.poison.common.camelcase.en.LanguageEN;
+import org.afraid.poison.camelcase.Dictionary.DescriptorSorted;
+import org.afraid.poison.camelcase.de.LanguageDE;
+import org.afraid.poison.camelcase.en.LanguageEN;
 import org.afraid.poison.common.string.CharSequenceLengthComparator;
 
 /**

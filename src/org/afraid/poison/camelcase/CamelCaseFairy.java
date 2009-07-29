@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.afraid.poison.common.camelcase;
+package org.afraid.poison.camelcase;
 
 import org.afraid.poison.common.string.StringOccurrence;
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
-import org.afraid.poison.common.camelcase.Dictionary.Descriptor;
+import org.afraid.poison.camelcase.Dictionary.Descriptor;
 import org.afraid.poison.common.StringUtil;
 
 /**
