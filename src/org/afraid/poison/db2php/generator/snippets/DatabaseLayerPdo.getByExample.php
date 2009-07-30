@@ -8,7 +8,7 @@
 	 * @param <type> $example an example instance
 	 * @return <type>[]
 	 */
-	public static function getByExample(PDO $db,<type> $example, $and=true) {
+	public static function findByExample(PDO $db,<type> $example, $and=true) {
 		$exampleValues=$example->toArray();
 		$filter=array();
 		foreach ($exampleValues as $fieldId=>$value) {
@@ -16,7 +16,7 @@
 				$filter[$fieldId]=$value;
 			}
 		}
-		return self::getByFilter($db, $filter, $and);
+		return self::findByFilter($db, $filter, $and);
 	}
 
 	/**
@@ -32,7 +32,7 @@
 	 * @param boolean $and
 	 * @return <type>[]
 	 */
-	public static function getByFilter(PDO $db, $filter, $and=true) {
+	public static function findByFilter(PDO $db, $filter, $and=true) {
 		if ($filter instanceof DFC) {
 			$filter=array($filter);
 		}
@@ -112,7 +112,7 @@
 	 * @param string $sql
 	 * @return <type>[]
 	 */
-	public static function getBySql(PDO $db, $sql) {
+	public static function findBySql(PDO $db, $sql) {
 		$stmt=$db->query($sql);
 		$resultInstances=array();
 		while($result=$stmt->fetch(PDO::FETCH_ASSOC)) {

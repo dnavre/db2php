@@ -47,7 +47,7 @@ public class DatabaseLayerInterface extends DatabaseLayer {
 	public String getCodeSelect(CodeGenerator generator) {
 		StringBuilder s=new StringBuilder();
 		s.append(getAssignByHash(generator));
-		s.append(getSnippetFromFile(generator, "DatabaseLayer.getById.php"));
+		s.append(getSnippetFromFile(generator, "DatabaseLayer.findById.php"));
 		s.append("\tpublic static function ").append(METHOD_SELECT_ID_NAME).append("(").append(getDbTypeName()).append(" $db");
 		if (!generator.getTable().getFieldsIdentifiers().isEmpty()) {
 			s.append(",");

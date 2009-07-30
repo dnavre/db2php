@@ -58,7 +58,7 @@ abstract public class DatabaseLayer {
 	/**
 	 * name of the method to get by id
 	 */
-	protected static final String METHOD_SELECT_ID_NAME="getById";
+	protected static final String METHOD_SELECT_ID_NAME="findById";
 	/**
 	 * update method name
 	 */
