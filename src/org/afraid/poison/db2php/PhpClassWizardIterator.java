@@ -44,6 +44,7 @@ import org.openide.cookies.OpenCookie;
 import org.openide.filesystems.FileObject;
 import org.openide.filesystems.FileUtil;
 import org.openide.loaders.DataObject;
+import org.openide.util.Exceptions;
 
 public final class PhpClassWizardIterator implements WizardDescriptor.InstantiatingIterator {
 
@@ -107,6 +108,7 @@ public final class PhpClassWizardIterator implements WizardDescriptor.Instantiat
 				openFile(generator.getFile());
 			} catch (IOException ex) {
 				failed.add(t);
+				//Exceptions.printStackTrace(ex);
 			}
 		}
 		return failed;

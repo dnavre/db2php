@@ -648,7 +648,6 @@ public class CodeGenerator {
 		}
 		return new File(getSettings().getOutputDirectory(), getFileName());
 	}
-
 	/**
 	 * write code to specified file
 	 *
@@ -656,8 +655,30 @@ public class CodeGenerator {
 	 * @throws IOException if the file exists
 	 */
 	public void writeCode(File file) throws IOException {
+		writeCode(file, true);
+	}
+
+	/**
+	 * write code to specified file
+	 *
+	 * @param file the file
+	 * @param renameOld should old file be renamed?
+	 * @throws IOException if the file exists and should not be renamed or rename fails
+	 */
+	public void writeCode(File file, boolean renameOld) throws IOException {
 		if (file.exists()) {
-			throw new IOException("file exists, refusing to overwrite");
+			if (renameOld) {
+				File backupFile=null;
+				int i=0;
+				do {
+					backupFile=new File(new StringBuilder(file.getPath()).append(".bak-").append(StringUtil.padLeft(i++, "0", 3)).toString());
+				} while (backupFile.exists());
+				if (!file.renameTo(backupFile)) {
+					throw new IOException(new StringBuilder("failed to rename old file to:").append(backupFile.getPath()).toString());
+				}
+			} else {
+				throw new IOException("file exists, refusing to overwrite");
+			}
 		}
 		FileUtil.writeString(getCode(), file);
 	}
