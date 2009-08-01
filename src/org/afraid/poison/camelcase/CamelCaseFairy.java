@@ -124,6 +124,9 @@ public class CamelCaseFairy {
 	 */
 	public static String toCamelCase(String str, CamelCaseFairy camelCaseFairy) {
 		String[] split=str.split("[^a-zA-Z0-9]+");
+		if(1==split.length && null==camelCaseFairy) {
+			return str;
+		}
 		StringBuilder res=new StringBuilder();
 		boolean first=true;
 		for (String s : split) {
