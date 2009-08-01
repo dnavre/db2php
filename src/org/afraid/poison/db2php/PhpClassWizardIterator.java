@@ -37,6 +37,8 @@ import org.afraid.poison.db2php.generator.Settings;
 import org.afraid.poison.db2php.generator.CodeGenerator;
 import org.afraid.poison.db2php.generator.Table;
 import org.afraid.poison.db2php.generator.databaselayer.DatabaseLayer;
+import org.netbeans.api.progress.ProgressHandle;
+import org.netbeans.api.progress.ProgressHandleFactory;
 import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;
 import org.openide.WizardDescriptor;
@@ -100,9 +102,13 @@ public final class PhpClassWizardIterator implements WizardDescriptor.Instantiat
 	private Set<Table> writeCode(Set<Table> tables, Settings settings) {
 		Set<Table> failed=new LinkedHashSet<Table>();
 		CodeGenerator generator;
+		ProgressHandle ph=ProgressHandleFactory.createHandle("Generating PHP Entity classes");
+		int done=0;
+		ph.start(tables.size());
 		for (Table t : tables) {
 			generator=new CodeGenerator(t, settings);
 			generator.setCamelCaseFairy(settings.getCamelCaseFairy());
+			ph.progress(t.getName());
 			try {
 				generator.writeCode();
 				openFile(generator.getFile());
@@ -110,7 +116,9 @@ public final class PhpClassWizardIterator implements WizardDescriptor.Instantiat
 				failed.add(t);
 				//Exceptions.printStackTrace(ex);
 			}
+			ph.progress(++done);
 		}
+		ph.finish();
 		return failed;
 	}
 
