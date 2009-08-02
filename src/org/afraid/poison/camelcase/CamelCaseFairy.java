@@ -124,7 +124,10 @@ public class CamelCaseFairy {
 	 */
 	public static String toCamelCase(String str, CamelCaseFairy camelCaseFairy) {
 		String[] split=str.split("[^a-zA-Z0-9]+");
-		if(1==split.length && null==camelCaseFairy) {
+		if(split.length<2 && null==camelCaseFairy) {
+			if (1==split.length && 0!=split[0].length() && split[0].equals(split[0].toUpperCase())) {
+				return StringUtil.capitalize(split[0]);
+			}
 			return str;
 		}
 		StringBuilder res=new StringBuilder();
