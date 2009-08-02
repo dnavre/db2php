@@ -24,7 +24,7 @@
 	 * @return <type>
 	 */
 	public static function fromDOMElement(DOMElement $node) {
-		if (__CLASS__!=$node->nodeName) {
+		if ('<type>'!=$node->nodeName) {
 			return new InvalidArgumentException('expected: <type>, got: ' . $node->nodeName, 0);
 		}
 		$result=array();
