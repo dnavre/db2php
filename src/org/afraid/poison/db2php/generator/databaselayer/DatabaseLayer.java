@@ -86,11 +86,10 @@ abstract public class DatabaseLayer {
 		//AVAILABLE.add(ZEND);
 
 	}
-
 	/**
 	 * default quote strings
 	 */
-	public static final String[] DEFAULT_QUOTE_STRINGS=new String[] { " ", "`", "\"" };
+	public static final String[] DEFAULT_QUOTE_STRINGS=new String[]{" ", "`", "\""};
 
 	/**
 	 * CTOR
@@ -346,7 +345,9 @@ abstract public class DatabaseLayer {
 	protected String getSnippetFromFile(CodeGenerator generator, String fileName) {
 		StringBuilder s=new StringBuilder();
 		String contents=generator.getSnippetFromFile(fileName);
-		s.append(contents.replace("<dbType>", getDbTypeName()).replace("<tableName>", generator.getTable().getName()).replace("<tableNameQuoted>", generator.quoteIdentifier(generator.getTable().getName())));
+		s.append(contents.replace("<dbType>", getDbTypeName())
+				.replace("<tableName>", generator.getTable().getName())
+				.replace("<tableNameQuoted>", generator.quoteIdentifier(generator.getTable().getName())));
 		return s.toString();
 	}
 

@@ -81,7 +81,7 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 	@Override
 	public String getCodeSelect(CodeGenerator generator) {
 		StringBuilder s=new StringBuilder();
-		s.append(getSnippetFromFile(generator, "DatabaseLayerPdo.findByExample.php").replace("<pristine>", generator.getSettings().isTrackFieldModifications() ? "\t\t\t$o->notifyPristine();\n" : ""));
+		s.append(getSnippetFromFile(generator, "DatabaseLayerPdo.findByExample.php"));
 		s.append(getAssignByHash(generator));
 
 		// prepare/execute statement

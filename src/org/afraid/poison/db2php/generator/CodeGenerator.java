@@ -603,7 +603,7 @@ public class CodeGenerator {
 				contents=contents.replace("<fieldName>", field.getName()).replace("<memberName>", getMemberName(field)).replace("<fieldInfo>", field.getInfoTextCompact()).replace("<fieldComment>", field.getComment());
 
 			}
-			s.append(contents.replace("<type>", getClassName()));
+			s.append(contents.replace("<type>", getClassName()).replace("<pristine>", getSettings().isTrackFieldModifications() ? "\t\t\t$o->notifyPristine();\n" : ""));
 		} catch (IOException ex) {
 			Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
 		} finally {
@@ -631,6 +631,7 @@ public class CodeGenerator {
 		s.append(getUtilMethodToArray());
 		s.append(getUtilMethodgetPrimaryKeysToArray());
 		s.append(getDatabaseLayer().getCode(this));
+		s.append(getSnippetFromFile("CodeGenerator.dom.php"));
 		s.append("}\n");
 		s.append("?>");
 		return s.toString();

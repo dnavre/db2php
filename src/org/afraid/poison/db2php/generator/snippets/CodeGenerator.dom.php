@@ -25,7 +25,7 @@
 	 */
 	public static function fromDOMElement(DOMElement $node) {
 		if (__CLASS__!=$node->nodeName) {
-			return new InvalidArgumentException('expected: ' . __CLASS__ . ', got: ' . $node->nodeName, 0);
+			return new InvalidArgumentException('expected: <type>, got: ' . $node->nodeName, 0);
 		}
 		$result=array();
 		foreach (self::$FIELD_NAMES as $fieldName) {
@@ -34,9 +34,9 @@
 				$result[$fieldName]=$n->nodeValue;
 			}
 		}
-		$o=new AsShopBasketModel();
+		$o=new <type>();
 		$o->assignByHash($result);
-		return $o;
+<pristine>		return $o;
 	}
 
 	/**
@@ -47,7 +47,7 @@
 	 */
 	public static function fromDOMDocument(DOMDocument $doc) {
 		$instances=array();
-		foreach ($doc->getElementsByTagName(__CLASS__) as $node) {
+		foreach ($doc->getElementsByTagName('<type>') as $node) {
 			$instances[]=self::fromDOMElement($node);
 		}
 		return $instances;
