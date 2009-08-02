@@ -79,7 +79,7 @@ abstract public class DatabaseLayer {
 	static {
 		AVAILABLE=new LinkedHashSet<DatabaseLayer>();
 		AVAILABLE.add(NONE);
-		AVAILABLE.add(INTERFACE);
+		//AVAILABLE.add(INTERFACE);
 		AVAILABLE.add(PDO);
 		//AVAILABLE.add(MYSQLI);
 		//AVAILABLE.add(ADODB);

@@ -287,7 +287,7 @@ public final class PhpClassVisualPanel2 extends JPanel {
 		getGenerateChecksSelection().setSelected(pref.getBoolean("TypeChecks", false));
 		getTrackModificationsSelection().setSelected(pref.getBoolean("TrackModifications", true));
 		getFluentInterfaceSelection().setSelected(pref.getBoolean("FluentInterface", true));
-		getCamelCaseFairy().setSelectedItem(pref.get("CamelCaseFairy", "en"));
+		getCamelCaseFairy().setSelectedItem(pref.get("CamelCaseFairy", "<disabled>"));
 
 	}
 
