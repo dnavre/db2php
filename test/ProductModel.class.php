@@ -24,6 +24,15 @@ class ProductModel {
 		self::FIELD_MARKUP=>'MARKUP',
 		self::FIELD_AVAILABLE=>'AVAILABLE',
 		self::FIELD_DESCRIPTION=>'DESCRIPTION');
+	private static $DEFAULT_VALUES=array(
+		'PRODUCT_ID'=>0,
+		'MANUFACTURER_ID'=>0,
+		'PRODUCT_CODE'=>'',
+		'PURCHASE_COST'=>null,
+		'QUANTITY_ON_HAND'=>null,
+		'MARKUP'=>null,
+		'AVAILABLE'=>null,
+		'DESCRIPTION'=>null);
 	private $productId;
 	private $manufacturerId;
 	private $productCode;
@@ -32,24 +41,6 @@ class ProductModel {
 	private $markup;
 	private $available;
 	private $description;
-
-	/**
-	 * Get array with field id as index and field name as value
-	 *
-	 * @return array
-	 */
-	public static function getFieldNames() {
-		return self::$FIELD_NAMES;
-	}
-
-	/**
-	 * Get array with field ids of identifiers
-	 *
-	 * @return array
-	 */
-	public static function getIdentifierFields() {
-		return self::$PRIMARY_KEYS;
-	}
 
 	/**
 	 * store for old instance after object has been modified
@@ -89,6 +80,26 @@ class ProductModel {
 	}
 
 	/**
+	 * return array with the field ids of values which have been changed since the last notifyPristine call
+	 *
+	 * @return array
+	 */
+	public function getFieldsChanged() {
+		$changed=array();
+		if (!$this->isChanged()) {
+			return $changed;
+		}
+		$old=$this->getOldInstance()->toArray();
+		$new=$this->toArray();
+		foreach ($old as $fieldId=>$value) {
+			if ($new[$fieldId]!==$value) {
+				$changed[]=$fieldId;
+			}
+		}
+		return $changed;
+	}
+
+	/**
 	 * set this instance into pristine state
 	 */
 	public function notifyPristine() {
@@ -98,7 +109,7 @@ class ProductModel {
 	/**
 	 * set value for PRODUCT_ID 
 	 *
-	 * type:INTEGER,size:10,nullable:false,default:null,primary:true,unique:true,index:false
+	 * type:INTEGER,size:10,default:null,primary,unique
 	 *
 	 * @param mixed $productId
 	 * @return ProductModel
@@ -112,7 +123,7 @@ class ProductModel {
 	/**
 	 * get value for PRODUCT_ID 
 	 *
-	 * type:INTEGER,size:10,nullable:false,default:null,primary:true,unique:true,index:false
+	 * type:INTEGER,size:10,default:null,primary,unique
 	 *
 	 * @return mixed
 	 */
@@ -123,7 +134,7 @@ class ProductModel {
 	/**
 	 * set value for MANUFACTURER_ID 
 	 *
-	 * type:INTEGER,size:10,nullable:false,default:null,primary:false,unique:false,index:true
+	 * type:INTEGER,size:10,default:null,index
 	 *
 	 * @param mixed $manufacturerId
 	 * @return ProductModel
@@ -137,7 +148,7 @@ class ProductModel {
 	/**
 	 * get value for MANUFACTURER_ID 
 	 *
-	 * type:INTEGER,size:10,nullable:false,default:null,primary:false,unique:false,index:true
+	 * type:INTEGER,size:10,default:null,index
 	 *
 	 * @return mixed
 	 */
@@ -148,7 +159,7 @@ class ProductModel {
 	/**
 	 * set value for PRODUCT_CODE 
 	 *
-	 * type:CHAR,size:2,nullable:false,default:null,primary:false,unique:false,index:true
+	 * type:CHAR,size:2,default:null,index
 	 *
 	 * @param mixed $productCode
 	 * @return ProductModel
@@ -162,7 +173,7 @@ class ProductModel {
 	/**
 	 * get value for PRODUCT_CODE 
 	 *
-	 * type:CHAR,size:2,nullable:false,default:null,primary:false,unique:false,index:true
+	 * type:CHAR,size:2,default:null,index
 	 *
 	 * @return mixed
 	 */
@@ -173,7 +184,7 @@ class ProductModel {
 	/**
 	 * set value for PURCHASE_COST 
 	 *
-	 * type:DECIMAL,size:12,nullable:true,default:null,primary:false,unique:false,index:false
+	 * type:DECIMAL,size:12,default:null,nullable
 	 *
 	 * @param mixed $purchaseCost
 	 * @return ProductModel
@@ -187,7 +198,7 @@ class ProductModel {
 	/**
 	 * get value for PURCHASE_COST 
 	 *
-	 * type:DECIMAL,size:12,nullable:true,default:null,primary:false,unique:false,index:false
+	 * type:DECIMAL,size:12,default:null,nullable
 	 *
 	 * @return mixed
 	 */
@@ -198,7 +209,7 @@ class ProductModel {
 	/**
 	 * set value for QUANTITY_ON_HAND 
 	 *
-	 * type:INTEGER,size:10,nullable:true,default:null,primary:false,unique:false,index:false
+	 * type:INTEGER,size:10,default:null,nullable
 	 *
 	 * @param mixed $quantityOnHand
 	 * @return ProductModel
@@ -212,7 +223,7 @@ class ProductModel {
 	/**
 	 * get value for QUANTITY_ON_HAND 
 	 *
-	 * type:INTEGER,size:10,nullable:true,default:null,primary:false,unique:false,index:false
+	 * type:INTEGER,size:10,default:null,nullable
 	 *
 	 * @return mixed
 	 */
@@ -223,7 +234,7 @@ class ProductModel {
 	/**
 	 * set value for MARKUP 
 	 *
-	 * type:DECIMAL,size:4,nullable:true,default:null,primary:false,unique:false,index:false
+	 * type:DECIMAL,size:4,default:null,nullable
 	 *
 	 * @param mixed $markup
 	 * @return ProductModel
@@ -237,7 +248,7 @@ class ProductModel {
 	/**
 	 * get value for MARKUP 
 	 *
-	 * type:DECIMAL,size:4,nullable:true,default:null,primary:false,unique:false,index:false
+	 * type:DECIMAL,size:4,default:null,nullable
 	 *
 	 * @return mixed
 	 */
@@ -248,7 +259,7 @@ class ProductModel {
 	/**
 	 * set value for AVAILABLE 
 	 *
-	 * type:VARCHAR,size:5,nullable:true,default:null,primary:false,unique:false,index:false
+	 * type:VARCHAR,size:5,default:null,nullable
 	 *
 	 * @param mixed $available
 	 * @return ProductModel
@@ -262,7 +273,7 @@ class ProductModel {
 	/**
 	 * get value for AVAILABLE 
 	 *
-	 * type:VARCHAR,size:5,nullable:true,default:null,primary:false,unique:false,index:false
+	 * type:VARCHAR,size:5,default:null,nullable
 	 *
 	 * @return mixed
 	 */
@@ -273,7 +284,7 @@ class ProductModel {
 	/**
 	 * set value for DESCRIPTION 
 	 *
-	 * type:VARCHAR,size:50,nullable:true,default:null,primary:false,unique:false,index:false
+	 * type:VARCHAR,size:50,default:null,nullable
 	 *
 	 * @param mixed $description
 	 * @return ProductModel
@@ -287,7 +298,7 @@ class ProductModel {
 	/**
 	 * get value for DESCRIPTION 
 	 *
-	 * type:VARCHAR,size:50,nullable:true,default:null,primary:false,unique:false,index:false
+	 * type:VARCHAR,size:50,default:null,nullable
 	 *
 	 * @return mixed
 	 */
@@ -295,6 +306,46 @@ class ProductModel {
 		return $this->description;
 	}
 
+	/**
+	 * Get array with field id as index and field name as value
+	 *
+	 * @return array
+	 */
+	public static function getFieldNames() {
+		return self::$FIELD_NAMES;
+	}
+
+	/**
+	 * Get array with field ids of identifiers
+	 *
+	 * @return array
+	 */
+	public static function getIdentifierFields() {
+		return self::$PRIMARY_KEYS;
+	}
+
+	/**
+	 * Assign default values according to table
+	 * 
+	 */
+	public function assignDefaultValues() {
+		$this->assignByHash(self::$DEFAULT_VALUES);
+	}
+
+
+	/**
+	 * return hash with the field name as index and the field value as value.
+	 *
+	 * @return array
+	 */
+	public function toHash() {
+		$array=$this->toArray();
+		$hash=array();
+		foreach ($array as $fieldId=>$value) {
+			$hash[self::$FIELD_NAMES[$fieldId]]=$value;
+		}
+		return $hash;
+	}
 
 	/**
 	 * return array with the field id as index and the field value as value.
@@ -411,7 +462,7 @@ class ProductModel {
 	 * @param ProductModel $example an example instance
 	 * @return ProductModel[]
 	 */
-	public static function getByExample(PDO $db,ProductModel $example, $and=true) {
+	public static function findByExample(PDO $db,ProductModel $example, $and=true) {
 		$exampleValues=$example->toArray();
 		$filter=array();
 		foreach ($exampleValues as $fieldId=>$value) {
@@ -419,7 +470,7 @@ class ProductModel {
 				$filter[$fieldId]=$value;
 			}
 		}
-		return self::getByFilter($db, $filter, $and);
+		return self::findByFilter($db, $filter, $and);
 	}
 
 	/**
@@ -435,7 +486,7 @@ class ProductModel {
 	 * @param boolean $and
 	 * @return ProductModel[]
 	 */
-	public static function getByFilter(PDO $db, $filter, $and=true) {
+	public static function findByFilter(PDO $db, $filter, $and=true) {
 		if ($filter instanceof DFC) {
 			$filter=array($filter);
 		}
@@ -443,14 +494,7 @@ class ProductModel {
 		. self::getSqlWhere($filter, $and);
 
 		$stmt=self::prepareStatement($db, $sql);
-		$i=0;
-		foreach ($filter as $value) {
-			$dfc=$value instanceof DFC;
-			if ($dfc && 0!=(DFC::IS_NULL&$value->getMode())) {
-				continue;
-			}
-			$stmt->bindValue(++$i, $dfc ? $value->getSqlValue() : $value);
-		}
+		self::bindValuesForFilter($stmt, $filter);
 		$affected=$stmt->execute();
 		if (false===$affected) {
 			$stmt->closeCursor();
@@ -498,6 +542,23 @@ class ProductModel {
 	}
 
 	/**
+	 * bind values from filter to statement
+	 *
+	 * @param PDOStatement $stmt
+	 * @param array $filter
+	 */
+	protected static function bindValuesForFilter(&$stmt, $filter) {
+		$i=0;
+		foreach ($filter as $value) {
+			$dfc=$value instanceof DFC;
+			if ($dfc && 0!=(DFC::IS_NULL&$value->getMode())) {
+				continue;
+			}
+			$stmt->bindValue(++$i, $dfc ? $value->getSqlValue() : $value);
+		}
+	}
+
+	/**
 	 * Execute select query and return matched rows as an array of ProductModel instances.
 	 *
 	 * The query should of course be on the table for this entity class and return all fields.
@@ -506,7 +567,7 @@ class ProductModel {
 	 * @param string $sql
 	 * @return ProductModel[]
 	 */
-	public static function getBySql(PDO $db, $sql) {
+	public static function findBySql(PDO $db, $sql) {
 		$stmt=$db->query($sql);
 		$resultInstances=array();
 		while($result=$stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -519,6 +580,50 @@ class ProductModel {
 		return $resultInstances;
 	}
 
+	/**
+	 * Delete rows matching the filter
+	 *
+	 * The filter can be either an hash with the field id as index and the value as filter value,
+	 * or a array of DFC instances.
+	 *
+	 * @param PDO $db
+	 * @param array $filter
+	 * @param bool $and
+	 * @return mixed
+	 */
+	public static function deleteByFilter(PDO $db, $filter, $and=true) {
+		if ($filter instanceof DFC) {
+			$filter=array($filter);
+		}
+		if (0==count($filter)) {
+			throw new InvalidArgumentException('refusing to delete without filter'); // just comment out this line if you are brave
+		}
+		$sql='DELETE FROM PRODUCT'
+		. self::getSqlWhere($filter, $and);
+		$stmt=self::prepareStatement($db, $sql);
+		self::bindValuesForFilter($stmt, $filter);
+		$affected=$stmt->execute();
+		$affected=$stmt->execute();
+		if (false===$affected) {
+			$stmt->closeCursor();
+			throw new Exception($stmt->errorCode() . ':' . var_export($stmt->errorInfo(), true), 0);
+		}
+		$stmt->closeCursor();
+		return $affected;
+	}
+
+	/**
+	 * Assign values from array with the field id as index and the value as value
+	 *
+	 * @param array $array
+	 */
+	public function assignByArray($array) {
+		$result=array();
+		foreach ($array as $fieldId=>$value) {
+			$result[self::$FIELD_NAMES[$fieldId]]=$value;
+		}
+		$this->assignByHash($result);
+	}
 
 	/**
 	 * Assign values from hash where the indexes match the tables field names
@@ -543,7 +648,7 @@ class ProductModel {
 	 * @param PDO $db
 	 * @return ProductModel
 	 */
-	public static function getById(PDO $db,$productId) {
+	public static function findById(PDO $db,$productId) {
 		$stmt=self::prepareStatement($db,self::SQL_SELECT_PK);
 		$stmt->bindValue(1,$productId);
 		$affected=$stmt->execute();
@@ -637,5 +742,61 @@ class ProductModel {
 		$stmt->closeCursor();
 		return $affected;
 	}
+
+
+	/**
+	 * get element as DOM Document
+	 *
+	 * @return DOMDocument
+	 */
+	public function toDOM() {
+		$doc=new DOMDocument();
+		$root=$doc->createElement(__CLASS__);
+		foreach ($this->toHash() as $fieldName=>$value) {
+			$fElem=$doc->createElement($fieldName);
+			$fElem->appendChild($doc->createTextNode($value));
+			$root->appendChild($fElem);
+		}
+		$doc->appendChild($root);
+		return $doc;
+	}
+
+	/**
+	 * get single ProductModel instance from a DOMElement
+	 *
+	 * @param DOMElement $node
+	 * @return ProductModel
+	 */
+	public static function fromDOMElement(DOMElement $node) {
+		if (__CLASS__!=$node->nodeName) {
+			return new InvalidArgumentException('expected: ProductModel, got: ' . $node->nodeName, 0);
+		}
+		$result=array();
+		foreach (self::$FIELD_NAMES as $fieldName) {
+			$n=$node->getElementsByTagName($fieldName)->item(0);
+			if (!is_null($n)) {
+				$result[$fieldName]=$n->nodeValue;
+			}
+		}
+		$o=new ProductModel();
+		$o->assignByHash($result);
+			$o->notifyPristine();
+		return $o;
+	}
+
+	/**
+	 * get all instances of ProductModel from the passed DOMDocument
+	 *
+	 * @param DOMDocument $doc
+	 * @return ProductModel[]
+	 */
+	public static function fromDOMDocument(DOMDocument $doc) {
+		$instances=array();
+		foreach ($doc->getElementsByTagName('ProductModel') as $node) {
+			$instances[]=self::fromDOMElement($node);
+		}
+		return $instances;
+	}
+
 }
 ?>

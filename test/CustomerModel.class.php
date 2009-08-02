@@ -32,36 +32,31 @@ class CustomerModel {
 		self::FIELD_FAX=>'FAX',
 		self::FIELD_EMAIL=>'EMAIL',
 		self::FIELD_CREDIT_LIMIT=>'CREDIT_LIMIT');
+	private static $DEFAULT_VALUES=array(
+		'CUSTOMER_ID'=>0,
+		'DISCOUNT_CODE'=>'',
+		'ZIP'=>'',
+		'NAME'=>null,
+		'ADDRESSLINE1'=>null,
+		'ADDRESSLINE2'=>null,
+		'CITY'=>null,
+		'STATE'=>null,
+		'PHONE'=>null,
+		'FAX'=>null,
+		'EMAIL'=>null,
+		'CREDIT_LIMIT'=>null);
 	private $customerId;
 	private $discountCode;
 	private $zip;
 	private $name;
-	private $addressline1;
-	private $addressline2;
+	private $addressLine1;
+	private $addressLine2;
 	private $city;
 	private $state;
 	private $phone;
 	private $fax;
 	private $email;
 	private $creditLimit;
-
-	/**
-	 * Get array with field id as index and field name as value
-	 *
-	 * @return array
-	 */
-	public static function getFieldNames() {
-		return self::$FIELD_NAMES;
-	}
-
-	/**
-	 * Get array with field ids of identifiers
-	 *
-	 * @return array
-	 */
-	public static function getIdentifierFields() {
-		return self::$PRIMARY_KEYS;
-	}
 
 	/**
 	 * store for old instance after object has been modified
@@ -101,6 +96,26 @@ class CustomerModel {
 	}
 
 	/**
+	 * return array with the field ids of values which have been changed since the last notifyPristine call
+	 *
+	 * @return array
+	 */
+	public function getFieldsChanged() {
+		$changed=array();
+		if (!$this->isChanged()) {
+			return $changed;
+		}
+		$old=$this->getOldInstance()->toArray();
+		$new=$this->toArray();
+		foreach ($old as $fieldId=>$value) {
+			if ($new[$fieldId]!==$value) {
+				$changed[]=$fieldId;
+			}
+		}
+		return $changed;
+	}
+
+	/**
 	 * set this instance into pristine state
 	 */
 	public function notifyPristine() {
@@ -110,7 +125,7 @@ class CustomerModel {
 	/**
 	 * set value for CUSTOMER_ID 
 	 *
-	 * type:INTEGER,size:10,nullable:false,default:null,primary:true,unique:true,index:false
+	 * type:INTEGER,size:10,default:null,primary,unique
 	 *
 	 * @param mixed $customerId
 	 * @return CustomerModel
@@ -124,7 +139,7 @@ class CustomerModel {
 	/**
 	 * get value for CUSTOMER_ID 
 	 *
-	 * type:INTEGER,size:10,nullable:false,default:null,primary:true,unique:true,index:false
+	 * type:INTEGER,size:10,default:null,primary,unique
 	 *
 	 * @return mixed
 	 */
@@ -135,7 +150,7 @@ class CustomerModel {
 	/**
 	 * set value for DISCOUNT_CODE 
 	 *
-	 * type:CHAR,size:1,nullable:false,default:null,primary:false,unique:false,index:true
+	 * type:CHAR,size:1,default:null,index
 	 *
 	 * @param mixed $discountCode
 	 * @return CustomerModel
@@ -149,7 +164,7 @@ class CustomerModel {
 	/**
 	 * get value for DISCOUNT_CODE 
 	 *
-	 * type:CHAR,size:1,nullable:false,default:null,primary:false,unique:false,index:true
+	 * type:CHAR,size:1,default:null,index
 	 *
 	 * @return mixed
 	 */
@@ -160,7 +175,7 @@ class CustomerModel {
 	/**
 	 * set value for ZIP 
 	 *
-	 * type:VARCHAR,size:10,nullable:false,default:null,primary:false,unique:false,index:false
+	 * type:VARCHAR,size:10,default:null
 	 *
 	 * @param mixed $zip
 	 * @return CustomerModel
@@ -174,7 +189,7 @@ class CustomerModel {
 	/**
 	 * get value for ZIP 
 	 *
-	 * type:VARCHAR,size:10,nullable:false,default:null,primary:false,unique:false,index:false
+	 * type:VARCHAR,size:10,default:null
 	 *
 	 * @return mixed
 	 */
@@ -185,7 +200,7 @@ class CustomerModel {
 	/**
 	 * set value for NAME 
 	 *
-	 * type:VARCHAR,size:30,nullable:true,default:null,primary:false,unique:false,index:false
+	 * type:VARCHAR,size:30,default:null,nullable
 	 *
 	 * @param mixed $name
 	 * @return CustomerModel
@@ -199,7 +214,7 @@ class CustomerModel {
 	/**
 	 * get value for NAME 
 	 *
-	 * type:VARCHAR,size:30,nullable:true,default:null,primary:false,unique:false,index:false
+	 * type:VARCHAR,size:30,default:null,nullable
 	 *
 	 * @return mixed
 	 */
@@ -210,57 +225,57 @@ class CustomerModel {
 	/**
 	 * set value for ADDRESSLINE1 
 	 *
-	 * type:VARCHAR,size:30,nullable:true,default:null,primary:false,unique:false,index:false
+	 * type:VARCHAR,size:30,default:null,nullable
 	 *
-	 * @param mixed $addressline1
+	 * @param mixed $addressLine1
 	 * @return CustomerModel
 	 */
-	public function &setAddressline1($addressline1) {
+	public function &setAddressLine1($addressLine1) {
 		$this->notifyChanged(self::FIELD_ADDRESSLINE1);
-		$this->addressline1=$addressline1;
+		$this->addressLine1=$addressLine1;
 		return $this;
 	}
 
 	/**
 	 * get value for ADDRESSLINE1 
 	 *
-	 * type:VARCHAR,size:30,nullable:true,default:null,primary:false,unique:false,index:false
+	 * type:VARCHAR,size:30,default:null,nullable
 	 *
 	 * @return mixed
 	 */
-	public function getAddressline1() {
-		return $this->addressline1;
+	public function getAddressLine1() {
+		return $this->addressLine1;
 	}
 
 	/**
 	 * set value for ADDRESSLINE2 
 	 *
-	 * type:VARCHAR,size:30,nullable:true,default:null,primary:false,unique:false,index:false
+	 * type:VARCHAR,size:30,default:null,nullable
 	 *
-	 * @param mixed $addressline2
+	 * @param mixed $addressLine2
 	 * @return CustomerModel
 	 */
-	public function &setAddressline2($addressline2) {
+	public function &setAddressLine2($addressLine2) {
 		$this->notifyChanged(self::FIELD_ADDRESSLINE2);
-		$this->addressline2=$addressline2;
+		$this->addressLine2=$addressLine2;
 		return $this;
 	}
 
 	/**
 	 * get value for ADDRESSLINE2 
 	 *
-	 * type:VARCHAR,size:30,nullable:true,default:null,primary:false,unique:false,index:false
+	 * type:VARCHAR,size:30,default:null,nullable
 	 *
 	 * @return mixed
 	 */
-	public function getAddressline2() {
-		return $this->addressline2;
+	public function getAddressLine2() {
+		return $this->addressLine2;
 	}
 
 	/**
 	 * set value for CITY 
 	 *
-	 * type:VARCHAR,size:25,nullable:true,default:null,primary:false,unique:false,index:false
+	 * type:VARCHAR,size:25,default:null,nullable
 	 *
 	 * @param mixed $city
 	 * @return CustomerModel
@@ -274,7 +289,7 @@ class CustomerModel {
 	/**
 	 * get value for CITY 
 	 *
-	 * type:VARCHAR,size:25,nullable:true,default:null,primary:false,unique:false,index:false
+	 * type:VARCHAR,size:25,default:null,nullable
 	 *
 	 * @return mixed
 	 */
@@ -285,7 +300,7 @@ class CustomerModel {
 	/**
 	 * set value for STATE 
 	 *
-	 * type:CHAR,size:2,nullable:true,default:null,primary:false,unique:false,index:false
+	 * type:CHAR,size:2,default:null,nullable
 	 *
 	 * @param mixed $state
 	 * @return CustomerModel
@@ -299,7 +314,7 @@ class CustomerModel {
 	/**
 	 * get value for STATE 
 	 *
-	 * type:CHAR,size:2,nullable:true,default:null,primary:false,unique:false,index:false
+	 * type:CHAR,size:2,default:null,nullable
 	 *
 	 * @return mixed
 	 */
@@ -310,7 +325,7 @@ class CustomerModel {
 	/**
 	 * set value for PHONE 
 	 *
-	 * type:CHAR,size:12,nullable:true,default:null,primary:false,unique:false,index:false
+	 * type:CHAR,size:12,default:null,nullable
 	 *
 	 * @param mixed $phone
 	 * @return CustomerModel
@@ -324,7 +339,7 @@ class CustomerModel {
 	/**
 	 * get value for PHONE 
 	 *
-	 * type:CHAR,size:12,nullable:true,default:null,primary:false,unique:false,index:false
+	 * type:CHAR,size:12,default:null,nullable
 	 *
 	 * @return mixed
 	 */
@@ -335,7 +350,7 @@ class CustomerModel {
 	/**
 	 * set value for FAX 
 	 *
-	 * type:CHAR,size:12,nullable:true,default:null,primary:false,unique:false,index:false
+	 * type:CHAR,size:12,default:null,nullable
 	 *
 	 * @param mixed $fax
 	 * @return CustomerModel
@@ -349,7 +364,7 @@ class CustomerModel {
 	/**
 	 * get value for FAX 
 	 *
-	 * type:CHAR,size:12,nullable:true,default:null,primary:false,unique:false,index:false
+	 * type:CHAR,size:12,default:null,nullable
 	 *
 	 * @return mixed
 	 */
@@ -360,7 +375,7 @@ class CustomerModel {
 	/**
 	 * set value for EMAIL 
 	 *
-	 * type:VARCHAR,size:40,nullable:true,default:null,primary:false,unique:false,index:false
+	 * type:VARCHAR,size:40,default:null,nullable
 	 *
 	 * @param mixed $email
 	 * @return CustomerModel
@@ -374,7 +389,7 @@ class CustomerModel {
 	/**
 	 * get value for EMAIL 
 	 *
-	 * type:VARCHAR,size:40,nullable:true,default:null,primary:false,unique:false,index:false
+	 * type:VARCHAR,size:40,default:null,nullable
 	 *
 	 * @return mixed
 	 */
@@ -385,7 +400,7 @@ class CustomerModel {
 	/**
 	 * set value for CREDIT_LIMIT 
 	 *
-	 * type:INTEGER,size:10,nullable:true,default:null,primary:false,unique:false,index:false
+	 * type:INTEGER,size:10,default:null,nullable
 	 *
 	 * @param mixed $creditLimit
 	 * @return CustomerModel
@@ -399,7 +414,7 @@ class CustomerModel {
 	/**
 	 * get value for CREDIT_LIMIT 
 	 *
-	 * type:INTEGER,size:10,nullable:true,default:null,primary:false,unique:false,index:false
+	 * type:INTEGER,size:10,default:null,nullable
 	 *
 	 * @return mixed
 	 */
@@ -407,6 +422,46 @@ class CustomerModel {
 		return $this->creditLimit;
 	}
 
+	/**
+	 * Get array with field id as index and field name as value
+	 *
+	 * @return array
+	 */
+	public static function getFieldNames() {
+		return self::$FIELD_NAMES;
+	}
+
+	/**
+	 * Get array with field ids of identifiers
+	 *
+	 * @return array
+	 */
+	public static function getIdentifierFields() {
+		return self::$PRIMARY_KEYS;
+	}
+
+	/**
+	 * Assign default values according to table
+	 * 
+	 */
+	public function assignDefaultValues() {
+		$this->assignByHash(self::$DEFAULT_VALUES);
+	}
+
+
+	/**
+	 * return hash with the field name as index and the field value as value.
+	 *
+	 * @return array
+	 */
+	public function toHash() {
+		$array=$this->toArray();
+		$hash=array();
+		foreach ($array as $fieldId=>$value) {
+			$hash[self::$FIELD_NAMES[$fieldId]]=$value;
+		}
+		return $hash;
+	}
 
 	/**
 	 * return array with the field id as index and the field value as value.
@@ -419,8 +474,8 @@ class CustomerModel {
 			self::FIELD_DISCOUNT_CODE=>$this->getDiscountCode(),
 			self::FIELD_ZIP=>$this->getZip(),
 			self::FIELD_NAME=>$this->getName(),
-			self::FIELD_ADDRESSLINE1=>$this->getAddressline1(),
-			self::FIELD_ADDRESSLINE2=>$this->getAddressline2(),
+			self::FIELD_ADDRESSLINE1=>$this->getAddressLine1(),
+			self::FIELD_ADDRESSLINE2=>$this->getAddressLine2(),
 			self::FIELD_CITY=>$this->getCity(),
 			self::FIELD_STATE=>$this->getState(),
 			self::FIELD_PHONE=>$this->getPhone(),
@@ -527,7 +582,7 @@ class CustomerModel {
 	 * @param CustomerModel $example an example instance
 	 * @return CustomerModel[]
 	 */
-	public static function getByExample(PDO $db,CustomerModel $example, $and=true) {
+	public static function findByExample(PDO $db,CustomerModel $example, $and=true) {
 		$exampleValues=$example->toArray();
 		$filter=array();
 		foreach ($exampleValues as $fieldId=>$value) {
@@ -535,7 +590,7 @@ class CustomerModel {
 				$filter[$fieldId]=$value;
 			}
 		}
-		return self::getByFilter($db, $filter, $and);
+		return self::findByFilter($db, $filter, $and);
 	}
 
 	/**
@@ -551,7 +606,7 @@ class CustomerModel {
 	 * @param boolean $and
 	 * @return CustomerModel[]
 	 */
-	public static function getByFilter(PDO $db, $filter, $and=true) {
+	public static function findByFilter(PDO $db, $filter, $and=true) {
 		if ($filter instanceof DFC) {
 			$filter=array($filter);
 		}
@@ -559,14 +614,7 @@ class CustomerModel {
 		. self::getSqlWhere($filter, $and);
 
 		$stmt=self::prepareStatement($db, $sql);
-		$i=0;
-		foreach ($filter as $value) {
-			$dfc=$value instanceof DFC;
-			if ($dfc && 0!=(DFC::IS_NULL&$value->getMode())) {
-				continue;
-			}
-			$stmt->bindValue(++$i, $dfc ? $value->getSqlValue() : $value);
-		}
+		self::bindValuesForFilter($stmt, $filter);
 		$affected=$stmt->execute();
 		if (false===$affected) {
 			$stmt->closeCursor();
@@ -614,6 +662,23 @@ class CustomerModel {
 	}
 
 	/**
+	 * bind values from filter to statement
+	 *
+	 * @param PDOStatement $stmt
+	 * @param array $filter
+	 */
+	protected static function bindValuesForFilter(&$stmt, $filter) {
+		$i=0;
+		foreach ($filter as $value) {
+			$dfc=$value instanceof DFC;
+			if ($dfc && 0!=(DFC::IS_NULL&$value->getMode())) {
+				continue;
+			}
+			$stmt->bindValue(++$i, $dfc ? $value->getSqlValue() : $value);
+		}
+	}
+
+	/**
 	 * Execute select query and return matched rows as an array of CustomerModel instances.
 	 *
 	 * The query should of course be on the table for this entity class and return all fields.
@@ -622,7 +687,7 @@ class CustomerModel {
 	 * @param string $sql
 	 * @return CustomerModel[]
 	 */
-	public static function getBySql(PDO $db, $sql) {
+	public static function findBySql(PDO $db, $sql) {
 		$stmt=$db->query($sql);
 		$resultInstances=array();
 		while($result=$stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -635,6 +700,50 @@ class CustomerModel {
 		return $resultInstances;
 	}
 
+	/**
+	 * Delete rows matching the filter
+	 *
+	 * The filter can be either an hash with the field id as index and the value as filter value,
+	 * or a array of DFC instances.
+	 *
+	 * @param PDO $db
+	 * @param array $filter
+	 * @param bool $and
+	 * @return mixed
+	 */
+	public static function deleteByFilter(PDO $db, $filter, $and=true) {
+		if ($filter instanceof DFC) {
+			$filter=array($filter);
+		}
+		if (0==count($filter)) {
+			throw new InvalidArgumentException('refusing to delete without filter'); // just comment out this line if you are brave
+		}
+		$sql='DELETE FROM CUSTOMER'
+		. self::getSqlWhere($filter, $and);
+		$stmt=self::prepareStatement($db, $sql);
+		self::bindValuesForFilter($stmt, $filter);
+		$affected=$stmt->execute();
+		$affected=$stmt->execute();
+		if (false===$affected) {
+			$stmt->closeCursor();
+			throw new Exception($stmt->errorCode() . ':' . var_export($stmt->errorInfo(), true), 0);
+		}
+		$stmt->closeCursor();
+		return $affected;
+	}
+
+	/**
+	 * Assign values from array with the field id as index and the value as value
+	 *
+	 * @param array $array
+	 */
+	public function assignByArray($array) {
+		$result=array();
+		foreach ($array as $fieldId=>$value) {
+			$result[self::$FIELD_NAMES[$fieldId]]=$value;
+		}
+		$this->assignByHash($result);
+	}
 
 	/**
 	 * Assign values from hash where the indexes match the tables field names
@@ -646,8 +755,8 @@ class CustomerModel {
 		$this->setDiscountCode($result['DISCOUNT_CODE']);
 		$this->setZip($result['ZIP']);
 		$this->setName($result['NAME']);
-		$this->setAddressline1($result['ADDRESSLINE1']);
-		$this->setAddressline2($result['ADDRESSLINE2']);
+		$this->setAddressLine1($result['ADDRESSLINE1']);
+		$this->setAddressLine2($result['ADDRESSLINE2']);
 		$this->setCity($result['CITY']);
 		$this->setState($result['STATE']);
 		$this->setPhone($result['PHONE']);
@@ -663,7 +772,7 @@ class CustomerModel {
 	 * @param PDO $db
 	 * @return CustomerModel
 	 */
-	public static function getById(PDO $db,$customerId) {
+	public static function findById(PDO $db,$customerId) {
 		$stmt=self::prepareStatement($db,self::SQL_SELECT_PK);
 		$stmt->bindValue(1,$customerId);
 		$affected=$stmt->execute();
@@ -692,8 +801,8 @@ class CustomerModel {
 		$stmt->bindValue(2,$this->getDiscountCode());
 		$stmt->bindValue(3,$this->getZip());
 		$stmt->bindValue(4,$this->getName());
-		$stmt->bindValue(5,$this->getAddressline1());
-		$stmt->bindValue(6,$this->getAddressline2());
+		$stmt->bindValue(5,$this->getAddressLine1());
+		$stmt->bindValue(6,$this->getAddressLine2());
 		$stmt->bindValue(7,$this->getCity());
 		$stmt->bindValue(8,$this->getState());
 		$stmt->bindValue(9,$this->getPhone());
@@ -761,5 +870,61 @@ class CustomerModel {
 		$stmt->closeCursor();
 		return $affected;
 	}
+
+
+	/**
+	 * get element as DOM Document
+	 *
+	 * @return DOMDocument
+	 */
+	public function toDOM() {
+		$doc=new DOMDocument();
+		$root=$doc->createElement(__CLASS__);
+		foreach ($this->toHash() as $fieldName=>$value) {
+			$fElem=$doc->createElement($fieldName);
+			$fElem->appendChild($doc->createTextNode($value));
+			$root->appendChild($fElem);
+		}
+		$doc->appendChild($root);
+		return $doc;
+	}
+
+	/**
+	 * get single CustomerModel instance from a DOMElement
+	 *
+	 * @param DOMElement $node
+	 * @return CustomerModel
+	 */
+	public static function fromDOMElement(DOMElement $node) {
+		if (__CLASS__!=$node->nodeName) {
+			return new InvalidArgumentException('expected: CustomerModel, got: ' . $node->nodeName, 0);
+		}
+		$result=array();
+		foreach (self::$FIELD_NAMES as $fieldName) {
+			$n=$node->getElementsByTagName($fieldName)->item(0);
+			if (!is_null($n)) {
+				$result[$fieldName]=$n->nodeValue;
+			}
+		}
+		$o=new CustomerModel();
+		$o->assignByHash($result);
+			$o->notifyPristine();
+		return $o;
+	}
+
+	/**
+	 * get all instances of CustomerModel from the passed DOMDocument
+	 *
+	 * @param DOMDocument $doc
+	 * @return CustomerModel[]
+	 */
+	public static function fromDOMDocument(DOMDocument $doc) {
+		$instances=array();
+		foreach ($doc->getElementsByTagName('CustomerModel') as $node) {
+			$instances[]=self::fromDOMElement($node);
+		}
+		return $instances;
+	}
+
 }
 ?>
