@@ -103,6 +103,7 @@ public final class PhpClassVisualPanel2 extends JPanel {
         fluentInterfaceSelection.setToolTipText(org.openide.util.NbBundle.getMessage(PhpClassVisualPanel2.class, "PhpClassVisualPanel2.fluentInterfaceSelection.toolTipText")); // NOI18N
 
         camelCaseFairy.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "<disabled>", "en", "de", "deen" }));
+        camelCaseFairy.setToolTipText(org.openide.util.NbBundle.getMessage(PhpClassVisualPanel2.class, "PhpClassVisualPanel2.camelCaseFairy.toolTipText")); // NOI18N
 
         org.openide.awt.Mnemonics.setLocalizedText(jLabel2, org.openide.util.NbBundle.getMessage(PhpClassVisualPanel2.class, "PhpClassVisualPanel2.jLabel2.text_2")); // NOI18N
 
