@@ -18,11 +18,18 @@ public class StringOccurrence {
 
 	public static class Comparator implements java.util.Comparator<StringOccurrence> {
 
+		@Override
 		public int compare(StringOccurrence o1, StringOccurrence o2) {
 			return o1.getStart()-o2.getStart();
 		}
 	}
 
+	/**
+	 * CTOR
+	 *
+	 * @param word the word
+	 * @param start the start position
+	 */
 	public StringOccurrence(String word, int start) {
 		this.string=word;
 		this.start=start;
@@ -49,25 +56,49 @@ public class StringOccurrence {
 		return getStart()+getString().length();
 	}
 
+	/**
+	 * check if the passed occurrence position overlaps with this one
+	 *
+	 * @param occurrence the occurrence to check for overlapping
+	 * @return true if the position overlaps
+	 */
 	public boolean isInSequence(StringOccurrence occurrence) {
 		return isInSequence(occurrence.getStart()) || isInSequence(occurrence.getEnd());
 	}
 
+	/**
+	 * check if the passed position is ours
+	 *
+	 * @param pos the string start position to check
+	 * @return true if the position overlaps
+	 */
 	public boolean isInSequence (int pos) {
 		return isBetween(pos, getStart(), getEnd());
 	}
-	
+
+	/**
+	 * check if i is between start and end
+	 *
+	 * @param i position
+	 * @param start start position
+	 * @param end end position
+	 * @return true if i is between start and end
+	 */
 	private static boolean isBetween(int i, int start, int end) {
 		return i>start && i<end;
 	}
 
+	/**
+	 * remove all occurrences which overlap this occurrence from the passed collection
+	 * 
+	 * @param occurrences the occurrences to check for overlapping
+	 */
 	public void removeSubSequences(Set<StringOccurrence> occurrences) {
 		Iterator<StringOccurrence> i=occurrences.iterator();
 		StringOccurrence stringOccurrence;
 		while (i.hasNext()) {
 			stringOccurrence=i.next();
 			if (isInSequence(stringOccurrence)) {
-				//System.err.println("removing:" + stringOccurrence.toString() + " because of:" + toString());
 				i.remove();
 			}
 		}
