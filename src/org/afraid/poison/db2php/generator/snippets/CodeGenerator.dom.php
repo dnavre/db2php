@@ -7,7 +7,7 @@
 	 */
 	public function toDOM() {
 		$doc=new DOMDocument();
-		$root=$doc->createElement(__CLASS__);
+		$root=$doc->createElement('<type>');
 		foreach ($this->toHash() as $fieldName=>$value) {
 			$fElem=$doc->createElement($fieldName);
 			$fElem->appendChild($doc->createTextNode($value));
