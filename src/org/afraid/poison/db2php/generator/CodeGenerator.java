@@ -20,7 +20,10 @@ package org.afraid.poison.db2php.generator;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Properties;
 import org.afraid.poison.db2php.generator.databaselayer.DatabaseLayer;
 import java.util.Set;
 import java.util.logging.Level;
@@ -40,6 +43,7 @@ import org.afraid.poison.common.string.StringMutator;
 public class CodeGenerator {
 
 	private static final String SNIPPET_PATH="/org/afraid/poison/db2php/generator/snippets/";
+	private static String db2phpVersion=null;
 	private Table table;
 	private Settings settings;
 	private CamelCaseFairy camelCaseFairy;
@@ -63,6 +67,29 @@ public class CodeGenerator {
 	public CodeGenerator(Table table, Settings settings) {
 		setTable(table);
 		setSettings(settings);
+	}
+
+	/**
+	 * @return the db2phpVersion
+	 */
+	public static synchronized String getDb2phpVersion() {
+		if (null==db2phpVersion) {
+			InputStream is=null;
+			try {
+				is=CodeGenerator.class.getResourceAsStream("/META-INF/MANIFEST.MF");
+				if (null!=is) {
+					Properties p=new Properties();
+					p.load(is);
+					db2phpVersion=p.getProperty("OpenIDE-Module-Specification-Version", "");
+				}
+			} catch (IOException ex) {
+				Logger.getLogger(CodeGenerator.class.getName()).log(Level.SEVERE, null, ex);
+			} finally {
+				IOUtil.closeQuietly(is);
+			}
+
+		}
+		return db2phpVersion;
 	}
 
 	/**
@@ -377,7 +404,7 @@ public class CodeGenerator {
 			//s.append("\tconst FIELD_").append(getMethodName(f).toUpperCase()).append("=").append((int) Math.pow(2, i++)).append("\n");
 			s.append("\tconst ").append(getConstName(f)).append("=").append(i++).append(";\n");
 		}
-		
+
 		// list of primary keys
 		s.append("\tprivate static $PRIMARY_KEYS=array(");
 		s.append(CollectionUtil.join(getTable().getFieldsIdentifiers(), ",", new StringMutator() {
@@ -410,7 +437,7 @@ public class CodeGenerator {
 				Field f=(Field) input;
 				StringBuilder s=new StringBuilder("\t\t");
 				s.append("'").append(f.getName()).append("'=>");
-				if (f.isAutoIncrement() || (f.isNullable() && null==f.getDefaultValue())) {
+				if (f.isAutoIncrement()||(f.isNullable()&&null==f.getDefaultValue())) {
 					s.append("null");
 				} else if (null==f.getDefaultValue()) {
 					if (f.isNumberType()) {
@@ -603,7 +630,9 @@ public class CodeGenerator {
 				contents=contents.replace("<fieldName>", field.getName()).replace("<memberName>", getMemberName(field)).replace("<fieldInfo>", field.getInfoTextCompact()).replace("<fieldComment>", field.getComment());
 
 			}
-			s.append(contents.replace("<type>", getClassName()).replace("<tableDescription>", getTable().getRemark()).replace("<pristine>", getSettings().isTrackFieldModifications() ? "\t\t\t$o->notifyPristine();\n" : ""));
+			String tableRemark=getTable().getRemark()==null ? "" : getTable().getRemark().replaceAll("\r|\n", " ");
+			String version=new StringBuilder().append(getDb2phpVersion()).append(" - generated: ").append(new SimpleDateFormat().format(Calendar.getInstance().getTime())).toString();
+			s.append(contents.replace("<db2phpVersion>", version).replace("<type>", getClassName()).replace("<tableDescription>", tableRemark).replace("<pristine>", getSettings().isTrackFieldModifications() ? "\t\t\t$o->notifyPristine();\n" : ""));
 		} catch (IOException ex) {
 			Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
 		} finally {
@@ -619,6 +648,7 @@ public class CodeGenerator {
 	 */
 	public String getCode() {
 		StringBuilder s=new StringBuilder("<?php\n");
+		s.append(getSnippetFromFile("CodeGenerator.class.php"));
 		s.append("class ").append(getClassName()).append(" {\n");
 		s.append(getPreparedStatements());
 		s.append(getConsts());
@@ -649,6 +679,7 @@ public class CodeGenerator {
 		}
 		return new File(getSettings().getOutputDirectory(), getFileName());
 	}
+
 	/**
 	 * write code to specified file
 	 *
@@ -672,7 +703,7 @@ public class CodeGenerator {
 				File backupFile=null;
 				int i=0;
 				do {
-					backupFile=new File(new StringBuilder(file.getPath()).append(".bak-").append(StringUtil.padLeft(i++, "0", 3)).toString());
+					backupFile=new File(new StringBuilder(file.getPath()).append(".bak").append(StringUtil.padLeft(i++, "0", 3)).toString());
 				} while (backupFile.exists());
 				if (!file.renameTo(backupFile)) {
 					throw new IOException(new StringBuilder("failed to rename old file to:").append(backupFile.getPath()).toString());

@@ -1,4 +1,10 @@
 <?php
+
+/**
+ * 
+ *
+ * @version 1.2.6.1 - generated: 8/3/09 8:02 PM
+ */
 class CustomerModel {
 	const SQL_IDENTIFIER_QUOTE='';
 	const SQL_TABLE_NAME='CUSTOMER';
@@ -49,8 +55,8 @@ class CustomerModel {
 	private $discountCode;
 	private $zip;
 	private $name;
-	private $addressLine1;
-	private $addressLine2;
+	private $addressline1;
+	private $addressline2;
 	private $city;
 	private $state;
 	private $phone;
@@ -227,12 +233,12 @@ class CustomerModel {
 	 *
 	 * type:VARCHAR,size:30,default:null,nullable
 	 *
-	 * @param mixed $addressLine1
+	 * @param mixed $addressline1
 	 * @return CustomerModel
 	 */
-	public function &setAddressLine1($addressLine1) {
+	public function &setAddressline1($addressline1) {
 		$this->notifyChanged(self::FIELD_ADDRESSLINE1);
-		$this->addressLine1=$addressLine1;
+		$this->addressline1=$addressline1;
 		return $this;
 	}
 
@@ -243,8 +249,8 @@ class CustomerModel {
 	 *
 	 * @return mixed
 	 */
-	public function getAddressLine1() {
-		return $this->addressLine1;
+	public function getAddressline1() {
+		return $this->addressline1;
 	}
 
 	/**
@@ -252,12 +258,12 @@ class CustomerModel {
 	 *
 	 * type:VARCHAR,size:30,default:null,nullable
 	 *
-	 * @param mixed $addressLine2
+	 * @param mixed $addressline2
 	 * @return CustomerModel
 	 */
-	public function &setAddressLine2($addressLine2) {
+	public function &setAddressline2($addressline2) {
 		$this->notifyChanged(self::FIELD_ADDRESSLINE2);
-		$this->addressLine2=$addressLine2;
+		$this->addressline2=$addressline2;
 		return $this;
 	}
 
@@ -268,8 +274,8 @@ class CustomerModel {
 	 *
 	 * @return mixed
 	 */
-	public function getAddressLine2() {
-		return $this->addressLine2;
+	public function getAddressline2() {
+		return $this->addressline2;
 	}
 
 	/**
@@ -474,8 +480,8 @@ class CustomerModel {
 			self::FIELD_DISCOUNT_CODE=>$this->getDiscountCode(),
 			self::FIELD_ZIP=>$this->getZip(),
 			self::FIELD_NAME=>$this->getName(),
-			self::FIELD_ADDRESSLINE1=>$this->getAddressLine1(),
-			self::FIELD_ADDRESSLINE2=>$this->getAddressLine2(),
+			self::FIELD_ADDRESSLINE1=>$this->getAddressline1(),
+			self::FIELD_ADDRESSLINE2=>$this->getAddressline2(),
 			self::FIELD_CITY=>$this->getCity(),
 			self::FIELD_STATE=>$this->getState(),
 			self::FIELD_PHONE=>$this->getPhone(),
@@ -755,8 +761,8 @@ class CustomerModel {
 		$this->setDiscountCode($result['DISCOUNT_CODE']);
 		$this->setZip($result['ZIP']);
 		$this->setName($result['NAME']);
-		$this->setAddressLine1($result['ADDRESSLINE1']);
-		$this->setAddressLine2($result['ADDRESSLINE2']);
+		$this->setAddressline1($result['ADDRESSLINE1']);
+		$this->setAddressline2($result['ADDRESSLINE2']);
 		$this->setCity($result['CITY']);
 		$this->setState($result['STATE']);
 		$this->setPhone($result['PHONE']);
@@ -801,8 +807,8 @@ class CustomerModel {
 		$stmt->bindValue(2,$this->getDiscountCode());
 		$stmt->bindValue(3,$this->getZip());
 		$stmt->bindValue(4,$this->getName());
-		$stmt->bindValue(5,$this->getAddressLine1());
-		$stmt->bindValue(6,$this->getAddressLine2());
+		$stmt->bindValue(5,$this->getAddressline1());
+		$stmt->bindValue(6,$this->getAddressline2());
 		$stmt->bindValue(7,$this->getCity());
 		$stmt->bindValue(8,$this->getState());
 		$stmt->bindValue(9,$this->getPhone());
@@ -879,7 +885,7 @@ class CustomerModel {
 	 */
 	public function toDOM() {
 		$doc=new DOMDocument();
-		$root=$doc->createElement(__CLASS__);
+		$root=$doc->createElement('CustomerModel');
 		foreach ($this->toHash() as $fieldName=>$value) {
 			$fElem=$doc->createElement($fieldName);
 			$fElem->appendChild($doc->createTextNode($value));
@@ -896,7 +902,7 @@ class CustomerModel {
 	 * @return CustomerModel
 	 */
 	public static function fromDOMElement(DOMElement $node) {
-		if (__CLASS__!=$node->nodeName) {
+		if ('CustomerModel'!=$node->nodeName) {
 			return new InvalidArgumentException('expected: CustomerModel, got: ' . $node->nodeName, 0);
 		}
 		$result=array();

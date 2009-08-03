@@ -1,4 +1,10 @@
 <?php
+
+/**
+ * 
+ *
+ * @version 1.2.6.1 - generated: 8/3/09 8:02 PM
+ */
 class ProductModel {
 	const SQL_IDENTIFIER_QUOTE='';
 	const SQL_TABLE_NAME='PRODUCT';
@@ -751,7 +757,7 @@ class ProductModel {
 	 */
 	public function toDOM() {
 		$doc=new DOMDocument();
-		$root=$doc->createElement(__CLASS__);
+		$root=$doc->createElement('ProductModel');
 		foreach ($this->toHash() as $fieldName=>$value) {
 			$fElem=$doc->createElement($fieldName);
 			$fElem->appendChild($doc->createTextNode($value));
@@ -768,7 +774,7 @@ class ProductModel {
 	 * @return ProductModel
 	 */
 	public static function fromDOMElement(DOMElement $node) {
-		if (__CLASS__!=$node->nodeName) {
+		if ('ProductModel'!=$node->nodeName) {
 			return new InvalidArgumentException('expected: ProductModel, got: ' . $node->nodeName, 0);
 		}
 		$result=array();
