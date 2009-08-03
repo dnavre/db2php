@@ -70,6 +70,8 @@ public class CodeGenerator {
 	}
 
 	/**
+	 * Read version from the Manifest
+	 *
 	 * @return the db2phpVersion
 	 */
 	public static synchronized String getDb2phpVersion() {
