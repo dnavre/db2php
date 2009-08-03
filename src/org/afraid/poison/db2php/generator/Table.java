@@ -36,6 +36,7 @@ public class Table {
 	private String catalog;
 	private String schema;
 	private String name;
+	private String remark;
 	private Set<Field> fields=null;
 	private Set<Field> primaryKeys=null;
 	private String identifierQuoteString;
@@ -72,8 +73,25 @@ public class Table {
 	 * @param connection the connection to work on
 	 */
 	private void initFields(Connection connection) {
+		fields=new LinkedHashSet<Field>();
 		try {
 			setIdentifierQuoteString(connection.getMetaData().getIdentifierQuoteString());
+
+			// table info
+			ResultSet rsetTableInfo=null;
+			try {
+				rsetTableInfo=connection.getMetaData().getTables(getCatalog(), getSchema(), getName(), null);
+				if (rsetTableInfo.next()) {
+					setRemark(rsetTableInfo.getString("REMARKS"));
+				}
+			} catch (SQLException ex) {
+				Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
+			} finally {
+				if (null!=rsetTableInfo) {
+					rsetTableInfo.close();
+				}
+				rsetTableInfo=null;
+			}
 
 			// get list of primary keys
 			Set<String> primaryKeyFields=new LinkedHashSet<String>();
@@ -87,9 +105,12 @@ public class Table {
 			} catch (SQLException ex) {
 				Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
 			} finally {
+				if (null!=rsetPrimaryKeys) {
+					rsetPrimaryKeys.close();
+				}
 				rsetPrimaryKeys=null;
 			}
-			
+
 
 			// get row identifiers
 			Set<String> rowIdentifiers=new LinkedHashSet<String>();
@@ -103,9 +124,12 @@ public class Table {
 			} catch (SQLException ex) {
 				Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
 			} finally {
+				if (null!=rsetRowIdentifiers) {
+					rsetRowIdentifiers.close();
+				}
 				rsetRowIdentifiers=null;
 			}
-			
+
 
 			// get indexes
 			Set<String> indexesUnique=new LinkedHashSet<String>();
@@ -129,37 +153,47 @@ public class Table {
 			} catch (SQLException ex) {
 				Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
 			} finally {
+				if (null!=rsetIndexes) {
+					rsetIndexes.close();
+				}
 				rsetIndexes=null;
 			}
-			
+
 
 
 			// get list of fields
-			ResultSet rsetColumns=connection.getMetaData().getColumns(getCatalog(), getSchema(), getName(), null);
-			Field field;
-			fields=new LinkedHashSet<Field>();
-			while (rsetColumns.next()) {
-				field=new Field();
-				field.setName(rsetColumns.getString("COLUMN_NAME"));
-				field.setPrimaryKey(primaryKeyFields.contains(field.getName()));
-				field.setType(rsetColumns.getInt("DATA_TYPE"));
-				field.setTypeName(rsetColumns.getString("TYPE_NAME"));
-				field.setSize(rsetColumns.getInt("COLUMN_SIZE"));
-				field.setDecimalDigits(rsetColumns.getInt("DECIMAL_DIGITS"));
-				field.setDefaultValue(rsetColumns.getString("COLUMN_DEF"));
-				field.setNullable(rsetColumns.getString("IS_NULLABLE").equalsIgnoreCase("YES"));
-				field.setAutoIncrement(rsetColumns.getString("IS_AUTOINCREMENT").equalsIgnoreCase("YES"));
-				field.setComment(rsetColumns.getString("REMARKS"));
-				field.setRowIdentifier(rowIdentifiers.contains(field.getName()));
-				if (indexesUnique.contains(field.getName())) {
-					field.setIndex(Field.INDEX_UNIQUE);
-				} else if (indexesNonUnique.contains(field.getName())) {
-					field.setIndex(Field.INDEX_NON_UNIQUE);
+			ResultSet rsetColumns=null;
+			try {
+				rsetColumns=connection.getMetaData().getColumns(getCatalog(), getSchema(), getName(), null);
+				Field field;
+				while (rsetColumns.next()) {
+					field=new Field();
+					field.setName(rsetColumns.getString("COLUMN_NAME"));
+					field.setPrimaryKey(primaryKeyFields.contains(field.getName()));
+					field.setType(rsetColumns.getInt("DATA_TYPE"));
+					field.setTypeName(rsetColumns.getString("TYPE_NAME"));
+					field.setSize(rsetColumns.getInt("COLUMN_SIZE"));
+					field.setDecimalDigits(rsetColumns.getInt("DECIMAL_DIGITS"));
+					field.setDefaultValue(rsetColumns.getString("COLUMN_DEF"));
+					field.setNullable(rsetColumns.getString("IS_NULLABLE").equalsIgnoreCase("YES"));
+					field.setAutoIncrement(rsetColumns.getString("IS_AUTOINCREMENT").equalsIgnoreCase("YES"));
+					field.setComment(rsetColumns.getString("REMARKS"));
+					field.setRowIdentifier(rowIdentifiers.contains(field.getName()));
+					if (indexesUnique.contains(field.getName())) {
+						field.setIndex(Field.INDEX_UNIQUE);
+					} else if (indexesNonUnique.contains(field.getName())) {
+						field.setIndex(Field.INDEX_NON_UNIQUE);
+					}
+					fields.add(field);
 				}
-				fields.add(field);
+			} catch (SQLException ex) {
+				Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
+			} finally {
+				if (null!=rsetColumns) {
+					rsetColumns.close();
+				}
+				rsetColumns=null;
 			}
-			rsetColumns.close();
-			rsetColumns=null;
 
 		} catch (SQLException ex) {
 			Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
@@ -350,6 +384,20 @@ public class Table {
 	 */
 	public void setIdentifierQuoteString(String identifierQuoteString) {
 		this.identifierQuoteString=identifierQuoteString;
+	}
+
+	/**
+	 * @return the remark
+	 */
+	public String getRemark() {
+		return remark;
+	}
+
+	/**
+	 * @param remark the remark to set
+	 */
+	public void setRemark(String remark) {
+		this.remark=remark;
 	}
 
 	@Override

@@ -603,7 +603,7 @@ public class CodeGenerator {
 				contents=contents.replace("<fieldName>", field.getName()).replace("<memberName>", getMemberName(field)).replace("<fieldInfo>", field.getInfoTextCompact()).replace("<fieldComment>", field.getComment());
 
 			}
-			s.append(contents.replace("<type>", getClassName()).replace("<pristine>", getSettings().isTrackFieldModifications() ? "\t\t\t$o->notifyPristine();\n" : ""));
+			s.append(contents.replace("<type>", getClassName()).replace("<tableDescription>", getTable().getRemark()).replace("<pristine>", getSettings().isTrackFieldModifications() ? "\t\t\t$o->notifyPristine();\n" : ""));
 		} catch (IOException ex) {
 			Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
 		} finally {
