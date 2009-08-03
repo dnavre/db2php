@@ -24,7 +24,7 @@ public class IOUtil {
 	 */
 	public static void closeQuietly(Reader input) {
 		try {
-			if (input!=null) {
+			if (null!=input) {
 				input.close();
 			}
 		} catch (IOException ex) {
@@ -38,7 +38,7 @@ public class IOUtil {
 	 */
 	public static void closeQuietly(Writer output) {
 		try {
-			if (output!=null) {
+			if (null!=output) {
 				output.close();
 			}
 		} catch (IOException ex) {
@@ -52,7 +52,7 @@ public class IOUtil {
 	 */
 	public static void closeQuietly(InputStream input) {
 		try {
-			if (input!=null) {
+			if (null!=input) {
 				input.close();
 			}
 		} catch (IOException ex) {
@@ -66,7 +66,7 @@ public class IOUtil {
 	 */
 	public static void closeQuietly(OutputStream output) {
 		try {
-			if (output!=null) {
+			if (null!=output) {
 				output.close();
 			}
 		} catch (IOException ex) {

@@ -632,7 +632,7 @@ public class CodeGenerator {
 				contents=contents.replace("<fieldName>", field.getName()).replace("<memberName>", getMemberName(field)).replace("<fieldInfo>", field.getInfoTextCompact()).replace("<fieldComment>", field.getComment());
 
 			}
-			String tableRemark=getTable().getRemark()==null ? "" : getTable().getRemark().replaceAll("\r|\n", " ");
+			String tableRemark=getTable().getRemark()==null ? "" : getTable().getRemark();
 			String version=new StringBuilder().append(getDb2phpVersion()).append(" - generated: ").append(new SimpleDateFormat().format(Calendar.getInstance().getTime())).toString();
 			s.append(contents.replace("<db2phpVersion>", version).replace("<type>", getClassName()).replace("<tableDescription>", tableRemark).replace("<pristine>", getSettings().isTrackFieldModifications() ? "\t\t\t$o->notifyPristine();\n" : ""));
 		} catch (IOException ex) {

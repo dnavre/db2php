@@ -25,6 +25,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.afraid.poison.common.DbUtil;
 
 /**
  * represents meta data for a table in a database
@@ -77,22 +78,6 @@ public class Table {
 		try {
 			setIdentifierQuoteString(connection.getMetaData().getIdentifierQuoteString());
 
-			// table info
-			ResultSet rsetTableInfo=null;
-			try {
-				rsetTableInfo=connection.getMetaData().getTables(getCatalog(), getSchema(), getName(), null);
-				if (rsetTableInfo.next()) {
-					setRemark(rsetTableInfo.getString("REMARKS"));
-				}
-			} catch (SQLException ex) {
-				Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
-			} finally {
-				if (null!=rsetTableInfo) {
-					rsetTableInfo.close();
-				}
-				rsetTableInfo=null;
-			}
-
 			// get list of primary keys
 			Set<String> primaryKeyFields=new LinkedHashSet<String>();
 			ResultSet rsetPrimaryKeys=null;
@@ -105,10 +90,7 @@ public class Table {
 			} catch (SQLException ex) {
 				Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
 			} finally {
-				if (null!=rsetPrimaryKeys) {
-					rsetPrimaryKeys.close();
-				}
-				rsetPrimaryKeys=null;
+				DbUtil.closeQuietly(rsetPrimaryKeys);
 			}
 
 
@@ -124,10 +106,7 @@ public class Table {
 			} catch (SQLException ex) {
 				Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
 			} finally {
-				if (null!=rsetRowIdentifiers) {
-					rsetRowIdentifiers.close();
-				}
-				rsetRowIdentifiers=null;
+				DbUtil.closeQuietly(rsetRowIdentifiers);
 			}
 
 
@@ -153,10 +132,7 @@ public class Table {
 			} catch (SQLException ex) {
 				Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
 			} finally {
-				if (null!=rsetIndexes) {
-					rsetIndexes.close();
-				}
-				rsetIndexes=null;
+				DbUtil.closeQuietly(rsetIndexes);
 			}
 
 
@@ -189,10 +165,7 @@ public class Table {
 			} catch (SQLException ex) {
 				Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
 			} finally {
-				if (null!=rsetColumns) {
-					rsetColumns.close();
-				}
-				rsetColumns=null;
+				DbUtil.closeQuietly(rsetColumns);
 			}
 
 		} catch (SQLException ex) {
@@ -432,6 +405,7 @@ public class Table {
 						rsetTables.getString("TABLE_CAT"),
 						rsetTables.getString("TABLE_SCHEM"),
 						rsetTables.getString("TABLE_NAME"));
+				table.setRemark(rsetTables.getString("REMARKS"));
 				tables.add(table);
 
 				if (null!=listener) {
@@ -439,11 +413,10 @@ public class Table {
 					listener.tableStatusChanged(evt);
 				}
 			}
-			rsetTables.close();
 		} catch (SQLException ex) {
 			Logger.getLogger(Table.class.getName()).log(Level.SEVERE, null, ex);
 		} finally {
-			rsetTables=null;
+			DbUtil.closeQuietly(rsetTables);
 		}
 		return tables;
 	}
