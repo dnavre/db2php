@@ -10,8 +10,8 @@ package org.afraid.poison.common.string;
  */
 public class StringMutatorPrependAppend implements StringMutator {
 
-	private String prepend;
-	private String append;
+	private CharSequence prepend;
+	private CharSequence append;
 
 	/**
 	 * CTOR
@@ -25,7 +25,7 @@ public class StringMutatorPrependAppend implements StringMutator {
 	 * @param prepend string to prepend
 	 * @param append string to append
 	 */
-	public StringMutatorPrependAppend(String prepend, String append) {
+	public StringMutatorPrependAppend(CharSequence prepend, CharSequence append) {
 		setPrepend(prepend);
 		setAppend(append);
 	}
@@ -33,28 +33,28 @@ public class StringMutatorPrependAppend implements StringMutator {
 	/**
 	 * @return the prepend string
 	 */
-	public String getPrepend() {
+	public CharSequence getPrepend() {
 		return prepend;
 	}
 
 	/**
 	 * @param prepend the prepend to set
 	 */
-	public void setPrepend(String prepend) {
+	public void setPrepend(CharSequence prepend) {
 		this.prepend=prepend;
 	}
 
 	/**
 	 * @return the append string
 	 */
-	public String getAppend() {
+	public CharSequence getAppend() {
 		return append;
 	}
 
 	/**
 	 * @param append the append to set
 	 */
-	public void setAppend(String append) {
+	public void setAppend(CharSequence append) {
 		this.append=append;
 	}
 
