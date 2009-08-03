@@ -3,6 +3,7 @@ dist
 nbproject/build-impl.xml
 nbproject/private
 *~
+*.bak*
 *.log
 *.bz2
 *.gz
