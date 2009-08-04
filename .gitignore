@@ -9,4 +9,5 @@ nbproject/private
 *.gz
 *.nbm
 .googlecode
+.passwd
 code.google

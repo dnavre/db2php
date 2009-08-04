@@ -12,7 +12,7 @@ ant nbm || exit 1
 cp build/org-afraid-poison-db2php.nbm org-afraid-poison-db2php-${VERSION}.nbm || exit 1
 
 # upload
-. .googlecode || exit 1
+. .passwd || exit 1
 upcmd="../googlecode_upload.py -p $GPROJECT -u $GUSER -w $GPASSWORD"
 $upcmd -s "Source code v${VERSION}" -l "OpSys-All,Type-Source,Featured" "db2php-${VERSION}.tar.bz2" || exit 1
 $upcmd -s "NetBeans plugin v${VERSION}" -l "OpSys-All,Type-Package,NetBeans,Featured" "org-afraid-poison-db2php-${VERSION}.nbm" || exit 1
