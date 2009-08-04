@@ -460,7 +460,7 @@ public class CodeGenerator {
 						if (0==f.getDefaultValue().length()) {
 							s.append("0");
 						} else {
-							if (f.getDefaultValue().matches(".*[^0-9\\..*")) {
+							if (f.getDefaultValue().matches(".*[^0-9\\.].*")) {
 								s.append(getPhpString(f.getDefaultValue()));
 							} else {
 								s.append(f.getDefaultValue());
