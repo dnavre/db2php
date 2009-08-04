@@ -94,6 +94,10 @@ public class CodeGenerator {
 		return db2phpVersion;
 	}
 
+	public static String escapePhpString(String s) {
+		return s.replace("'", "\\'");
+	}
+
 	/**
 	 * @return the table
 	 */
@@ -452,10 +456,14 @@ public class CodeGenerator {
 						if (0==f.getDefaultValue().length()) {
 							s.append('0');
 						} else {
-							s.append(f.getDefaultValue());
+							if (f.getDefaultValue().matches(".*[^0-9\.]+.*")) {
+
+							} else {
+								s.append(f.getDefaultValue());
+							}
 						}
 					} else {
-						s.append("'").append(f.getDefaultValue()).append("'");
+						s.append("'").append(escapePhpString(f.getDefaultValue())).append("'");
 					}
 				}
 				return s.toString();
@@ -629,12 +637,13 @@ public class CodeGenerator {
 			is=getClass().getResourceAsStream(new StringBuilder(SNIPPET_PATH).append(fileName).toString());
 			String contents=IOUtil.readString(is);
 			if (null!=field) {
-				contents=contents.replace("<fieldName>", field.getName()).replace("<memberName>", getMemberName(field)).replace("<fieldInfo>", field.getInfoTextCompact()).replace("<fieldComment>", field.getComment());
-
+				contents=contents.replace("<fieldName>", field.getName());
+				contents=contents.replace("<memberName>", getMemberName(field));
+				contents=contents.replace("<fieldInfo>", field.getInfoTextCompact());
+				contents=contents.replace("<fieldComment>", StringUtil.notNull(field.getComment()));
 			}
-			String tableRemark=getTable().getRemark()==null ? "" : getTable().getRemark();
 			String version=new StringBuilder().append(getDb2phpVersion()).append(" - generated: ").append(new SimpleDateFormat().format(Calendar.getInstance().getTime())).toString();
-			s.append(contents.replace("<db2phpVersion>", version).replace("<type>", getClassName()).replace("<tableDescription>", tableRemark).replace("<pristine>", getSettings().isTrackFieldModifications() ? "\t\t\t$o->notifyPristine();\n" : ""));
+			s.append(contents.replace("<db2phpVersion>", version).replace("<type>", getClassName()).replace("<tableDescription>", StringUtil.notNull(getTable().getRemark())).replace("<pristine>", getSettings().isTrackFieldModifications() ? "\t\t\t$o->notifyPristine();\n" : ""));
 		} catch (IOException ex) {
 			Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
 		} finally {

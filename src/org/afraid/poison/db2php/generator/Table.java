@@ -152,7 +152,12 @@ public class Table {
 					field.setDecimalDigits(rsetColumns.getInt("DECIMAL_DIGITS"));
 					field.setDefaultValue(rsetColumns.getString("COLUMN_DEF"));
 					field.setNullable(rsetColumns.getString("IS_NULLABLE").equalsIgnoreCase("YES"));
-					field.setAutoIncrement(rsetColumns.getString("IS_AUTOINCREMENT").equalsIgnoreCase("YES"));
+					try {
+						// BUG in pgsql JDBC Driver
+						field.setAutoIncrement(rsetColumns.getString("IS_AUTOINCREMENT").equalsIgnoreCase("YES"));
+					} catch (SQLException ex) {
+						//Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
+					}
 					field.setComment(rsetColumns.getString("REMARKS"));
 					field.setRowIdentifier(rowIdentifiers.contains(field.getName()));
 					if (indexesUnique.contains(field.getName())) {
