@@ -15,6 +15,11 @@ import java.sql.Statement;
  */
 public class DbUtil {
 
+	/**
+	 * close passed connection and suppress exception
+	 *
+	 * @param connection the connection
+	 */
 	public static void closeQuietly(Connection connection) {
 		try {
 			if (null!=connection) {
@@ -24,6 +29,11 @@ public class DbUtil {
 		}
 	}
 
+	/**
+	 * close passed statement and suppress exception
+	 *
+	 * @param statement the statement
+	 */
 	public static void closeQuietly(Statement statement) {
 		try {
 			if (null!=statement) {
@@ -33,6 +43,12 @@ public class DbUtil {
 		}
 	}
 
+	/**
+	 * close passed result set and suppress exception
+	 *
+	 *
+	 * @param resultSet the result set
+	 */
 	public static void closeQuietly(ResultSet resultSet) {
 		try {
 			if (null!=resultSet) {
