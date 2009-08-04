@@ -21,4 +21,4 @@ $upcmd -s "NetBeans plugin v${VERSION}" -l "OpSys-All,Type-Package,NetBeans,Feat
 
 
 # SPAM!
-curl -u "$TUSER:$TPASSWORD" -s -F status="v${VERSION} of db2#php #netbeans plugin released \(^_^)/ http://plugins.netbeans.org/PluginPortal/faces/PluginDetailPage.jsp?pluginid=19143" http://twitter.com/statuses/update.xml http://twitter.com/account/end_session
+curl --basic --user "${TUSER}:${TPASSWORD}" --data status="v${VERSION} of db2php #netbeans #php plugin released \(^_^)/ http://code.google.com/p/db2php/" http://twitter.com/statuses/update.xml
