@@ -1,11 +1,15 @@
 #!/bin/bash
 
+# cleanup
+rm -v org-afraid-poison-db2php-*.nbm db2php-*.tar.bz2 *~ .*~
+
 # parse version
 . .version || exit 1
 
 # create source tarball
 ./tarsrc || exit 1
 
+exit 1
 # create netbeans module
 ant clean || exit 1
 ant nbm || exit 1
@@ -21,4 +25,4 @@ $upcmd -s "NetBeans plugin v${VERSION}" -l "OpSys-All,Type-Package,NetBeans,Feat
 
 
 # SPAM!
-curl --basic --user "${TUSER}:${TPASSWORD}" --data status="v${VERSION} of db2php #netbeans #php plugin released \(^_^)/ http://code.google.com/p/db2php/" http://twitter.com/statuses/update.xml
+curl --basic --user "${TUSER}:${TPASSWORD}" --data status="v${VERSION} of #db2php #netbeans #php plugin released \(^_^)/ http://code.google.com/p/db2php/" http://twitter.com/statuses/update.xml

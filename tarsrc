@@ -6,6 +6,14 @@ mkdir "$DDIR"
 for f in $(git ls-files); do
 	cp --parents "$f" "${DDIR}"
 done
+
+if [ -d "code.google" ]; then
+	svn up "code.google"
+	cp code.google/wiki/CHANGELOG.wiki "${DDIR}"
+	mkdir "${DDIR}/doc"
+	cp code.google/wiki/{HOWTO,GeneratedMethods}.wiki "${DDIR}/doc/"
+fi
+
 cp src/org/afraid/poison/db2php/generator/utility/* "${DDIR}"
 tar -v -c "$DDIR"|bzip2 -9> "${DDIR}.tar.bz2"
 rm -rf "$DDIR"
