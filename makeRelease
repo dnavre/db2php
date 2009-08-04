@@ -1,12 +1,24 @@
 #!/bin/bash
 
-. .version
+# parse version
+. .version || exit 1
+
+# create source tarball
 ./tarsrc || exit 1
+
+# create netbeans module
+ant clean || exit 1
 ant nbm || exit 1
 cp build/org-afraid-poison-db2php.nbm org-afraid-poison-db2php-${VERSION}.nbm || exit 1
 
-#. .googlecode || exit 1
-upcmd="../googlecode_upload.py -p \"$PROJECT\" -u \"$USER\" -w \"$PASSWORD\""
-$upcmd -s "Source code v${VERSION}" "db2php-${VERSION}.tar.bz2"
-$upcmd -s "NetBeans plugin v${VERSION}" "org-afraid-poison-db2php-${VERSION}.nbm"
+# upload
+. .googlecode || exit 1
+upcmd="../googlecode_upload.py -p $GPROJECT -u $GUSER -w $GPASSWORD"
+$upcmd -s "Source code v${VERSION}" -l "OpSys-All,Type-Source,Featured" "db2php-${VERSION}.tar.bz2" || exit 1
+$upcmd -s "NetBeans plugin v${VERSION}" -l "OpSys-All,Type-Package,NetBeans,Featured" "org-afraid-poison-db2php-${VERSION}.nbm" || exit 1
 
+# NetBeans plugin page? curl maybe?
+
+
+# SPAM!
+curl -u "$TUSER:$TPASSWORD" -s -F status="v${VERSION} of db2#php #netbeans plugin released \(^_^)/ http://plugins.netbeans.org/PluginPortal/faces/PluginDetailPage.jsp?pluginid=19143" http://twitter.com/statuses/update.xml http://twitter.com/account/end_session

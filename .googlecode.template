@@ -1,5 +1,10 @@
 #!/bin/bash
 
-PROJECT="db2php"
-USER=""
-PASSWORD=""
+# google code
+GPROJECT="db2php"
+GUSER=""
+GPASSWORD=""
+
+# twitter
+TUSER=""
+TPASSWORD=""

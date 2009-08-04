@@ -105,6 +105,7 @@ public final class PhpClassWizardIterator implements WizardDescriptor.Instantiat
 		ProgressHandle ph=ProgressHandleFactory.createHandle("Generating PHP Entity classes");
 		try {
 			int done=0;
+			ph.setInitialDelay(0);
 			ph.start(tables.size());
 			for (Table t : tables) {
 				generator=new CodeGenerator(t, settings);
