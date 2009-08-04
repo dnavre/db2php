@@ -552,26 +552,21 @@ public class CodeGenerator {
 		};
 		s.append(CollectionUtil.join(fields, ",", fieldAssign));
 		Set<Field> keys=getTable().getFieldsIdentifiers();
+		StringBuilder sqlWhere=new StringBuilder();
 		if (!keys.isEmpty()) {
-			s.append(" WHERE ");
-			s.append(CollectionUtil.join(keys, " AND ", fieldAssign));
+			sqlWhere.append(" WHERE ");
+			sqlWhere.append(CollectionUtil.join(keys, " AND ", fieldAssign));
 		}
 		s.append("';\n");
 
 		// select by id
 		s.append("\tconst SQL_SELECT_PK='SELECT * FROM ").append(quoteIdentifier(getTable().getName()));
-		if (!keys.isEmpty()) {
-			s.append(" WHERE ");
-			s.append(CollectionUtil.join(keys, " AND ", fieldAssign));
-		}
+		s.append(sqlWhere);
 		s.append("';\n");
 
 		// delete by id
 		s.append("\tconst SQL_DELETE_PK='DELETE FROM ").append(quoteIdentifier(getTable().getName()));
-		if (!keys.isEmpty()) {
-			s.append(" WHERE ");
-			s.append(CollectionUtil.join(keys, " AND ", fieldAssign));
-		}
+		s.append(sqlWhere);
 		s.append("';\n");
 		return s.toString();
 	}
