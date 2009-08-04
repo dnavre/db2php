@@ -98,6 +98,10 @@ public class CodeGenerator {
 		return s.replace("'", "\\'");
 	}
 
+	public static String getPhpString(String s) {
+		return new StringBuilder("'").append(escapePhpString(s)).append("'").toString();
+	}
+
 	/**
 	 * @return the table
 	 */
@@ -442,7 +446,7 @@ public class CodeGenerator {
 			public String transform(Object input) {
 				Field f=(Field) input;
 				StringBuilder s=new StringBuilder("\t\t");
-				s.append("'").append(f.getName()).append("'=>");
+				s.append(getPhpString(f.getName())).append("=>");
 				if (f.isAutoIncrement()||(f.isNullable()&&null==f.getDefaultValue())) {
 					s.append("null");
 				} else if (null==f.getDefaultValue()) {
@@ -454,16 +458,16 @@ public class CodeGenerator {
 				} else {
 					if (f.isNumberType()) {
 						if (0==f.getDefaultValue().length()) {
-							s.append('0');
+							s.append("0");
 						} else {
-							if (f.getDefaultValue().matches(".*[^0-9\.]+.*")) {
-
+							if (f.getDefaultValue().matches(".*[^0-9\\..*")) {
+								s.append(getPhpString(f.getDefaultValue()));
 							} else {
 								s.append(f.getDefaultValue());
 							}
 						}
 					} else {
-						s.append("'").append(escapePhpString(f.getDefaultValue())).append("'");
+						s.append(getPhpString(f.getDefaultValue()));
 					}
 				}
 				return s.toString();
