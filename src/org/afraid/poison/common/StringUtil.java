@@ -17,6 +17,8 @@ import org.afraid.poison.common.string.StringOccurrence;
  */
 public class StringUtil {
 
+	public static final CharSequence EMTPY="";
+
 	/**
 	 * repeat passed string specified number of times
 	 *
@@ -183,4 +185,12 @@ public class StringUtil {
 		}
 		return occurrences;
 	}
+
+	public static CharSequence notNull(CharSequence cs) {
+		if (null==cs) {
+			return EMTPY;
+		}
+		return cs;
+	}
+
 }
