@@ -399,23 +399,29 @@ public class Table {
 	 */
 	public static Set<Table> getTables(Connection conn, TableListener listener) {
 		Set<Table> tables=new LinkedHashSet<Table>();
+		if (null==conn) {
+			return tables;
+		}
 		ResultSet rsetTables=null;
 		try {
-			rsetTables=conn.getMetaData().getTables(null, null, null, null);
-			String tableName;
-			Table table;
-			while (rsetTables.next()) {
-				table=new Table(
-						conn,
-						rsetTables.getString("TABLE_CAT"),
-						rsetTables.getString("TABLE_SCHEM"),
-						rsetTables.getString("TABLE_NAME"));
-				table.setRemark(rsetTables.getString("REMARKS"));
-				tables.add(table);
+			DatabaseMetaData dmd=conn.getMetaData();
+			if (null!=dmd) {
+				rsetTables=dmd.getTables(null, null, null, null);
+				String tableName;
+				Table table;
+				while (rsetTables.next()) {
+					table=new Table(
+							conn,
+							rsetTables.getString("TABLE_CAT"),
+							rsetTables.getString("TABLE_SCHEM"),
+							rsetTables.getString("TABLE_NAME"));
+					table.setRemark(rsetTables.getString("REMARKS"));
+					tables.add(table);
 
-				if (null!=listener) {
-					TableEvent evt=new TableEvent(conn, table);
-					listener.tableStatusChanged(evt);
+					if (null!=listener) {
+						TableEvent evt=new TableEvent(conn, table);
+						listener.tableStatusChanged(evt);
+					}
 				}
 			}
 		} catch (SQLException ex) {
