@@ -3,7 +3,7 @@
 /**
  * 
  *
- * @version 1.2.6.1 - generated: 8/3/09 8:02 PM
+ * @version 1.2.6.3 - generated: 8/6/09 8:02 PM
  */
 class ProductModel {
 	const SQL_IDENTIFIER_QUOTE='';
@@ -608,7 +608,6 @@ class ProductModel {
 		. self::getSqlWhere($filter, $and);
 		$stmt=self::prepareStatement($db, $sql);
 		self::bindValuesForFilter($stmt, $filter);
-		$affected=$stmt->execute();
 		$affected=$stmt->execute();
 		if (false===$affected) {
 			$stmt->closeCursor();

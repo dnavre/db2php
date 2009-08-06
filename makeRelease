@@ -9,7 +9,6 @@ rm -v org-afraid-poison-db2php-*.nbm db2php-*.tar.bz2 *~ .*~
 # create source tarball
 ./tarsrc || exit 1
 
-exit 1
 # create netbeans module
 ant clean || exit 1
 ant nbm || exit 1
