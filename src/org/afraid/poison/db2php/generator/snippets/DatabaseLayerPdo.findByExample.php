@@ -41,11 +41,31 @@
 
 		$stmt=self::prepareStatement($db, $sql);
 		self::bindValuesForFilter($stmt, $filter);
+		return self::fromStatement($stmt);
+	}
+
+	/**
+	 * Will execute the passed statement and return the result as an array of <type> instances
+	 *
+	 * @param PDOStatement $stmt
+	 * @return <type>[]
+	 */
+	public static function fromStatement(PDOStatement $stmt) {
 		$affected=$stmt->execute();
 		if (false===$affected) {
 			$stmt->closeCursor();
 			throw new Exception($stmt->errorCode() . ':' . var_export($stmt->errorInfo(), true), 0);
 		}
+		return self::fromExecutedStatement($stmt);
+	}
+
+	/**
+	 * returns the result as an array of <type> instances without executing the passed statement
+	 *
+	 * @param PDOStatement $stmt
+	 * @return <type>[]
+	 */
+	public static function fromExecutedStatement(PDOStatement $stmt) {
 		$resultInstances=array();
 		while($result=$stmt->fetch(PDO::FETCH_ASSOC)) {
 			$o=new <type>();
@@ -92,7 +112,7 @@
 	 * @param PDOStatement $stmt
 	 * @param array $filter
 	 */
-	protected static function bindValuesForFilter(&$stmt, $filter) {
+	protected static function bindValuesForFilter(PDOStatement &$stmt, $filter) {
 		$i=0;
 		foreach ($filter as $value) {
 			$dfc=$value instanceof DFC;
@@ -114,14 +134,7 @@
 	 */
 	public static function findBySql(PDO $db, $sql) {
 		$stmt=$db->query($sql);
-		$resultInstances=array();
-		while($result=$stmt->fetch(PDO::FETCH_ASSOC)) {
-			$o=new <type>();
-			$o->assignByHash($result);
-<pristine>			$resultInstances[]=$o;
-		}
-		$stmt->closeCursor();
-		return $resultInstances;
+		return self::fromExecutedStatement($stmt);
 	}
 
 	/**
