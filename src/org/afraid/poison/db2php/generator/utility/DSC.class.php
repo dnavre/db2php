@@ -1,13 +1,9 @@
 <?php
-/* 
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 
 /**
- * Description of DFC
+ * Data Sort Criteria
  *
- * @author schnaiter
+ * @author poison
  */
 class DSC {
 	/**
@@ -31,6 +27,12 @@ class DSC {
 	 */
 	private $mode;
 
+	/**
+	 * CTOR
+	 *
+	 * @param int $field
+	 * @param int $mode
+	 */
 	public function __construct($field, $mode=0) {
 		$this->field=$field;
 		$this->mode=$mode;
