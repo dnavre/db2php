@@ -557,6 +557,7 @@ public class CodeGenerator {
 			sqlWhere.append(" WHERE ");
 			sqlWhere.append(CollectionUtil.join(keys, " AND ", fieldAssign));
 		}
+		s.append(sqlWhere);
 		s.append("';\n");
 
 		// select by id
