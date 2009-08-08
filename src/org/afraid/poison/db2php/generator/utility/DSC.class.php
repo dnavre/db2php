@@ -15,6 +15,15 @@ class DSC {
 	 */
 	const DESC=1;
 	/**
+	 * sort modes to string
+	 *
+	 * @var array
+	 */
+	private static $SORT_MODES=array(
+		self::ASC=>'ASC',
+		self::DESC=>'DESC'
+	);
+	/**
 	 * fields id
 	 *
 	 * @var int
@@ -72,6 +81,16 @@ class DSC {
 	 */
 	public function setMode($mode) {
 		$this->mode=$mode;
+	}
+
+	/**
+	 * get sort mode as string for use in SQL
+	 *
+	 * @param int $mode
+	 * @return string
+	 */
+	public static function getModeSql($mode) {
+		return self::$SORT_MODES[$mode];
 	}
 }
 ?>
