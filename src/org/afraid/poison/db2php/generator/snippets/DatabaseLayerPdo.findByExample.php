@@ -6,9 +6,11 @@
 	 *
 	 * @param PDO $db a PDO Database instance
 	 * @param <type> $example an example instance
+	 * @param boolean $and
+	 * @param array $sort
 	 * @return <type>[]
 	 */
-	public static function findByExample(PDO $db,<type> $example, $and=true) {
+	public static function findByExample(PDO $db,<type> $example, $and=true, $sort=null) {
 		$exampleValues=$example->toArray();
 		$filter=array();
 		foreach ($exampleValues as $fieldId=>$value) {
@@ -30,9 +32,10 @@
 	 * @param PDO $db a PDO Database instance
 	 * @param array $filter
 	 * @param boolean $and
+	 * @param array $sort
 	 * @return <type>[]
 	 */
-	public static function findByFilter(PDO $db, $filter, $and=true) {
+	public static function findByFilter(PDO $db, $filter, $and=true, $sort=null) {
 		if ($filter instanceof DFC) {
 			$filter=array($filter);
 		}
