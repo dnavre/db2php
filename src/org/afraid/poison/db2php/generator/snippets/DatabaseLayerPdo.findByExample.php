@@ -18,7 +18,7 @@
 				$filter[$fieldId]=$value;
 			}
 		}
-		return self::findByFilter($db, $filter, $and);
+		return self::findByFilter($db, $filter, $and, $sort);
 	}
 
 	/**
@@ -40,7 +40,8 @@
 			$filter=array($filter);
 		}
 		$sql='SELECT * FROM <tableNameQuoted>'
-		. self::getSqlWhere($filter, $and);
+		. self::getSqlWhere($filter, $and)
+		. self::getSqlOrderBy($sort);
 
 		$stmt=self::prepareStatement($db, $sql);
 		self::bindValuesForFilter($stmt, $filter);
