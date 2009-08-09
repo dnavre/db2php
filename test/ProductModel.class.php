@@ -3,7 +3,7 @@
 /**
  * 
  *
- * @version 1.2.6.3 - generated: 8/6/09 8:02 PM
+ * @version 1.2.7 - generated: 8/9/09 6:36 PM
  */
 class ProductModel {
 	const SQL_IDENTIFIER_QUOTE='';
@@ -86,11 +86,11 @@ class ProductModel {
 	}
 
 	/**
-	 * return array with the field ids of values which have been changed since the last notifyPristine call
+	 * return array with the field id as index and the new value as value of values which have been changed since the last notifyPristine call
 	 *
 	 * @return array
 	 */
-	public function getFieldsChanged() {
+	public function getFieldsValuesChanged() {
 		$changed=array();
 		if (!$this->isChanged()) {
 			return $changed;
@@ -99,10 +99,19 @@ class ProductModel {
 		$new=$this->toArray();
 		foreach ($old as $fieldId=>$value) {
 			if ($new[$fieldId]!==$value) {
-				$changed[]=$fieldId;
+				$changed[$fieldId]=$new[$fieldId];
 			}
 		}
 		return $changed;
+	}
+
+	/**
+	 * return array with the field ids of values which have been changed since the last notifyPristine call
+	 *
+	 * @return array
+	 */
+	public function getFieldsChanged() {
+		return array_keys($this->getFieldsValuesChanged());
 	}
 
 	/**
@@ -465,10 +474,12 @@ class ProductModel {
 	 * Match by attributes of passed example instance and return matched rows as an array of ProductModel instances
 	 *
 	 * @param PDO $db a PDO Database instance
-	 * @param ProductModel $example an example instance
+	 * @param ProductModel $example an example instance defining the conditions. All non-null values will be considered a constraint, null values will be ignored.
+	 * @param boolean $and true if conditions should be and'ed, false if they should be or'ed
+	 * @param array $sort array of DSC instances
 	 * @return ProductModel[]
 	 */
-	public static function findByExample(PDO $db,ProductModel $example, $and=true) {
+	public static function findByExample(PDO $db,ProductModel $example, $and=true, $sort=null) {
 		$exampleValues=$example->toArray();
 		$filter=array();
 		foreach ($exampleValues as $fieldId=>$value) {
@@ -476,7 +487,7 @@ class ProductModel {
 				$filter[$fieldId]=$value;
 			}
 		}
-		return self::findByFilter($db, $filter, $and);
+		return self::findByFilter($db, $filter, $and, $sort);
 	}
 
 	/**
@@ -488,24 +499,46 @@ class ProductModel {
 	 * Will return matched rows as an array of ProductModel instances.
 	 *
 	 * @param PDO $db a PDO Database instance
-	 * @param array $filter
-	 * @param boolean $and
+	 * @param array $filter array of DFC instances defining the conditions
+	 * @param boolean $and true if conditions should be and'ed, false if they should be or'ed
+	 * @param array $sort array of DSC instances
 	 * @return ProductModel[]
 	 */
-	public static function findByFilter(PDO $db, $filter, $and=true) {
+	public static function findByFilter(PDO $db, $filter, $and=true, $sort=null) {
 		if ($filter instanceof DFC) {
 			$filter=array($filter);
 		}
 		$sql='SELECT * FROM PRODUCT'
-		. self::getSqlWhere($filter, $and);
+		. self::getSqlWhere($filter, $and)
+		. self::getSqlOrderBy($sort);
 
 		$stmt=self::prepareStatement($db, $sql);
 		self::bindValuesForFilter($stmt, $filter);
+		return self::fromStatement($stmt);
+	}
+
+	/**
+	 * Will execute the passed statement and return the result as an array of ProductModel instances
+	 *
+	 * @param PDOStatement $stmt
+	 * @return ProductModel[]
+	 */
+	public static function fromStatement(PDOStatement $stmt) {
 		$affected=$stmt->execute();
 		if (false===$affected) {
 			$stmt->closeCursor();
 			throw new Exception($stmt->errorCode() . ':' . var_export($stmt->errorInfo(), true), 0);
 		}
+		return self::fromExecutedStatement($stmt);
+	}
+
+	/**
+	 * returns the result as an array of ProductModel instances without executing the passed statement
+	 *
+	 * @param PDOStatement $stmt
+	 * @return ProductModel[]
+	 */
+	public static function fromExecutedStatement(PDOStatement $stmt) {
 		$resultInstances=array();
 		while($result=$stmt->fetch(PDO::FETCH_ASSOC)) {
 			$o=new ProductModel();
@@ -548,12 +581,41 @@ class ProductModel {
 	}
 
 	/**
+	 * get sql ORDER BY part from DSCs
+	 *
+	 * @param ProductModel $sort
+	 * @return string
+	 */
+	protected static function getSqlOrderBy($sort) {
+		if (is_null($sort)) {
+			return '';
+		}
+		if ($sort instanceof DSC) {
+			$sort=array($sort);
+		}
+
+		$sql=null;
+		$first=true;
+		foreach ($sort as $s) {
+			/* @var $s DSC */
+			if ($first) {
+				$sql.=' ORDER BY ';
+				$first=false;
+			} else {
+				$sql.=',';
+			}
+			$sql.=self::SQL_IDENTIFIER_QUOTE . self::$FIELD_NAMES[$s->getField()] . self::SQL_IDENTIFIER_QUOTE . ' ' . $s->getModeSql();
+		}
+		return $sql;
+	}
+
+	/**
 	 * bind values from filter to statement
 	 *
 	 * @param PDOStatement $stmt
 	 * @param array $filter
 	 */
-	protected static function bindValuesForFilter(&$stmt, $filter) {
+	protected static function bindValuesForFilter(PDOStatement &$stmt, $filter) {
 		$i=0;
 		foreach ($filter as $value) {
 			$dfc=$value instanceof DFC;
@@ -575,15 +637,7 @@ class ProductModel {
 	 */
 	public static function findBySql(PDO $db, $sql) {
 		$stmt=$db->query($sql);
-		$resultInstances=array();
-		while($result=$stmt->fetch(PDO::FETCH_ASSOC)) {
-			$o=new ProductModel();
-			$o->assignByHash($result);
-			$o->notifyPristine();
-			$resultInstances[]=$o;
-		}
-		$stmt->closeCursor();
-		return $resultInstances;
+		return self::fromExecutedStatement($stmt);
 	}
 
 	/**

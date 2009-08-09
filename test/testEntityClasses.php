@@ -1,5 +1,6 @@
 <?php
 require_once '../DFC.class.php';
+require_once '../DSC.class.php';
 
 $db=new PDO('sqlite:test.db');
 
@@ -19,22 +20,25 @@ echo $product->getDescription() . "\n";
 
 // query by example
 echo ' -> get all products with product code HW' . "\n";
+
+// define sorting
+$sort=array(
+	new DSC(ProductModel::FIELD_DESCRIPTION, DSC::ASC),
+	new DSC(ProductModel::FIELD_PURCHASE_COST, DSC::ASC)
+);
+
 $example=new ProductModel();
 $example->setProductCode('HW');
-$products=ProductModel::findByExample($db, $example);
+$products=ProductModel::findByExample($db, $example, true, $sort);
 listProducts($products);
 
 // query with filter
 echo ' -> get all products with a purchase cost of at least 1000' . "\n";
 $filter=new DFC(ProductModel::FIELD_PURCHASE_COST, 1000, DFC::NOT|DFC::SMALLER);
-$products=ProductModel::findByFilter($db, $filter);
+$products=ProductModel::findByFilter($db, $filter, true, $sort);
 listProducts($products);
 
 echo ' -> get all products with a purchase smallther than 1000 and the description containg Computer' . "\n";
-$filter=array (
-	new DFC(ProductModel::FIELD_PURCHASE_COST, 1000, DFC::SMALLER),
-	new DFC(ProductModel::FIELD_DESCRIPTION, 'Computer', DFC::CONTAINS)
-);
 $products=ProductModel::findByFilter($db, $filter);
 listProducts($products);
 
@@ -60,12 +64,15 @@ $product->insertIntoDatabase($db);
 $product->setPurchaseCost(100);
 $product->setMarkup(120);
 $product->setQuantityOnHand(200);
+// get changed fields
+var_dump($product->getFieldsValuesChanged());
 $product->updateToDatabase($db);
 
 // delete product
 $product->deleteFromDatabase($db);
+
+// dom functions
 echo $product->toDOM()->saveXML();
 var_dump(ProductModel::fromDOMDocument($product->toDOM()));
-
 
 ?>
