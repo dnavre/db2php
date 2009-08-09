@@ -41,7 +41,8 @@ public class Field {
 	/**
 	 * field is non-unique index
 	 */
-	public static final int INDEX_NON_UNIQUE=2;/**
+	public static final int INDEX_NON_UNIQUE=2;
+	/**
 	 * number types
 	 */
 	public static final int[] NUMBER_TYPES={Types.BIGINT, Types.DECIMAL, Types.DOUBLE, Types.FLOAT, Types.INTEGER, Types.NUMERIC, Types.SMALLINT, Types.TINYINT};
