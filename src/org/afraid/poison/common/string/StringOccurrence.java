@@ -16,7 +16,7 @@ public class StringOccurrence {
 	private String string;
 	private int start;
 
-	public static class Comparator implements java.util.Comparator<StringOccurrence> {
+	public static class PositionComparator implements java.util.Comparator<StringOccurrence> {
 
 		@Override
 		public int compare(StringOccurrence o1, StringOccurrence o2) {

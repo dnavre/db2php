@@ -78,7 +78,7 @@ public class CamelCaseFairy {
 			}
 		}
 
-		Collections.sort(allContained, new StringOccurrence.Comparator());
+		Collections.sort(allContained, new StringOccurrence.PositionComparator());
 		return new LinkedHashSet<StringOccurrence>(allContained);
 	}
 
