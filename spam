@@ -1,0 +1,5 @@
+#!/bin/bash
+
+. .version || exit 1
+. .passwd || exit 1
+curl --basic --user "${TUSER}:${TPASSWORD}" --data status="v${VERSION} of #db2php #netbeans #php plugin released \(^_^)/ http://code.google.com/p/db2php/" http://twitter.com/statuses/update.xml
