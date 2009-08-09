@@ -110,6 +110,34 @@
 	}
 
 	/**
+	 * get sql ORDER BY part from DSCs
+	 *
+	 * @param <type> $sort
+	 * @return string
+	 */
+	protected static function getSqlOrderBy($sort) {
+		if (is_null($sort)) {
+			return '';
+		}
+		if ($sort instanceof DSC) {
+			$sort=array($sort);
+		}
+
+		$sql=null;
+		$first=true;
+		foreach ($sort as $s) {
+			/* @var $s DSC */
+			if ($first) {
+				$sql.=' ORDER BY ';
+			} else {
+				$sql.=',';
+			}
+			$sql.=self::SQL_IDENTIFIER_QUOTE . self::$FIELD_NAMES[$s->getField()] . self::SQL_IDENTIFIER_QUOTE . ' ' . $s->getModeSql();
+		}
+		return $sql;
+	}
+
+	/**
 	 * bind values from filter to statement
 	 *
 	 * @param PDOStatement $stmt

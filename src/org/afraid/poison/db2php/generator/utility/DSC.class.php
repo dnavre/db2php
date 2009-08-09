@@ -86,10 +86,9 @@ class DSC {
 	/**
 	 * get sort mode as string for use in SQL
 	 *
-	 * @param int $mode
 	 * @return string
 	 */
-	public static function getModeSql($mode) {
+	public function getModeSql() {
 		return self::$SORT_MODES[$mode];
 	}
 }
