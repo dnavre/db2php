@@ -72,6 +72,10 @@ public final class PhpClassUtilityWizardIterator implements WizardDescriptor.Ins
 					is=getClass().getResourceAsStream("/org/afraid/poison/db2php/generator/utility/DFC.class.php");
 					FileUtil.copy(is, new File(p1.getDirectory(), "DFC.class.php"));
 				}
+				if (p1.isSetDsc()) {
+					is=getClass().getResourceAsStream("/org/afraid/poison/db2php/generator/utility/DSC.class.php");
+					FileUtil.copy(is, new File(p1.getDirectory(), "DSC.class.php"));
+				}
 				if (p1.isSetSimpleDatabaseInterface()) {
 					is=getClass().getResourceAsStream("/org/afraid/poison/db2php/generator/utility/SimpleDatabaseInterface.class.php");
 					FileUtil.copy(is, new File(p1.getDirectory(), "SimpleDatabaseInterface.class.php"));
