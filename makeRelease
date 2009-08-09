@@ -23,7 +23,6 @@ $upcmd -s "NetBeans plugin v${VERSION}" -l "OpSys-All,Type-Package,NetBeans,Feat
 
 # NetBeans plugin page? curl maybe?
 
-
 # SPAM!
 echo "spam:"
 ./spam
