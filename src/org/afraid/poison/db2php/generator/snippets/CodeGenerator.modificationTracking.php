@@ -37,11 +37,11 @@
 	}
 
 	/**
-	 * return array with the field ids of values which have been changed since the last notifyPristine call
+	 * return array with the field id as index and the new value as value of values which have been changed since the last notifyPristine call
 	 *
 	 * @return array
 	 */
-	public function getFieldsChanged() {
+	public function getFieldsValuesChanged() {
 		$changed=array();
 		if (!$this->isChanged()) {
 			return $changed;
@@ -50,10 +50,19 @@
 		$new=$this->toArray();
 		foreach ($old as $fieldId=>$value) {
 			if ($new[$fieldId]!==$value) {
-				$changed[]=$fieldId;
+				$changed[$fieldId]=$new[$fieldId];
 			}
 		}
 		return $changed;
+	}
+
+	/**
+	 * return array with the field ids of values which have been changed since the last notifyPristine call
+	 *
+	 * @return array
+	 */
+	public function getFieldsChanged() {
+		return array_keys($this->getFieldsValuesChanged());
 	}
 
 	/**
