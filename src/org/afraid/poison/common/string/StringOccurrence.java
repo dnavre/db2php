@@ -16,6 +16,9 @@ public class StringOccurrence {
 	private String string;
 	private int start;
 
+	/**
+	 * Compares the positions of the occurrences
+	 */
 	public static class PositionComparator implements java.util.Comparator<StringOccurrence> {
 
 		@Override
