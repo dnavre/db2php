@@ -130,6 +130,7 @@
 			/* @var $s DSC */
 			if ($first) {
 				$sql.=' ORDER BY ';
+				$first=false;
 			} else {
 				$sql.=',';
 			}

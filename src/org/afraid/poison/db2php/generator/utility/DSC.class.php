@@ -89,7 +89,7 @@ class DSC {
 	 * @return string
 	 */
 	public function getModeSql() {
-		return self::$SORT_MODES[$mode];
+		return self::$SORT_MODES[$this->getMode()];
 	}
 }
 ?>
