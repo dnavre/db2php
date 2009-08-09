@@ -5,9 +5,9 @@
 	 * Match by attributes of passed example instance and return matched rows as an array of <type> instances
 	 *
 	 * @param PDO $db a PDO Database instance
-	 * @param <type> $example an example instance
-	 * @param boolean $and
-	 * @param array $sort
+	 * @param <type> $example an example instance defining the conditions. All non-null values will be considered a constraint, null values will be ignored.
+	 * @param boolean $and true if conditions should be and'ed, false if they should be or'ed
+	 * @param array $sort array of DSC instances
 	 * @return <type>[]
 	 */
 	public static function findByExample(PDO $db,<type> $example, $and=true, $sort=null) {
@@ -30,9 +30,9 @@
 	 * Will return matched rows as an array of <type> instances.
 	 *
 	 * @param PDO $db a PDO Database instance
-	 * @param array $filter
-	 * @param boolean $and
-	 * @param array $sort
+	 * @param array $filter array of DFC instances defining the conditions
+	 * @param boolean $and true if conditions should be and'ed, false if they should be or'ed
+	 * @param array $sort array of DSC instances
 	 * @return <type>[]
 	 */
 	public static function findByFilter(PDO $db, $filter, $and=true, $sort=null) {
