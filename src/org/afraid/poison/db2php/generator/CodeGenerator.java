@@ -94,10 +94,22 @@ public class CodeGenerator {
 		return db2phpVersion;
 	}
 
+	/**
+	 * escape single quotes in passed string
+	 *
+	 * @param s
+	 * @return escaped string for use in single quoted PHP string
+	 */
 	public static String escapePhpString(String s) {
 		return s.replace("'", "\\'");
 	}
 
+	/**
+	 * quote and escape passed string for use as PHP string
+	 *
+	 * @param s
+	 * @return PHP string
+	 */
 	public static String getPhpString(String s) {
 		return new StringBuilder("'").append(escapePhpString(s)).append("'").toString();
 	}
