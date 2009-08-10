@@ -445,7 +445,19 @@ public class CodeGenerator {
 			@Override
 			public String transform(Object s) {
 				Field f=(Field) s;
-				return new StringBuilder("\t\tself::").append(getConstName(f)).append("=>'").append(f.getName()).append("'").toString();
+				return new StringBuilder("\t\tself::").append(getConstName(f)).append("=>").append(getPhpString(f.getName())).toString();
+			}
+		}));
+		s.append(");\n");
+
+		// field id to field property mapping
+		s.append("\tprivate static $PROPERTY_NAMES=array(\n");
+		s.append(CollectionUtil.join(getTable().getFields(), ",\n", new StringMutator() {
+
+			@Override
+			public String transform(Object s) {
+				Field f=(Field) s;
+				return new StringBuilder("\t\tself::").append(getConstName(f)).append("=>").append(getPhpString(getMemberName(f))).toString();
 			}
 		}));
 		s.append(");\n");
