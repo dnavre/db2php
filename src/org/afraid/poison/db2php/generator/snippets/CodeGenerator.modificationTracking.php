@@ -19,8 +19,10 @@
 	 * called when the field with the passed id has changed
 	 *
 	 * @param int $fieldId
+	 * @param mixed $oldValue
+	 * @param mixed $newValue
 	 */
-	protected function notifyChanged($fieldId) {
+	protected function notifyChanged($fieldId, $oldValue, $newValue) {
 		if (is_null($this->getOldInstance())) {
 			$this->oldInstance=clone $this;
 			$this->oldInstance->notifyPristine();

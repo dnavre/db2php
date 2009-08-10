@@ -342,7 +342,7 @@ public class CodeGenerator {
 		}
 		s.append(getSetterName(field)).append("($").append(getMemberName(field)).append(") {\n");
 		if (isTrackFieldModifications()) {
-			s.append("\t\t$this->notifyChanged(self::").append(getConstName(field)).append(");\n");
+			s.append("\t\t$this->notifyChanged(self::").append(getConstName(field)).append(",$this->").append(getMemberName(field)).append(",").append("$").append(getMemberName(field)).append(");\n");
 		}
 		s.append("\t\t$this->").append(getMemberName(field)).append("=$").append(getMemberName(field)).append(";\n");
 		if (getSettings().isFluentInterface()) {
