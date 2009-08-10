@@ -558,7 +558,7 @@ public class CodeGenerator {
 		Set<Field> fields=getTable().getFields();
 		StringBuilder s=new StringBuilder();
 		s.append("\tconst SQL_IDENTIFIER_QUOTE='").append(getIdentifierQuoteString()).append("';\n");
-		s.append("\tconst SQL_TABLE_NAME='").append(getTable().getName()).append("';\n");
+		s.append("\tconst SQL_TABLE_NAME=").append(getPhpString(getTable().getName())).append(";\n");
 
 		// insert query
 		s.append("\tconst SQL_INSERT='INSERT INTO ").append(quoteIdentifier(getTable().getName()));
