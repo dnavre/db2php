@@ -470,7 +470,7 @@ public class CodeGenerator {
 			public String transform(Object input) {
 				Field f=(Field) input;
 				StringBuilder s=new StringBuilder("\t\t");
-				s.append(getPhpString(f.getName())).append("=>");
+				s.append(getConstName(f)).append("=>");
 				if (f.isAutoIncrement()||(f.isNullable()&&null==f.getDefaultValue())) {
 					s.append("null");
 				} else if (null==f.getDefaultValue()) {

@@ -22,6 +22,6 @@
 	 * 
 	 */
 	public function assignDefaultValues() {
-		$this->assignByHash(self::$DEFAULT_VALUES);
+		$this->assignByArray(self::$DEFAULT_VALUES);
 	}
 
