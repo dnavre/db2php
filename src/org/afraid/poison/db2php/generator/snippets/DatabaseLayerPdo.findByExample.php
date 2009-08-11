@@ -5,7 +5,7 @@
 	 * Match by attributes of passed example instance and return matched rows as an array of <type> instances
 	 *
 	 * @param PDO $db a PDO Database instance
-	 * @param <type> $example an example instance defining the conditions. All non-null values will be considered a constraint, null values will be ignored.
+	 * @param <type> $example an example instance defining the conditions. All non-null properties will be considered a constraint, null values will be ignored.
 	 * @param boolean $and true if conditions should be and'ed, false if they should be or'ed
 	 * @param array $sort array of DSC instances
 	 * @return <type>[]
@@ -113,7 +113,7 @@
 	/**
 	 * get sql ORDER BY part from DSCs
 	 *
-	 * @param <type> $sort
+	 * @param array $sort array of DSC instances
 	 * @return string
 	 */
 	protected static function getSqlOrderBy($sort) {
