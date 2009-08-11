@@ -44,8 +44,8 @@ class TablesListCellRenderer extends JLabel implements ListCellRenderer {
 		if (value instanceof Table) {
 			Table t=(Table) value;
 			StringBuilder tooltipText=new StringBuilder("<html><h2>").append(t.getName()).append("</h2>");
-			if (!t.getPrimaryKeys().isEmpty()) {
-				tooltipText.append("<strong>Primary key(s): </strong>").append(CollectionUtil.join(t.getPrimaryKeys(), ", ")).append("<br />");
+			if (!t.getFieldsPrimaryKey().isEmpty()) {
+				tooltipText.append("<strong>Primary key(s): </strong>").append(CollectionUtil.join(t.getFieldsPrimaryKey(), ", ")).append("<br />");
 			} else {
 				tooltipText.append("<strong>Has no primary key!</strong><br />");
 				tooltipText.append("<strong>Will be using: </strong>").append(CollectionUtil.join(t.getFieldsIdentifiers(), ", ")).append("<br />");
@@ -62,7 +62,7 @@ class TablesListCellRenderer extends JLabel implements ListCellRenderer {
 			}
 			tooltipText.append("</html>");
 			setToolTipText(tooltipText.toString());
-			if (t.getPrimaryKeys().isEmpty()) {
+			if (t.getFieldsPrimaryKey().isEmpty()) {
 				setBackground(Color.ORANGE);
 				//setToolTipText(new StringBuilder("Table ").append(t.getName()).append(" has no primary key! Will be using: ").append(CollectionUtil.join(t.getFieldsIdentifiers(), ", ")).toString());
 				if (iss) {
@@ -71,7 +71,7 @@ class TablesListCellRenderer extends JLabel implements ListCellRenderer {
 					setBorder(BorderFactory.createLineBorder(Color.WHITE, 2));
 				}
 			} else {
-				//setToolTipText(new StringBuilder("Primary key(s) of ").append(t.getName()).append(": ").append(CollectionUtil.join(t.getPrimaryKeys(), ", ")).toString());
+				//setToolTipText(new StringBuilder("Primary key(s) of ").append(t.getName()).append(": ").append(CollectionUtil.join(t.getFieldsPrimaryKey(), ", ")).toString());
 				if (iss) {
 					setBorder(BorderFactory.createLineBorder(list.getSelectionBackground(), 2));
 					setBackground(list.getSelectionBackground());

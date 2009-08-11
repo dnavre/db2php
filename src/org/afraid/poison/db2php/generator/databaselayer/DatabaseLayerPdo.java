@@ -174,7 +174,7 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 		StringBuilder s=new StringBuilder();
 		s.append(getSnippetFromFile(generator, "DatabaseLayer.deleteFromDatabase.php"));
 		s.append("\tpublic function ").append(METHOD_DELETE_NAME).append("(").append(getDbTypeName()).append(" $db");
-		//s.append(",").append(generator.getFieldList(new ArrayList<Field>(generator.getTable().getPrimaryKeys())));
+		//s.append(",").append(generator.getFieldList(new ArrayList<Field>(generator.getTable().getFieldsPrimaryKey())));
 		s.append(") {\n");
 		s.append(getStmtInit("self::SQL_DELETE_PK"));
 		s.append(getBindingCodeField(generator, new ArrayList<Field>(generator.getTable().getFieldsIdentifiers())));

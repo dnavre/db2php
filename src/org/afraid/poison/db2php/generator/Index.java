@@ -17,6 +17,7 @@
  */
 package org.afraid.poison.db2php.generator;
 
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
@@ -24,8 +25,9 @@ import java.util.Set;
  * @author poison
  */
 public class Index {
+
 	private String name;
-	private int type;
+	private boolean unique;
 	private Set<Field> fields;
 
 	/**
@@ -43,23 +45,26 @@ public class Index {
 	}
 
 	/**
-	 * @return the type
+	 * @return the unique
 	 */
-	public int getType() {
-		return type;
+	public boolean isUnique() {
+		return unique;
 	}
 
 	/**
-	 * @param type the type to set
+	 * @param unique the unique to set
 	 */
-	public void setType(int type) {
-		this.type=type;
+	public void setUnique(boolean unique) {
+		this.unique=unique;
 	}
 
 	/**
 	 * @return the fields
 	 */
-	public Set<Field> getFields() {
+	public synchronized Set<Field> getFields() {
+		if (null==fields) {
+			fields=new LinkedHashSet<Field>();
+		}
 		return fields;
 	}
 
@@ -67,7 +72,8 @@ public class Index {
 	 * @param fields the fields to set
 	 */
 	public void setFields(Set<Field> fields) {
-		this.fields=fields;
+		this.fields=null;
+		getFields().addAll(fields);
 	}
 
 	@Override
@@ -82,23 +88,13 @@ public class Index {
 		if ((this.name==null) ? (other.name!=null) : !this.name.equals(other.name)) {
 			return false;
 		}
-		if (this.type!=other.type) {
-			return false;
-		}
-		if (this.fields!=other.fields&&(this.fields==null||!this.fields.equals(other.fields))) {
-			return false;
-		}
 		return true;
 	}
 
 	@Override
 	public int hashCode() {
-		int hash=5;
-		hash=53*hash+(this.name!=null ? this.name.hashCode() : 0);
-		hash=53*hash+this.type;
-		hash=53*hash+(this.fields!=null ? this.fields.hashCode() : 0);
+		int hash=7;
+		hash=23*hash+(this.name!=null ? this.name.hashCode() : 0);
 		return hash;
 	}
-
-	
 }
