@@ -27,10 +27,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.sql.RowSet;
 import org.afraid.poison.common.CollectionUtil;
 import org.afraid.poison.common.DbUtil;
-import org.afraid.poison.common.Predicate;
 import org.afraid.poison.common.PredicateReferenceValue;
 
 /**
@@ -117,9 +115,10 @@ public class Table {
 
 			// get list of fields
 			ResultSet rsetColumns=null;
+			Map<String, Field> fieldNameMap=new LinkedHashMap<String, Field>();
+			Field field;
 			try {
 				rsetColumns=connection.getMetaData().getColumns(getCatalog(), getSchema(), getName(), null);
-				Field field;
 				while (rsetColumns.next()) {
 					field=new Field();
 					field.setName(rsetColumns.getString("COLUMN_NAME"));
@@ -139,11 +138,12 @@ public class Table {
 					field.setComment(rsetColumns.getString("REMARKS"));
 					field.setRowIdentifier(rowIdentifiers.contains(field.getName()));
 					/*if (indexeFieldsUnique.contains(field.getName())) {
-						field.setIndex(Field.INDEX_UNIQUE);
+					field.setIndex(Field.INDEX_UNIQUE);
 					} else if (indexeFieldsNonUnique.contains(field.getName())) {
-						field.setIndex(Field.INDEX_NON_UNIQUE);
+					field.setIndex(Field.INDEX_NON_UNIQUE);
 					}*/
 					fields.add(field);
+					fieldNameMap.put(field.getName(), field);
 				}
 			} catch (SQLException ex) {
 				Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
@@ -170,7 +170,7 @@ public class Table {
 						@Override
 						public boolean evaluate(Object o) {
 							String n=((Index) o).getName();
-							return (null==n && null==getReferenceValue()) || (null!=getReferenceValue() && getReferenceValue().equals(n));
+							return (null==n&&null==getReferenceValue())||(null!=getReferenceValue()&&getReferenceValue().equals(n));
 						}
 					});
 					if (null==index) {
@@ -178,27 +178,16 @@ public class Table {
 						index.setName(indexName);
 						indexes.add(index);
 					}
-					index.getFields().add(CollectionUtil.find(fields, new PredicateReferenceValue(fieldName) {
-
-						@Override
-						public boolean evaluate(Object o) {
-							String n=((Field) o).getName();
-							return (null==n && null==getReferenceValue()) || (null!=getReferenceValue() && getReferenceValue().equals(n));
+					field=fieldNameMap.get(fieldName);
+					if (null!=field) {
+						if (unique) {
+							field.setIndex(Field.INDEX_UNIQUE);
+						} else {
+							field.setIndex(Field.INDEX_NON_UNIQUE);
 						}
-					}));
-					/*
-					indexNameFields=indexNames.get(indexName);
-					if (null==indexNameFields) {
-						indexNameFields=new LinkedHashSet<String>();
-						indexNames.put(indexName, indexNameFields);
-					}
-					indexNameFields.add(indexName);
-					if (unique) {
-						indexeFieldsUnique.add(fieldName);
 					} else {
-						indexeFieldsNonUnique.add(fieldName);
+						Logger.getLogger(getClass().getName()).log(Level.WARNING, new StringBuilder("Field ").append(fieldName).append(" not found defined in index ").append(indexName).toString());
 					}
-					 * */
 				}
 				rsetIndexes.close();
 			} catch (SQLException ex) {
