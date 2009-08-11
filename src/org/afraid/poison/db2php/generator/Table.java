@@ -44,6 +44,7 @@ public class Table {
 	private String remark;
 	private Set<Field> fields=null;
 	private Set<Field> fieldsPrimaryKeys=null;
+	private Set<Index> indexes=null;
 	private String identifierQuoteString;
 
 	/**
@@ -152,7 +153,7 @@ public class Table {
 			}
 
 			// get indexes
-			Set<Index> indexes=new LinkedHashSet<Index>();
+			indexes=new LinkedHashSet<Index>();
 			ResultSet rsetIndexes=null;
 			try {
 				rsetIndexes=connection.getMetaData().getIndexInfo(getCatalog(), getSchema(), getName(), false, false);
@@ -196,7 +197,6 @@ public class Table {
 			} finally {
 				DbUtil.closeQuietly(rsetIndexes);
 			}
-			System.err.println(indexes);
 
 		} catch (SQLException ex) {
 			Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
@@ -373,6 +373,13 @@ public class Table {
 		Set<Field> notAutoIncrement=getFields();
 		notAutoIncrement.removeAll(getFieldsAutoIncrement());
 		return notAutoIncrement;
+	}
+
+	/**
+	 * @return the indexes
+	 */
+	public Set<Index> getIndexes() {
+		return new LinkedHashSet<Index>(indexes);
 	}
 
 	/**
