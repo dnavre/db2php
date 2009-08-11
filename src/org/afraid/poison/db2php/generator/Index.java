@@ -97,4 +97,11 @@ public class Index {
 		hash=23*hash+(this.name!=null ? this.name.hashCode() : 0);
 		return hash;
 	}
+
+	@Override
+	public String toString() {
+		return new StringBuilder().append(getName()).append("{").append(getFields()).append("}").toString();
+	}
+
+
 }

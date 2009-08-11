@@ -180,6 +180,7 @@ public class Table {
 					}
 					field=fieldNameMap.get(fieldName);
 					if (null!=field) {
+						index.getFields().add(field);
 						if (unique) {
 							field.setIndex(Field.INDEX_UNIQUE);
 						} else {
@@ -195,6 +196,7 @@ public class Table {
 			} finally {
 				DbUtil.closeQuietly(rsetIndexes);
 			}
+			System.err.println(indexes);
 
 		} catch (SQLException ex) {
 			Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
