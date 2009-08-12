@@ -376,10 +376,32 @@ public class Table {
 	}
 
 	/**
+	 * get indexes for this table
+	 * 
 	 * @return the indexes
 	 */
 	public Set<Index> getIndexes() {
 		return new LinkedHashSet<Index>(indexes);
+	}
+
+	/**
+	 * only get indexes which are unique/non-unique
+	 *
+	 * @param unique
+	 * @return indexes which are unique/non-unique
+	 */
+	public Set<Index> getIndexes(boolean unique) {
+		Set<Index> is=new LinkedHashSet<Index>();
+		for (Index i : getIndexes()) {
+			if (i.isUnique()==unique) {
+				is.add(i);
+			}
+		}
+		return is;
+	}
+
+	public Set<Index> getIndexesUnique() {
+		return getIndexesUnique();
 	}
 
 	/**
