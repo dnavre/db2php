@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Some utilities for strings
  */
 package org.afraid.poison.common;
 
@@ -8,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import org.afraid.poison.common.string.StringOccurrence;
 
@@ -18,6 +18,9 @@ import org.afraid.poison.common.string.StringOccurrence;
 public class StringUtil {
 
 	public static final CharSequence EMTPY="";
+
+	private StringUtil() {
+	}
 
 	/**
 	 * repeat passed string specified number of times
@@ -170,7 +173,7 @@ public class StringUtil {
 	/**
 	 * searches for occurrences and returns StringOccurrence#s so the position is known
 	 * @param needle the string to search for
-	 * @param haystack the string to search in
+	 * @param haystack the string to search input
 	 * @return the found occurrences
 	 */
 	public static Set<StringOccurrence> findOccurrences(String needle, String haystack) {
@@ -193,4 +196,18 @@ public class StringUtil {
 		return cs;
 	}
 
+	/**
+	 * replace all keys from input with values from input
+	 *
+	 * @param input the input string
+	 * @param replacements the replacements
+	 * @return string with all occurrences replaced
+	 */
+	public static CharSequence replace(Object input, Map<?, ?> replacements) {
+		String s=input.toString();
+		for (Map.Entry<?, ?> e : replacements.entrySet()) {
+			s=s.replace(e.getKey().toString(), e.getValue().toString());
+		}
+		return s;
+	}
 }
