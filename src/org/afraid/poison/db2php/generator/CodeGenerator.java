@@ -22,7 +22,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import org.afraid.poison.db2php.generator.databaselayer.DatabaseLayer;
 import java.util.Set;
@@ -671,20 +673,29 @@ public class CodeGenerator {
 		try {
 			is=getClass().getResourceAsStream(new StringBuilder(SNIPPET_PATH).append(fileName).toString());
 			String contents=IOUtil.readString(is);
-			if (null!=field) {
-				contents=contents.replace("<fieldName>", field.getName());
-				contents=contents.replace("<memberName>", getMemberName(field));
-				contents=contents.replace("<fieldInfo>", field.getInfoTextCompact());
-				contents=contents.replace("<fieldComment>", StringUtil.notNull(field.getComment()));
-			}
-			String version=new StringBuilder().append(getDb2phpVersion()).append(" - generated: ").append(new SimpleDateFormat().format(Calendar.getInstance().getTime())).toString();
-			s.append(contents.replace("<db2phpVersion>", version).replace("<type>", getClassName()).replace("<tableDescription>", StringUtil.notNull(getTable().getRemark())).replace("<pristine>", getSettings().isTrackFieldModifications() ? "\t\t\t$o->notifyPristine();\n" : ""));
+			s.append(StringUtil.replace(contents, getSnippetReplacements(field)));
 		} catch (IOException ex) {
 			Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
 		} finally {
 			IOUtil.closeQuietly(is);
 		}
 		return s.toString();
+	}
+
+	private Map<CharSequence, CharSequence> getSnippetReplacements(Field field) {
+		Map<CharSequence, CharSequence> replacements=new HashMap<CharSequence, CharSequence>();
+		if (null!=field) {
+			replacements.put("<fieldName>", field.getName());
+			replacements.put("<memberName>", getMemberName(field));
+			replacements.put("<fieldInfo>", field.getInfoTextCompact());
+			replacements.put("<fieldComment>", StringUtil.notNull(field.getComment()));
+		}
+		String version=new StringBuilder().append(getDb2phpVersion()).append(" - generated: ").append(new SimpleDateFormat().format(Calendar.getInstance().getTime())).toString();
+		replacements.put("<db2phpVersion>", version);
+		replacements.put("<type>", getClassName());
+		replacements.put("<tableDescription>", StringUtil.notNull(getTable().getRemark()));
+		replacements.put("<pristine>", getSettings().isTrackFieldModifications() ? "\t\t\t$o->notifyPristine();\n" : "");
+		return replacements;
 	}
 
 	/**
