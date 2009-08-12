@@ -719,6 +719,7 @@ public class CodeGenerator {
 		s.append(getUtilMethodgetPrimaryKeysToArray());
 		s.append(getDatabaseLayer().getCode(this));
 		s.append(getSnippetFromFile("CodeGenerator.dom.php"));
+		s.append(getSnippetFromFile("CodeGenerator.toString.php"));
 		s.append("}\n");
 		s.append("?>");
 		return s.toString();
