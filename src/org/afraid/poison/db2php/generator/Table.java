@@ -181,12 +181,12 @@ public class Table {
 					}
 					field=fieldNameMap.get(fieldName);
 					if (null!=field) {
-						index.getFields().add(field);
 						if (unique) {
 							field.setIndex(Field.INDEX_UNIQUE);
 						} else {
 							field.setIndex(Field.INDEX_NON_UNIQUE);
 						}
+						index.getFields().add(field);
 					} else {
 						Logger.getLogger(getClass().getName()).log(Level.WARNING, new StringBuilder("Field ").append(fieldName).append(" not found defined in index ").append(indexName).toString());
 					}

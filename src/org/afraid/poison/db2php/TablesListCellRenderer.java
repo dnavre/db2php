@@ -60,6 +60,9 @@ class TablesListCellRenderer extends JLabel implements ListCellRenderer {
 			if (!t.getFieldsIndexesNonUnique().isEmpty()) {
 				tooltipText.append("<strong>Non-Unique Indexes: </strong>").append(CollectionUtil.join(t.getFieldsIndexesNonUnique(), ", ")).append("<br />");
 			}
+			if (!t.getIndexes().isEmpty()) {
+				tooltipText.append("<strong>Indexes: </strong>").append(t.getIndexes());
+			}
 			tooltipText.append("</html>");
 			setToolTipText(tooltipText.toString());
 			if (t.getFieldsPrimaryKey().isEmpty()) {
