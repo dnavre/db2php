@@ -17,9 +17,12 @@
  */
 package org.afraid.poison.db2php.generator.databaselayer;
 
+import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
 import org.afraid.poison.common.CollectionUtil;
+import org.afraid.poison.common.StringUtil;
 import org.afraid.poison.common.string.StringMutator;
 import org.afraid.poison.db2php.generator.CodeGenerator;
 import org.afraid.poison.db2php.generator.Field;
@@ -345,9 +348,11 @@ abstract public class DatabaseLayer {
 	protected String getSnippetFromFile(CodeGenerator generator, String fileName) {
 		StringBuilder s=new StringBuilder();
 		String contents=generator.getSnippetFromFile(fileName);
-		s.append(contents.replace("<dbType>", getDbTypeName())
-				.replace("<tableName>", generator.getTable().getName())
-				.replace("<tableNameQuoted>", generator.quoteIdentifier(generator.getTable().getName())));
+		Map<CharSequence, CharSequence> replacements=new HashMap<CharSequence, CharSequence>();
+		replacements.put("<dbType>", getDbTypeName());
+		replacements.put("<tableName>", generator.getTable().getName());
+		replacements.put("<tableNameQuoted>", generator.quoteIdentifier(generator.getTable().getName()));
+		s.append(StringUtil.replace(contents, replacements));
 		return s.toString();
 	}
 
