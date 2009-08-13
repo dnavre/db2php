@@ -177,6 +177,7 @@ public class Table {
 					if (null==index) {
 						index=new Index();
 						index.setName(indexName);
+						index.setUnique(unique);
 						indexes.add(index);
 					}
 					field=fieldNameMap.get(fieldName);
