@@ -92,19 +92,24 @@
 		$andString=$and ? ' AND ' : ' OR ';
 		$first=true;
 		foreach ($filter as $fieldId=>$value) {
+			$dfc=$value instanceof DFC;
+			$resolvedFieldId=$dfc ? $value->getField() : $fieldId;
+			if (!array_key_exists($resolvedFieldId, self::$FIELD_NAMES)) {
+				continue;
+			}
 			if ($first) {
 				$sql.=' WHERE ';
 				$first=false;
 			} else {
 				$sql.=$andString;
 			}
-			if ($value instanceof DFC) {
+			$sql.=self::SQL_IDENTIFIER_QUOTE . self::$FIELD_NAMES[$resolvedFieldId] . self::SQL_IDENTIFIER_QUOTE;
+			if ($dfc) {
 				/* @var $value DFC */
-				$sql.=self::SQL_IDENTIFIER_QUOTE . self::$FIELD_NAMES[$value->getField()] . self::SQL_IDENTIFIER_QUOTE
-				. $value->getSqlOperatorPrepared();
+				$sql.=$value->getSqlOperatorPrepared();
 
 			} else {
-				$sql.=self::SQL_IDENTIFIER_QUOTE . self::$FIELD_NAMES[$fieldId] . self::SQL_IDENTIFIER_QUOTE . '=?';
+				$sql.='=?';
 			}
 		}
 		return $sql;
