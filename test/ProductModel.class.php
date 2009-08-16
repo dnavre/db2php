@@ -3,24 +3,26 @@
 /**
  * 
  *
- * @version 1.2.7 - generated: 8/9/09 6:36 PM
+ * @version 1.3 - generated: 8/16/09 6:56 PM
  */
 class ProductModel {
 	const SQL_IDENTIFIER_QUOTE='';
 	const SQL_TABLE_NAME='PRODUCT';
 	const SQL_INSERT='INSERT INTO PRODUCT (PRODUCT_ID,MANUFACTURER_ID,PRODUCT_CODE,PURCHASE_COST,QUANTITY_ON_HAND,MARKUP,AVAILABLE,DESCRIPTION) VALUES (?,?,?,?,?,?,?,?)';
+	const SQL_INSERT_AUTOINCREMENT='INSERT INTO PRODUCT (PRODUCT_ID,MANUFACTURER_ID,PRODUCT_CODE,PURCHASE_COST,QUANTITY_ON_HAND,MARKUP,AVAILABLE,DESCRIPTION) VALUES (?,?,?,?,?,?,?,?)';
 	const SQL_UPDATE='UPDATE PRODUCT SET PRODUCT_ID=?,MANUFACTURER_ID=?,PRODUCT_CODE=?,PURCHASE_COST=?,QUANTITY_ON_HAND=?,MARKUP=?,AVAILABLE=?,DESCRIPTION=? WHERE PRODUCT_ID=?';
 	const SQL_SELECT_PK='SELECT * FROM PRODUCT WHERE PRODUCT_ID=?';
 	const SQL_DELETE_PK='DELETE FROM PRODUCT WHERE PRODUCT_ID=?';
-	const FIELD_PRODUCT_ID=0;
-	const FIELD_MANUFACTURER_ID=1;
-	const FIELD_PRODUCT_CODE=2;
-	const FIELD_PURCHASE_COST=3;
-	const FIELD_QUANTITY_ON_HAND=4;
-	const FIELD_MARKUP=5;
-	const FIELD_AVAILABLE=6;
-	const FIELD_DESCRIPTION=7;
+	const FIELD_PRODUCT_ID=-167531254;
+	const FIELD_MANUFACTURER_ID=-943899350;
+	const FIELD_PRODUCT_CODE=-2083911140;
+	const FIELD_PURCHASE_COST=536207724;
+	const FIELD_QUANTITY_ON_HAND=1857183322;
+	const FIELD_MARKUP=-259710937;
+	const FIELD_AVAILABLE=-1627140022;
+	const FIELD_DESCRIPTION=-1132697283;
 	private static $PRIMARY_KEYS=array(self::FIELD_PRODUCT_ID);
+	private static $AUTOINCREMENT_FIELDS=array();
 	private static $FIELD_NAMES=array(
 		self::FIELD_PRODUCT_ID=>'PRODUCT_ID',
 		self::FIELD_MANUFACTURER_ID=>'MANUFACTURER_ID',
@@ -30,15 +32,24 @@ class ProductModel {
 		self::FIELD_MARKUP=>'MARKUP',
 		self::FIELD_AVAILABLE=>'AVAILABLE',
 		self::FIELD_DESCRIPTION=>'DESCRIPTION');
+	private static $PROPERTY_NAMES=array(
+		self::FIELD_PRODUCT_ID=>'productId',
+		self::FIELD_MANUFACTURER_ID=>'manufacturerId',
+		self::FIELD_PRODUCT_CODE=>'productCode',
+		self::FIELD_PURCHASE_COST=>'purchaseCost',
+		self::FIELD_QUANTITY_ON_HAND=>'quantityOnHand',
+		self::FIELD_MARKUP=>'markup',
+		self::FIELD_AVAILABLE=>'available',
+		self::FIELD_DESCRIPTION=>'description');
 	private static $DEFAULT_VALUES=array(
-		'PRODUCT_ID'=>0,
-		'MANUFACTURER_ID'=>0,
-		'PRODUCT_CODE'=>'',
-		'PURCHASE_COST'=>null,
-		'QUANTITY_ON_HAND'=>null,
-		'MARKUP'=>null,
-		'AVAILABLE'=>null,
-		'DESCRIPTION'=>null);
+		self::FIELD_PRODUCT_ID=>0,
+		self::FIELD_MANUFACTURER_ID=>0,
+		self::FIELD_PRODUCT_CODE=>'',
+		self::FIELD_PURCHASE_COST=>null,
+		self::FIELD_QUANTITY_ON_HAND=>null,
+		self::FIELD_MARKUP=>null,
+		self::FIELD_AVAILABLE=>null,
+		self::FIELD_DESCRIPTION=>null);
 	private $productId;
 	private $manufacturerId;
 	private $productCode;
@@ -68,8 +79,10 @@ class ProductModel {
 	 * called when the field with the passed id has changed
 	 *
 	 * @param int $fieldId
+	 * @param mixed $oldValue
+	 * @param mixed $newValue
 	 */
-	protected function notifyChanged($fieldId) {
+	protected function notifyChanged($fieldId, $oldValue, $newValue) {
 		if (is_null($this->getOldInstance())) {
 			$this->oldInstance=clone $this;
 			$this->oldInstance->notifyPristine();
@@ -130,7 +143,7 @@ class ProductModel {
 	 * @return ProductModel
 	 */
 	public function &setProductId($productId) {
-		$this->notifyChanged(self::FIELD_PRODUCT_ID);
+		$this->notifyChanged(self::FIELD_PRODUCT_ID,$this->productId,$productId);
 		$this->productId=$productId;
 		return $this;
 	}
@@ -155,7 +168,7 @@ class ProductModel {
 	 * @return ProductModel
 	 */
 	public function &setManufacturerId($manufacturerId) {
-		$this->notifyChanged(self::FIELD_MANUFACTURER_ID);
+		$this->notifyChanged(self::FIELD_MANUFACTURER_ID,$this->manufacturerId,$manufacturerId);
 		$this->manufacturerId=$manufacturerId;
 		return $this;
 	}
@@ -180,7 +193,7 @@ class ProductModel {
 	 * @return ProductModel
 	 */
 	public function &setProductCode($productCode) {
-		$this->notifyChanged(self::FIELD_PRODUCT_CODE);
+		$this->notifyChanged(self::FIELD_PRODUCT_CODE,$this->productCode,$productCode);
 		$this->productCode=$productCode;
 		return $this;
 	}
@@ -205,7 +218,7 @@ class ProductModel {
 	 * @return ProductModel
 	 */
 	public function &setPurchaseCost($purchaseCost) {
-		$this->notifyChanged(self::FIELD_PURCHASE_COST);
+		$this->notifyChanged(self::FIELD_PURCHASE_COST,$this->purchaseCost,$purchaseCost);
 		$this->purchaseCost=$purchaseCost;
 		return $this;
 	}
@@ -230,7 +243,7 @@ class ProductModel {
 	 * @return ProductModel
 	 */
 	public function &setQuantityOnHand($quantityOnHand) {
-		$this->notifyChanged(self::FIELD_QUANTITY_ON_HAND);
+		$this->notifyChanged(self::FIELD_QUANTITY_ON_HAND,$this->quantityOnHand,$quantityOnHand);
 		$this->quantityOnHand=$quantityOnHand;
 		return $this;
 	}
@@ -255,7 +268,7 @@ class ProductModel {
 	 * @return ProductModel
 	 */
 	public function &setMarkup($markup) {
-		$this->notifyChanged(self::FIELD_MARKUP);
+		$this->notifyChanged(self::FIELD_MARKUP,$this->markup,$markup);
 		$this->markup=$markup;
 		return $this;
 	}
@@ -280,7 +293,7 @@ class ProductModel {
 	 * @return ProductModel
 	 */
 	public function &setAvailable($available) {
-		$this->notifyChanged(self::FIELD_AVAILABLE);
+		$this->notifyChanged(self::FIELD_AVAILABLE,$this->available,$available);
 		$this->available=$available;
 		return $this;
 	}
@@ -305,7 +318,7 @@ class ProductModel {
 	 * @return ProductModel
 	 */
 	public function &setDescription($description) {
-		$this->notifyChanged(self::FIELD_DESCRIPTION);
+		$this->notifyChanged(self::FIELD_DESCRIPTION,$this->description,$description);
 		$this->description=$description;
 		return $this;
 	}
@@ -344,7 +357,7 @@ class ProductModel {
 	 * 
 	 */
 	public function assignDefaultValues() {
-		$this->assignByHash(self::$DEFAULT_VALUES);
+		$this->assignByArray(self::$DEFAULT_VALUES);
 	}
 
 
@@ -397,6 +410,12 @@ class ProductModel {
 	 */
 	private static $stmtInsert=null;
 	/**
+	 * cached insert statement with autoincrement fields omitted
+	 *
+	 * @var PDOStatement
+	 */
+	private static $stmtInsertAutoIncrement=null;
+	/**
 	 * cached update statement
 	 *
 	 * @var PDOStatement
@@ -430,17 +449,22 @@ class ProductModel {
 					self::$stmtInsert=$db->prepare($statement);
 				}
 				return self::$stmtInsert;
-			} else if($statement==self::SQL_UPDATE) {
+			} elseif($statement==self::SQL_INSERT_AUTOINCREMENT) {
+				if (null==self::$stmtInsertAutoIncrement) {
+					self::$stmtInsertAutoIncrement=$db->prepare($statement);
+				}
+				return self::$stmtInsertAutoIncrement;
+			} elseif($statement==self::SQL_UPDATE) {
 				if (null==self::$stmtUpdate) {
 					self::$stmtUpdate=$db->prepare($statement);
 				}
 				return self::$stmtUpdate;
-			} else if($statement==self::SQL_SELECT_PK) {
+			} elseif($statement==self::SQL_SELECT_PK) {
 				if (null==self::$stmtSelect) {
 					self::$stmtSelect=$db->prepare($statement);
 				}
 				return self::$stmtSelect;
-			} else if($statement==self::SQL_DELETE_PK) {
+			} elseif($statement==self::SQL_DELETE_PK) {
 				if (null==self::$stmtDelete) {
 					self::$stmtDelete=$db->prepare($statement);
 				}
@@ -474,7 +498,7 @@ class ProductModel {
 	 * Match by attributes of passed example instance and return matched rows as an array of ProductModel instances
 	 *
 	 * @param PDO $db a PDO Database instance
-	 * @param ProductModel $example an example instance defining the conditions. All non-null values will be considered a constraint, null values will be ignored.
+	 * @param ProductModel $example an example instance defining the conditions. All non-null properties will be considered a constraint, null values will be ignored.
 	 * @param boolean $and true if conditions should be and'ed, false if they should be or'ed
 	 * @param array $sort array of DSC instances
 	 * @return ProductModel[]
@@ -562,19 +586,24 @@ class ProductModel {
 		$andString=$and ? ' AND ' : ' OR ';
 		$first=true;
 		foreach ($filter as $fieldId=>$value) {
+			$dfc=$value instanceof DFC;
+			$resolvedFieldId=$dfc ? $value->getField() : $fieldId;
+			if (!array_key_exists($resolvedFieldId, self::$FIELD_NAMES)) {
+				continue;
+			}
 			if ($first) {
 				$sql.=' WHERE ';
 				$first=false;
 			} else {
 				$sql.=$andString;
 			}
-			if ($value instanceof DFC) {
+			$sql.=self::SQL_IDENTIFIER_QUOTE . self::$FIELD_NAMES[$resolvedFieldId] . self::SQL_IDENTIFIER_QUOTE;
+			if ($dfc) {
 				/* @var $value DFC */
-				$sql.=self::SQL_IDENTIFIER_QUOTE . self::$FIELD_NAMES[$value->getField()] . self::SQL_IDENTIFIER_QUOTE
-				. $value->getSqlOperatorPrepared();
+				$sql.=$value->getSqlOperatorPrepared();
 
 			} else {
-				$sql.=self::SQL_IDENTIFIER_QUOTE . self::$FIELD_NAMES[$fieldId] . self::SQL_IDENTIFIER_QUOTE . '=?';
+				$sql.='=?';
 			}
 		}
 		return $sql;
@@ -583,7 +612,7 @@ class ProductModel {
 	/**
 	 * get sql ORDER BY part from DSCs
 	 *
-	 * @param ProductModel $sort
+	 * @param array $sort array of DSC instances
 	 * @return string
 	 */
 	protected static function getSqlOrderBy($sort) {
@@ -598,6 +627,9 @@ class ProductModel {
 		$first=true;
 		foreach ($sort as $s) {
 			/* @var $s DSC */
+			if (!array_key_exists($s->getField(), self::$FIELD_NAMES)) {
+				continue;
+			}
 			if ($first) {
 				$sql.=' ORDER BY ';
 				$first=false;
@@ -617,9 +649,10 @@ class ProductModel {
 	 */
 	protected static function bindValuesForFilter(PDOStatement &$stmt, $filter) {
 		$i=0;
-		foreach ($filter as $value) {
+		foreach ($filter as $fieldId=>$value) {
 			$dfc=$value instanceof DFC;
-			if ($dfc && 0!=(DFC::IS_NULL&$value->getMode())) {
+			$resolvedFieldId=$dfc ? $value->getField() : $fieldId;
+			if (($dfc && 0!=(DFC::IS_NULL&$value->getMode())) || !array_key_exists($resolvedFieldId, self::$FIELD_NAMES)) {
 				continue;
 			}
 			$stmt->bindValue(++$i, $dfc ? $value->getSqlValue() : $value);
@@ -857,5 +890,19 @@ class ProductModel {
 		return $instances;
 	}
 
+
+
+	/**
+	 * get object as string
+	 *
+	 * @return string
+	 */
+	public function __toString() {
+		$s=null;
+		foreach ($this->toHash() as $fieldName=>$value) {
+			$s.=$fieldName . ": " . $value . "\n";
+		}
+		return $s;
+	}
 }
 ?>

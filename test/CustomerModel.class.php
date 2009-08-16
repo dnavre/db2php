@@ -3,28 +3,30 @@
 /**
  * 
  *
- * @version 1.2.7 - generated: 8/9/09 6:36 PM
+ * @version 1.3 - generated: 8/16/09 6:56 PM
  */
 class CustomerModel {
 	const SQL_IDENTIFIER_QUOTE='';
 	const SQL_TABLE_NAME='CUSTOMER';
 	const SQL_INSERT='INSERT INTO CUSTOMER (CUSTOMER_ID,DISCOUNT_CODE,ZIP,NAME,ADDRESSLINE1,ADDRESSLINE2,CITY,STATE,PHONE,FAX,EMAIL,CREDIT_LIMIT) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)';
+	const SQL_INSERT_AUTOINCREMENT='INSERT INTO CUSTOMER (CUSTOMER_ID,DISCOUNT_CODE,ZIP,NAME,ADDRESSLINE1,ADDRESSLINE2,CITY,STATE,PHONE,FAX,EMAIL,CREDIT_LIMIT) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)';
 	const SQL_UPDATE='UPDATE CUSTOMER SET CUSTOMER_ID=?,DISCOUNT_CODE=?,ZIP=?,NAME=?,ADDRESSLINE1=?,ADDRESSLINE2=?,CITY=?,STATE=?,PHONE=?,FAX=?,EMAIL=?,CREDIT_LIMIT=? WHERE CUSTOMER_ID=?';
 	const SQL_SELECT_PK='SELECT * FROM CUSTOMER WHERE CUSTOMER_ID=?';
 	const SQL_DELETE_PK='DELETE FROM CUSTOMER WHERE CUSTOMER_ID=?';
-	const FIELD_CUSTOMER_ID=0;
-	const FIELD_DISCOUNT_CODE=1;
-	const FIELD_ZIP=2;
-	const FIELD_NAME=3;
-	const FIELD_ADDRESSLINE1=4;
-	const FIELD_ADDRESSLINE2=5;
-	const FIELD_CITY=6;
-	const FIELD_STATE=7;
-	const FIELD_PHONE=8;
-	const FIELD_FAX=9;
-	const FIELD_EMAIL=10;
-	const FIELD_CREDIT_LIMIT=11;
+	const FIELD_CUSTOMER_ID=2119750412;
+	const FIELD_DISCOUNT_CODE=-1018714085;
+	const FIELD_ZIP=-1077504783;
+	const FIELD_NAME=956724891;
+	const FIELD_ADDRESSLINE1=662103929;
+	const FIELD_ADDRESSLINE2=662103930;
+	const FIELD_CITY=956405115;
+	const FIELD_STATE=-401126815;
+	const FIELD_PHONE=-404241602;
+	const FIELD_FAX=-1077524243;
+	const FIELD_EMAIL=-414264980;
+	const FIELD_CREDIT_LIMIT=483158757;
 	private static $PRIMARY_KEYS=array(self::FIELD_CUSTOMER_ID);
+	private static $AUTOINCREMENT_FIELDS=array();
 	private static $FIELD_NAMES=array(
 		self::FIELD_CUSTOMER_ID=>'CUSTOMER_ID',
 		self::FIELD_DISCOUNT_CODE=>'DISCOUNT_CODE',
@@ -38,19 +40,32 @@ class CustomerModel {
 		self::FIELD_FAX=>'FAX',
 		self::FIELD_EMAIL=>'EMAIL',
 		self::FIELD_CREDIT_LIMIT=>'CREDIT_LIMIT');
+	private static $PROPERTY_NAMES=array(
+		self::FIELD_CUSTOMER_ID=>'customerId',
+		self::FIELD_DISCOUNT_CODE=>'discountCode',
+		self::FIELD_ZIP=>'zip',
+		self::FIELD_NAME=>'name',
+		self::FIELD_ADDRESSLINE1=>'addressline1',
+		self::FIELD_ADDRESSLINE2=>'addressline2',
+		self::FIELD_CITY=>'city',
+		self::FIELD_STATE=>'state',
+		self::FIELD_PHONE=>'phone',
+		self::FIELD_FAX=>'fax',
+		self::FIELD_EMAIL=>'email',
+		self::FIELD_CREDIT_LIMIT=>'creditLimit');
 	private static $DEFAULT_VALUES=array(
-		'CUSTOMER_ID'=>0,
-		'DISCOUNT_CODE'=>'',
-		'ZIP'=>'',
-		'NAME'=>null,
-		'ADDRESSLINE1'=>null,
-		'ADDRESSLINE2'=>null,
-		'CITY'=>null,
-		'STATE'=>null,
-		'PHONE'=>null,
-		'FAX'=>null,
-		'EMAIL'=>null,
-		'CREDIT_LIMIT'=>null);
+		self::FIELD_CUSTOMER_ID=>0,
+		self::FIELD_DISCOUNT_CODE=>'',
+		self::FIELD_ZIP=>'',
+		self::FIELD_NAME=>null,
+		self::FIELD_ADDRESSLINE1=>null,
+		self::FIELD_ADDRESSLINE2=>null,
+		self::FIELD_CITY=>null,
+		self::FIELD_STATE=>null,
+		self::FIELD_PHONE=>null,
+		self::FIELD_FAX=>null,
+		self::FIELD_EMAIL=>null,
+		self::FIELD_CREDIT_LIMIT=>null);
 	private $customerId;
 	private $discountCode;
 	private $zip;
@@ -84,8 +99,10 @@ class CustomerModel {
 	 * called when the field with the passed id has changed
 	 *
 	 * @param int $fieldId
+	 * @param mixed $oldValue
+	 * @param mixed $newValue
 	 */
-	protected function notifyChanged($fieldId) {
+	protected function notifyChanged($fieldId, $oldValue, $newValue) {
 		if (is_null($this->getOldInstance())) {
 			$this->oldInstance=clone $this;
 			$this->oldInstance->notifyPristine();
@@ -146,7 +163,7 @@ class CustomerModel {
 	 * @return CustomerModel
 	 */
 	public function &setCustomerId($customerId) {
-		$this->notifyChanged(self::FIELD_CUSTOMER_ID);
+		$this->notifyChanged(self::FIELD_CUSTOMER_ID,$this->customerId,$customerId);
 		$this->customerId=$customerId;
 		return $this;
 	}
@@ -171,7 +188,7 @@ class CustomerModel {
 	 * @return CustomerModel
 	 */
 	public function &setDiscountCode($discountCode) {
-		$this->notifyChanged(self::FIELD_DISCOUNT_CODE);
+		$this->notifyChanged(self::FIELD_DISCOUNT_CODE,$this->discountCode,$discountCode);
 		$this->discountCode=$discountCode;
 		return $this;
 	}
@@ -196,7 +213,7 @@ class CustomerModel {
 	 * @return CustomerModel
 	 */
 	public function &setZip($zip) {
-		$this->notifyChanged(self::FIELD_ZIP);
+		$this->notifyChanged(self::FIELD_ZIP,$this->zip,$zip);
 		$this->zip=$zip;
 		return $this;
 	}
@@ -221,7 +238,7 @@ class CustomerModel {
 	 * @return CustomerModel
 	 */
 	public function &setName($name) {
-		$this->notifyChanged(self::FIELD_NAME);
+		$this->notifyChanged(self::FIELD_NAME,$this->name,$name);
 		$this->name=$name;
 		return $this;
 	}
@@ -246,7 +263,7 @@ class CustomerModel {
 	 * @return CustomerModel
 	 */
 	public function &setAddressline1($addressline1) {
-		$this->notifyChanged(self::FIELD_ADDRESSLINE1);
+		$this->notifyChanged(self::FIELD_ADDRESSLINE1,$this->addressline1,$addressline1);
 		$this->addressline1=$addressline1;
 		return $this;
 	}
@@ -271,7 +288,7 @@ class CustomerModel {
 	 * @return CustomerModel
 	 */
 	public function &setAddressline2($addressline2) {
-		$this->notifyChanged(self::FIELD_ADDRESSLINE2);
+		$this->notifyChanged(self::FIELD_ADDRESSLINE2,$this->addressline2,$addressline2);
 		$this->addressline2=$addressline2;
 		return $this;
 	}
@@ -296,7 +313,7 @@ class CustomerModel {
 	 * @return CustomerModel
 	 */
 	public function &setCity($city) {
-		$this->notifyChanged(self::FIELD_CITY);
+		$this->notifyChanged(self::FIELD_CITY,$this->city,$city);
 		$this->city=$city;
 		return $this;
 	}
@@ -321,7 +338,7 @@ class CustomerModel {
 	 * @return CustomerModel
 	 */
 	public function &setState($state) {
-		$this->notifyChanged(self::FIELD_STATE);
+		$this->notifyChanged(self::FIELD_STATE,$this->state,$state);
 		$this->state=$state;
 		return $this;
 	}
@@ -346,7 +363,7 @@ class CustomerModel {
 	 * @return CustomerModel
 	 */
 	public function &setPhone($phone) {
-		$this->notifyChanged(self::FIELD_PHONE);
+		$this->notifyChanged(self::FIELD_PHONE,$this->phone,$phone);
 		$this->phone=$phone;
 		return $this;
 	}
@@ -371,7 +388,7 @@ class CustomerModel {
 	 * @return CustomerModel
 	 */
 	public function &setFax($fax) {
-		$this->notifyChanged(self::FIELD_FAX);
+		$this->notifyChanged(self::FIELD_FAX,$this->fax,$fax);
 		$this->fax=$fax;
 		return $this;
 	}
@@ -396,7 +413,7 @@ class CustomerModel {
 	 * @return CustomerModel
 	 */
 	public function &setEmail($email) {
-		$this->notifyChanged(self::FIELD_EMAIL);
+		$this->notifyChanged(self::FIELD_EMAIL,$this->email,$email);
 		$this->email=$email;
 		return $this;
 	}
@@ -421,7 +438,7 @@ class CustomerModel {
 	 * @return CustomerModel
 	 */
 	public function &setCreditLimit($creditLimit) {
-		$this->notifyChanged(self::FIELD_CREDIT_LIMIT);
+		$this->notifyChanged(self::FIELD_CREDIT_LIMIT,$this->creditLimit,$creditLimit);
 		$this->creditLimit=$creditLimit;
 		return $this;
 	}
@@ -460,7 +477,7 @@ class CustomerModel {
 	 * 
 	 */
 	public function assignDefaultValues() {
-		$this->assignByHash(self::$DEFAULT_VALUES);
+		$this->assignByArray(self::$DEFAULT_VALUES);
 	}
 
 
@@ -517,6 +534,12 @@ class CustomerModel {
 	 */
 	private static $stmtInsert=null;
 	/**
+	 * cached insert statement with autoincrement fields omitted
+	 *
+	 * @var PDOStatement
+	 */
+	private static $stmtInsertAutoIncrement=null;
+	/**
 	 * cached update statement
 	 *
 	 * @var PDOStatement
@@ -550,17 +573,22 @@ class CustomerModel {
 					self::$stmtInsert=$db->prepare($statement);
 				}
 				return self::$stmtInsert;
-			} else if($statement==self::SQL_UPDATE) {
+			} elseif($statement==self::SQL_INSERT_AUTOINCREMENT) {
+				if (null==self::$stmtInsertAutoIncrement) {
+					self::$stmtInsertAutoIncrement=$db->prepare($statement);
+				}
+				return self::$stmtInsertAutoIncrement;
+			} elseif($statement==self::SQL_UPDATE) {
 				if (null==self::$stmtUpdate) {
 					self::$stmtUpdate=$db->prepare($statement);
 				}
 				return self::$stmtUpdate;
-			} else if($statement==self::SQL_SELECT_PK) {
+			} elseif($statement==self::SQL_SELECT_PK) {
 				if (null==self::$stmtSelect) {
 					self::$stmtSelect=$db->prepare($statement);
 				}
 				return self::$stmtSelect;
-			} else if($statement==self::SQL_DELETE_PK) {
+			} elseif($statement==self::SQL_DELETE_PK) {
 				if (null==self::$stmtDelete) {
 					self::$stmtDelete=$db->prepare($statement);
 				}
@@ -594,7 +622,7 @@ class CustomerModel {
 	 * Match by attributes of passed example instance and return matched rows as an array of CustomerModel instances
 	 *
 	 * @param PDO $db a PDO Database instance
-	 * @param CustomerModel $example an example instance defining the conditions. All non-null values will be considered a constraint, null values will be ignored.
+	 * @param CustomerModel $example an example instance defining the conditions. All non-null properties will be considered a constraint, null values will be ignored.
 	 * @param boolean $and true if conditions should be and'ed, false if they should be or'ed
 	 * @param array $sort array of DSC instances
 	 * @return CustomerModel[]
@@ -682,19 +710,24 @@ class CustomerModel {
 		$andString=$and ? ' AND ' : ' OR ';
 		$first=true;
 		foreach ($filter as $fieldId=>$value) {
+			$dfc=$value instanceof DFC;
+			$resolvedFieldId=$dfc ? $value->getField() : $fieldId;
+			if (!array_key_exists($resolvedFieldId, self::$FIELD_NAMES)) {
+				continue;
+			}
 			if ($first) {
 				$sql.=' WHERE ';
 				$first=false;
 			} else {
 				$sql.=$andString;
 			}
-			if ($value instanceof DFC) {
+			$sql.=self::SQL_IDENTIFIER_QUOTE . self::$FIELD_NAMES[$resolvedFieldId] . self::SQL_IDENTIFIER_QUOTE;
+			if ($dfc) {
 				/* @var $value DFC */
-				$sql.=self::SQL_IDENTIFIER_QUOTE . self::$FIELD_NAMES[$value->getField()] . self::SQL_IDENTIFIER_QUOTE
-				. $value->getSqlOperatorPrepared();
+				$sql.=$value->getSqlOperatorPrepared();
 
 			} else {
-				$sql.=self::SQL_IDENTIFIER_QUOTE . self::$FIELD_NAMES[$fieldId] . self::SQL_IDENTIFIER_QUOTE . '=?';
+				$sql.='=?';
 			}
 		}
 		return $sql;
@@ -703,7 +736,7 @@ class CustomerModel {
 	/**
 	 * get sql ORDER BY part from DSCs
 	 *
-	 * @param CustomerModel $sort
+	 * @param array $sort array of DSC instances
 	 * @return string
 	 */
 	protected static function getSqlOrderBy($sort) {
@@ -718,6 +751,9 @@ class CustomerModel {
 		$first=true;
 		foreach ($sort as $s) {
 			/* @var $s DSC */
+			if (!array_key_exists($s->getField(), self::$FIELD_NAMES)) {
+				continue;
+			}
 			if ($first) {
 				$sql.=' ORDER BY ';
 				$first=false;
@@ -737,9 +773,10 @@ class CustomerModel {
 	 */
 	protected static function bindValuesForFilter(PDOStatement &$stmt, $filter) {
 		$i=0;
-		foreach ($filter as $value) {
+		foreach ($filter as $fieldId=>$value) {
 			$dfc=$value instanceof DFC;
-			if ($dfc && 0!=(DFC::IS_NULL&$value->getMode())) {
+			$resolvedFieldId=$dfc ? $value->getField() : $fieldId;
+			if (($dfc && 0!=(DFC::IS_NULL&$value->getMode())) || !array_key_exists($resolvedFieldId, self::$FIELD_NAMES)) {
 				continue;
 			}
 			$stmt->bindValue(++$i, $dfc ? $value->getSqlValue() : $value);
@@ -985,5 +1022,19 @@ class CustomerModel {
 		return $instances;
 	}
 
+
+
+	/**
+	 * get object as string
+	 *
+	 * @return string
+	 */
+	public function __toString() {
+		$s=null;
+		foreach ($this->toHash() as $fieldName=>$value) {
+			$s.=$fieldName . ": " . $value . "\n";
+		}
+		return $s;
+	}
 }
 ?>

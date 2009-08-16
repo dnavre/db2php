@@ -1,5 +1,4 @@
 
-
 	/**
 	 * get object as string
 	 *
