@@ -149,7 +149,7 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 		s.append(getSnippetFromFile(generator, SNIPPET_EXCEPTION));
 		// TODO: check how to safely fetch insert ids
 		for (Field f : generator.getTable().getFieldsAutoIncrement()) {
-			s.append("\t\t").append(generator.getSetterCall(f, "$db->lastInsertId()")).append(";\n");
+			s.append("\t\t").append(generator.getSetterCall(f, new StringBuilder("$db->lastInsertId(").append(null==f.getSerialName() ? StringUtil.EMTPY : CodeGenerator.getPhpString(f.getSerialName())).append(")").toString())).append(";\n");
 		}
 		s.append(getStmtCloseCursor());
 		s.append(generator.getTrackingPristineState());

@@ -46,13 +46,14 @@ public class Field {
 	 * number types
 	 */
 	public static final int[] NUMBER_TYPES={Types.BIGINT, Types.DECIMAL, Types.DOUBLE, Types.FLOAT, Types.INTEGER, Types.NUMERIC, Types.SMALLINT, Types.TINYINT};
+
 	static {
 		Arrays.sort(NUMBER_TYPES);
 	}
-
 	private String name;
 	private int type;
 	private String typeName;
+	private String serialName;
 	private int size=0;
 	private int decimalDigits=0;
 	private boolean nullable=true;
@@ -110,6 +111,20 @@ public class Field {
 	 */
 	public void setTypeName(String typeName) {
 		this.typeName=typeName;
+	}
+
+	/**
+	 * @return the serialName
+	 */
+	public String getSerialName() {
+		return serialName;
+	}
+
+	/**
+	 * @param serialName the serialName to set
+	 */
+	public void setSerialName(String serialName) {
+		this.serialName=serialName;
 	}
 
 	/**
@@ -335,8 +350,6 @@ public class Field {
 		hash=61*hash+(this.name!=null ? this.name.hashCode() : 0);
 		return hash;
 	}
-
-
 
 	@Override
 	public String toString() {

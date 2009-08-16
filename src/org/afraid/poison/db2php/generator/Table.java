@@ -27,6 +27,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.afraid.poison.common.CollectionUtil;
 import org.afraid.poison.common.DbUtil;
 import org.afraid.poison.common.PredicateReferenceValue;
@@ -38,6 +40,7 @@ import org.afraid.poison.common.PredicateReferenceValue;
  */
 public class Table {
 
+	private static final Pattern SERIAL_NAME_PATTERN_PGSQL=Pattern.compile("nextval\\('([^']+)'");
 	private String catalog;
 	private String schema;
 	private String name;
@@ -144,8 +147,12 @@ public class Table {
 					field.setIndex(Field.INDEX_NON_UNIQUE);
 					}*/
 					// pgsql ...
-					if("SERIAL".equalsIgnoreCase(field.getTypeName()) || "BIGSERIAL".equalsIgnoreCase(field.getTypeName())) {
+					if ("SERIAL".equalsIgnoreCase(field.getTypeName())||"BIGSERIAL".equalsIgnoreCase(field.getTypeName())) {
 						field.setAutoIncrement(true);
+						Matcher m=SERIAL_NAME_PATTERN_PGSQL.matcher(field.getDefaultValue());
+						if (m.find()) {
+							field.setSerialName(m.group(1));
+						}
 					}
 					fields.add(field);
 					fieldNameMap.put(field.getName(), field);
@@ -355,7 +362,7 @@ public class Table {
 	public Set<Field> getFieldsIndexes(boolean unique) {
 		Set<Field> indexFields=new LinkedHashSet<Field>();
 		for (Field f : getFields()) {
-			if ((f.isIndexUnique() && unique) || (f.isIndexNonUnique() && !unique)) {
+			if ((f.isIndexUnique()&&unique)||(f.isIndexNonUnique()&&!unique)) {
 				indexFields.add(f);
 			}
 		}
