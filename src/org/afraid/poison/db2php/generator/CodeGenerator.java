@@ -586,7 +586,7 @@ public class CodeGenerator {
 
 		// insert query with autoincrement columns omitted
 		Set<Field> fieldsNotAutoincrement=getTable().getFieldsNotAutoIncrement();
-		s.append("\tconst SQL_INSERT='INSERT INTO ").append(quoteIdentifier(getTable().getName()));
+		s.append("\tconst SQL_INSERT_AUTOINCREMENT='INSERT INTO ").append(quoteIdentifier(getTable().getName()));
 		s.append(" (").append(CollectionUtil.join(fieldsNotAutoincrement, ",", getIdentifierQuoteString(), getIdentifierQuoteString())).append(") VALUES (").append(StringUtil.repeat("?,", fieldsNotAutoincrement.size()-1)).append("?)").append("';\n");
 
 		// update query
