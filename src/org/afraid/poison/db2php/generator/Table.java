@@ -282,7 +282,11 @@ public class Table {
 		if (identifiers.isEmpty()) {
 			identifiers=getFieldsBestRowIdentifiers();
 			if (identifiers.isEmpty()) {
-				identifiers=getFieldsIndexesUnique();
+				if (!getIndexes(true).isEmpty()) {
+					identifiers.addAll(getIndexes(true).iterator().next().getFields());
+				} else {
+					identifiers=getFieldsIndexesUnique();
+				}
 				if (identifiers.isEmpty()) {
 					identifiers=getFieldsIndexesNonUnique();
 					if (identifiers.isEmpty()) {
