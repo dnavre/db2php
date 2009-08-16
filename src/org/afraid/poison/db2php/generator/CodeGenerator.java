@@ -367,6 +367,16 @@ public class CodeGenerator {
 	}
 
 	/**
+	 * get hash to identify table/field combination
+	 *
+	 * @param field
+	 * @return
+	 */
+	public int getHash(Field field) {
+		return new StringBuilder().append(getTable().getName()).append(".").append(field.getName()).toString().hashCode();
+	}
+
+	/**
 	 * get the comma separated list of fields
 	 *
 	 * @param fields the fields for which to build the list
@@ -426,7 +436,8 @@ public class CodeGenerator {
 		int i=0;
 		for (Field f : getTable().getFields()) {
 			//s.append("\tconst FIELD_").append(getMethodName(f).toUpperCase()).append("=").append((int) Math.pow(2, i++)).append("\n");
-			s.append("\tconst ").append(getConstName(f)).append("=").append(i++).append(";\n");
+			//s.append("\tconst ").append(getConstName(f)).append("=").append(i++).append(";\n");
+			s.append("\tconst ").append(getConstName(f)).append("=").append(getHash(f)).append(";\n");
 		}
 
 		StringMutator mutatorFieldList=new StringMutator() {

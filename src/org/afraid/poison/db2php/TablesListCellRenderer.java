@@ -19,11 +19,13 @@ package org.afraid.poison.db2php;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.util.Set;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 import org.afraid.poison.common.CollectionUtil;
+import org.afraid.poison.db2php.generator.Index;
 import org.afraid.poison.db2php.generator.Table;
 
 /**
@@ -44,8 +46,8 @@ class TablesListCellRenderer extends JLabel implements ListCellRenderer {
 		if (value instanceof Table) {
 			Table t=(Table) value;
 			StringBuilder tooltipText=new StringBuilder("<html><h2>").append(t.getName()).append("</h2>");
-			if (!t.getPrimaryKeys().isEmpty()) {
-				tooltipText.append("<strong>Primary key(s): </strong>").append(CollectionUtil.join(t.getPrimaryKeys(), ", ")).append("<br />");
+			if (!t.getFieldsPrimaryKey().isEmpty()) {
+				tooltipText.append("<strong>Primary key(s): </strong>").append(CollectionUtil.join(t.getFieldsPrimaryKey(), ", ")).append("<br />");
 			} else {
 				tooltipText.append("<strong>Has no primary key!</strong><br />");
 				tooltipText.append("<strong>Will be using: </strong>").append(CollectionUtil.join(t.getFieldsIdentifiers(), ", ")).append("<br />");
@@ -54,15 +56,31 @@ class TablesListCellRenderer extends JLabel implements ListCellRenderer {
 			if (!t.getFieldsBestRowIdentifiers().isEmpty()) {
 				tooltipText.append("<strong>Best Identifiers per Driver: </strong>").append(CollectionUtil.join(t.getFieldsBestRowIdentifiers(), ", ")).append("<br />");
 			}
+			Set<Index> indexesUnique=t.getIndexes(true);
+			if (!indexesUnique.isEmpty()) {
+				tooltipText.append("<strong>Unique Indexes: </strong><br />");
+				tooltipText.append(getIndexHtml(indexesUnique));
+			}
+			Set<Index> indexesNonUnique=t.getIndexes(false);
+			if (!indexesNonUnique.isEmpty()) {
+				tooltipText.append("<strong>Non-Unique Indexes: </strong><br />");
+				tooltipText.append(getIndexHtml(indexesNonUnique));
+			}
+
+			/*
 			if (!t.getFieldsIndexesUnique().isEmpty()) {
-				tooltipText.append("<strong>Unique Indexes: </strong>").append(CollectionUtil.join(t.getFieldsIndexesUnique(), ", ")).append("<br />");
+			tooltipText.append("<strong>Unique Indexes: </strong>").append(CollectionUtil.join(t.getFieldsIndexesUnique(), ", ")).append("<br />");
 			}
 			if (!t.getFieldsIndexesNonUnique().isEmpty()) {
-				tooltipText.append("<strong>Non-Unique Indexes: </strong>").append(CollectionUtil.join(t.getFieldsIndexesNonUnique(), ", ")).append("<br />");
+			tooltipText.append("<strong>Non-Unique Indexes: </strong>").append(CollectionUtil.join(t.getFieldsIndexesNonUnique(), ", ")).append("<br />");
+			}
+			 */
+			if (!t.getIndexes().isEmpty()) {
+				//tooltipText.append("<strong>Indexes: </strong>").append(t.getIndexes());
 			}
 			tooltipText.append("</html>");
 			setToolTipText(tooltipText.toString());
-			if (t.getPrimaryKeys().isEmpty()) {
+			if (t.getFieldsPrimaryKey().isEmpty()) {
 				setBackground(Color.ORANGE);
 				//setToolTipText(new StringBuilder("Table ").append(t.getName()).append(" has no primary key! Will be using: ").append(CollectionUtil.join(t.getFieldsIdentifiers(), ", ")).toString());
 				if (iss) {
@@ -71,7 +89,7 @@ class TablesListCellRenderer extends JLabel implements ListCellRenderer {
 					setBorder(BorderFactory.createLineBorder(Color.WHITE, 2));
 				}
 			} else {
-				//setToolTipText(new StringBuilder("Primary key(s) of ").append(t.getName()).append(": ").append(CollectionUtil.join(t.getPrimaryKeys(), ", ")).toString());
+				//setToolTipText(new StringBuilder("Primary key(s) of ").append(t.getName()).append(": ").append(CollectionUtil.join(t.getFieldsPrimaryKey(), ", ")).toString());
 				if (iss) {
 					setBorder(BorderFactory.createLineBorder(list.getSelectionBackground(), 2));
 					setBackground(list.getSelectionBackground());
@@ -92,5 +110,23 @@ class TablesListCellRenderer extends JLabel implements ListCellRenderer {
 		}
 
 		return this;
+	}
+
+	private CharSequence getIndexHtml(Set<Index> indexes) {
+		StringBuilder sb=new StringBuilder();
+
+		sb.append("<table border=1 cellpadding=0 cellspacing=0>");
+		for (Index i : indexes) {
+			sb.append(getIndexHtml(i));
+		}
+		sb.append("</table>");
+		return sb;
+	}
+
+	private CharSequence getIndexHtml(Index index) {
+		StringBuilder sb=new StringBuilder();
+		//sb.append("<tr><td>").append(index.getName()).append(":</td><td><ul><li>").append(CollectionUtil.join(index.getFields(), "</li><li>")).append("</ul></td></tr>");
+		sb.append("<tr><td>").append(index.getName()).append(":</td><td>").append(CollectionUtil.join(index.getFields(), ", ")).append("</td></tr>");
+		return sb;
 	}
 }

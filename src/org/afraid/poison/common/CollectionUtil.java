@@ -146,4 +146,13 @@ public class CollectionUtil {
 	public static <T> ArrayList<T> filterType(Class<T> clazz, Object[] values) {
 		return filterType(clazz, Arrays.asList(values));
 	}
+
+	public static <T> T find(Collection<T> collection, Predicate predicate) {
+		for (T o : collection) {
+			if(predicate.evaluate(o)) {
+				return o;
+			}
+		}
+		return null;
+	}
 }

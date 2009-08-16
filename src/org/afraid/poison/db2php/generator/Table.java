@@ -21,11 +21,15 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.afraid.poison.common.CollectionUtil;
 import org.afraid.poison.common.DbUtil;
+import org.afraid.poison.common.PredicateReferenceValue;
 
 /**
  * represents meta data for a table in a database
@@ -39,7 +43,8 @@ public class Table {
 	private String name;
 	private String remark;
 	private Set<Field> fields=null;
-	private Set<Field> primaryKeys=null;
+	private Set<Field> fieldsPrimaryKeys=null;
+	private Set<Index> indexes=null;
 	private String identifierQuoteString;
 
 	/**
@@ -109,39 +114,12 @@ public class Table {
 				DbUtil.closeQuietly(rsetRowIdentifiers);
 			}
 
-
-			// get indexes
-			Set<String> indexesUnique=new LinkedHashSet<String>();
-			Set<String> indexesNonUnique=new LinkedHashSet<String>();
-			ResultSet rsetIndexes=null;
-			try {
-				rsetIndexes=connection.getMetaData().getIndexInfo(getCatalog(), getSchema(), getName(), false, false);
-				String fieldName;
-				boolean unique;
-				while (rsetIndexes.next()) {
-					// NON_UNIQUE
-					fieldName=rsetIndexes.getString("COLUMN_NAME");
-					unique=!rsetIndexes.getBoolean("NON_UNIQUE");
-					if (unique) {
-						indexesUnique.add(fieldName);
-					} else {
-						indexesNonUnique.add(fieldName);
-					}
-				}
-				rsetIndexes.close();
-			} catch (SQLException ex) {
-				Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
-			} finally {
-				DbUtil.closeQuietly(rsetIndexes);
-			}
-
-
-
 			// get list of fields
 			ResultSet rsetColumns=null;
+			Map<String, Field> fieldNameMap=new LinkedHashMap<String, Field>();
+			Field field;
 			try {
 				rsetColumns=connection.getMetaData().getColumns(getCatalog(), getSchema(), getName(), null);
-				Field field;
 				while (rsetColumns.next()) {
 					field=new Field();
 					field.setName(rsetColumns.getString("COLUMN_NAME"));
@@ -160,17 +138,65 @@ public class Table {
 					}
 					field.setComment(rsetColumns.getString("REMARKS"));
 					field.setRowIdentifier(rowIdentifiers.contains(field.getName()));
-					if (indexesUnique.contains(field.getName())) {
-						field.setIndex(Field.INDEX_UNIQUE);
-					} else if (indexesNonUnique.contains(field.getName())) {
-						field.setIndex(Field.INDEX_NON_UNIQUE);
-					}
+					/*if (indexeFieldsUnique.contains(field.getName())) {
+					field.setIndex(Field.INDEX_UNIQUE);
+					} else if (indexeFieldsNonUnique.contains(field.getName())) {
+					field.setIndex(Field.INDEX_NON_UNIQUE);
+					}*/
 					fields.add(field);
+					fieldNameMap.put(field.getName(), field);
 				}
 			} catch (SQLException ex) {
 				Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
 			} finally {
 				DbUtil.closeQuietly(rsetColumns);
+			}
+
+			// get indexes
+			indexes=new LinkedHashSet<Index>();
+			ResultSet rsetIndexes=null;
+			try {
+				rsetIndexes=connection.getMetaData().getIndexInfo(getCatalog(), getSchema(), getName(), false, false);
+				String indexName;
+				String fieldName;
+				Index index;
+				boolean unique;
+				while (rsetIndexes.next()) {
+					// NON_UNIQUE
+					indexName=rsetIndexes.getString("INDEX_NAME");
+					fieldName=rsetIndexes.getString("COLUMN_NAME");
+					unique=!rsetIndexes.getBoolean("NON_UNIQUE");
+					index=CollectionUtil.find(indexes, new PredicateReferenceValue(indexName) {
+
+						@Override
+						public boolean evaluate(Object o) {
+							String n=((Index) o).getName();
+							return (null==n&&null==getReferenceValue())||(null!=getReferenceValue()&&getReferenceValue().equals(n));
+						}
+					});
+					if (null==index) {
+						index=new Index();
+						index.setName(indexName);
+						index.setUnique(unique);
+						indexes.add(index);
+					}
+					field=fieldNameMap.get(fieldName);
+					if (null!=field) {
+						if (unique) {
+							field.setIndex(Field.INDEX_UNIQUE);
+						} else {
+							field.setIndex(Field.INDEX_NON_UNIQUE);
+						}
+						index.getFields().add(field);
+					} else {
+						Logger.getLogger(getClass().getName()).log(Level.WARNING, new StringBuilder("Field ").append(fieldName).append(" not found defined in index ").append(indexName).toString());
+					}
+				}
+				rsetIndexes.close();
+			} catch (SQLException ex) {
+				Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
+			} finally {
+				DbUtil.closeQuietly(rsetIndexes);
 			}
 
 		} catch (SQLException ex) {
@@ -232,18 +258,18 @@ public class Table {
 	/**
 	 * get the primary keys for this table
 	 *
-	 * @return the rpimary keys
+	 * @return the primary key fields
 	 */
-	public synchronized Set<Field> getPrimaryKeys() {
-		if (null==primaryKeys) {
-			primaryKeys=new LinkedHashSet<Field>();
+	public synchronized Set<Field> getFieldsPrimaryKey() {
+		if (null==fieldsPrimaryKeys) {
+			fieldsPrimaryKeys=new LinkedHashSet<Field>();
 			for (Field f : getFields()) {
 				if (f.isPrimaryKey()) {
-					primaryKeys.add(f);
+					fieldsPrimaryKeys.add(f);
 				}
 			}
 		}
-		return new LinkedHashSet<Field>(primaryKeys);
+		return new LinkedHashSet<Field>(fieldsPrimaryKeys);
 	}
 
 	/**
@@ -252,11 +278,15 @@ public class Table {
 	 * @return fields by which a single record should be identified
 	 */
 	public Set<Field> getFieldsIdentifiers() {
-		Set<Field> identifiers=getPrimaryKeys();
+		Set<Field> identifiers=getFieldsPrimaryKey();
 		if (identifiers.isEmpty()) {
 			identifiers=getFieldsBestRowIdentifiers();
 			if (identifiers.isEmpty()) {
-				identifiers=getFieldsIndexesUnique();
+				if (!getIndexes(true).isEmpty()) {
+					identifiers.addAll(getIndexes(true).iterator().next().getFields());
+				} else {
+					identifiers=getFieldsIndexesUnique();
+				}
 				if (identifiers.isEmpty()) {
 					identifiers=getFieldsIndexesNonUnique();
 					if (identifiers.isEmpty()) {
@@ -275,7 +305,7 @@ public class Table {
 	 */
 	public Set<Field> getFieldsNotPrimaryKeys() {
 		Set<Field> notPrimary=getFields();
-		notPrimary.removeAll(getPrimaryKeys());
+		notPrimary.removeAll(getFieldsPrimaryKey());
 		return notPrimary;
 	}
 
@@ -300,13 +330,7 @@ public class Table {
 	 * @return unique indexes
 	 */
 	public Set<Field> getFieldsIndexesUnique() {
-		Set<Field> indexesUnique=new LinkedHashSet<Field>();
-		for (Field f : getFields()) {
-			if (f.isIndexUnique()) {
-				indexesUnique.add(f);
-			}
-		}
-		return indexesUnique;
+		return getFieldsIndexes(true);
 	}
 
 	/**
@@ -315,13 +339,23 @@ public class Table {
 	 * @return non-unique indexes
 	 */
 	public Set<Field> getFieldsIndexesNonUnique() {
-		Set<Field> indexesNonUnique=new LinkedHashSet<Field>();
+		return getFieldsIndexes(false);
+	}
+
+	/**
+	 * get index fields which are unique/non unique
+	 * 
+	 * @param unique true for unique
+	 * @return the index fields
+	 */
+	public Set<Field> getFieldsIndexes(boolean unique) {
+		Set<Field> indexFields=new LinkedHashSet<Field>();
 		for (Field f : getFields()) {
-			if (f.isIndexNonUnique()) {
-				indexesNonUnique.add(f);
+			if ((f.isIndexUnique() && unique) || (f.isIndexNonUnique() && !unique)) {
+				indexFields.add(f);
 			}
 		}
-		return indexesNonUnique;
+		return indexFields;
 	}
 
 	/**
@@ -348,6 +382,35 @@ public class Table {
 		Set<Field> notAutoIncrement=getFields();
 		notAutoIncrement.removeAll(getFieldsAutoIncrement());
 		return notAutoIncrement;
+	}
+
+	/**
+	 * get indexes for this table
+	 * 
+	 * @return the indexes
+	 */
+	public Set<Index> getIndexes() {
+		return new LinkedHashSet<Index>(indexes);
+	}
+
+	/**
+	 * only get indexes which are unique/non-unique
+	 *
+	 * @param unique
+	 * @return indexes which are unique/non-unique
+	 */
+	public Set<Index> getIndexes(boolean unique) {
+		Set<Index> is=new LinkedHashSet<Index>();
+		for (Index i : getIndexes()) {
+			if (i.isUnique()==unique) {
+				is.add(i);
+			}
+		}
+		return is;
+	}
+
+	public Set<Index> getIndexesUnique() {
+		return getIndexesUnique();
 	}
 
 	/**
