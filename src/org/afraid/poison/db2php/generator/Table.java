@@ -143,6 +143,10 @@ public class Table {
 					} else if (indexeFieldsNonUnique.contains(field.getName())) {
 					field.setIndex(Field.INDEX_NON_UNIQUE);
 					}*/
+					// pgsql ...
+					if("SERIAL".equalsIgnoreCase(field.getTypeName()) || "BIGSERIAL".equalsIgnoreCase(field.getTypeName())) {
+						field.setAutoIncrement(true);
+					}
 					fields.add(field);
 					fieldNameMap.put(field.getName(), field);
 				}
