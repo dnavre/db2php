@@ -30,53 +30,84 @@
 */
 
 /**
+ * Interface for entity classes
  *
- * @author poison
+ * @author Andreas Schnaiter
  */
-interface Db2PhpEntityModificationTracking {
-
-	/**
-	 * called when the field with the passed id has changed
-	 *
-	 * @param int $fieldId
-	 * @param mixed $oldValue
-	 * @param mixed $newValue
-	 */
-	protected function notifyChanged($fieldId, $oldValue, $newValue);
+interface Db2PhpEntity {
 	
-    /**
-	 * get old instance if this has been modified, otherwise return null
+	/**
+	 * Insert this instance into the database
 	 *
-	 * @return TbltarifeofflineModel
+	 * @param PDO $db
+	 * @return mixed
 	 */
-	public function getOldInstance();
+	public function insertIntoDatabase(PDO $db);
 
 	/**
-	 * return true if this instance has been modified since the last notifyPristine() call
+	 * Update this instance into the database
 	 *
-	 * @return bool
+	 * @param PDO $db
+	 * @return mixed
 	 */
-	public function isChanged();
+	public function updateToDatabase(PDO $db);
+	
+	/**
+	 * Delete this instance from the database
+	 *
+	 * @param PDO $db
+	 * @return mixed
+	 */
+	public function deleteFromDatabase(PDO $db);
 
 	/**
-	 * return array with the field id as index and the new value as value of values which have been changed since the last notifyPristine call
+	 * Assign default values according to table
+	 *
+	 */
+    public function assignDefaultValues();
+
+	/**
+	 * Assign values from array with the field id as index and the value as value
+	 *
+	 * @param array $array
+	 */
+	public function assignByArray($array);
+	
+	/**
+	 *
+	 * Assign values from hash where the indexes match the tables field names
+	 *
+	 * @param array $result
+	 */
+	public function assignByHash($result);
+
+	/**
+	 * return array with the field id as index and the field value as value for the identifier fields.
 	 *
 	 * @return array
 	 */
-	public function getFieldsValuesChanged();
+	public function getPrimaryKeyValues();
 
 	/**
-	 * return array with the field ids of values which have been changed since the last notifyPristine call
+	 * return hash with the field name as index and the field value as value.
 	 *
 	 * @return array
 	 */
-	public function getFieldsChanged();
+	public function toHash();
 
 	/**
-	 * set this instance into pristine state
+	 * return array with the field id as index and the field value as value.
+	 *
+	 * @return array
 	 */
-	public function notifyPristine();
+	public function toArray();
 
+	/**
+	 * get element as DOM Document
+	 *
+	 * @return DOMDocument
+	 */
+	public function toDOM();
 
 }
 ?>
