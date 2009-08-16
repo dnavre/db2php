@@ -330,13 +330,7 @@ public class Table {
 	 * @return unique indexes
 	 */
 	public Set<Field> getFieldsIndexesUnique() {
-		Set<Field> indexesUnique=new LinkedHashSet<Field>();
-		for (Field f : getFields()) {
-			if (f.isIndexUnique()) {
-				indexesUnique.add(f);
-			}
-		}
-		return indexesUnique;
+		return getFieldsIndexes(true);
 	}
 
 	/**
@@ -345,13 +339,23 @@ public class Table {
 	 * @return non-unique indexes
 	 */
 	public Set<Field> getFieldsIndexesNonUnique() {
-		Set<Field> indexesNonUnique=new LinkedHashSet<Field>();
+		return getFieldsIndexes(false);
+	}
+
+	/**
+	 * get index fields which are unique/non unique
+	 * 
+	 * @param unique true for unique
+	 * @return the index fields
+	 */
+	public Set<Field> getFieldsIndexes(boolean unique) {
+		Set<Field> indexFields=new LinkedHashSet<Field>();
 		for (Field f : getFields()) {
-			if (f.isIndexNonUnique()) {
-				indexesNonUnique.add(f);
+			if ((f.isIndexUnique() && unique) || (f.isIndexNonUnique() && !unique)) {
+				indexFields.add(f);
 			}
 		}
-		return indexesNonUnique;
+		return indexFields;
 	}
 
 	/**
