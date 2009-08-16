@@ -585,9 +585,11 @@ public class CodeGenerator {
 		s.append(" (").append(CollectionUtil.join(fields, ",", getIdentifierQuoteString(), getIdentifierQuoteString())).append(") VALUES (").append(StringUtil.repeat("?,", fields.size()-1)).append("?)").append("';\n");
 
 		// insert query with autoincrement columns omitted
+		//if (!getTable().getFieldsAutoIncrement().isEmpty()) {
 		Set<Field> fieldsNotAutoincrement=getTable().getFieldsNotAutoIncrement();
 		s.append("\tconst SQL_INSERT_AUTOINCREMENT='INSERT INTO ").append(quoteIdentifier(getTable().getName()));
 		s.append(" (").append(CollectionUtil.join(fieldsNotAutoincrement, ",", getIdentifierQuoteString(), getIdentifierQuoteString())).append(") VALUES (").append(StringUtil.repeat("?,", fieldsNotAutoincrement.size()-1)).append("?)").append("';\n");
+		//}
 
 		// update query
 		s.append("\tconst SQL_UPDATE='UPDATE ").append(quoteIdentifier(getTable().getName()));

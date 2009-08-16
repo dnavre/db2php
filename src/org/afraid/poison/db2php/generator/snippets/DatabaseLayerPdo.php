@@ -6,6 +6,12 @@
 	 */
 	private static $stmtInsert=null;
 	/**
+	 * cached insert statement with autoincrement fields omitted
+	 *
+	 * @var PDOStatement
+	 */
+	private static $stmtInsertAutoIncrement=null;
+	/**
 	 * cached update statement
 	 *
 	 * @var PDOStatement
@@ -39,17 +45,22 @@
 					self::$stmtInsert=$db->prepare($statement);
 				}
 				return self::$stmtInsert;
-			} else if($statement==self::SQL_UPDATE) {
+			} elseif($statement==self::SQL_INSERT_AUTOINCREMENT) {
+				if (null==self::$stmtInsertAutoIncrement) {
+					self::$stmtInsertAutoIncrement=$db->prepare($statement);
+				}
+				return self::$stmtInsertAutoIncrement;
+			} elseif($statement==self::SQL_UPDATE) {
 				if (null==self::$stmtUpdate) {
 					self::$stmtUpdate=$db->prepare($statement);
 				}
 				return self::$stmtUpdate;
-			} else if($statement==self::SQL_SELECT_PK) {
+			} elseif($statement==self::SQL_SELECT_PK) {
 				if (null==self::$stmtSelect) {
 					self::$stmtSelect=$db->prepare($statement);
 				}
 				return self::$stmtSelect;
-			} else if($statement==self::SQL_DELETE_PK) {
+			} elseif($statement==self::SQL_DELETE_PK) {
 				if (null==self::$stmtDelete) {
 					self::$stmtDelete=$db->prepare($statement);
 				}

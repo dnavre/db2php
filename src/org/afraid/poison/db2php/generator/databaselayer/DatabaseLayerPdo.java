@@ -128,9 +128,23 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 		//
 		s.append(getSnippetFromFile(generator, "DatabaseLayer.insertIntoDatabase.php"));
 		s.append("\tpublic function ").append(METHOD_INSERT_NAME).append("(").append(getDbTypeName()).append(" $db) {\n");
-		s.append(getStmtInit("self::SQL_INSERT"));
-		//s.append(getBindingCodeField(generator, new ArrayList<Field>(generator.getTable().getFields())));
-		s.append("\t\t$this->bindValues($stmt);\n");
+
+		// if we have autoincrement fields, ...
+		if (!generator.getTable().getFieldsAutoIncrement().isEmpty()) {
+			Field firstAutoIncrement=generator.getTable().getFieldsAutoIncrement().iterator().next();
+			s.append("\t\tif (is_null(").append(generator.getGetterCall(firstAutoIncrement)).append(")) {\n");
+			s.append("\t").append(getStmtInit("self::SQL_INSERT_AUTOINCREMENT"));
+			s.append(getBindingCodeField(generator, new ArrayList<Field>(generator.getTable().getFieldsNotAutoIncrement()), 0, false, 3));
+			s.append("\t\t} else {\n");
+			s.append("\t").append(getStmtInit("self::SQL_INSERT"));
+			s.append("\t\t\t$this->bindValues($stmt);\n");
+			s.append("\t\t}\n");
+			
+		} else {
+			s.append(getStmtInit("self::SQL_INSERT"));
+			s.append("\t\t$this->bindValues($stmt);\n");
+		}
+		
 		s.append(getStmtExecute());
 		s.append(getSnippetFromFile(generator, SNIPPET_EXCEPTION));
 		// TODO: check how to safely fetch insert ids
