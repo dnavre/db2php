@@ -429,15 +429,21 @@ public class CodeGenerator {
 			s.append("\tconst ").append(getConstName(f)).append("=").append(i++).append(";\n");
 		}
 
-		// list of primary keys
-		s.append("\tprivate static $PRIMARY_KEYS=array(");
-		s.append(CollectionUtil.join(getTable().getFieldsIdentifiers(), ",", new StringMutator() {
+		StringMutator mutatorFieldList=new StringMutator() {
 
 			@Override
 			public String transform(Object s) {
 				return new StringBuilder("self::").append(getConstName((Field) s)).toString();
 			}
-		}));
+		};
+		// list of primary keys
+		s.append("\tprivate static $PRIMARY_KEYS=array(");
+		s.append(CollectionUtil.join(getTable().getFieldsIdentifiers(), ",", mutatorFieldList));
+		s.append(");\n");
+
+		// list of autoincrement fields
+		s.append("\tprivate static $AUTOINCREMENT_FIELDS=array(");
+		s.append(CollectionUtil.join(getTable().getFieldsAutoIncrement(), ",", mutatorFieldList));
 		s.append(");\n");
 
 		// field id to field name mapping
@@ -487,7 +493,8 @@ public class CodeGenerator {
 							s.append("0");
 						} else {
 							if (f.getDefaultValue().matches(".*[^0-9\\.].*")) {
-								s.append(getPhpString(f.getDefaultValue()));
+								//s.append(getPhpString(f.getDefaultValue()));
+								s.append("null");
 							} else {
 								s.append(f.getDefaultValue());
 							}
@@ -565,6 +572,11 @@ public class CodeGenerator {
 		// insert query
 		s.append("\tconst SQL_INSERT='INSERT INTO ").append(quoteIdentifier(getTable().getName()));
 		s.append(" (").append(CollectionUtil.join(fields, ",", getIdentifierQuoteString(), getIdentifierQuoteString())).append(") VALUES (").append(StringUtil.repeat("?,", fields.size()-1)).append("?)").append("';\n");
+
+		// insert query with autoincrement columns omitted
+		Set<Field> fieldsNotAutoincrement=getTable().getFieldsNotAutoIncrement();
+		s.append("\tconst SQL_INSERT='INSERT INTO ").append(quoteIdentifier(getTable().getName()));
+		s.append(" (").append(CollectionUtil.join(fieldsNotAutoincrement, ",", getIdentifierQuoteString(), getIdentifierQuoteString())).append(") VALUES (").append(StringUtil.repeat("?,", fieldsNotAutoincrement.size()-1)).append("?)").append("';\n");
 
 		// update query
 		s.append("\tconst SQL_UPDATE='UPDATE ").append(quoteIdentifier(getTable().getName()));
