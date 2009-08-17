@@ -35,15 +35,6 @@
  * @author Andreas Schnaiter
  */
 interface Db2PhpEntityModificationTracking {
-
-	/**
-	 * called when the field with the passed id has changed
-	 *
-	 * @param int $fieldId
-	 * @param mixed $oldValue
-	 * @param mixed $newValue
-	 */
-	protected function notifyChanged($fieldId, $oldValue, $newValue);
 	
     /**
 	 * get old instance if this has been modified, otherwise return null
