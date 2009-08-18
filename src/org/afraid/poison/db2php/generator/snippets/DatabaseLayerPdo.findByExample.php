@@ -14,7 +14,7 @@
 		$exampleValues=$example->toArray();
 		$filter=array();
 		foreach ($exampleValues as $fieldId=>$value) {
-			if (!is_null($value)) {
+			if (null!==$value) {
 				$filter[$fieldId]=$value;
 			}
 		}
@@ -122,7 +122,7 @@
 	 * @return string
 	 */
 	protected static function getSqlOrderBy($sort) {
-		if (is_null($sort)) {
+		if (null===$sort) {
 			return '';
 		}
 		if ($sort instanceof DSC) {

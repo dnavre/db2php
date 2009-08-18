@@ -23,7 +23,7 @@
 	 * @param mixed $newValue
 	 */
 	protected function notifyChanged($fieldId, $oldValue, $newValue) {
-		if (is_null($this->getOldInstance())) {
+		if (null===$this->getOldInstance()) {
 			$this->oldInstance=clone $this;
 			$this->oldInstance->notifyPristine();
 		}
@@ -35,7 +35,7 @@
 	 * @return bool
 	 */
 	public function isChanged() {
-		return !is_null($this->getOldInstance());
+		return null!==$this->getOldInstance();
 	}
 
 	/**

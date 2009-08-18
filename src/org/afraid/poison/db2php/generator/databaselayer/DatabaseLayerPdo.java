@@ -132,7 +132,7 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 		// if we have autoincrement fields, ...
 		if (!generator.getTable().getFieldsAutoIncrement().isEmpty()) {
 			Field firstAutoIncrement=generator.getTable().getFieldsAutoIncrement().iterator().next();
-			s.append("\t\tif (is_null(").append(generator.getGetterCall(firstAutoIncrement)).append(")) {\n");
+			s.append("\t\tif (null===").append(generator.getGetterCall(firstAutoIncrement)).append(") {\n");
 			s.append("\t").append(getStmtInit("self::SQL_INSERT_AUTOINCREMENT"));
 			s.append(getBindingCodeField(generator, new ArrayList<Field>(generator.getTable().getFieldsNotAutoIncrement()), 0, false, 3));
 			s.append("\t\t} else {\n");
@@ -169,7 +169,7 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 		s.append(getStmtInit("self::SQL_UPDATE"));
 		s.append("\t\t$this->bindValues($stmt);\n");
 		if (false && generator.isTrackFieldModifications()) {
-			s.append("\t\tif (!is_null($this->getOldInstance())) {\n");
+			s.append("\t\tif (null!==$this->getOldInstance()) {\n");
 			s.append(getBindingCodeField(generator, new ArrayList<Field>(generator.getTable().getFieldsIdentifiers()), generator.getTable().getFields().size(), true, 3));
 			s.append("\t\t} else {\n");
 			s.append(getBindingCodeField(generator, new ArrayList<Field>(generator.getTable().getFieldsIdentifiers()), generator.getTable().getFields().size(), false, 3));

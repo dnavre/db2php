@@ -30,7 +30,7 @@
 		$result=array();
 		foreach (self::$FIELD_NAMES as $fieldName) {
 			$n=$node->getElementsByTagName($fieldName)->item(0);
-			if (!is_null($n)) {
+			if (null!==$n) {
 				$result[$fieldName]=$n->nodeValue;
 			}
 		}
