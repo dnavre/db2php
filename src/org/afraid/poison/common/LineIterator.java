@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package org.afraid.poison.common;
 
 import java.io.BufferedReader;
@@ -12,17 +11,22 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.Iterator;
-import org.openide.util.Exceptions;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author schnaiter
  */
 public class LineIterator implements Iterable<CharSequence>, Iterator<CharSequence> {
+
 	private BufferedReader reader;
-	private String line;
+	private String line=null;
 
 	public LineIterator(BufferedReader reader) {
+		if(null==reader) {
+			throw new NullPointerException();
+		}
 		this.reader=reader;
 	}
 
@@ -34,10 +38,9 @@ public class LineIterator implements Iterable<CharSequence>, Iterator<CharSequen
 		this(new FileReader(file));
 	}
 
-	public LineIterator(String filename) {
-		
+	public LineIterator(String filename) throws FileNotFoundException {
+		this(new File(filename));
 	}
-
 
 	@Override
 	public Iterator<CharSequence> iterator() {
@@ -50,10 +53,11 @@ public class LineIterator implements Iterable<CharSequence>, Iterator<CharSequen
 			try {
 				line=reader.readLine();
 			} catch (IOException ex) {
-				Exceptions.printStackTrace(ex);
+				Logger.getLogger(LineIterator.class.getName()).log(Level.SEVERE, null, ex);
 			}
+			return null!=line;
 		}
-		return null==line;
+		return true;
 	}
 
 	@Override
@@ -73,5 +77,4 @@ public class LineIterator implements Iterable<CharSequence>, Iterator<CharSequen
 	public void close() {
 		IOUtil.closeQuietly(reader);
 	}
-
 }
