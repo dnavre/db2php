@@ -17,10 +17,22 @@
  */
 package org.afraid.poison.db2php.generator;
 
+import java.math.BigDecimal;
+import java.sql.Array;
+import java.sql.Blob;
+import java.sql.Clob;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
+import java.sql.Date;
+import java.sql.NClob;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLXML;
+import java.sql.Struct;
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.sql.Types;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -41,6 +53,72 @@ import org.afraid.poison.common.PredicateReferenceValue;
 public class Table {
 
 	private static final Pattern SERIAL_NAME_PATTERN_PGSQL=Pattern.compile("nextval\\('([^']+)'");
+	/**
+	 * @see http://java.sun.com/j2se/1.5.0/docs/guide/jdbc/getstart/mapping.html
+	 */
+	private static final Map<Integer, Class<?>> TYPES=new HashMap<Integer, Class<?>>();
+	static {
+		/*
+		CHAR	String
+		VARCHAR	String
+		LONGVARCHAR	String
+		NUMERIC	java.math.BigDecimal
+		DECIMAL	java.math.BigDecimal
+		BIT	Boolean
+		TINYINT	Integer
+		SMALLINT	Integer
+		INTEGER	Integer
+		BIGINT	Long
+		REAL	Float
+		FLOAT	Double
+		DOUBLE	Double
+		BINARY	byte[]
+		VARBINARY	byte[]
+		LONGVARBINARY	byte[]
+		DATE	java.sql.Date
+		TIME	java.sql.Time
+		TIMESTAMP	java.sql.Timestamp
+		DISTINCT	Object type of underlying type
+		CLOB	Clob
+		BLOB	Blob
+		ARRAY	Array
+		STRUCT	Struct or SQLData
+		REF	Ref
+		JAVA_OBJECT	underlying Java class
+		 */
+		TYPES.put(Types.CHAR, String.class);
+		TYPES.put(Types.NCHAR, String.class);
+		TYPES.put(Types.VARCHAR, String.class);
+		TYPES.put(Types.NVARCHAR, String.class);
+		TYPES.put(Types.LONGNVARCHAR, String.class);
+		TYPES.put(Types.NUMERIC, BigDecimal.class);
+		TYPES.put(Types.DECIMAL, BigDecimal.class);
+		TYPES.put(Types.BIT, Boolean.class);
+		TYPES.put(Types.BOOLEAN, Boolean.class);
+		TYPES.put(Types.TINYINT, Integer.class);
+		TYPES.put(Types.SMALLINT, Integer.class);
+		TYPES.put(Types.INTEGER, Integer.class);
+		TYPES.put(Types.BIGINT, Long.class);
+		TYPES.put(Types.REAL, Float.class);
+		TYPES.put(Types.FLOAT, Double.class);
+		TYPES.put(Types.DOUBLE, Double.class);
+		TYPES.put(Types.BINARY, Byte.class);
+		TYPES.put(Types.VARBINARY, Byte.class);
+		TYPES.put(Types.LONGVARBINARY, Byte.class);
+		TYPES.put(Types.DATE, Date.class);
+		TYPES.put(Types.TIME, Time.class);
+		TYPES.put(Types.TIMESTAMP, Timestamp.class);
+		TYPES.put(Types.CLOB, Clob.class);
+		TYPES.put(Types.NCLOB, NClob.class);
+		TYPES.put(Types.BLOB, Blob.class);
+		TYPES.put(Types.TIMESTAMP, Timestamp.class);
+		TYPES.put(Types.ARRAY, Array.class);
+		TYPES.put(Types.STRUCT, Struct.class);
+		TYPES.put(Types.SQLXML, SQLXML.class);
+		TYPES.put(Types.JAVA_OBJECT, Object.class);
+		TYPES.put(Types.OTHER, Object.class);
+
+	}
 	private String catalog;
 	private String schema;
 	private String name;
