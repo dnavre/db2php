@@ -17,9 +17,21 @@
  */
 package org.afraid.poison.db2php.generator;
 
+import java.math.BigDecimal;
+import java.sql.Array;
+import java.sql.Blob;
+import java.sql.Clob;
+import java.sql.Date;
+import java.sql.NClob;
+import java.sql.SQLXML;
+import java.sql.Struct;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import org.afraid.poison.common.CollectionUtil;
 import org.afraid.poison.common.StringUtil;
 
@@ -46,10 +58,81 @@ public class Field {
 	 * number types
 	 */
 	public static final int[] NUMBER_TYPES={Types.BIGINT, Types.DECIMAL, Types.DOUBLE, Types.FLOAT, Types.INTEGER, Types.NUMERIC, Types.SMALLINT, Types.TINYINT};
-
 	static {
 		Arrays.sort(NUMBER_TYPES);
 	}
+	/**
+	 * @see http://java.sun.com/j2se/1.5.0/docs/guide/jdbc/getstart/mapping.html
+	 */
+	private static final Map<Integer, Class<?>> TYPES_JAVA=new HashMap<Integer, Class<?>>();
+	static {
+		TYPES_JAVA.put(Types.CHAR, String.class);
+		TYPES_JAVA.put(Types.NCHAR, String.class);
+		TYPES_JAVA.put(Types.VARCHAR, String.class);
+		TYPES_JAVA.put(Types.NVARCHAR, String.class);
+		TYPES_JAVA.put(Types.LONGNVARCHAR, String.class);
+		TYPES_JAVA.put(Types.NUMERIC, BigDecimal.class);
+		TYPES_JAVA.put(Types.DECIMAL, BigDecimal.class);
+		TYPES_JAVA.put(Types.BIT, Boolean.class);
+		TYPES_JAVA.put(Types.BOOLEAN, Boolean.class);
+		TYPES_JAVA.put(Types.TINYINT, Integer.class);
+		TYPES_JAVA.put(Types.SMALLINT, Integer.class);
+		TYPES_JAVA.put(Types.INTEGER, Integer.class);
+		TYPES_JAVA.put(Types.BIGINT, Long.class);
+		TYPES_JAVA.put(Types.REAL, Float.class);
+		TYPES_JAVA.put(Types.FLOAT, Double.class);
+		TYPES_JAVA.put(Types.DOUBLE, Double.class);
+		TYPES_JAVA.put(Types.BINARY, Byte.class);
+		TYPES_JAVA.put(Types.VARBINARY, Byte.class);
+		TYPES_JAVA.put(Types.LONGVARBINARY, Byte.class);
+		TYPES_JAVA.put(Types.DATE, Date.class);
+		TYPES_JAVA.put(Types.TIME, Time.class);
+		TYPES_JAVA.put(Types.TIMESTAMP, Timestamp.class);
+		TYPES_JAVA.put(Types.CLOB, Clob.class);
+		TYPES_JAVA.put(Types.NCLOB, NClob.class);
+		TYPES_JAVA.put(Types.BLOB, Blob.class);
+		TYPES_JAVA.put(Types.TIMESTAMP, Timestamp.class);
+		TYPES_JAVA.put(Types.ARRAY, Array.class);
+		TYPES_JAVA.put(Types.STRUCT, Struct.class);
+		TYPES_JAVA.put(Types.SQLXML, SQLXML.class);
+		TYPES_JAVA.put(Types.JAVA_OBJECT, Object.class);
+		TYPES_JAVA.put(Types.OTHER, Object.class);
+	}
+	/*
+	private static final Map<Integer, Class<?>> TYPES_PHP=new HashMap<Integer, Class<?>>();
+	static {
+		TYPES_PHP.put(Types.CHAR, String.class);
+		TYPES_PHP.put(Types.NCHAR, String.class);
+		TYPES_PHP.put(Types.VARCHAR, String.class);
+		TYPES_PHP.put(Types.NVARCHAR, String.class);
+		TYPES_PHP.put(Types.LONGNVARCHAR, String.class);
+		TYPES_PHP.put(Types.NUMERIC, BigDecimal.class);
+		TYPES_PHP.put(Types.DECIMAL, BigDecimal.class);
+		TYPES_PHP.put(Types.BIT, Boolean.class);
+		TYPES_PHP.put(Types.BOOLEAN, Boolean.class);
+		TYPES_PHP.put(Types.TINYINT, Integer.class);
+		TYPES_PHP.put(Types.SMALLINT, Integer.class);
+		TYPES_PHP.put(Types.INTEGER, Integer.class);
+		TYPES_PHP.put(Types.BIGINT, Long.class);
+		TYPES_PHP.put(Types.REAL, Float.class);
+		TYPES_PHP.put(Types.FLOAT, Double.class);
+		TYPES_PHP.put(Types.DOUBLE, Double.class);
+		TYPES_PHP.put(Types.BINARY, Byte.class);
+		TYPES_PHP.put(Types.VARBINARY, Byte.class);
+		TYPES_PHP.put(Types.LONGVARBINARY, Byte.class);
+		TYPES_PHP.put(Types.DATE, Date.class);
+		TYPES_PHP.put(Types.TIME, Time.class);
+		TYPES_PHP.put(Types.TIMESTAMP, Timestamp.class);
+		TYPES_PHP.put(Types.CLOB, Clob.class);
+		TYPES_PHP.put(Types.NCLOB, NClob.class);
+		TYPES_PHP.put(Types.BLOB, Blob.class);
+		TYPES_PHP.put(Types.TIMESTAMP, Timestamp.class);
+		TYPES_PHP.put(Types.ARRAY, Array.class);
+		TYPES_PHP.put(Types.STRUCT, Struct.class);
+		TYPES_PHP.put(Types.SQLXML, SQLXML.class);
+		TYPES_PHP.put(Types.JAVA_OBJECT, Object.class);
+		TYPES_PHP.put(Types.OTHER, Object.class);
+	}*/
 	private String name;
 	private int type;
 	private String typeName;
@@ -111,6 +194,22 @@ public class Field {
 	 */
 	public void setTypeName(String typeName) {
 		this.typeName=typeName;
+	}
+
+	public Class<?> getTypeJava() {
+		return TYPES_JAVA.get(getType());
+	}
+
+	public String getTypePHP() {
+		Class<?> tC=getTypeJava();
+		if (Boolean.class.equals(tC)) {
+			return "bool";
+		} else if (Integer.class.equals(tC)) {
+			return "int";
+		} else if (Long.class.equals(tC) || Float.class.equals(tC) || Double.class.equals(tC) || BigDecimal.class.equals(tC)) {
+			return "float";
+		}
+		return "string";
 	}
 
 	/**
