@@ -468,7 +468,7 @@ public class CodeGenerator {
 			}
 		}));
 		s.append(");\n");
-
+		/*
 		// field id to field type mapping
 		s.append("\tprivate static $FIELD_TYPES=array(\n");
 		s.append(CollectionUtil.join(getTable().getFields(), ",\n", new StringMutator() {
@@ -480,7 +480,7 @@ public class CodeGenerator {
 			}
 		}));
 		s.append(");\n");
-
+		*/
 		// field id to field property mapping
 		s.append("\tprivate static $PROPERTY_NAMES=array(\n");
 		s.append(CollectionUtil.join(getTable().getFields(), ",\n", new StringMutator() {

@@ -59,7 +59,7 @@
 				$def->properties[$propertyName]=new ezcPersistentObjectProperty();
 				$def->properties[$propertyName]->columnName=self::$FIELD_NAMES[$fieldId];
 				$def->properties[$propertyName]->propertyName=$propertyName;
-				$def->properties[$propertyName]->propertyType=$typeMapping[self::$FIELD_TYPES[$fieldId]];
+				$def->properties[$propertyName]->propertyType=$typeMapping[self::$PROPERTY_TYPES[$fieldId]];
 			}
 		}
 		return $def;
