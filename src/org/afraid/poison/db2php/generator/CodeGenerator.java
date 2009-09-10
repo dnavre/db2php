@@ -493,14 +493,14 @@ public class CodeGenerator {
 		}));
 		s.append(");\n");
 
-		// field id to field type mapping
+		// field id to property type mapping
 		s.append("\tprivate static $PROPERTY_TYPES=array(\n");
 		s.append(CollectionUtil.join(getTable().getFields(), ",\n", new StringMutator() {
 
 			@Override
 			public String transform(Object s) {
 				Field f=(Field) s;
-				return new StringBuilder("\t\tself::").append(getConstName(f)).append("=>").append("PHP_TYPE_").append(f.getTypePHP().toUpperCase()).toString();
+				return new StringBuilder("\t\tself::").append(getConstName(f)).append("=>").append("Db2PhpEntity::PHP_TYPE_").append(f.getTypePHP().toUpperCase()).toString();
 			}
 		}));
 		s.append(");\n");
@@ -756,6 +756,9 @@ public class CodeGenerator {
 		s.append(getUtilMethodToArray());
 		s.append(getUtilMethodgetPrimaryKeysToArray());
 		s.append(getDatabaseLayer().getCode(this));
+		if (getSettings().isEzComponents()) {
+			s.append(getSnippetFromFile("CodeGenerator.ezc.php"));
+		}
 		s.append(getSnippetFromFile("CodeGenerator.dom.php"));
 		s.append(getSnippetFromFile("CodeGenerator.toString.php"));
 		s.append("}\n");

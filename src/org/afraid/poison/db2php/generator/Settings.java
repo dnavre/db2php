@@ -31,6 +31,7 @@ public class Settings {
 	private boolean generateChecks=false;
 	private boolean trackFieldModifications=true;
 	private boolean fluentInterface=true;
+	private boolean ezComponents=true;
 	private CamelCaseFairy camelCaseFairy=null;
 	private String classNamePrefix=new String();
 	private String classNameSuffix=new String();
@@ -91,6 +92,20 @@ public class Settings {
 	 */
 	public void setFluentInterface(boolean fluentInterface) {
 		this.fluentInterface=fluentInterface;
+	}
+
+	/**
+	 * @return the ezComponents
+	 */
+	public boolean isEzComponents() {
+		return ezComponents;
+	}
+
+	/**
+	 * @param ezComponents the ezComponents to set
+	 */
+	public void setEzComponents(boolean ezComponents) {
+		this.ezComponents=ezComponents;
 	}
 
 	/**
@@ -165,14 +180,6 @@ public class Settings {
 
 	@Override
 	public String toString() {
-		return new StringBuilder().append("databaseLayer:").append(getDatabaseLayer()).append("\n")
-				.append("generateChecks:").append(isGenerateChecks()).append("\n")
-				.append("trackFieldModifications:").append(isTrackFieldModifications()).append("\n")
-				.append("classNamePrefix:").append(getClassNamePrefix()).append("\n")
-				.append("classNameSuffix:").append(getClassNameSuffix()).append("\n")
-				.append("identifierQuoteString:").append(getIdentifierQuoteString()).append("\n")
-				.append("outputDirectory:").append(getOutputDirectory()).append("\n").toString();
+		return new StringBuilder().append("databaseLayer:").append(getDatabaseLayer()).append("\n").append("generateChecks:").append(isGenerateChecks()).append("\n").append("trackFieldModifications:").append(isTrackFieldModifications()).append("\n").append("classNamePrefix:").append(getClassNamePrefix()).append("\n").append("classNameSuffix:").append(getClassNameSuffix()).append("\n").append("identifierQuoteString:").append(getIdentifierQuoteString()).append("\n").append("outputDirectory:").append(getOutputDirectory()).append("\n").toString();
 	}
-
-
 }

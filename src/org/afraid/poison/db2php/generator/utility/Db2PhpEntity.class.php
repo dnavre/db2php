@@ -35,6 +35,10 @@
  * @author Andreas Schnaiter
  */
 interface Db2PhpEntity {
+	const PHP_TYPE_BOOL=1;
+	const PHP_TYPE_INT=2;
+	const PHP_TYPE_FLOAT=4;
+	const PHP_TYPE_STRING=8;
 	
 	/**
 	 * Insert this instance into the database
