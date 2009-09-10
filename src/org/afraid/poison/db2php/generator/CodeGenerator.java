@@ -469,6 +469,18 @@ public class CodeGenerator {
 		}));
 		s.append(");\n");
 
+		// field id to field type mapping
+		s.append("\tprivate static $FIELD_TYPES=array(\n");
+		s.append(CollectionUtil.join(getTable().getFields(), ",\n", new StringMutator() {
+
+			@Override
+			public String transform(Object s) {
+				Field f=(Field) s;
+				return new StringBuilder("\t\tself::").append(getConstName(f)).append("=>").append(getPhpString(f.getTypeName())).toString();
+			}
+		}));
+		s.append(");\n");
+
 		// field id to field property mapping
 		s.append("\tprivate static $PROPERTY_NAMES=array(\n");
 		s.append(CollectionUtil.join(getTable().getFields(), ",\n", new StringMutator() {
@@ -477,6 +489,18 @@ public class CodeGenerator {
 			public String transform(Object s) {
 				Field f=(Field) s;
 				return new StringBuilder("\t\tself::").append(getConstName(f)).append("=>").append(getPhpString(getMemberName(f))).toString();
+			}
+		}));
+		s.append(");\n");
+
+		// field id to field type mapping
+		s.append("\tprivate static $PROPERTY_TYPES=array(\n");
+		s.append(CollectionUtil.join(getTable().getFields(), ",\n", new StringMutator() {
+
+			@Override
+			public String transform(Object s) {
+				Field f=(Field) s;
+				return new StringBuilder("\t\tself::").append(getConstName(f)).append("=>").append("PHP_TYPE_").append(f.getTypePHP().toUpperCase()).toString();
 			}
 		}));
 		s.append(");\n");
