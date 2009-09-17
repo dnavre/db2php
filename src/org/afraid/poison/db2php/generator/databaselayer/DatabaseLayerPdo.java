@@ -20,13 +20,17 @@ package org.afraid.poison.db2php.generator.databaselayer;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.afraid.poison.common.IOUtil;
 import org.afraid.poison.common.StringUtil;
 import org.afraid.poison.db2php.generator.Field;
 import org.afraid.poison.db2php.generator.CodeGenerator;
+import org.afraid.poison.db2php.generator.ForeignKey;
 
 /**
  *
@@ -203,6 +207,34 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 		return s.toString();
 	}
 
+	public String getCodeExportedKeys(CodeGenerator generator) {
+		StringBuilder s=new StringBuilder();
+		for (ForeignKey fk : generator.getTable().getExportedKeys()) {
+			// DatabaseLayerPdo.importedKeys
+			Map<CharSequence, CharSequence> replacements=new HashMap<CharSequence, CharSequence>();
+			replacements.put("<fkType>", generator.getClassName(fk.getFkTableName()));
+			replacements.put("<fkFieldConst>", generator.getConstName(fk.getFkField()));
+			replacements.put("<pkGetter>", generator.getGetterCall(fk.getPkField()));
+			s.append(StringUtil.replace(generator.getSnippetFromFile("DatabaseLayerPdo.exportedKeys.php"), replacements));
+		}
+		
+		return s.toString();
+	}
+
+	public String getCodeImportedKeys(CodeGenerator generator) {
+		StringBuilder s=new StringBuilder();
+		for (ForeignKey fk : generator.getTable().getImportedKeys()) {
+			// DatabaseLayerPdo.importedKeys
+			Map<CharSequence, CharSequence> replacements=new HashMap<CharSequence, CharSequence>();
+			replacements.put("<pkType>", generator.getClassName(fk.getPkTableName()));
+			replacements.put("<pkFieldConst>", generator.getConstName(fk.getPkField()));
+			replacements.put("<fkGetter>", generator.getGetterCall(fk.getFkField()));
+			s.append(StringUtil.replace(generator.getSnippetFromFile("DatabaseLayerPdo.importedKeys.php"), replacements));
+		}
+
+		return s.toString();
+	}
+
 	@Override
 	public String getSnippet() {
 		String s=new String();
@@ -216,5 +248,10 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 			IOUtil.closeQuietly(is);
 		}
 		return s;
+	}
+
+	@Override
+	public String getCode(CodeGenerator generator) {
+		return new StringBuilder(super.getCode(generator)).append(getCodeExportedKeys(generator)).append(getCodeImportedKeys(generator)).toString();
 	}
 }

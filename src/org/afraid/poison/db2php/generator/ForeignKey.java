@@ -10,12 +10,42 @@ package org.afraid.poison.db2php.generator;
  */
 public class ForeignKey {
 
+	private String pkName;
+	private String fkName;
 	private String pkTableName;
-	private Field pkField;
+	private String pkFieldName;
 	private String fkTableName;
-	private Field fkField;
+	private String fkFieldName;
 	private short updateRule;
 	private short deleteRule;
+
+	/**
+	 * @return the pkName
+	 */
+	public String getPkName() {
+		return pkName;
+	}
+
+	/**
+	 * @param pkName the pkName to set
+	 */
+	public void setPkName(String pkName) {
+		this.pkName=pkName;
+	}
+
+	/**
+	 * @return the fkName
+	 */
+	public String getFkName() {
+		return fkName;
+	}
+
+	/**
+	 * @param fkName the fkName to set
+	 */
+	public void setFkName(String fkName) {
+		this.fkName=fkName;
+	}
 
 	/**
 	 * @return the pkTableName
@@ -32,17 +62,23 @@ public class ForeignKey {
 	}
 
 	/**
-	 * @return the pkField
+	 * @return the pkFieldName
 	 */
-	public Field getPkField() {
-		return pkField;
+	public String getPkFieldName() {
+		return pkFieldName;
 	}
 
 	/**
-	 * @param pkField the pkField to set
+	 * @param pkFieldName the pkFieldName to set
 	 */
-	public void setPkField(Field pkField) {
-		this.pkField=pkField;
+	public void setPkFieldName(String pkFieldName) {
+		this.pkFieldName=pkFieldName;
+	}
+
+	public Field getPkField() {
+		Field f=new Field();
+		f.setName(getPkFieldName());
+		return f;
 	}
 
 	/**
@@ -60,18 +96,25 @@ public class ForeignKey {
 	}
 
 	/**
-	 * @return the fkField
+	 * @return the fkFieldName
 	 */
-	public Field getFkField() {
-		return fkField;
+	public String getFkFieldName() {
+		return fkFieldName;
 	}
 
 	/**
-	 * @param fkField the fkField to set
+	 * @param fkFieldName the fkFieldName to set
 	 */
-	public void setFkField(Field fkField) {
-		this.fkField=fkField;
+	public void setFkFieldName(String fkFieldName) {
+		this.fkFieldName=fkFieldName;
 	}
+
+	public Field getFkField() {
+		Field f=new Field();
+		f.setName(getFkFieldName());
+		return f;
+	}
+
 
 	/**
 	 * @return the updateRule

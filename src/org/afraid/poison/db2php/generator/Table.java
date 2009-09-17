@@ -48,6 +48,8 @@ public class Table {
 	private Set<Field> fields=null;
 	private Set<Field> fieldsPrimaryKeys=null;
 	private Set<Index> indexes=null;
+	private Set<ForeignKey> importedKeys=null;
+	private Set<ForeignKey> exportedKeys=null;
 	private String identifierQuoteString;
 
 	/**
@@ -210,21 +212,57 @@ public class Table {
 				DbUtil.closeQuietly(rsetIndexes);
 			}
 
-		} catch (SQLException ex) {
-			Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
-		}
-
-		ResultSet rsetImportedKeys=null;
-		try {
-			rsetImportedKeys=connection.getMetaData().getImportedKeys(getCatalog(), getSchema(), getName());
-			while(rsetImportedKeys.next()) {
-				ForeignKey fk=new ForeignKey();
-				//fk.setPkField(null);
-				//fk.set
+			// imported keys
+			ResultSet rsetImportedKeys=null;
+			importedKeys=new LinkedHashSet<ForeignKey>();
+			try {
+				rsetImportedKeys=connection.getMetaData().getImportedKeys(getCatalog(), getSchema(), getName());
+				importedKeys.addAll(getFk(rsetImportedKeys));
+			} catch (SQLException ex) {
+				Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
+			} finally {
+				DbUtil.closeQuietly(rsetImportedKeys);
 			}
+
+			// exported keys
+			ResultSet rsetExportedKeys=null;
+			exportedKeys=new LinkedHashSet<ForeignKey>();
+			try {
+				rsetExportedKeys=connection.getMetaData().getExportedKeys(getCatalog(), getSchema(), getName());
+				exportedKeys.addAll(getFk(rsetExportedKeys));
+			} catch (SQLException ex) {
+				Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
+			} finally {
+				DbUtil.closeQuietly(rsetExportedKeys);
+			}
+
 		} catch (SQLException ex) {
 			Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
 		}
+	}
+
+	/**
+	 * get foreign keys from rset
+	 * 
+	 * @param rs
+	 * @return
+	 * @throws SQLException
+	 */
+	private static Set<ForeignKey> getFk(ResultSet rs) throws SQLException {
+		Set<ForeignKey> fks=new LinkedHashSet<ForeignKey>();
+		while (rs.next()) {
+			ForeignKey fk=new ForeignKey();
+			fk.setPkName(rs.getString("PK_NAME"));
+			fk.setFkName(rs.getString("FK_NAME"));
+			fk.setPkTableName(rs.getString("PKTABLE_NAME"));
+			fk.setPkFieldName(rs.getString("PKCOLUMN_NAME"));
+			fk.setFkTableName(rs.getString("FKTABLE_NAME"));
+			fk.setFkFieldName(rs.getString("FKCOLUMN_NAME"));
+			fk.setUpdateRule(rs.getShort("UPDATE_RULE"));
+			fk.setDeleteRule(rs.getShort("DELETE_RULE"));
+			fks.add(fk);
+		}
+		return fks;
 	}
 
 	/**
@@ -462,6 +500,34 @@ public class Table {
 	 */
 	public void setRemark(String remark) {
 		this.remark=remark;
+	}
+
+	/**
+	 * @return the importedKeys
+	 */
+	public Set<ForeignKey> getImportedKeys() {
+		return importedKeys;
+	}
+
+	/**
+	 * @param importedKeys the importedKeys to set
+	 */
+	public void setImportedKeys(Set<ForeignKey> importedKeys) {
+		this.importedKeys=importedKeys;
+	}
+
+	/**
+	 * @return the exportedKeys
+	 */
+	public Set<ForeignKey> getExportedKeys() {
+		return exportedKeys;
+	}
+
+	/**
+	 * @param exportedKeys the exportedKeys to set
+	 */
+	public void setExportedKeys(Set<ForeignKey> exportedKeys) {
+		this.exportedKeys=exportedKeys;
 	}
 
 	@Override

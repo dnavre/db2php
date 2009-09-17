@@ -38,7 +38,7 @@ import org.afraid.poison.camelcase.CamelCaseFairy;
 import org.afraid.poison.common.string.StringMutator;
 
 /**
- * generates PHP code from a table
+ * generates PHP code from a tableName
  *
  * @author Andreas Schnaiter <rc.poison@gmail.com>
  */
@@ -53,7 +53,7 @@ public class CodeGenerator {
 	/**
 	 * CTOR
 	 *
-	 * @param table the table to operate on
+	 * @param tableName the tableName to operate on
 	 */
 	public CodeGenerator(Table table) {
 		setTable(table);
@@ -63,7 +63,7 @@ public class CodeGenerator {
 	/**
 	 * CTOR
 	 *
-	 * @param table the table to operate on
+	 * @param tableName the tableName to operate on
 	 * @param settings the settings
 	 */
 	public CodeGenerator(Table table, Settings settings) {
@@ -117,14 +117,14 @@ public class CodeGenerator {
 	}
 
 	/**
-	 * @return the table
+	 * @return the tableName
 	 */
 	public Table getTable() {
 		return table;
 	}
 
 	/**
-	 * @param table the table to set
+	 * @param tableName the tableName to set
 	 */
 	public void setTable(Table table) {
 		this.table=table;
@@ -230,7 +230,17 @@ public class CodeGenerator {
 	 * @return the class name
 	 */
 	public String getClassName() {
-		return new StringBuilder().append(getClassNamePrefix()).append(StringUtil.firstCharToUpperCase(CamelCaseFairy.toCamelCase(getTable().getName(), getCamelCaseFairy()))).append(getClassNameSuffix()).toString();
+		return getClassName(getTable().getName());
+	}
+
+	/**
+	 * get the class name
+	 *
+	 * @param tableName
+	 * @return the class name
+	 */
+	public String getClassName(String tableName) {
+		return new StringBuilder().append(getClassNamePrefix()).append(StringUtil.firstCharToUpperCase(CamelCaseFairy.toCamelCase(tableName, getCamelCaseFairy()))).append(getClassNameSuffix()).toString();
 	}
 
 	/**
@@ -367,7 +377,7 @@ public class CodeGenerator {
 	}
 
 	/**
-	 * get hash to identify table/field combination
+	 * get hash to identify tableName/field combination
 	 *
 	 * @param field
 	 * @return
@@ -702,7 +712,7 @@ public class CodeGenerator {
 	 * read a snippet and replace '<variable>'
 	 *
 	 * @param fileName filename of the snippet
-	 * @param field table field from which to take values
+	 * @param field tableName field from which to take values
 	 * @return snippet with replaced '<variables>'
 	 */
 	public String getSnippetFromFile(String fileName, Field field) {
@@ -756,6 +766,7 @@ public class CodeGenerator {
 		s.append(getUtilMethodToArray());
 		s.append(getUtilMethodgetPrimaryKeysToArray());
 		s.append(getDatabaseLayer().getCode(this));
+
 		if (getSettings().isEzComponents()) {
 			s.append(getSnippetFromFile("CodeGenerator.ezc.php"));
 		}
