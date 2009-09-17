@@ -213,6 +213,18 @@ public class Table {
 		} catch (SQLException ex) {
 			Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
 		}
+
+		ResultSet rsetImportedKeys=null;
+		try {
+			rsetImportedKeys=connection.getMetaData().getImportedKeys(getCatalog(), getSchema(), getName());
+			while(rsetImportedKeys.next()) {
+				ForeignKey fk=new ForeignKey();
+				//fk.setPkField(null);
+				//fk.set
+			}
+		} catch (SQLException ex) {
+			Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
+		}
 	}
 
 	/**
