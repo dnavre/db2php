@@ -86,7 +86,7 @@
 	 * @param array $filter
 	 * @param bool $and
 	 * @param bool $fullyQualifiedNames true if field names should be qualified by table name
-	 * @param bool $prependWhere true if field names should be qualified by table name
+	 * @param bool $prependWhere true if WHERE should be prepended to conditions
 	 * @return string
 	 */
 	public static function buildSqlWhere($filter, $and, $fullyQualifiedNames=true, $prependWhere=false) {
