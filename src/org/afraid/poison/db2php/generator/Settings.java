@@ -31,6 +31,7 @@ public class Settings {
 	private boolean generateChecks=false;
 	private boolean trackFieldModifications=true;
 	private boolean fluentInterface=true;
+	private boolean useInterfaces=true;
 	private boolean ezComponents=true;
 	private CamelCaseFairy camelCaseFairy=null;
 	private String classNamePrefix=new String();
@@ -181,5 +182,19 @@ public class Settings {
 	@Override
 	public String toString() {
 		return new StringBuilder().append("databaseLayer:").append(getDatabaseLayer()).append("\n").append("generateChecks:").append(isGenerateChecks()).append("\n").append("trackFieldModifications:").append(isTrackFieldModifications()).append("\n").append("classNamePrefix:").append(getClassNamePrefix()).append("\n").append("classNameSuffix:").append(getClassNameSuffix()).append("\n").append("identifierQuoteString:").append(getIdentifierQuoteString()).append("\n").append("outputDirectory:").append(getOutputDirectory()).append("\n").toString();
+	}
+
+	/**
+	 * @return the useInterfaces
+	 */
+	public boolean isUseInterfaces() {
+		return useInterfaces;
+	}
+
+	/**
+	 * @param useInterfaces the useInterfaces to set
+	 */
+	public void setUseInterfaces(boolean useInterfaces) {
+		this.useInterfaces=useInterfaces;
 	}
 }

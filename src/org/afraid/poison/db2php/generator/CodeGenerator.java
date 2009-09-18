@@ -754,7 +754,15 @@ public class CodeGenerator {
 	public String getCode() {
 		StringBuilder s=new StringBuilder("<?php\n");
 		s.append(getSnippetFromFile("CodeGenerator.class.php"));
-		s.append("class ").append(getClassName()).append(" {\n");
+		s.append("class ").append(getClassName());
+		if (getSettings().isUseInterfaces()) {
+			s.append("implements Db2PhpEntity");
+			if (getSettings().isUseInterfaces()) {
+				s.append(", Db2PhpEntityModificationTracking");
+			}
+			s.append(" ");
+		}
+		s.append(" {\n");
 		s.append(getPreparedStatements());
 		s.append(getConsts());
 		s.append(getMembers());
