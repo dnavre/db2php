@@ -40,8 +40,8 @@
 			$filter=array($filter);
 		}
 		$sql='SELECT * FROM <tableNameQuoted>'
-		. self::getSqlWhere($filter, $and)
-		. self::getSqlOrderBy($sort);
+		. self::buildSqlWhere($filter, $and, false, true)
+		. self::buildSqlOrderBy($sort);
 
 		$stmt=self::prepareStatement($db, $sql);
 		self::bindValuesForFilter($stmt, $filter);
@@ -85,9 +85,11 @@
 	 *
 	 * @param array $filter
 	 * @param bool $and
+	 * @param bool $fullyQualifiedNames true if field names should be qualified by table name
+	 * @param bool $prependWhere true if field names should be qualified by table name
 	 * @return string
 	 */
-	protected static function getSqlWhere($filter, $and) {
+	public static function buildSqlWhere($filter, $and, $fullyQualifiedNames=true, $prependWhere=false) {
 		$sql=null;
 		$andString=$and ? ' AND ' : ' OR ';
 		$first=true;
@@ -98,10 +100,15 @@
 				continue;
 			}
 			if ($first) {
-				$sql.=' WHERE ';
+				if ($prependWhere) {
+					$sql.=' WHERE ';
+				}
 				$first=false;
 			} else {
 				$sql.=$andString;
+			}
+			if ($fullyQualifiedNames) {
+				$sql.=self::SQL_IDENTIFIER_QUOTE . self::SQL_TABLE_NAME . self::SQL_IDENTIFIER_QUOTE . '.';
 			}
 			$sql.=self::SQL_IDENTIFIER_QUOTE . self::$FIELD_NAMES[$resolvedFieldId] . self::SQL_IDENTIFIER_QUOTE;
 			if ($dfc) {
@@ -121,7 +128,7 @@
 	 * @param array $sort array of DSC instances
 	 * @return string
 	 */
-	protected static function getSqlOrderBy($sort) {
+	protected static function buildSqlOrderBy($sort) {
 		if (null===$sort) {
 			return '';
 		}
@@ -198,7 +205,7 @@
 			throw new InvalidArgumentException('refusing to delete without filter'); // just comment out this line if you are brave
 		}
 		$sql='DELETE FROM <tableNameQuoted>'
-		. self::getSqlWhere($filter, $and);
+		. self::buildSqlWhere($filter, $and, false, true);
 		$stmt=self::prepareStatement($db, $sql);
 		self::bindValuesForFilter($stmt, $filter);
 		$affected=$stmt->execute();

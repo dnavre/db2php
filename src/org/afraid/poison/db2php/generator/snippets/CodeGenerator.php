@@ -9,6 +9,15 @@
 	}
 
 	/**
+	 * Get array with field id as index and property name as value
+	 *
+	 * @return array
+	 */
+	public static function getPropertyNames() {
+		return self::$PROPERTY_NAMES;
+	}
+
+	/**
 	 * Get array with field ids of identifiers
 	 *
 	 * @return array
