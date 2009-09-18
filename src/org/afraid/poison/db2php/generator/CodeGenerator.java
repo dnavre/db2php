@@ -760,7 +760,7 @@ public class CodeGenerator {
 			if (getSettings().isUseInterfaces()) {
 				s.append(", Db2PhpEntityModificationTracking");
 			}
-			s.append(" ");
+			s.append("");
 		}
 		s.append(" {\n");
 		s.append(getPreparedStatements());
