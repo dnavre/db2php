@@ -1,5 +1,14 @@
 
 	/**
+	 * Get table name
+	 *
+	 * @return string
+	 */
+	public static function getTableName() {
+		return self::SQL_TABLE_NAME;
+	}
+
+	/**
 	 * Get array with field id as index and field name as value
 	 *
 	 * @return array
