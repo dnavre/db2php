@@ -210,4 +210,31 @@ public class StringUtil {
 		}
 		return s;
 	}
+
+	/**
+	 * Splits the needly by its upper case characters
+	 * and checks if the parts are contained in the haystack in the same order.
+	 *
+	 * @param needle
+	 * @param haystack
+	 * @param requireBeginning if the haystack string has to start with the needle string part
+	 * @return 
+	 */
+	public static boolean matchesCamelCase(String needle, String haystack, boolean requireBeginning) {
+		String[] needleParts=needle.replaceAll("[A-Z0-9]", " $0").trim().split("\\s+"); // TODO: quick & dirty, implement splitPreserveDelimiter
+		int lastEnd=0;
+		int pos=0;
+		for (String needlePart : needleParts) {
+			pos=haystack.indexOf(needlePart, lastEnd);
+			if (-1!=pos) {
+				if (requireBeginning && 0==lastEnd && 0!=pos) {
+					return false;
+				}
+				lastEnd=pos+needlePart.length();
+			} else {
+				return false;
+			}
+		}
+		return true;
+	}
 }
