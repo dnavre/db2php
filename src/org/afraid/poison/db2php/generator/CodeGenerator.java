@@ -124,7 +124,7 @@ public class CodeGenerator {
 	}
 
 	/**
-	 * @param tableName the tableName to set
+	 * @param table
 	 */
 	public void setTable(Table table) {
 		this.table=table;
@@ -467,6 +467,28 @@ public class CodeGenerator {
 		s.append(CollectionUtil.join(getTable().getFieldsAutoIncrement(), ",", mutatorFieldList));
 		s.append(");\n");
 
+		/*
+		// list of imported keys
+		s.append("\tprivate static $EXPORTED_KEYS=array(");
+		s.append(CollectionUtil.join(getTable().getImportedKeys(), ",", new StringMutator() {
+
+			@Override
+			public String transform(Object input) {
+				ForeignKey fk=(ForeignKey) input;
+				StringBuilder s=new StringBuilder();
+				s.append("\t\tself::").append(getConstName(fk.getPkField()));
+				return s.toString();
+				//return new StringBuilder("self::").append(getConstName((Field) i)).toString();
+			}
+		}));
+		s.append(");\n");
+
+		// list of imported keys
+		s.append("\tprivate static $IMPORTED_KEYS=array(");
+		s.append(CollectionUtil.join(getTable().getExportedKeys(), ",", mutatorFieldList));
+		s.append(");\n");
+		*/
+		
 		// field id to field name mapping
 		s.append("\tprivate static $FIELD_NAMES=array(\n");
 		s.append(CollectionUtil.join(getTable().getFields(), ",\n", new StringMutator() {
@@ -511,6 +533,23 @@ public class CodeGenerator {
 			public String transform(Object s) {
 				Field f=(Field) s;
 				return new StringBuilder("\t\tself::").append(getConstName(f)).append("=>").append("Db2PhpEntity::PHP_TYPE_").append(f.getTypePHP().toUpperCase()).toString();
+			}
+		}));
+		s.append(");\n");
+		// field id to property type mapping
+		s.append("\tprivate static $FIELD_TYPES=array(\n");
+		s.append(CollectionUtil.join(getTable().getFields(), ",\n", new StringMutator() {
+
+			@Override
+			public String transform(Object s) {
+				Field f=(Field) s;
+				StringBuilder code=new StringBuilder("\t\tself::").append(getConstName(f)).append("=>array(");
+				code.append("Db2PhpEntity::JDBC_TYPE_").append(f.getTypeSqlString()==null ? f.getType() : f.getTypeSqlString());
+				code.append(",").append(f.getSize());
+				code.append(",").append(f.getDecimalDigits());
+				code.append(",").append(f.isNullable() ? "true" : "false");
+				code.append(")");
+				return code.toString();
 			}
 		}));
 		s.append(");\n");

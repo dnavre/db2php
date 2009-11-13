@@ -70,6 +70,7 @@ public class Field {
 		TYPES_JAVA.put(Types.NCHAR, String.class);
 		TYPES_JAVA.put(Types.VARCHAR, String.class);
 		TYPES_JAVA.put(Types.NVARCHAR, String.class);
+		TYPES_JAVA.put(Types.LONGVARCHAR, String.class);
 		TYPES_JAVA.put(Types.LONGNVARCHAR, String.class);
 		TYPES_JAVA.put(Types.NUMERIC, BigDecimal.class);
 		TYPES_JAVA.put(Types.DECIMAL, BigDecimal.class);
@@ -91,12 +92,46 @@ public class Field {
 		TYPES_JAVA.put(Types.CLOB, Clob.class);
 		TYPES_JAVA.put(Types.NCLOB, NClob.class);
 		TYPES_JAVA.put(Types.BLOB, Blob.class);
-		TYPES_JAVA.put(Types.TIMESTAMP, Timestamp.class);
 		TYPES_JAVA.put(Types.ARRAY, Array.class);
 		TYPES_JAVA.put(Types.STRUCT, Struct.class);
 		TYPES_JAVA.put(Types.SQLXML, SQLXML.class);
 		TYPES_JAVA.put(Types.JAVA_OBJECT, Object.class);
 		TYPES_JAVA.put(Types.OTHER, Object.class);
+	}
+
+	private static final Map<Integer, String> TYPES_SQL=new HashMap<Integer, String>();
+	static {
+		TYPES_SQL.put(Types.CHAR, "CHAR");
+		TYPES_SQL.put(Types.NCHAR, "NCHAR");
+		TYPES_SQL.put(Types.VARCHAR, "VARCHAR");
+		TYPES_SQL.put(Types.NVARCHAR, "NVARCHAR");
+		TYPES_SQL.put(Types.LONGVARCHAR, "LONGVARCHAR");
+		TYPES_SQL.put(Types.LONGNVARCHAR, "LONGNVARCHAR");
+		TYPES_SQL.put(Types.NUMERIC, "NUMERIC");
+		TYPES_SQL.put(Types.DECIMAL, "DECIMAL");
+		TYPES_SQL.put(Types.BIT, "BIT");
+		TYPES_SQL.put(Types.BOOLEAN, "BOOLEAN");
+		TYPES_SQL.put(Types.TINYINT, "TINYINT");
+		TYPES_SQL.put(Types.SMALLINT, "SMALLINT");
+		TYPES_SQL.put(Types.INTEGER, "INTEGER");
+		TYPES_SQL.put(Types.BIGINT, "BIGINT");
+		TYPES_SQL.put(Types.REAL, "REAL");
+		TYPES_SQL.put(Types.FLOAT, "FLOAT");
+		TYPES_SQL.put(Types.DOUBLE, "DOUBLE");
+		TYPES_SQL.put(Types.BINARY, "BINARY");
+		TYPES_SQL.put(Types.VARBINARY, "VARBINARY");
+		TYPES_SQL.put(Types.LONGVARBINARY, "LONGVARBINARY");
+		TYPES_SQL.put(Types.DATE, "DATE");
+		TYPES_SQL.put(Types.TIME, "TIME");
+		TYPES_SQL.put(Types.TIMESTAMP, "TIMESTAMP");
+		TYPES_SQL.put(Types.CLOB, "CLOB");
+		TYPES_SQL.put(Types.NCLOB, "NCLOB");
+		TYPES_SQL.put(Types.BLOB, "BLOB");
+		TYPES_SQL.put(Types.ARRAY, "ARRAY");
+		TYPES_SQL.put(Types.STRUCT, "STRUCT");
+		TYPES_SQL.put(Types.SQLXML, "SQLXML");
+		TYPES_SQL.put(Types.JAVA_OBJECT, "JAVA_OBJECT");
+		TYPES_SQL.put(Types.OTHER, "OTHER");
 	}
 	/*
 	private static final Map<Integer, Class<?>> TYPES_PHP=new HashMap<Integer, Class<?>>();
@@ -198,6 +233,10 @@ public class Field {
 
 	public Class<?> getTypeJava() {
 		return TYPES_JAVA.get(getType());
+	}
+
+	public String getTypeSqlString() {
+		return TYPES_SQL.get(getType());
 	}
 
 	public String getTypePHP() {

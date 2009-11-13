@@ -54,6 +54,33 @@
 	}
 
 	/**
+	 * Get array with field ids of autoincrement fields
+	 *
+	 * @return array
+	 */
+	public static function getAutoincrementFields() {
+		return self::$AUTOINCREMENT_FIELDS;
+	}
+
+	/**
+	 * Get array with field id as index and property type as value
+	 *
+	 * @return array
+	 */
+	public static function getPropertyTypes() {
+		return self::$PROPERTY_TYPES;
+	}
+
+	/**
+	 * Get array with field id as index and field type as value
+	 *
+	 * @return array
+	 */
+	public static function getFieldTypes() {
+		return self::$FIELD_TYPES;
+	}
+
+	/**
 	 * Assign default values according to table
 	 * 
 	 */
