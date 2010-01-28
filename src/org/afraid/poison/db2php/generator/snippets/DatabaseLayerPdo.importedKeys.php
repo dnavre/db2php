@@ -7,7 +7,7 @@
 	 * @return <pkType>
 	 */
 	public function fetch<pkType>(PDO $db, $sort=null) {
-		$filter=array(<pkType>::<pkFieldConst>=>$this-><fkGetter>);
+		$filter=array(<pkType>::<pkFieldConst>=><fkGetter>);
 		$result=<pkType>::findByFilter($db, $filter, true, $sort);
 		return empty($result) ? null : $result[0];
 	}
