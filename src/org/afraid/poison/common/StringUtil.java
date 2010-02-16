@@ -212,28 +212,37 @@ public class StringUtil {
 	}
 
 	/**
-	 * Splits the needly by its upper case characters
+	 * Splits the needle by its upper case characters
 	 * and checks if the parts are contained in the haystack in the same order.
 	 *
 	 * @param needle
 	 * @param haystack
 	 * @param requireBeginning if the haystack string has to start with the needle string part
-	 * @return 
+	 * @return
 	 */
-	public static boolean matchesCamelCase(String needle, String haystack, boolean requireBeginning) {
+	private static final boolean matchesCamelCase(String needle, String haystack, boolean requireBeginning) {
+		//System.err.println("---------------");
+		//System.err.println(needle);
+		//System.err.println(haystack);
 		String[] needleParts=needle.replaceAll("[A-Z0-9]", " $0").trim().split("\\s+"); // TODO: quick & dirty, implement splitPreserveDelimiter
+		//String[] needleParts=needle.replaceAll("([A-Z]+)([^A-Z]|$)", " $1 $2").trim().split("\\s+"); // TODO: quick & dirty, implement splitPreserveDelimiter
+		//System.err.println(CollectionUtil.fromArray(needleParts));
 		int lastEnd=0;
 		int pos=0;
+		boolean allowSkip=false;
 		for (String needlePart : needleParts) {
 			pos=haystack.indexOf(needlePart, lastEnd);
-			if (-1!=pos) {
-				if (requireBeginning && 0==lastEnd && 0!=pos) {
-					return false;
-				}
-				lastEnd=pos+needlePart.length();
-			} else {
+			if (-1==pos) {
 				return false;
 			}
+			if (requireBeginning && 0==lastEnd && 0!=pos) {
+				return false;
+			}
+			//System.err.println("haystackPart: " + haystack.substring(lastEnd, pos));
+			if (!allowSkip && haystack.substring(lastEnd, pos).matches("[^A-Z0-9]+[A-Z0-9]+[^A-Z0-9]+")) {
+				return false;
+			}
+			lastEnd=pos+needlePart.length();
 		}
 		return true;
 	}
