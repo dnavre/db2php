@@ -17,7 +17,7 @@ public class Connection {
 
 	private String uri;
 	private Settings settings;
-	private List<Tables> tables;
+	private List<TableContainer> tables;
 
 	public String getUri() {
 		return uri;
@@ -35,11 +35,11 @@ public class Connection {
 		this.settings=settings;
 	}
 
-	public List<Tables> getTables() {
+	public List<TableContainer> getTables() {
 		return tables;
 	}
 
-	public void setTables(List<Tables> tables) {
+	public void setTables(List<TableContainer> tables) {
 		this.tables=tables;
 	}
 

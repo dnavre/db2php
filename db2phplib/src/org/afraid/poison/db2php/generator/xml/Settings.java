@@ -7,7 +7,6 @@ package org.afraid.poison.db2php.generator.xml;
 
 import org.afraid.poison.db2php.generator.databaselayer.DatabaseLayer;
 import org.jdom.Element;
-import org.jdom.Parent;
 
 /**
  *

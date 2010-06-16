@@ -15,7 +15,7 @@ import org.jdom.Parent;
  *
  * @author Andreas Schnaiter <as@euro-solutions.de>
  */
-public class Tables {
+public class TableContainer {
 	private List<Table> tables;
 	private Settings settings;
 
@@ -35,15 +35,15 @@ public class Tables {
 		this.tables=tables;
 	}
 
-	public static Tables fromElement(Element element, Settings parentSettings) {
-		Tables tables=new Tables();
+	public static TableContainer fromElement(Element element, Settings parentSettings) {
+		TableContainer tables=new TableContainer();
 		tables.setSettings(Settings.fromElement(element, parentSettings));
 
 		return tables;
 	}
 
-	public static List<Tables> fromParent(Parent parent, Settings parentSettings) {
-		List<Tables> tables=new ArrayList<Tables>();
+	public static List<TableContainer> fromParent(Parent parent, Settings parentSettings) {
+		List<TableContainer> tables=new ArrayList<TableContainer>();
 		for (Element element : JDOMUtil.getElementsByTagName(parent, "tables")) {
 			tables.add(fromElement(element, parentSettings));
 		}
