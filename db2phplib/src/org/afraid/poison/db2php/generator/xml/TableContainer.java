@@ -38,7 +38,7 @@ public class TableContainer {
 	public static TableContainer fromElement(Element element, Settings parentSettings) {
 		TableContainer tableContainer=new TableContainer();
 		tableContainer.setSettings(Settings.fromElement(element, parentSettings));
-
+		tableContainer.setTables(Table.fromParent(element, parentSettings));
 		return tableContainer;
 	}
 

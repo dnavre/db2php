@@ -14,6 +14,7 @@ import org.afraid.poison.common.DbUtil;
 import org.afraid.poison.db2php.generator.CodeGenerator;
 import org.jdom.Element;
 import org.jdom.Parent;
+import org.omg.PortableInterceptor.USER_EXCEPTION;
 
 /**
  *
@@ -22,6 +23,8 @@ import org.jdom.Parent;
 public class Connection {
 
 	private String uri;
+	private String user;
+	private String password;
 	private Settings settings;
 	private List<TableContainer> tableContainers;
 
@@ -31,6 +34,22 @@ public class Connection {
 
 	public void setUri(String uri) {
 		this.uri=uri;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password=password;
+	}
+
+	public String getUser() {
+		return user;
+	}
+
+	public void setUser(String user) {
+		this.user=user;
 	}
 
 	public Settings getSettings() {
@@ -86,6 +105,8 @@ public class Connection {
 	public static Connection fromElement(Element element) {
 		Connection connection=new Connection();
 		connection.setUri(element.getAttributeValue("uri"));
+		connection.setUser(element.getAttributeValue("user"));
+		connection.setPassword(element.getAttributeValue("password"));
 		connection.setSettings(Settings.fromElement(element));
 		connection.setTableContainers(TableContainer.fromParent(element, connection.getSettings()));
 		return connection;
@@ -108,7 +129,12 @@ public class Connection {
 		Set<Table> failed=new LinkedHashSet<Table>();
 		java.sql.Connection dbConnection=null;
 		try {
-			dbConnection=DriverManager.getConnection(getUri());
+
+			if (null!=getUser()) {
+				dbConnection=DriverManager.getConnection(getUri());
+			} else {
+				dbConnection=DriverManager.getConnection(getUri(), getUser(), getPassword());
+			}
 			try {
 				CodeGenerator generator;
 				int done=0;
@@ -120,7 +146,7 @@ public class Connection {
 						generator.writeCode();
 					} catch (IOException ex) {
 						failed.add(t);
-						//Exceptions.printStackTrace(ex);
+						ex.printStackTrace();
 					}
 				}
 			} catch (Exception e) {
@@ -128,6 +154,7 @@ public class Connection {
 			}
 		} catch (Exception exception) {
 			failed.addAll(getTables());
+			exception.printStackTrace();
 		} finally {
 			DbUtil.closeQuietly(dbConnection);
 		}

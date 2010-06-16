@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="ISO-8859-15"?>
 <db2php>
 	<connection uri=""
+	user=""
+	password=""
 	databaseLayer="PDO"
 	classNamePrefix=""
 	classNameSuffix=""
@@ -29,6 +31,6 @@
 			fluentInterface="true"
 			ezcSupport="false"/>
 			<table name="" />
-		</table>
-		<connection>
-		</db2php>
+		</tables>
+	</connection>
+</db2php>
