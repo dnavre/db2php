@@ -777,7 +777,7 @@ public class CodeGenerator {
 			replacements.put("<fieldInfo>", field.getInfoTextCompact());
 			replacements.put("<fieldComment>", StringUtil.notNull(field.getComment()));
 		}
-		String version=new StringBuilder().append(getDb2phpVersion()).append(" - generated: ").append(new SimpleDateFormat().format(Calendar.getInstance().getTime())).toString();
+		String version=new StringBuilder().append(getDb2phpVersion()).toString();//.append(" - generated: ").append(new SimpleDateFormat().format(Calendar.getInstance().getTime())).toString();
 		replacements.put("<db2phpVersion>", version);
 		replacements.put("<type>", getClassName());
 		replacements.put("<tableDescription>", StringUtil.notNull(getTable().getRemark()));
