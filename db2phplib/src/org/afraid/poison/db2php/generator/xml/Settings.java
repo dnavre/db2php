@@ -5,6 +5,7 @@
 
 package org.afraid.poison.db2php.generator.xml;
 
+import java.io.File;
 import org.afraid.poison.db2php.generator.databaselayer.DatabaseLayer;
 import org.jdom.Element;
 
@@ -37,6 +38,9 @@ public class Settings extends org.afraid.poison.db2php.generator.Settings {
 		}
 		if (null!=element.getAttributeValue("databaseLayer")) {
 
+		}
+		if (null!=element.getAttributeValue("destinationPath")) {
+			settings.setOutputDirectory(new File(element.getAttributeValue("destinationPath")));
 		}
 		if (null!=element.getAttributeValue("classNamePrefix")) {
 			settings.setClassNamePrefix(element.getAttributeValue("classNamePrefix"));

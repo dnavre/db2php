@@ -11,7 +11,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import org.afraid.poison.common.DbUtil;
-import org.afraid.poison.common.IOUtil;
 import org.afraid.poison.db2php.generator.CodeGenerator;
 import org.jdom.Element;
 import org.jdom.Parent;
@@ -105,7 +104,7 @@ public class Connection {
 	 *
 	 * @return the tables for which the code could not be written
 	 */
-	private Set<Table> writeCode() {
+	public Set<Table> writeCode() {
 		Set<Table> failed=new LinkedHashSet<Table>();
 		java.sql.Connection dbConnection=null;
 		try {
