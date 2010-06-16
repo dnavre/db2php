@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="ISO-8859-15"?>
+<db2php>
+	<connection uri=""
+	databaseLayer="PDO"
+	classNamePrefix=""
+	classNameSuffix=""
+	identifierQuote=""
+	calmelCaseFairy="false"
+	trackFieldModifications="true"
+	fluentInterface="true"
+	ezcSupport="false">
+		<tables destinationPath=""
+		databaseLayer="PDO"
+		classNamePrefix=""
+		classNameSuffix=""
+		identifierQuote=""
+		calmelCaseFairy="false"
+		trackFieldModifications="true"
+		fluentInterface="true"
+		ezcSupport="false">
+			<table name=""
+			destinationPath=""
+			databaseLayer="PDO"
+			classNamePrefix=""
+			classNameSuffix=""
+			identifierQuote=""
+			calmelCaseFairy="false"
+			trackFieldModifications="true"
+			fluentInterface="true"
+			ezcSupport="false"/>
+			<table name="" />
+		</table>
+		<connection>
+		</db2php>
