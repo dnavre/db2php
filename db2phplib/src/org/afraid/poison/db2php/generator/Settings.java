@@ -39,6 +39,23 @@ public class Settings {
 	private File outputDirectory;
 	private String identifierQuoteString=null;
 
+	public Settings() {
+	}
+
+	public Settings(Settings parentSettings) {
+		setDatabaseLayer(parentSettings.getDatabaseLayer());
+		setGenerateChecks(parentSettings.isGenerateChecks());
+		setTrackFieldModifications(parentSettings.isTrackFieldModifications());
+		setFluentInterface(parentSettings.isFluentInterface());
+		setUseInterfaces(parentSettings.isUseInterfaces());
+		setEzComponents(parentSettings.isEzComponents());
+		setCamelCaseFairy(parentSettings.getCamelCaseFairy());
+		setClassNamePrefix(parentSettings.getClassNamePrefix());
+		setClassNameSuffix(parentSettings.getClassNameSuffix());
+		setOutputDirectory(parentSettings.getOutputDirectory());
+		setIdentifierQuoteString(parentSettings.getIdentifierQuoteString());
+	}
+
 	/**
 	 * @return the databaseLayer
 	 */
@@ -179,11 +196,6 @@ public class Settings {
 		this.identifierQuoteString=identifierQuoteString;
 	}
 
-	@Override
-	public String toString() {
-		return new StringBuilder().append("databaseLayer:").append(getDatabaseLayer()).append("\n").append("generateChecks:").append(isGenerateChecks()).append("\n").append("trackFieldModifications:").append(isTrackFieldModifications()).append("\n").append("classNamePrefix:").append(getClassNamePrefix()).append("\n").append("classNameSuffix:").append(getClassNameSuffix()).append("\n").append("identifierQuoteString:").append(getIdentifierQuoteString()).append("\n").append("outputDirectory:").append(getOutputDirectory()).append("\n").toString();
-	}
-
 	/**
 	 * @return the useInterfaces
 	 */
@@ -196,5 +208,10 @@ public class Settings {
 	 */
 	public void setUseInterfaces(boolean useInterfaces) {
 		this.useInterfaces=useInterfaces;
+	}
+
+	@Override
+	public String toString() {
+		return new StringBuilder().append("databaseLayer:").append(getDatabaseLayer()).append("\n").append("generateChecks:").append(isGenerateChecks()).append("\n").append("trackFieldModifications:").append(isTrackFieldModifications()).append("\n").append("classNamePrefix:").append(getClassNamePrefix()).append("\n").append("classNameSuffix:").append(getClassNameSuffix()).append("\n").append("identifierQuoteString:").append(getIdentifierQuoteString()).append("\n").append("outputDirectory:").append(getOutputDirectory()).append("\n").toString();
 	}
 }
