@@ -36,18 +36,18 @@ public class TableContainer {
 	}
 
 	public static TableContainer fromElement(Element element, Settings parentSettings) {
-		TableContainer tables=new TableContainer();
-		tables.setSettings(Settings.fromElement(element, parentSettings));
+		TableContainer tableContainer=new TableContainer();
+		tableContainer.setSettings(Settings.fromElement(element, parentSettings));
 
-		return tables;
+		return tableContainer;
 	}
 
 	public static List<TableContainer> fromParent(Parent parent, Settings parentSettings) {
-		List<TableContainer> tables=new ArrayList<TableContainer>();
+		List<TableContainer> tableContainers=new ArrayList<TableContainer>();
 		for (Element element : JDOMUtil.getElementsByTagName(parent, "tables")) {
-			tables.add(fromElement(element, parentSettings));
+			tableContainers.add(fromElement(element, parentSettings));
 		}
-		return tables;
+		return tableContainers;
 	}
 
 }

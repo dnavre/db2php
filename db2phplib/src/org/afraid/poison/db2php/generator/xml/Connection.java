@@ -6,7 +6,7 @@ package org.afraid.poison.db2php.generator.xml;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.lang.model.element.Element;
+import org.jdom.Element;
 import org.jdom.Parent;
 
 /**
@@ -17,7 +17,7 @@ public class Connection {
 
 	private String uri;
 	private Settings settings;
-	private List<TableContainer> tables;
+	private List<TableContainer> tableContainers;
 
 	public String getUri() {
 		return uri;
@@ -35,13 +35,22 @@ public class Connection {
 		this.settings=settings;
 	}
 
-	public List<TableContainer> getTables() {
+	public List<TableContainer> getTableContainers() {
+		return tableContainers;
+	}
+
+	public void setTableContainers(List<TableContainer> tableContainers) {
+		this.tableContainers=tableContainers;
+	}
+
+	public List<Table> getTables() {
+		List<Table> tables=new ArrayList<Table>();
+		for(TableContainer tableContainer : getTableContainers()) {
+			tables.addAll(tableContainer.getTables());
+		}
 		return tables;
 	}
 
-	public void setTables(List<TableContainer> tables) {
-		this.tables=tables;
-	}
 
 	@Override
 	public boolean equals(Object obj) {
@@ -71,12 +80,17 @@ public class Connection {
 
 	public static Connection fromElement(Element element) {
 		Connection connection=new Connection();
+		connection.setUri(element.getAttributeValue("uri"));
+		connection.setSettings(Settings.fromElement(element));
+		connection.setTableContainers(TableContainer.fromParent(element, connection.getSettings()));
 		return connection;
 	}
 
 	public static List<Connection> fromParent(Parent parent) {
 		List<Connection> connections=new ArrayList<Connection>();
-
+		for(Element element : JDOMUtil.getElementsByTagName(parent, "connection")) {
+			connections.add(fromElement(element));
+		}
 		return connections;
 	}
 }
