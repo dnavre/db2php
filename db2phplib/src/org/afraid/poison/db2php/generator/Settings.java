@@ -32,7 +32,7 @@ public class Settings {
 	private boolean trackFieldModifications=true;
 	private boolean fluentInterface=true;
 	private boolean useInterfaces=true;
-	private boolean ezComponents=true;
+	private boolean ezComponents=false;
 	private CamelCaseFairy camelCaseFairy=null;
 	private String classNamePrefix=new String();
 	private String classNameSuffix=new String();
