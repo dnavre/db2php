@@ -4,8 +4,15 @@
  */
 package org.afraid.poison.db2php.generator.xml;
 
+import java.io.IOException;
+import java.sql.DriverManager;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
+import org.afraid.poison.common.DbUtil;
+import org.afraid.poison.common.IOUtil;
+import org.afraid.poison.db2php.generator.CodeGenerator;
 import org.jdom.Element;
 import org.jdom.Parent;
 
@@ -45,12 +52,11 @@ public class Connection {
 
 	public List<Table> getTables() {
 		List<Table> tables=new ArrayList<Table>();
-		for(TableContainer tableContainer : getTableContainers()) {
+		for (TableContainer tableContainer : getTableContainers()) {
 			tables.addAll(tableContainer.getTables());
 		}
 		return tables;
 	}
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -88,9 +94,45 @@ public class Connection {
 
 	public static List<Connection> fromParent(Parent parent) {
 		List<Connection> connections=new ArrayList<Connection>();
-		for(Element element : JDOMUtil.getElementsByTagName(parent, "connection")) {
+		for (Element element : JDOMUtil.getElementsByTagName(parent, "connection")) {
 			connections.add(fromElement(element));
 		}
 		return connections;
+	}
+
+	/**
+	 * write code
+	 *
+	 * @return the tables for which the code could not be written
+	 */
+	private Set<Table> writeCode() {
+		Set<Table> failed=new LinkedHashSet<Table>();
+		java.sql.Connection dbConnection=null;
+		try {
+			dbConnection=DriverManager.getConnection(getUri());
+			try {
+				CodeGenerator generator;
+				int done=0;
+				for (Table t : getTables()) {
+					org.afraid.poison.db2php.generator.Table generatorTable=new org.afraid.poison.db2php.generator.Table(dbConnection, t.getName());
+					generator=new CodeGenerator(generatorTable, settings);
+					generator.setCamelCaseFairy(settings.getCamelCaseFairy());
+					try {
+						generator.writeCode();
+					} catch (IOException ex) {
+						failed.add(t);
+						//Exceptions.printStackTrace(ex);
+					}
+				}
+			} catch (Exception e) {
+			} finally {
+			}
+		} catch (Exception exception) {
+			failed.addAll(getTables());
+		} finally {
+			DbUtil.closeQuietly(dbConnection);
+		}
+		return failed;
+
 	}
 }
