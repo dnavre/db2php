@@ -77,5 +77,10 @@ public class Table {
 		return hash;
 	}
 
+	@Override
+	public String toString() {
+		return "Table{"+"name="+name+"settings="+settings+'}';
+	}
+
 	
 }

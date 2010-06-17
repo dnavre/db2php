@@ -31,10 +31,10 @@ public class Settings extends org.afraid.poison.db2php.generator.Settings {
 		Settings settings=null;
 		if (null==parentSettings) {
 			settings=new Settings();
-		} else {
-			settings=new Settings(parentSettings);
 			settings.setDatabaseLayer(DatabaseLayer.PDO);
 			settings.setIdentifierQuoteString("`");
+		} else {
+			settings=new Settings(parentSettings);
 		}
 		if (null!=element.getAttributeValue("databaseLayer")) {
 

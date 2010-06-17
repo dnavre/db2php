@@ -14,7 +14,6 @@ import org.afraid.poison.common.DbUtil;
 import org.afraid.poison.db2php.generator.CodeGenerator;
 import org.jdom.Element;
 import org.jdom.Parent;
-import org.omg.PortableInterceptor.USER_EXCEPTION;
 
 /**
  *
@@ -23,6 +22,8 @@ import org.omg.PortableInterceptor.USER_EXCEPTION;
 public class Connection {
 
 	private String uri;
+	private String catalog;
+	private String schema;
 	private String user;
 	private String password;
 	private Settings settings;
@@ -50,6 +51,22 @@ public class Connection {
 
 	public void setUser(String user) {
 		this.user=user;
+	}
+
+	public String getCatalog() {
+		return catalog;
+	}
+
+	public void setCatalog(String catalog) {
+		this.catalog=catalog;
+	}
+
+	public String getSchema() {
+		return schema;
+	}
+
+	public void setSchema(String schema) {
+		this.schema=schema;
 	}
 
 	public Settings getSettings() {
@@ -130,7 +147,7 @@ public class Connection {
 		java.sql.Connection dbConnection=null;
 		try {
 
-			if (null!=getUser()) {
+			if (null==getUser()) {
 				dbConnection=DriverManager.getConnection(getUri());
 			} else {
 				dbConnection=DriverManager.getConnection(getUri(), getUser(), getPassword());
@@ -140,8 +157,8 @@ public class Connection {
 				int done=0;
 				for (Table t : getTables()) {
 					org.afraid.poison.db2php.generator.Table generatorTable=new org.afraid.poison.db2php.generator.Table(dbConnection, t.getName());
-					generator=new CodeGenerator(generatorTable, settings);
-					generator.setCamelCaseFairy(settings.getCamelCaseFairy());
+					generator=new CodeGenerator(generatorTable, t.getSettings());
+					generator.setCamelCaseFairy(t.getSettings().getCamelCaseFairy());
 					try {
 						generator.writeCode();
 					} catch (IOException ex) {
