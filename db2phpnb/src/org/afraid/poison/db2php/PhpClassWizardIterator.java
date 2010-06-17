@@ -99,30 +99,40 @@ public final class PhpClassWizardIterator implements WizardDescriptor.Instantiat
 	 * @param settings the generator settings
 	 * @return the tables for which the code could not be written
 	 */
-	private Set<Table> writeCode(Set<Table> tables, Settings settings) {
-		Set<Table> failed=new LinkedHashSet<Table>();
-		CodeGenerator generator;
-		ProgressHandle ph=ProgressHandleFactory.createHandle("Generating PHP Entity classes");
-		try {
-			int done=0;
-			ph.setInitialDelay(0);
-			ph.start(tables.size());
-			for (Table t : tables) {
-				generator=new CodeGenerator(t, settings);
-				generator.setCamelCaseFairy(settings.getCamelCaseFairy());
-				ph.progress(t.getName());
+	private Set<Table> writeCode(final Set<Table> tables, final Settings settings) {
+		final Set<Table> failed=new LinkedHashSet<Table>();
+		
+		final ProgressHandle ph=ProgressHandleFactory.createHandle("Generating PHP Entity classes");
+		
+		ph.setInitialDelay(0);
+		ph.start(tables.size());
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
 				try {
-					generator.writeCode();
-					openFile(generator.getFile());
-				} catch (IOException ex) {
-					failed.add(t);
-					//Exceptions.printStackTrace(ex);
+					int done=0;
+					CodeGenerator generator;
+					for (Table t : tables) {
+						generator=new CodeGenerator(t, settings);
+						generator.setCamelCaseFairy(settings.getCamelCaseFairy());
+						ph.progress(t.getName());
+						try {
+							generator.writeCode();
+							//openFile(generator.getFile());
+						} catch (IOException ex) {
+							failed.add(t);
+							Exceptions.printStackTrace(ex);
+						}
+						ph.progress(++done);
+					}
+				} finally {
+					ph.finish();
 				}
-				ph.progress(++done);
 			}
-		} finally {
-			ph.finish();
-		}
+		}).start();
+
+
 		return failed;
 	}
 
