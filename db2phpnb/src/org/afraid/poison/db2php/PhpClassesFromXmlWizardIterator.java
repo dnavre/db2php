@@ -8,18 +8,61 @@ import java.awt.Component;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import javax.swing.JComponent;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import org.afraid.poison.db2php.generator.xml.Connection;
+import org.afraid.poison.db2php.generator.xml.Connection.TableEvent;
+import org.jdom.JDOMException;
+import org.netbeans.api.db.explorer.ConnectionManager;
+import org.netbeans.api.db.explorer.DatabaseException;
+import org.netbeans.api.db.explorer.JDBCDriver;
+import org.netbeans.api.db.explorer.JDBCDriverManager;
+import org.netbeans.api.progress.ProgressHandle;
+import org.netbeans.api.progress.ProgressHandleFactory;
 import org.openide.WizardDescriptor;
+import org.openide.util.Exceptions;
 
 public final class PhpClassesFromXmlWizardIterator implements WizardDescriptor.InstantiatingIterator {
 
+	private static class ProgressHolder {
+
+		int progress=0;
+
+		public int getProgress() {
+			return progress;
+		}
+
+		public void setProgress(int progress) {
+			this.progress=progress;
+		}
+
+		public void increment() {
+			++progress;
+		}
+	}
+	/*
+	static {
+	for (JDBCDriver driver : JDBCDriverManager.getDefault().getDrivers()) {
+	try {
+	DriverManager.registerDriver(driver.getDriver());
+
+	} catch (DatabaseException ex) {
+	Exceptions.printStackTrace(ex);
+	} catch (SQLException ex) {
+	Exceptions.printStackTrace(ex);
+	}
+	}
+	}
+	 */
 	private int index;
 	private WizardDescriptor wizard;
 	private WizardDescriptor.Panel[] panels;
@@ -64,8 +107,54 @@ public final class PhpClassesFromXmlWizardIterator implements WizardDescriptor.I
 	@Override
 	public Set instantiate() throws IOException {
 		if (wizard.getValue()==WizardDescriptor.FINISH_OPTION) {
-			PhpClassesFromXmlWizardPanel1 panel1=(PhpClassesFromXmlWizardPanel1) getPanels()[0];
-			
+			final PhpClassesFromXmlVisualPanel1 panel1=(PhpClassesFromXmlVisualPanel1) getPanels()[0].getComponent();
+			final ProgressHandle ph=ProgressHandleFactory.createHandle("Generating PHP Entity classes");
+			try {
+				Class.forName("com.mysql.jdbc.Driver");
+			} catch (ClassNotFoundException ex) {
+				Exceptions.printStackTrace(ex);
+			}
+
+			new Thread(new Runnable() {
+
+				@Override
+				public void run() {
+
+					try {
+						List<Connection> connections=Connection.fromXMLFile(panel1.getXmlFileChooser().getSelectedFile());
+						int totalTables=0;
+						for (Connection connection : connections) {
+							totalTables+=connection.getTables().size();
+						}
+						ph.setInitialDelay(0);
+						ph.start(totalTables);
+
+						final ProgressHolder done=new ProgressHolder();
+
+						for (Connection connection : connections) {
+							connection.addTableListener(new Connection.TableListener() {
+
+								@Override
+								public void tableStatusChanged(TableEvent te) {
+									if (te.getStatus()==TableEvent.STATUS_BEGINNING) {
+										ph.progress(te.getTable().getName(), done.getProgress());
+										done.increment();
+									}
+								}
+							});
+							connection.writeCode();
+
+						}
+					} catch (JDOMException ex) {
+						Exceptions.printStackTrace(ex);
+					} catch (Exception ex) {
+						Exceptions.printStackTrace(ex);
+					} finally {
+						ph.finish();
+					}
+				}
+			}).start();
+
 		}
 		return Collections.EMPTY_SET;
 	}

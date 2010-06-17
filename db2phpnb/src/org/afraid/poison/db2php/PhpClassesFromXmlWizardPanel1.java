@@ -19,6 +19,7 @@ import org.afraid.poison.db2php.generator.xml.Connection;
 import org.openide.WizardDescriptor;
 import org.openide.util.Exceptions;
 import org.openide.util.HelpCtx;
+import org.openide.util.NbPreferences;
 
 public class PhpClassesFromXmlWizardPanel1 implements WizardDescriptor.Panel, PropertyChangeListener {
 
@@ -111,10 +112,15 @@ public class PhpClassesFromXmlWizardPanel1 implements WizardDescriptor.Panel, Pr
 	// by the user.
 	@Override
 	public void readSettings(Object settings) {
+		String file=NbPreferences.forModule(PhpClassesFromXmlVisualPanel1.class).get("file", null);
+		if (null!=file) {
+			((PhpClassesFromXmlVisualPanel1) getComponent()).getXmlFileChooser().setSelectedFile(new File(file));
+		}
 	}
 
 	@Override
 	public void storeSettings(Object settings) {
+		NbPreferences.forModule(PhpClassesFromXmlVisualPanel1.class).put("file", ((PhpClassesFromXmlVisualPanel1) getComponent()).getXmlFileChooser().getSelectedFile().getPath());
 	}
 
 	@Override
