@@ -8,9 +8,14 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.DriverManager;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.EventListener;
+import java.util.EventObject;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.afraid.poison.common.DbUtil;
 import org.afraid.poison.db2php.generator.CodeGenerator;
 import org.jdom.Document;
@@ -25,6 +30,44 @@ import org.jdom.input.SAXBuilder;
  */
 public class Connection {
 
+	public static class TableEvent extends EventObject {
+
+		public static final int STATUS_BEGINNING=1;
+		public static final int STATUS_FINISHED=2;
+		public static final int STATUS_ERROR=4;
+		private final Table table;
+		private final int status;
+		private final String message;
+
+		public TableEvent(Object source, Table table, int status, String message) {
+			super(source);
+			this.table=table;
+			this.status=status;
+			this.message=message;
+		}
+
+		public Table getTable() {
+			return table;
+		}
+
+		public int getStatus() {
+			return status;
+		}
+
+		public String getMessage() {
+			return message;
+		}
+	}
+
+	public static interface TableListener extends EventListener {
+
+		/**
+		 * notify of a changed table status
+		 *
+		 * @param event the event
+		 */
+		public void tableStatusChanged(TableEvent event);
+	}
 	private String uri;
 	private String catalog;
 	private String schema;
@@ -32,6 +75,10 @@ public class Connection {
 	private String password;
 	private Settings settings;
 	private List<TableContainer> tableContainers;
+	/**
+	 * event listeners for the connection
+	 */
+	private Collection<TableListener> listeners=new ArrayList<TableListener>();
 
 	public String getUri() {
 		return uri;
@@ -150,7 +197,7 @@ public class Connection {
 
 		Settings.setParentDirectory(xmlFile.getParentFile());
 
-        SAXBuilder builder=new SAXBuilder(false);
+		SAXBuilder builder=new SAXBuilder(false);
 		builder.setValidation(false);
 		builder.setFeature("http://xml.org/sax/features/validation", false);
 		builder.setFeature("http://apache.org/xml/features/nonvalidating/load-dtd-grammar", false);
@@ -175,31 +222,61 @@ public class Connection {
 			} else {
 				dbConnection=DriverManager.getConnection(getUri(), getUser(), getPassword());
 			}
-			try {
-				CodeGenerator generator;
-				int done=0;
-				for (Table t : getTables()) {
-					org.afraid.poison.db2php.generator.Table generatorTable=new org.afraid.poison.db2php.generator.Table(dbConnection, t.getName());
-					generator=new CodeGenerator(generatorTable, t.getSettings());
-					generator.setCamelCaseFairy(t.getSettings().getCamelCaseFairy());
-					try {
-						generator.writeCode();
-						System.err.println("Wrote table: " + t.getName() + "\t -> " + generator.getFile());
-					} catch (IOException ex) {
-						failed.add(t);
-						ex.printStackTrace();
-					}
+			CodeGenerator generator;
+			for (Table t : getTables()) {
+				fireTableEvent(t, TableEvent.STATUS_BEGINNING, null);
+				org.afraid.poison.db2php.generator.Table generatorTable=new org.afraid.poison.db2php.generator.Table(dbConnection, t.getName());
+				generator=new CodeGenerator(generatorTable, t.getSettings());
+				generator.setCamelCaseFairy(t.getSettings().getCamelCaseFairy());
+				try {
+					generator.writeCode();
+					fireTableEvent(t, TableEvent.STATUS_FINISHED, "Wrote table: "+t.getName()+" -> "+generator.getFile());
+
+					//System.err.println("Wrote table: "+t.getName()+"\t -> "+generator.getFile());
+				} catch (IOException ex) {
+					failed.add(t);
+					fireTableEvent(t, TableEvent.STATUS_ERROR, ex.getMessage());
+					Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
 				}
-			} catch (Exception e) {
-			} finally {
 			}
 		} catch (Exception exception) {
 			failed.addAll(getTables());
-			exception.printStackTrace();
+			Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, exception);
 		} finally {
 			DbUtil.closeQuietly(dbConnection);
 		}
 		return failed;
 
+	}
+
+	/**
+	 * add table event listener
+	 *
+	 * @param l the listener
+	 */
+	public synchronized void addTableListener(TableListener l) {
+		listeners.add(l);
+	}
+
+	/**
+	 * remove table event listener
+	 *
+	 * @param l the listener
+	 */
+	public synchronized void removeTableListener(TableListener l) {
+		listeners.remove(l);
+	}
+
+	/**
+	 * fire table event
+	 *
+	 * @param table the table
+	 * @param status the status
+	 */
+	private synchronized void fireTableEvent(Table table, int status, String message) {
+		TableEvent event=new TableEvent(this, table, status, message);
+		for (TableListener l : listeners) {
+			l.tableStatusChanged(event);
+		}
 	}
 }
