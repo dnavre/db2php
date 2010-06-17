@@ -9,8 +9,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import org.afraid.poison.db2php.generator.xml.Connection;
 import org.afraid.poison.db2php.generator.xml.Table;
-import org.jdom.Document;
-import org.jdom.input.SAXBuilder;
 
 /**
  *
@@ -33,16 +31,7 @@ public class Main {
 		if (!f.isFile()) {
 			throw new FileNotFoundException(args[0]);
 		}
-		org.afraid.poison.db2php.generator.xml.Settings.setParentDirectory(f.getParentFile());
-
-        SAXBuilder builder=new SAXBuilder(false);
-		builder.setValidation(false);
-		builder.setFeature("http://xml.org/sax/features/validation", false);
-		builder.setFeature("http://apache.org/xml/features/nonvalidating/load-dtd-grammar", false);
-		builder.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-
-		Document document=builder.build(f);
-		for(Connection connection : Connection.fromParent(document)) {
+		for(Connection connection : Connection.fromXMLFile(f)) {
 			for(Table failedTable : connection.writeCode()) {
 				System.err.println("failed writing: " + failedTable);
 			}

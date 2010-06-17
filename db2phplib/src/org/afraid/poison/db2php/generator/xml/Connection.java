@@ -4,6 +4,7 @@
  */
 package org.afraid.poison.db2php.generator.xml;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.DriverManager;
 import java.util.ArrayList;
@@ -12,8 +13,11 @@ import java.util.List;
 import java.util.Set;
 import org.afraid.poison.common.DbUtil;
 import org.afraid.poison.db2php.generator.CodeGenerator;
+import org.jdom.Document;
 import org.jdom.Element;
+import org.jdom.JDOMException;
 import org.jdom.Parent;
+import org.jdom.input.SAXBuilder;
 
 /**
  *
@@ -135,6 +139,20 @@ public class Connection {
 			connections.add(fromElement(element));
 		}
 		return connections;
+	}
+
+	public static List<Connection> fromXMLFile(File xmlFile) throws JDOMException, IOException {
+
+		Settings.setParentDirectory(xmlFile.getParentFile());
+
+        SAXBuilder builder=new SAXBuilder(false);
+		builder.setValidation(false);
+		builder.setFeature("http://xml.org/sax/features/validation", false);
+		builder.setFeature("http://apache.org/xml/features/nonvalidating/load-dtd-grammar", false);
+		builder.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+
+		Document document=builder.build(xmlFile);
+		return Connection.fromParent(document);
 	}
 
 	/**
