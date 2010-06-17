@@ -161,6 +161,7 @@ public class Connection {
 					generator.setCamelCaseFairy(t.getSettings().getCamelCaseFairy());
 					try {
 						generator.writeCode();
+						System.err.println("Wrote table: " + t.getName() + "\t -> " + generator.getFile());
 					} catch (IOException ex) {
 						failed.add(t);
 						ex.printStackTrace();
