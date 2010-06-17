@@ -117,7 +117,20 @@
                 <package>org.afraid.poison.common.ui</package>
                 <package>org.afraid.poison.db2php.generator</package>
                 <package>org.afraid.poison.db2php.generator.databaselayer</package>
+                <package>org.afraid.poison.db2php.generator.xml</package>
             </public-packages>
+            <class-path-extension>
+                <runtime-relative-path>ext/common.jar</runtime-relative-path>
+                <binary-origin>release/modules/ext/common.jar</binary-origin>
+            </class-path-extension>
+            <class-path-extension>
+                <runtime-relative-path>ext/db2phplib.jar</runtime-relative-path>
+                <binary-origin>release/modules/ext/db2phplib.jar</binary-origin>
+            </class-path-extension>
+            <class-path-extension>
+                <runtime-relative-path>ext/jdom.jar</runtime-relative-path>
+                <binary-origin>release/modules/ext/jdom.jar</binary-origin>
+            </class-path-extension>
         </data>
     </configuration>
 </project>
