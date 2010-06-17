@@ -27,13 +27,13 @@ public class Main {
 		}
 		File f=null;
 		f=new File(args[0]);
-		if (!f.exists()) {
+		if (!f.isFile()) {
 			f=new File(System.getProperty("user.dir"), args[0]);
 		}
-		if (!f.exists()) {
+		if (!f.isFile()) {
 			throw new FileNotFoundException(args[0]);
 		}
-
+		File baseDirectory=f.getParentFile();
 
         SAXBuilder builder=new SAXBuilder(false);
 		builder.setValidation(false);

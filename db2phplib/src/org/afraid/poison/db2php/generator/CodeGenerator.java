@@ -80,11 +80,11 @@ public class CodeGenerator {
 		if (null==db2phpVersion) {
 			InputStream is=null;
 			try {
-				is=CodeGenerator.class.getResourceAsStream("/META-INF/MANIFEST.MF");
+				is=CodeGenerator.class.getResourceAsStream("/version.properties");
 				if (null!=is) {
 					Properties p=new Properties();
 					p.load(is);
-					db2phpVersion=p.getProperty("OpenIDE-Module-Specification-Version", "");
+					db2phpVersion=p.getProperty("db2phplib-version", "");
 				}
 			} catch (IOException ex) {
 				Logger.getLogger(CodeGenerator.class.getName()).log(Level.SEVERE, null, ex);
@@ -796,12 +796,19 @@ public class CodeGenerator {
 		s.append("class ").append(getClassName());
 		if (getSettings().isUseInterfaces()) {
 			s.append(" implements Db2PhpEntity");
-			if (getSettings().isUseInterfaces()) {
-				s.append(", Db2PhpEntityModificationTracking");
-			}
-			s.append("");
+			s.append(", Db2PhpEntityModificationTracking");
 		}
-		s.append(" {\n");
+		if (!settings.getAdditionalInterfaces().isEmpty()) {
+			if (!getSettings().isUseInterfaces()) {
+				s.append(" implements ");
+			} else {
+				s.append(", ");
+			}
+			s.append(CollectionUtil.join(getSettings().getAdditionalInterfaces(), ", "));
+		} else {
+			s.append(" ");
+		}
+		s.append("{\n");
 		s.append(getPreparedStatements());
 		s.append(getConsts());
 		s.append(getMembers());
