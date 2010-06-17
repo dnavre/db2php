@@ -123,9 +123,12 @@ public class Connection {
 		return hash;
 	}
 
-	public static Connection fromElement(Element element) {
+	public static Connection fromElement(Element element) throws Exception {
 		Connection connection=new Connection();
 		connection.setUri(element.getAttributeValue("uri"));
+		if (null==connection.getUri()) {
+			throw new Exception("no uri in connection element");
+		}
 		connection.setUser(element.getAttributeValue("user"));
 		connection.setPassword(element.getAttributeValue("password"));
 		connection.setCatalog(element.getAttributeValue("catalog"));
@@ -135,7 +138,7 @@ public class Connection {
 		return connection;
 	}
 
-	public static List<Connection> fromParent(Parent parent) {
+	public static List<Connection> fromParent(Parent parent) throws Exception {
 		List<Connection> connections=new ArrayList<Connection>();
 		for (Element element : JDOMUtil.getElementsByTagName(parent, "connection")) {
 			connections.add(fromElement(element));
@@ -143,7 +146,7 @@ public class Connection {
 		return connections;
 	}
 
-	public static List<Connection> fromXMLFile(File xmlFile) throws JDOMException, IOException {
+	public static List<Connection> fromXMLFile(File xmlFile) throws JDOMException, IOException, Exception {
 
 		Settings.setParentDirectory(xmlFile.getParentFile());
 
