@@ -25,7 +25,7 @@
 	 */
 	public static function fromDOMElement(DOMElement $node) {
 		if ('<type>'!=$node->nodeName) {
-			return new InvalidArgumentException('expected: <type>, got: ' . $node->nodeName, 0);
+			throw new InvalidArgumentException('expected: <type>, got: ' . $node->nodeName, 0);
 		}
 		$result=array();
 		foreach (self::$FIELD_NAMES as $fieldName) {
