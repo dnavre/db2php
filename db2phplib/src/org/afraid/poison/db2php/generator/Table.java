@@ -59,7 +59,7 @@ public class Table {
 	 * @param tableName the name of the table to read
 	 */
 	public Table(Connection connection, String tableName) {
-		setName(name);
+		setName(tableName);
 		initFields(connection);
 	}
 
