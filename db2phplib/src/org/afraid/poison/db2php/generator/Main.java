@@ -33,7 +33,7 @@ public class Main {
 		if (!f.isFile()) {
 			throw new FileNotFoundException(args[0]);
 		}
-		File baseDirectory=f.getParentFile();
+		org.afraid.poison.db2php.generator.xml.Settings.setParentDirectory(f.getParentFile());
 
         SAXBuilder builder=new SAXBuilder(false);
 		builder.setValidation(false);

@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package org.afraid.poison.db2php.generator.xml;
 
 import java.io.File;
@@ -15,6 +14,8 @@ import org.jdom.Element;
  */
 public class Settings extends org.afraid.poison.db2php.generator.Settings {
 
+	private static File parentDirectory;
+
 	public Settings() {
 	}
 
@@ -22,7 +23,14 @@ public class Settings extends org.afraid.poison.db2php.generator.Settings {
 		super(parentSettings);
 	}
 
-	
+	public static File getParentDirectory() {
+		return parentDirectory;
+	}
+
+	public static void setParentDirectory(File parentDirectory) {
+		Settings.parentDirectory=parentDirectory;
+	}
+
 	public static Settings fromElement(Element element) {
 		return fromElement(element, null);
 	}
@@ -37,10 +45,13 @@ public class Settings extends org.afraid.poison.db2php.generator.Settings {
 			settings=new Settings(parentSettings);
 		}
 		if (null!=element.getAttributeValue("databaseLayer")) {
-
 		}
 		if (null!=element.getAttributeValue("destinationPath")) {
-			settings.setOutputDirectory(new File(element.getAttributeValue("destinationPath")));
+			File destinationDirectory=new File(element.getAttributeValue("destinationPath"));
+			if (null!=getParentDirectory() && !destinationDirectory.isAbsolute()) {
+				destinationDirectory=new File(getParentDirectory(), element.getAttributeValue("destinationPath"));
+			}
+			settings.setOutputDirectory(destinationDirectory);
 		}
 		if (null!=element.getAttributeValue("classNamePrefix")) {
 			settings.setClassNamePrefix(element.getAttributeValue("classNamePrefix"));
