@@ -128,6 +128,8 @@ public class Connection {
 		connection.setUri(element.getAttributeValue("uri"));
 		connection.setUser(element.getAttributeValue("user"));
 		connection.setPassword(element.getAttributeValue("password"));
+		connection.setCatalog(element.getAttributeValue("catalog"));
+		connection.setSchema(element.getAttributeValue("schema"));
 		connection.setSettings(Settings.fromElement(element));
 		connection.setTableContainers(TableContainer.fromParent(element, connection.getSettings()));
 		return connection;
