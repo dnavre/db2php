@@ -63,6 +63,9 @@ public class Settings extends org.afraid.poison.db2php.generator.Settings {
 		if (null!=element.getAttributeValue("ezcSupport")) {
 			settings.setEzComponents("true".equals(element.getAttributeValue("ezcSupport")));
 		}
+		for (Object interfacesO : element.getChildren("interface")) {
+			settings.getAdditionalInterfaces().add(((Element) interfacesO).getAttributeValue("name").trim());
+		}
 		return settings;
 	}
 }

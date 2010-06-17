@@ -18,6 +18,8 @@
 package org.afraid.poison.db2php.generator;
 
 import java.io.File;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import org.afraid.poison.camelcase.CamelCaseFairy;
 import org.afraid.poison.db2php.generator.databaselayer.DatabaseLayer;
 
@@ -38,6 +40,7 @@ public class Settings {
 	private String classNameSuffix=new String();
 	private File outputDirectory;
 	private String identifierQuoteString=null;
+	private Set<String> additionalInterfaces=new LinkedHashSet<String>();
 
 	public Settings() {
 	}
@@ -209,6 +212,15 @@ public class Settings {
 	public void setUseInterfaces(boolean useInterfaces) {
 		this.useInterfaces=useInterfaces;
 	}
+
+	public Set<String> getAdditionalInterfaces() {
+		return additionalInterfaces;
+	}
+
+	public void setAdditionalInterfaces(Set<String> additionalInterfaces) {
+		this.additionalInterfaces=additionalInterfaces;
+	}
+
 
 	@Override
 	public String toString() {
