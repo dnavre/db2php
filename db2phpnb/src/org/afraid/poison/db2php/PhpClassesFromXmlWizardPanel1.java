@@ -114,7 +114,10 @@ public class PhpClassesFromXmlWizardPanel1 implements WizardDescriptor.Panel, Pr
 	public void readSettings(Object settings) {
 		String file=NbPreferences.forModule(PhpClassesFromXmlVisualPanel1.class).get("file", null);
 		if (null!=file) {
-			((PhpClassesFromXmlVisualPanel1) getComponent()).getXmlFileChooser().setSelectedFile(new File(file));
+			File f=new File(file);
+			if (f.exists()) {
+				((PhpClassesFromXmlVisualPanel1) getComponent()).getXmlFileChooser().setSelectedFile(f);
+			}
 		}
 	}
 
