@@ -36,7 +36,13 @@
   <SubComponents>
     <Component class="javax.swing.JFileChooser" name="xmlFileChooser">
       <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="ff" green="ff" id="Nb.Desktop.background" palette="3" red="ff" type="palette"/>
+        </Property>
         <Property name="controlButtonsAreShown" type="boolean" value="false"/>
+        <Property name="fileFilter" type="javax.swing.filechooser.FileFilter" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="new FileFilterDb2Php()" type="code"/>
+        </Property>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="fileChooserLabel">

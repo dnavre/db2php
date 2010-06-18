@@ -4,12 +4,39 @@
  */
 package org.afraid.poison.db2php;
 
+import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
+import javax.swing.filechooser.FileFilter;
+import org.afraid.poison.db2php.generator.xml.Connection;
+import org.openide.util.Exceptions;
 
 public final class PhpClassesFromXmlVisualPanel1 extends JPanel {
 
-	
+	public static class FileFilterDb2Php extends FileFilter {
+
+		@Override
+		public boolean accept(File f) {
+			if (f.isDirectory()) {
+				return true;
+			}
+			if (f.getName().endsWith(".xml")||f.getName().endsWith(".db2php")) {
+				try {
+					return !Connection.fromXMLFile(f).isEmpty();
+					
+				} catch (Exception e) {
+					Exceptions.printStackTrace(e);
+				}
+			}
+			return false;
+		}
+
+		@Override
+		public String getDescription() {
+			return "valid db2php XML control files";
+		}
+	}
+
 	/** Creates new form PhpClassesFromXmlVisualPanel1 */
 	public PhpClassesFromXmlVisualPanel1() {
 		initComponents();
@@ -35,7 +62,9 @@ public final class PhpClassesFromXmlVisualPanel1 extends JPanel {
         xmlFileChooser = new javax.swing.JFileChooser();
         fileChooserLabel = new javax.swing.JLabel();
 
+        xmlFileChooser.setBackground(javax.swing.UIManager.getDefaults().getColor("Nb.Desktop.background"));
         xmlFileChooser.setControlButtonsAreShown(false);
+        xmlFileChooser.setFileFilter(new FileFilterDb2Php());
 
         org.openide.awt.Mnemonics.setLocalizedText(fileChooserLabel, org.openide.util.NbBundle.getMessage(PhpClassesFromXmlVisualPanel1.class, "PhpClassesFromXmlVisualPanel1.fileChooserLabel.text")); // NOI18N
 
@@ -56,7 +85,6 @@ public final class PhpClassesFromXmlVisualPanel1 extends JPanel {
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel fileChooserLabel;
     private javax.swing.JFileChooser xmlFileChooser;
