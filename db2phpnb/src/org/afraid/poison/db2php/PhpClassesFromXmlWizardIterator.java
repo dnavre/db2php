@@ -19,6 +19,7 @@ import java.util.Set;
 import javax.swing.JComponent;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import org.afraid.poison.db2php.generator.CodeGenerator;
 import org.afraid.poison.db2php.generator.xml.Connection;
 import org.afraid.poison.db2php.generator.xml.Connection.TableEvent;
 import org.jdom.JDOMException;
@@ -136,9 +137,11 @@ public final class PhpClassesFromXmlWizardIterator implements WizardDescriptor.I
 
 								@Override
 								public void tableStatusChanged(TableEvent te) {
+
 									if (te.getStatus()==TableEvent.STATUS_BEGINNING) {
 										ph.progress(te.getTable().getName(), done.getProgress());
 										done.increment();
+									} else if(te.getStatus()==TableEvent.STATUS_FINISHED) {
 									}
 								}
 							});

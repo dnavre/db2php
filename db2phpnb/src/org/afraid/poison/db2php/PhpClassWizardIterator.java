@@ -43,6 +43,7 @@ import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;
 import org.openide.WizardDescriptor;
 import org.openide.cookies.OpenCookie;
+import org.openide.filesystems.FileChangeAdapter;
 import org.openide.filesystems.FileObject;
 import org.openide.filesystems.FileUtil;
 import org.openide.loaders.DataObject;
@@ -113,12 +114,15 @@ public final class PhpClassWizardIterator implements WizardDescriptor.Instantiat
 				try {
 					int done=0;
 					CodeGenerator generator;
+					FileObject fob;
 					for (Table t : tables) {
 						generator=new CodeGenerator(t, settings);
 						generator.setCamelCaseFairy(settings.getCamelCaseFairy());
 						ph.progress(t.getName());
 						try {
 							generator.writeCode();
+							//fob=FileUtil.toFileObject(generator.getFile());
+							FileUtil.refreshFor(generator.getFile());
 							//openFile(generator.getFile());
 						} catch (IOException ex) {
 							failed.add(t);
@@ -144,6 +148,8 @@ public final class PhpClassWizardIterator implements WizardDescriptor.Instantiat
 	private void openFile(File file) {
 		try {
 			FileObject fob=FileUtil.toFileObject(file);
+			
+			//fob.
 			if (fob!=null) {
 				DataObject dob=DataObject.find(fob);
 				OpenCookie oc=dob.getLookup().lookup(OpenCookie.class);
