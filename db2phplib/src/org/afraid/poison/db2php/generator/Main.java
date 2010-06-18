@@ -13,7 +13,7 @@ import org.afraid.poison.db2php.generator.xml.Table;
 
 /**
  *
- * @author Andreas Schnaiter <as@euro-solutions.de>
+ * @author Andreas Schnaiter <rc.poison@gmail.com>
  */
 public class Main {
 
