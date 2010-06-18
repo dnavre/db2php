@@ -21,6 +21,9 @@ public final class PhpClassesFromXmlVisualPanel1 extends JPanel {
 				return true;
 			}
 			if (f.getName().endsWith(".xml")||f.getName().endsWith(".db2php")) {
+				if (f.length()>1024*1024) {
+					return false;
+				}
 				try {
 					return !Connection.fromXMLFile(f).isEmpty();
 					
@@ -33,7 +36,7 @@ public final class PhpClassesFromXmlVisualPanel1 extends JPanel {
 
 		@Override
 		public String getDescription() {
-			return "valid db2php XML control files";
+			return "Valid db2php XML control files";
 		}
 	}
 
