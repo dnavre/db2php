@@ -42,6 +42,7 @@ class TablesListCellRenderer extends JLabel implements ListCellRenderer {
 
 	@Override
 	public Component getListCellRendererComponent(JList list, Object value, int index, boolean iss, boolean chf) {
+
 		setText(value.toString());
 		if (value instanceof Table) {
 			Table t=(Table) value;
@@ -80,7 +81,9 @@ class TablesListCellRenderer extends JLabel implements ListCellRenderer {
 			}
 			tooltipText.append("</html>");
 			setToolTipText(tooltipText.toString());
-			if (t.getFieldsPrimaryKey().isEmpty()) {
+			if (!isEnabled()) {
+				setBackground(Color.GRAY);
+			} else if (t.getFieldsPrimaryKey().isEmpty()) {
 				setBackground(Color.ORANGE);
 				//setToolTipText(new StringBuilder("Table ").append(t.getName()).append(" has no primary key! Will be using: ").append(CollectionUtil.join(t.getFieldsIdentifiers(), ", ")).toString());
 				if (iss) {
@@ -100,7 +103,9 @@ class TablesListCellRenderer extends JLabel implements ListCellRenderer {
 			}
 
 		} else {
-			if (iss) {
+			if (!isEnabled()) {
+				setBackground(Color.GRAY);
+			} else if (iss) {
 				setBorder(BorderFactory.createLineBorder(list.getSelectionBackground(), 2));
 				setBackground(list.getSelectionBackground());
 			} else {

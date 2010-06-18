@@ -36,4 +36,9 @@ public class TableEvent extends EventObject {
 		super(source);
 		this.table=table;
 	}
+
+	public Table getTable() {
+		return table;
+	}
+
 }

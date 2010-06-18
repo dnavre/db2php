@@ -23,6 +23,8 @@ import javax.swing.DefaultListModel;
 import javax.swing.JPanel;
 import org.afraid.poison.common.CollectionUtil;
 import org.afraid.poison.db2php.generator.Table;
+import org.afraid.poison.db2php.generator.TableEvent;
+import org.afraid.poison.db2php.generator.TableListener;
 import org.netbeans.api.db.explorer.ConnectionManager;
 import org.netbeans.api.db.explorer.DatabaseConnection;
 import org.netbeans.api.db.explorer.support.DatabaseExplorerUIs;
@@ -113,26 +115,44 @@ public final class PhpClassVisualPanelTableSelection extends JPanel {
 
 	private void connectionSelectorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connectionSelectorActionPerformed
 		// TODO add your handling code here:
-		DefaultListModel tablesModel=new DefaultListModel();
-		DatabaseConnection conn=(DatabaseConnection) getConnectionSelector().getSelectedItem();
+		
+		final DatabaseConnection conn=(DatabaseConnection) getConnectionSelector().getSelectedItem();
 		if (null!=conn) {
 			//tablesModel.addElement(conn.getDisplayName());
 			ConnectionManager.getDefault().showConnectionDialog(conn);
-			Set<Table> tables=Table.getTables(conn.getJDBCConnection());
-			if (!tables.isEmpty()) {
-				getTablesSelection().setEnabled(true);
-				for (Table t : tables) {
-					tablesModel.addElement(t);
+			new Thread(new Runnable() {
+
+				@Override
+				public void run() {
+					final DefaultListModel tablesModelWaiting=new DefaultListModel();
+					getTablesSelection().setEnabled(false);
+					tablesModelWaiting.addElement("Please wait ...");
+					DefaultListModel tablesModel=new DefaultListModel();
+					getTablesSelection().setModel(tablesModelWaiting);
+					Set<Table> tables=Table.getTables(conn.getJDBCConnection(), new TableListener() {
+
+						@Override
+						public void tableStatusChanged(TableEvent te) {
+							tablesModelWaiting.addElement(te.getTable());
+						}
+					});
+					if (!tables.isEmpty()) {
+						getTablesSelection().setEnabled(true);
+						for (Table t : tables) {
+							tablesModel.addElement(t);
+						}
+						getTablesSelection().setModel(tablesModel);
+					} else {
+						getTablesSelection().setEnabled(false);
+						tablesModel.addElement("Could not find any tables ...");
+					}
+					getTablesSelection().setModel(tablesModel);
 				}
-			} else {
-				tablesModel.addElement("Could not find any tables ...");
-				getTablesSelection().setEnabled(false);
-			}
-			getTablesSelection().setModel(tablesModel);
+			}).start();
+
 		} else {
 			getTablesSelection().setEnabled(false);
 		}
-		getTablesSelection().setModel(tablesModel);
 	}//GEN-LAST:event_connectionSelectorActionPerformed
 
 	private void connectionSelectorPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_connectionSelectorPropertyChange
@@ -173,4 +193,3 @@ public final class PhpClassVisualPanelTableSelection extends JPanel {
 		this.tablesSelection=tablesSelection;
 	}
 }
-

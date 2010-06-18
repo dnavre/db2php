@@ -106,12 +106,7 @@
                     </run-dependency>
                 </dependency>
             </module-dependencies>
-            <public-packages>
-                <package>org.afraid.poison.common</package>
-                <package>org.afraid.poison.common.interfaces</package>
-                <package>org.afraid.poison.common.string</package>
-                <package>org.afraid.poison.common.ui</package>
-            </public-packages>
+            <public-packages/>
             <class-path-extension>
                 <runtime-relative-path>ext/common.jar</runtime-relative-path>
                 <binary-origin>release/modules/ext/common.jar</binary-origin>
