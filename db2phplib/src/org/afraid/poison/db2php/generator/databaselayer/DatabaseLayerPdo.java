@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -207,12 +208,31 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 		return s.toString();
 	}
 
+	private static String findNextUnusedName(Set<String> used, String name) {
+		if (used.contains(name)) {
+			int num=0;
+			StringBuilder possibleName;
+			do {
+				possibleName=new StringBuilder(name).append(++num);
+			} while (used.contains(possibleName.toString()));
+			return possibleName.toString();
+		}
+		return name;
+	}
+
 	public String getCodeExportedKeys(CodeGenerator generator) {
 		StringBuilder s=new StringBuilder();
+		Set<String> usedMethods=new LinkedHashSet<String>();
 		for (ForeignKey fk : generator.getTable().getExportedKeys()) {
+			String fkType=findNextUnusedName(usedMethods, generator.getClassName(fk.getFkTableName()));
+			usedMethods.add(fkType);
 			// DatabaseLayerPdo.importedKeys
 			Map<CharSequence, CharSequence> replacements=new HashMap<CharSequence, CharSequence>();
-			replacements.put("<fkType>", generator.getClassName(fk.getFkTableName()));
+			replacements.put("<pkTableName>", fk.getPkTableName());
+			replacements.put("<pkFieldName>", fk.getPkFieldName());
+			replacements.put("<fkTableName>", fk.getFkTableName());
+			replacements.put("<fkFieldName>", fk.getFkFieldName());
+			replacements.put("<fkType>", fkType);
 			replacements.put("<fkFieldConst>", generator.getConstName(fk.getFkField()));
 			replacements.put("<pkGetter>", generator.getGetterCall(fk.getPkField()));
 			s.append(StringUtil.replace(generator.getSnippetFromFile("DatabaseLayerPdo.exportedKeys.php"), replacements));
@@ -223,10 +243,17 @@ public class DatabaseLayerPdo extends DatabaseLayer {
 
 	public String getCodeImportedKeys(CodeGenerator generator) {
 		StringBuilder s=new StringBuilder();
+		Set<String> usedMethods=new LinkedHashSet<String>();
 		for (ForeignKey fk : generator.getTable().getImportedKeys()) {
+			String pkType=findNextUnusedName(usedMethods, generator.getClassName(fk.getPkTableName()));
+			usedMethods.add(pkType);
 			// DatabaseLayerPdo.importedKeys
 			Map<CharSequence, CharSequence> replacements=new HashMap<CharSequence, CharSequence>();
-			replacements.put("<pkType>", generator.getClassName(fk.getPkTableName()));
+			replacements.put("<pkTableName>", fk.getPkTableName());
+			replacements.put("<pkFieldName>", fk.getPkFieldName());
+			replacements.put("<fkTableName>", fk.getFkTableName());
+			replacements.put("<fkFieldName>", fk.getFkFieldName());
+			replacements.put("<pkType>", pkType);
 			replacements.put("<pkFieldConst>", generator.getConstName(fk.getPkField()));
 			replacements.put("<fkGetter>", generator.getGetterCall(fk.getFkField()));
 			s.append(StringUtil.replace(generator.getSnippetFromFile("DatabaseLayerPdo.importedKeys.php"), replacements));

@@ -1,6 +1,7 @@
 
 	/**
-	 * Fetch <fkType>'s which this <type> references
+	 * Fetch <fkType>'s which this <type> references.
+	 * `<pkTableName>`.`<pkFieldName>` -> `<fkTableName>`.`<fkFieldName>`
 	 *
 	 * @param PDO $db a PDO Database instance
 	 * @param array $sort array of DSC instances

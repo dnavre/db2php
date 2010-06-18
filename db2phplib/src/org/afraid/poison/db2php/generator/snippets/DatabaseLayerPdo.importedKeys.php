@@ -1,6 +1,7 @@
 
 	/**
 	 * Fetch <pkType> which references this <type>. Will return null in case reference is invalid.
+	 * `<fkTableName>`.`<fkFieldName>` -> `<pkTableName>`.`<pkFieldName>`
 	 *
 	 * @param PDO $db a PDO Database instance
 	 * @param array $sort array of DSC instances
