@@ -2,33 +2,33 @@
 	/**
 	 * cached insert statement
 	 *
-	 * @var PDOStatement
+	 * @var PDOStatement[]
 	 */
-	private static $stmtInsert=null;
+	private static $stmtInsert=array();
 	/**
 	 * cached insert statement with autoincrement fields omitted
 	 *
-	 * @var PDOStatement
+	 * @var PDOStatement[]
 	 */
-	private static $stmtInsertAutoIncrement=null;
+	private static $stmtInsertAutoIncrement=array();
 	/**
 	 * cached update statement
 	 *
-	 * @var PDOStatement
+	 * @var PDOStatement[]
 	 */
-	private static $stmtUpdate=null;
+	private static $stmtUpdate=array();
 	/**
 	 * cached delete statement
 	 *
-	 * @var PDOStatement
+	 * @var PDOStatement[]
 	 */
-	private static $stmtDelete=null;
+	private static $stmtDelete=array();
 	/**
 	 * cached select statement
 	 *
-	 * @var PDOStatement
+	 * @var PDOStatement[]
 	 */
-	private static $stmtSelect=null;
+	private static $stmtSelect=array();
 	private static $cacheStatements=true;
 	
 	/**
@@ -40,31 +40,32 @@
 	 */
 	protected static function prepareStatement(PDO $db, $statement) {
 		if(self::isCacheStatements()) {
+			$dbInstanceId=spl_object_hash($db);
 			if ($statement==self::SQL_INSERT) {
-				if (null==self::$stmtInsert) {
-					self::$stmtInsert=$db->prepare($statement);
+				if (null==self::$stmtInsert[$dbInstanceId]) {
+					self::$stmtInsert[$dbInstanceId]=$db->prepare($statement);
 				}
-				return self::$stmtInsert;
+				return self::$stmtInsert[$dbInstanceId];
 			} elseif($statement==self::SQL_INSERT_AUTOINCREMENT) {
-				if (null==self::$stmtInsertAutoIncrement) {
-					self::$stmtInsertAutoIncrement=$db->prepare($statement);
+				if (null==self::$stmtInsertAutoIncrement[$dbInstanceId]) {
+					self::$stmtInsertAutoIncrement[$dbInstanceId]=$db->prepare($statement);
 				}
-				return self::$stmtInsertAutoIncrement;
+				return self::$stmtInsertAutoIncrement[$dbInstanceId];
 			} elseif($statement==self::SQL_UPDATE) {
-				if (null==self::$stmtUpdate) {
-					self::$stmtUpdate=$db->prepare($statement);
+				if (null==self::$stmtUpdate[$dbInstanceId]) {
+					self::$stmtUpdate[$dbInstanceId]=$db->prepare($statement);
 				}
-				return self::$stmtUpdate;
+				return self::$stmtUpdate[$dbInstanceId];
 			} elseif($statement==self::SQL_SELECT_PK) {
-				if (null==self::$stmtSelect) {
-					self::$stmtSelect=$db->prepare($statement);
+				if (null==self::$stmtSelect[$dbInstanceId]) {
+					self::$stmtSelect[$dbInstanceId]=$db->prepare($statement);
 				}
-				return self::$stmtSelect;
+				return self::$stmtSelect[$dbInstanceId];
 			} elseif($statement==self::SQL_DELETE_PK) {
-				if (null==self::$stmtDelete) {
-					self::$stmtDelete=$db->prepare($statement);
+				if (null==self::$stmtDelete[$dbInstanceId]) {
+					self::$stmtDelete[$dbInstanceId]=$db->prepare($statement);
 				}
-				return self::$stmtDelete;
+				return self::$stmtDelete[$dbInstanceId];
 			}
 		}
 		return $db->prepare($statement);
