@@ -58,7 +58,7 @@ public class Settings {
 		setClassNameSuffix(parentSettings.getClassNameSuffix());
 		setOutputDirectory(parentSettings.getOutputDirectory());
 		setIdentifierQuoteString(parentSettings.getIdentifierQuoteString());
-		setAdditionalInterfaces(parentSettings.getAdditionalInterfaces());
+		getAdditionalInterfaces().addAll(parentSettings.getAdditionalInterfaces());
 		setCreateBackup(parentSettings.isCreateBackup());
 	}
 
