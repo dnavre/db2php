@@ -144,8 +144,8 @@ public final class PhpClassVisualPanelTableSelection extends JPanel {
 					} else {
 						getTablesSelection().setEnabled(false);
 						tablesModel.addElement("Could not find any tables ...");
+						getTablesSelection().setModel(tablesModel);
 					}
-					getTablesSelection().setModel(tablesModel);
 				}
 			}).start();
 

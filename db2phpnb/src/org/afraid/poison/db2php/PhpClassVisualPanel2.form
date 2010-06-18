@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.1" encoding="UTF-8" ?>
 
 <Form version="1.4" maxVersion="1.7" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
   <AuxValues>
@@ -19,7 +19,7 @@
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" attributes="0">
-                  <Component id="fileSelectionPanel" alignment="1" pref="400" max="32767" attributes="0"/>
+                  <Component id="fileSelectionPanel" alignment="1" pref="432" max="32767" attributes="0"/>
                   <Group type="102" alignment="1" attributes="0">
                       <Group type="103" groupAlignment="1" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
@@ -30,26 +30,27 @@
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="classNameSuffix" pref="145" max="32767" attributes="0"/>
+                              <Component id="classNameSuffix" pref="151" max="32767" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="classNamePrefix" pref="144" max="32767" attributes="0"/>
+                              <Component id="classNamePrefix" pref="150" max="32767" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="1" attributes="0">
                               <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="databaseLayerSelection" pref="156" max="32767" attributes="0"/>
+                              <Component id="databaseLayerSelection" pref="166" max="32767" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="camelCaseFairy" pref="153" max="32767" attributes="0"/>
+                              <Component id="camelCaseFairy" pref="162" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="ezcSupportSelection" min="-2" max="-2" attributes="0"/>
                           <Component id="fluentInterfaceSelection" min="-2" max="-2" attributes="0"/>
                           <Component id="generateChecksSelection" min="-2" max="-2" attributes="0"/>
                           <Component id="trackModificationsSelection" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -85,6 +86,7 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="identifierQuoteString" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="ezcSupportSelection" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -215,6 +217,13 @@
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
           <ResourceString bundle="org/afraid/poison/db2php/Bundle.properties" key="PhpClassVisualPanel2.jLabel2.text_2" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+        </Property>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="ezcSupportSelection">
+      <Properties>
+        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="org/afraid/poison/db2php/Bundle.properties" key="PhpClassVisualPanel2.ezcSupportSelection.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>

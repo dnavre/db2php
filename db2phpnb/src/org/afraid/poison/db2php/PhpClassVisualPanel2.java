@@ -22,6 +22,7 @@ import java.util.Vector;
 import java.util.prefs.Preferences;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.text.JTextComponent;
@@ -73,6 +74,7 @@ public final class PhpClassVisualPanel2 extends JPanel {
         fileSelectionPanel = new org.afraid.poison.db2php.FileSelectionPanel();
         camelCaseFairy = new javax.swing.JComboBox();
         jLabel2 = new javax.swing.JLabel();
+        ezcSupportSelection = new javax.swing.JCheckBox();
 
         org.openide.awt.Mnemonics.setLocalizedText(jLabel1, org.openide.util.NbBundle.getMessage(PhpClassVisualPanel2.class, "PhpClassVisualPanel2.jLabel1.text_2")); // NOI18N
 
@@ -107,6 +109,8 @@ public final class PhpClassVisualPanel2 extends JPanel {
 
         org.openide.awt.Mnemonics.setLocalizedText(jLabel2, org.openide.util.NbBundle.getMessage(PhpClassVisualPanel2.class, "PhpClassVisualPanel2.jLabel2.text_2")); // NOI18N
 
+        org.openide.awt.Mnemonics.setLocalizedText(ezcSupportSelection, org.openide.util.NbBundle.getMessage(PhpClassVisualPanel2.class, "PhpClassVisualPanel2.ezcSupportSelection.text")); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -114,7 +118,7 @@ public final class PhpClassVisualPanel2 extends JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(fileSelectionPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
+                    .addComponent(fileSelectionPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 432, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
@@ -124,21 +128,22 @@ public final class PhpClassVisualPanel2 extends JPanel {
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addComponent(jLabel4)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(classNameSuffix, javax.swing.GroupLayout.DEFAULT_SIZE, 145, Short.MAX_VALUE))
+                                .addComponent(classNameSuffix, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addComponent(jLabel3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(classNamePrefix, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE))
+                                .addComponent(classNamePrefix, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(databaseLayerSelection, 0, 156, Short.MAX_VALUE))
+                                .addComponent(databaseLayerSelection, 0, 166, Short.MAX_VALUE))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addComponent(jLabel2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(camelCaseFairy, 0, 153, Short.MAX_VALUE)))
+                                .addComponent(camelCaseFairy, 0, 162, Short.MAX_VALUE)))
                         .addGap(12, 12, 12)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(ezcSupportSelection)
                             .addComponent(fluentInterfaceSelection)
                             .addComponent(generateChecksSelection)
                             .addComponent(trackModificationsSelection))))
@@ -165,7 +170,8 @@ public final class PhpClassVisualPanel2 extends JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(identifierQuoteString, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(identifierQuoteString, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ezcSupportSelection))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(camelCaseFairy, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -181,6 +187,7 @@ public final class PhpClassVisualPanel2 extends JPanel {
     private javax.swing.JTextField classNamePrefix;
     private javax.swing.JTextField classNameSuffix;
     private javax.swing.JComboBox databaseLayerSelection;
+    private javax.swing.JCheckBox ezcSupportSelection;
     private org.afraid.poison.db2php.FileSelectionPanel fileSelectionPanel;
     private javax.swing.JCheckBox fluentInterfaceSelection;
     private javax.swing.JCheckBox generateChecksSelection;
@@ -270,6 +277,11 @@ public final class PhpClassVisualPanel2 extends JPanel {
 		return fluentInterfaceSelection;
 	}
 
+	public JCheckBox getEzcSupportSelection() {
+		return ezcSupportSelection;
+	}
+
+
 	public void readSettings() {
 		Preferences pref=NbPreferences.forModule(getClass());
 		String setting=pref.get("DatabaseLayer", null);
@@ -288,6 +300,7 @@ public final class PhpClassVisualPanel2 extends JPanel {
 		getGenerateChecksSelection().setSelected(pref.getBoolean("TypeChecks", false));
 		getTrackModificationsSelection().setSelected(pref.getBoolean("TrackModifications", true));
 		getFluentInterfaceSelection().setSelected(pref.getBoolean("FluentInterface", true));
+		getEzcSupportSelection().setSelected(pref.getBoolean("EzcSupport", false));
 		getCamelCaseFairy().setSelectedItem(pref.get("CamelCaseFairy", "<disabled>"));
 
 	}
@@ -301,6 +314,7 @@ public final class PhpClassVisualPanel2 extends JPanel {
 		pref.putBoolean("TypeChecks", getGenerateChecksSelection().isSelected());
 		pref.putBoolean("TrackModifications", getTrackModificationsSelection().isSelected());
 		pref.putBoolean("FluentInterface", getFluentInterfaceSelection().isSelected());
+		pref.putBoolean("EzcSupport", getEzcSupportSelection().isSelected());
 		pref.put("CamelCaseFairy", getCamelCaseFairy().getSelectedItem().toString());
 
 	}

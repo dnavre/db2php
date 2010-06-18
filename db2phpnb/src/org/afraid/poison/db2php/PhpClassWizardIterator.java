@@ -167,6 +167,7 @@ public final class PhpClassWizardIterator implements WizardDescriptor.Instantiat
 			settings.setDatabaseLayer((DatabaseLayer) p2.getDatabaseLayerSelection().getSelectedItem());
 			settings.setGenerateChecks(p2.getGenerateChecksSelection().isSelected());
 			settings.setFluentInterface(p2.getFluentInterfaceSelection().isSelected());
+			settings.setEzComponents(p2.getEzcSupportSelection().isSelected());
 			settings.setTrackFieldModifications(p2.getTrackModificationsSelection().isSelected());
 			settings.setClassNamePrefix(p2.getClassNamePrefix().getText());
 			settings.setClassNameSuffix(p2.getClassNameSuffix().getText());
