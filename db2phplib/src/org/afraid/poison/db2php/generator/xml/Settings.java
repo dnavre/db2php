@@ -77,6 +77,9 @@ public class Settings extends org.afraid.poison.db2php.generator.Settings {
 		for (Object interfacesO : element.getChildren("interface")) {
 			settings.getAdditionalInterfaces().add(((Element) interfacesO).getAttributeValue("name").trim());
 		}
+		if (null!=element.getAttributeValue("createBackup")) {
+			settings.setCreateBackup("true".equals(element.getAttributeValue("createBackup")));
+		}
 		return settings;
 	}
 }

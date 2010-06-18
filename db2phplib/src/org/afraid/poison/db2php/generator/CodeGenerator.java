@@ -862,7 +862,7 @@ public class CodeGenerator {
 	 * @throws IOException if the file exists and should not be renamed or rename fails
 	 */
 	public void writeCode(File file, boolean renameOld) throws IOException {
-		if (file.exists()) {
+		if (file.exists() && getSettings().isCreateBackup()) {
 			if (renameOld) {
 				File backupFile=null;
 				int i=0;

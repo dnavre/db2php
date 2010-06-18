@@ -41,6 +41,7 @@ public class Settings {
 	private File outputDirectory;
 	private String identifierQuoteString=null;
 	private Set<String> additionalInterfaces=new LinkedHashSet<String>();
+	private boolean createBackup=true;
 
 	public Settings() {
 	}
@@ -57,6 +58,8 @@ public class Settings {
 		setClassNameSuffix(parentSettings.getClassNameSuffix());
 		setOutputDirectory(parentSettings.getOutputDirectory());
 		setIdentifierQuoteString(parentSettings.getIdentifierQuoteString());
+		setAdditionalInterfaces(parentSettings.getAdditionalInterfaces());
+		setCreateBackup(parentSettings.isCreateBackup());
 	}
 
 	/**
@@ -219,6 +222,14 @@ public class Settings {
 
 	public void setAdditionalInterfaces(Set<String> additionalInterfaces) {
 		this.additionalInterfaces=additionalInterfaces;
+	}
+
+	public boolean isCreateBackup() {
+		return createBackup;
+	}
+
+	public void setCreateBackup(boolean createBackup) {
+		this.createBackup=createBackup;
 	}
 
 
