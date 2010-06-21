@@ -45,12 +45,5 @@
         </Property>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="fileChooserLabel">
-      <Properties>
-        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="org/afraid/poison/db2php/Bundle.properties" key="PhpClassesFromXmlVisualPanel1.fileChooserLabel.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
-        </Property>
-      </Properties>
-    </Component>
   </SubComponents>
 </Form>

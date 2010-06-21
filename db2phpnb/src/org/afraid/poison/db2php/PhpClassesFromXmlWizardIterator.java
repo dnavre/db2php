@@ -29,6 +29,7 @@ import org.netbeans.api.db.explorer.JDBCDriver;
 import org.netbeans.api.db.explorer.JDBCDriverManager;
 import org.netbeans.api.progress.ProgressHandle;
 import org.netbeans.api.progress.ProgressHandleFactory;
+import org.openide.DialogDisplayer;
 import org.openide.WizardDescriptor;
 import org.openide.util.Exceptions;
 
@@ -141,7 +142,7 @@ public final class PhpClassesFromXmlWizardIterator implements WizardDescriptor.I
 									if (te.getStatus()==TableEvent.STATUS_BEGINNING) {
 										ph.progress(te.getTable().getName(), done.getProgress());
 										done.increment();
-									} else if(te.getStatus()==TableEvent.STATUS_FINISHED) {
+									} else if (te.getStatus()==TableEvent.STATUS_FINISHED) {
 									}
 								}
 							});

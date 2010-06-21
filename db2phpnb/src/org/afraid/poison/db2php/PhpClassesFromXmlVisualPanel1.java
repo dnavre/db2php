@@ -9,6 +9,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileFilter;
 import org.afraid.poison.db2php.generator.xml.Connection;
+import org.netbeans.api.db.explorer.JDBCDriver;
+import org.netbeans.api.db.explorer.JDBCDriverManager;
 import org.openide.util.Exceptions;
 
 public final class PhpClassesFromXmlVisualPanel1 extends JPanel {
@@ -26,7 +28,7 @@ public final class PhpClassesFromXmlVisualPanel1 extends JPanel {
 				}
 				try {
 					return !Connection.fromXMLFile(f).isEmpty();
-					
+
 				} catch (Exception e) {
 					Exceptions.printStackTrace(e);
 				}
@@ -63,13 +65,10 @@ public final class PhpClassesFromXmlVisualPanel1 extends JPanel {
     private void initComponents() {
 
         xmlFileChooser = new javax.swing.JFileChooser();
-        fileChooserLabel = new javax.swing.JLabel();
 
         xmlFileChooser.setBackground(javax.swing.UIManager.getDefaults().getColor("Nb.Desktop.background"));
         xmlFileChooser.setControlButtonsAreShown(false);
         xmlFileChooser.setFileFilter(new FileFilterDb2Php());
-
-        org.openide.awt.Mnemonics.setLocalizedText(fileChooserLabel, org.openide.util.NbBundle.getMessage(PhpClassesFromXmlVisualPanel1.class, "PhpClassesFromXmlVisualPanel1.fileChooserLabel.text")); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -89,7 +88,6 @@ public final class PhpClassesFromXmlVisualPanel1 extends JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel fileChooserLabel;
     private javax.swing.JFileChooser xmlFileChooser;
     // End of variables declaration//GEN-END:variables
 }
